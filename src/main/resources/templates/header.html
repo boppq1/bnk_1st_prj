@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BNK 부산은행</title>
+
+  <!-- 아이콘 -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <!-- css -->
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+</head>
+
+<body>
+
+<header class="main-header"
+        th:fragment="header">
+
+  <!-- 헤더 -->
+  <div class="header-inner">
+
+    <!-- 왼쪽 -->
+    <div class="header-left">
+
+      <!-- 로고 -->
+      <div class="header-logo">
+        <img th:src="@{/images/BNKlogo.png}" alt="BNK 로고">
+      </div>
+
+      <!-- 개인 / 기업 -->
+      <div class="bank-type">
+
+        <!-- 메인 -->
+        <th:block th:if="${mode == 'main'}">
+
+          <a th:href="@{/personal/personalMain}">
+            개인뱅킹
+          </a>
+
+          <a th:href="@{/company/companyMain}">
+            기업뱅킹
+          </a>
+
+        </th:block>
+
+        <!-- 개인 -->
+        <th:block th:if="${mode == 'personal'}">
+
+          <a th:href="@{/personal/personalMain}"
+             class="active-bank">
+            개인뱅킹
+          </a>
+
+        </th:block>
+
+        <!-- 기업 -->
+        <th:block th:if="${mode == 'company'}">
+
+          <a th:href="@{/company/companyMain}"
+             class="active-bank">
+            기업뱅킹
+          </a>
+
+        </th:block>
+
+      </div>
+
+    </div>
+
+    <!-- 메뉴 영역 -->
+    <div class="menu-area">
+
+      <!-- 메뉴 -->
+      <nav class="nav-menu">
+
+        <ul>
+          <li>조회</li>
+          <li>이체</li>
+          <li class="active-menu">외환</li>
+          <li>금융상품</li>
+        </ul>
+
+      </nav>
+
+      <!-- 드롭다운 -->
+      <div class="full-dropdown">
+
+        <div class="dropdown-inner">
+
+          <!-- 조회 -->
+          <div class="dropdown-column">
+            <h4>조회</h4>
+
+            <a href="#">전체계좌조회</a>
+            <a href="#">거래내역조회</a>
+            <a href="#">휴면계좌조회</a>
+          </div>
+
+          <!-- 송금 -->
+          <div class="dropdown-column">
+            <h4>송금</h4>
+
+            <a href="#">즉시송금</a>
+            <a href="#">예약송금</a>
+            <a href="#">자동송금</a>
+          </div>
+
+          <!-- 외환 -->
+          <div class="dropdown-column">
+            <h4>외환</h4>
+
+            <a href="#">환율조회</a>
+            <a href="#">환전</a>
+            <a href="#">외화통장</a>
+            <a href="#">환전계산기</a>
+            <a href="#">외화송금</a>
+            <a href="#">지정환율자동송금</a>
+            <a href="#">정기예약송금</a>
+            <a href="#">외화대량송금</a>
+          </div>
+
+          <!-- 금융상품 -->
+          <div class="dropdown-column">
+            <h4>금융상품</h4>
+
+            <a href="#">금융상품소개</a>
+            <a href="#">외환</a>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- 오른쪽 -->
+    <div class="header-right">
+
+      <span class="join-text">회원가입</span>
+      <span class="login-text">로그인</span>
+
+      <div class="header-icons">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <i class="fa-solid fa-bars"></i>
+      </div>
+
+    </div>
+
+  </div>
+
+</header>
+
+</body>
+</html>
