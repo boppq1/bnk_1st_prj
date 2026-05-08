@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class TestController {
-	@GetMapping("/")
+	@GetMapping("/mm")
 	public String index() {
 		return "index";
 	}
-	
+
 	@GetMapping("/footer")
 	public String footer() {
 		return "footer";

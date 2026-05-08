@@ -1,0 +1,249 @@
+@charset "utf-8";
+
+
+/* 초기화 */
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: "Pretendard", sans-serif;
+}
+
+/* 헤더 */
+
+.main-header{
+    width: 100%;
+
+    background: white;
+
+    border-bottom: 2px solid #e60012;
+
+    position: relative;
+}
+
+/* 헤더 내부 */
+.header-inner{
+    height: 96px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 70px;
+}
+
+
+/* 왼쪽 */
+
+
+.header-left{
+    display: flex;
+    align-items: center;
+
+    gap: 40px;
+}
+
+/* 로고 */
+.header-logo img{
+    height: 34px;
+}
+
+
+/* 개인/기업 */
+
+
+.bank-type{
+    display: flex;
+
+    gap: 24px;
+}
+
+.bank-type a{
+    text-decoration: none;
+
+    color: #666;
+
+    font-size: 15px;
+    font-weight: 500;
+
+    transition: 0.2s;
+}
+
+.bank-type a:hover{
+    color: #e60012;
+}
+
+/* 현재 페이지 */
+.active-bank{
+    color: #e60012 !important;
+
+    font-weight: 700;
+
+    pointer-events: none;
+
+    cursor: default;
+}
+
+
+/* 메뉴 */
+
+
+.menu-area{
+    height: 100%;
+}
+
+.nav-menu ul{
+    display: flex;
+
+    gap: 70px;
+
+    list-style: none;
+}
+
+.nav-menu li{
+    font-size: 20px;
+    font-weight: 500;
+
+    color: #111;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.nav-menu li:hover{
+    color: #e60012;
+}
+
+/* 현재 메뉴 */
+.active-menu{
+    color: #e60012;
+}
+
+
+/* 오른쪽 */
+
+
+.header-right{
+    display: flex;
+    align-items: center;
+
+    gap: 26px;
+}
+
+.join-text,
+.login-text{
+    font-size: 15px;
+}
+
+.header-icons{
+    display: flex;
+
+    gap: 22px;
+
+    font-size: 28px;
+}
+
+
+/* 드롭다운 */
+
+
+.full-dropdown{
+    position: absolute;
+
+    top: 100%;
+    left: 0;
+
+    width: 100%;
+
+    background: white;
+
+    border-top: 1px solid #f1f1f1;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+
+    padding: 35px 0;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: 0.22s ease;
+
+    z-index: 999;
+}
+
+/* 메뉴 hover 시 */
+.menu-area:hover .full-dropdown{
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* 드롭다운 내부 */
+
+
+.dropdown-inner{
+    width: fit-content;
+
+    margin: 0 auto;
+
+    display: flex;
+    justify-content: center;
+
+    gap: 90px;
+}
+
+/* 컬럼 */
+.dropdown-column{
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+
+    min-width: 130px;
+}
+
+/* 제목 */
+.dropdown-column h4{
+    font-size: 17px;
+    font-weight: 700;
+
+    color: #111;
+
+    margin-bottom: 6px;
+}
+
+/* 메뉴 */
+.dropdown-column a{
+    text-decoration: none;
+
+    color: #666;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition: all 0.2s ease;
+}
+
+/* hover 효과 */
+.dropdown-column a:hover{
+    color: #e60012;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    transform: translateX(3px);
+}
+
+/* 메뉴 영역 */
+.menu-area{
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+}
