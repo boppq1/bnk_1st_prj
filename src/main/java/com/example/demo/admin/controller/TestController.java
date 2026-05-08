@@ -9,4 +9,9 @@ public class TestController {
 	public String index() {
 		return "index";
 	}
+	
+	@GetMapping("/footer")
+	public String footer() {
+		return "footer";
+	}
 }

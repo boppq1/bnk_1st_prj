@@ -1,0 +1,156 @@
+/* =========================
+   footer.css
+========================= */
+@charset "UTF-8";
+
+/* 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* =========================
+   footer 전체
+========================= */
+footer {
+
+    width: 100%;
+
+    border-top: 1px solid #ddd;
+
+    display: flex;
+    justify-content: center;
+
+    padding: 35px 0;
+
+    background: #fff;
+}
+
+/* =========================
+   내부 컨테이너
+   (header랑 폭 맞춤)
+========================= */
+#bigcontainer {
+
+    width: 100%;
+    max-width: 1100px;
+
+    padding: 0 30px;
+}
+
+/* =========================
+   상단 링크 영역
+========================= */
+#container {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 25px;
+}
+
+/* 링크 */
+#container a {
+
+    text-decoration: none;
+
+    color: #555;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+
+    transition: 0.2s;
+}
+
+/* hover */
+#container a:hover {
+
+    color: #e60012;
+}
+
+/* =========================
+   고객센터 영역
+========================= */
+#container2 {
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    color: #222;
+
+    margin-bottom: 25px;
+}
+
+/* =========================
+   하단 영역
+========================= */
+#container3 {
+
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 20px;
+}
+
+/* 카피라이트 */
+#container3 div {
+	align-items: center;
+    font-size: 13px;
+
+    color: #666;
+}
+
+/* =========================
+   셀렉트박스
+========================= */
+select {
+
+    width: 180px;
+
+    padding: 8px 12px;
+
+    border: 1px solid #ccc;
+
+    outline: none;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    background: white;
+}
+
+/* hover */
+select:hover {
+    border-color: #999;
+}
+
+/* focus */
+select:focus {
+    border-color: #e60012;
+}
