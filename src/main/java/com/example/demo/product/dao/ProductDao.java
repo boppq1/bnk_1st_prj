@@ -17,7 +17,7 @@ public interface ProductDao {
     List<ProductListResponseDto> getProductList(ProductListRequestDto dto);
     
     // 상품 갯수
-    int getProducrCount(ProductListRequestDto dto);
+    int getProductCount(ProductListRequestDto dto);
     
     // 상품 상세
     ProductDetailResponseDto getProductDetail(Long productId);
