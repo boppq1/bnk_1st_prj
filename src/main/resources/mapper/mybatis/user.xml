@@ -1,32 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-        
+
 <mapper namespace="com.example.demo.personal.dao.LoginAndRegisterIDAO">
-	<!-- 회원가입 유저 -->
-	<insert id="insertUser" >
-	    INSERT INTO users (
-	        user_id, login_id, password, name, phone, birth, email, status, gender, 
-	        e_name, postal_code, address, address_detail,created_at
-	    ) VALUES (
-	        user_id_seq.NEXTVAL, #{loginId}, #{password}, #{name}, #{phone}, #{birth}, 
-	        #{email}, 
-	        '정상',#{gender}, #{eName}, #{postalCode}, #{address}, 
-	        #{addressDetail}, SYSDATE
-    )
-	</insert>
-	<!-- 회원가입 계좌 -->
-	<insert id="insertAccount">
-	   INSERT INTO accounts_personal (
-	   	account_id, account_pw, bank_name, account_no, user_id, balance, currency, account_status
-	   	, limit_one_time, limit_daily
-	   ) VALUES (
-	   	account_id_seq.NEXTVAL, #{account_pw}, #{bank_name}, #{account_no}, user_id_seq.CURRVAL, 
-	   	#{balance}, #{currency}. #{account_status}, #{limit_one_time}, #{limit_daily}
-	   )
-	</insert>
-	<!-- 회원가입 계좌 중복체크 -->
-	<select id="checkAccount">
-		SELECT * FROM accounts_personal WHERE account_no = #{account_no}
-	</select>
+
+    <insert id="insertUser">
+        INSERT INTO users (
+            user_id, login_id, password, name, phone, birth, email, status, gender,
+            e_name, postal_code, address, address_detail, created_at
+        ) VALUES (
+            user_id_seq.NEXTVAL,
+            #{login_id},
+            #{password},
+            #{name},
+            #{phone},
+            #{birth},
+            #{email},
+            '정상',
+            #{gender},
+            #{e_name},
+            #{postal_code},
+            #{address},
+            #{address_detail},
+            SYSDATE
+        )
+    </insert>
+
+    <insert id="insertAccount">
+       INSERT INTO accounts_personal (
+           account_id, account_pw, bank_name, account_no, user_id, balance, currency, account_status,
+           limit_one_time, limit_daily
+       ) VALUES (
+           account_id_seq.NEXTVAL,
+           #{account_pw},
+           #{bank_name},
+           #{account_no},
+           user_id_seq.CURRVAL,
+           #{balance},
+           #{currency},
+           #{account_status},
+           #{limit_one_time},
+           #{limit_daily}
+       )
+    </insert>
+
+    <select id="checkAccount" resultType="int">
+        SELECT COUNT(*) FROM accounts_personal WHERE account_no = #{account_no}
+    </select>
+
 </mapper>

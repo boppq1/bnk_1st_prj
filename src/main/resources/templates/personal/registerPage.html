@@ -44,59 +44,59 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
 		<table>
 			<tr>
 				<td class="label-cell">아이디</td>
-				<td><input type="text" name="loginId" th:value="${login_id}"
-					required></td>
+				<td><input type="text" name="login_id" required></td>
 			</tr>
 			<tr>
 				<td class="label-cell">비밀번호</td>
-				<td><input type="password" name="password" th:value="${password}" required></td>
+				<td><input type="password" name="password" required></td>
 			</tr>
 			<tr>
 				<td class="label-cell">이름</td>
-				<td><input type="text" name="name" th:value="${name}" required></td>
+				<td><input type="text" name="name" required></td>
 			</tr>
 			<tr>
 				<td class="label-cell">휴대폰번호</td>
-				<td><input type="text" name="phon" th:value="${phon}" required></td>
+				<td><input type="text" name="phone" required></td>
 			</tr>
 			<tr>
 				<td class="label-cell">생일</td>
-				<td><input type="date" name="birth" th:value="${birth}" required></td>
+				<td><input type="date" name="birth" required></td>
 			</tr>
 			<tr>
 				<td class="label-cell">이메일</td>
-				<td><input type="email" name="email" th:value="${email}" required></td>
+				<td><input type="email" name="email" required></td>
 			</tr>
 			<tr>
 				<td class="label-cell">성별</td>
-				<td colspan="2">
-					<input style="margin-left: 20px;" type="radio" name="gender" th:value="${M}" required> 남 
-					<input type="radio"name="gender" value="F" th:value="${F}" required> 여
-				</td>
+				<td colspan="2"><input style="margin-left: 20px;" type="radio"
+					name="gender" value="M" required> 남 <input type="radio"
+					name="gender" value="F" required> 여</td>
 			</tr>
-
 			<tr>
 				<td class="label-cell">우편번호</td>
-				<td>
-					<input type="text" name="postalCode" id="postcode" 
-					class="postcode-input" th:value="${postalCode}" readonly required>
-					<input type="button" onclick="DaumPostcode()" value="우편번호 찾기"
-					class="postcode-btn">
-				</td>
+				<td><input type="text" name="postal_code" id="postcode"
+					class="postcode-input" readonly required> <input
+					type="button" onclick="DaumPostcode()" value="우편번호 찾기"
+					class="postcode-btn"></td>
 			</tr>
 			<tr>
 				<td class="label-cell">주소</td>
-				<td><input type="text" name="address" id="address" th:value="${address}" readonly required></td>
+				<td><input type="text" name="address" id="address" readonly
+					required></td>
 			</tr>
 			<tr>
 				<td class="label-cell">상세 주소</td>
-				<td><input type="text" name="address_detail" id="address_detail"
-					th:value="${address_detail}" placeholder="상세주소 입력" required>
-					<input type="hidden" id="extraAddress"></td>
+				<td><input type="text" name="address_detail"
+					id="address_detail" placeholder="상세주소 입력" required> <input
+					type="hidden" id="extraAddress"></td>
+			</tr>
+			<tr>
+				<td class="label-cell">영어이름</td>
+				<td><input type="text" name="e_name" required></td>
 			</tr>
 			<tr>
 				<td class="label-cell">계좌비밀번호</td>
-				<td><input type="text" name="account_pw"th:value="${account_pw}" required></td>
+				<td><input type="text" name="account_pw" required></td>
 			</tr>
 			<tr>
 				<td colspan="2"
@@ -160,7 +160,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
 									+ extraAddr; // 주소 뒤에 참고항목 바로 붙이기
 
 							// 상세주소로 포커스 이동
-							document.getElementById("detailAddress").focus();
+							document.getElementById("address_detail").focus();
 						}
 					}).open();
 		}
