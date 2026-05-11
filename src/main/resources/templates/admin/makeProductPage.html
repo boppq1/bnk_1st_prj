@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BNK Busan Bank - 상품 등록 관리</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    
+    <style>
+        /* 1. 기본 스타일 및 레이아웃 정의 */
+        :root {
+            /* BNK 메인 컬러 */
+            --primary-color: #ED1C24;    /* BNK Red */
+            --secondary-color: #333333;  /* Dark Gray */
+            --bg-color: #F8F9FA;         /* 매우 연한 회색 배경 */
+            
+            /* 카드 및 컨텐츠 스타일 */
+            --card-bg: #FFFFFF;
+            --border-color: #E0E4E8;
+            --input-focus-border: #999999;
+            
+            /* 텍스트 컬러 */
+            --text-main: #212529;
+            --text-label: #6C757D;
+            --text-muted: #ADB5BD;
+            
+            --sidebar-width: 260px;
+            --header-height: 70px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0; padding: 0;
+            font-family: 'Pretendard', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden; /* 스크롤은 내부 컨텐츠 영역에서만 */
+            display: flex;
+        }
+
+        /* 2. 사이드바 (디자인 참고: image_2.png) */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background-color: #FFFFFF;
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0;
+            position: fixed;
+            left: 0; top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-logo {
+            padding: 10px 30px;
+            margin-bottom: 40px;
+        }
+        .sidebar-logo img {
+            width: 130px; /* 로고 크기 조정 */
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            flex-grow: 1;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .menu-item i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .menu-item:hover {
+            background-color: #FFF2F2; /* 연한 Red 배경 */
+            color: var(--primary-color);
+        }
+        .menu-item:hover i {
+            color: var(--primary-color);
+        }
+
+        /* 활성화된 메뉴 스타일 */
+        .menu-item.active {
+            color: var(--primary-color);
+            font-weight: 700;
+            background-color: #FFF2F2;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 26px; /* border-left 두께만큼 왼쪽 패딩 조정 */
+        }
+        .menu-item.active i {
+            color: var(--primary-color);
+        }
+
+        /* 서브메뉴가 있는 항목의 화살표 */
+        .menu-item .arrow-icon {
+            margin-left: auto;
+            margin-right: 0;
+            font-size: 12px;
+        }
+
+        .sidebar-footer {
+            padding: 0 30px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+        .sidebar-footer p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* 3. 헤더 (상단 바) */
+        .header {
+            position: fixed;
+            top: 0; left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            height: var(--header-height);
+            background-color: #FFFFFF;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 90;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .header-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #E2E8F0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+
+        /* 4. 메인 컨텐츠 영역 */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--header-height);
+            width: calc(100% - var(--sidebar-width));
+            height: calc(100vh - var(--header-height));
+            overflow-y: auto; /* 컨텐츠 영역에서만 스크롤 */
+            padding: 40px;
+        }
+
+        .content-header {
+            margin-bottom: 30px;
+        }
+        .content-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        .content-subtitle {
+            font-size: 15px;
+            color: var(--text-label);
+        }
+
+        /* 5. 상품 등록 폼 카드 디자인 (디자인 참고: image_2.png 위젯) */
+        .register-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            padding: 40px;
+        }
+
+        /* 입력 폼 그리드 (가로 배치) */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2열 배치 */
+            gap: 25px 30px; /* 세로 간격, 가로 간격 */
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 1열을 가득 채우는 항목 */
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-label);
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        select {
+            height: 48px;
+            padding: 0 15px;
+            border: 1px solid #D9E0E6;
+            border-radius: 8px;
+            font-size: 15px;
+            color: var(--text-main);
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--input-focus-border);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+        }
+
+        input[type="text"]::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* 6. 제출 버튼 영역 (하단 바) */
+        .submit-area {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .btn {
+            height: 50px;
+            padding: 0 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-cancel {
+            background-color: #E2E8F0;
+            color: var(--text-main);
+        }
+        .btn-cancel:hover {
+            background-color: #CBD5E1;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 6px rgba(237, 28, 36, 0.2);
+        }
+        .btn-primary:hover {
+            background-color: #D61A20;
+            box-shadow: 0 6px 8px rgba(237, 28, 36, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <img src="https://sites.bnk.co.kr/main/resource/img/common/logo_busan.png" alt="BNK 부산은행 로고">
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> 대시보드</a></li>
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-users-gear"></i> 회원 및 보안 관리 <i class="fa-solid fa-chevron-down arrow-icon"></i></a></li>
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-money-bill-transfer"></i> 거래 및 자산 관리 <i class="fa-solid fa-chevron-down arrow-icon"></i></a></li>
+            
+            <li><a href="#" class="menu-item active"><i class="fa-solid fa-coins"></i> 외환 및 환전 관리</a></li>
+            
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-file-invoice-dollar"></i> 송금 및 결제 심사 <i class="fa-solid fa-chevron-down arrow-icon"></i></a></li>
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-receipt"></i> 시스템 운영 로그 <i class="fa-solid fa-chevron-down arrow-icon"></i></a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <p>© 2024 BNK Busan Bank</p>
+            <p>IT Strategy Team</p>
+        </div>
+    </div>
+
+    <div class="header">
+        <div class="header-title">상품 관리 센터</div>
+        <div class="header-right">
+            
+            <div class="user-profile">
+                <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+                <span>최고 관리자 OOO</span>
+                <i class="fa-solid fa-chevron-down" style="font-size: 12px;"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="content-header">
+            <h1 class="content-title">외화 상품 등록</h1>
+            <p class="content-subtitle">새로운 금융 상품을 시스템에 등록합니다. 각 항목을 정확히 입력해 주세요.</p>
+        </div>
+
+        <div class="register-card">
+            <form th:action="@{/admin/product}" method="post">
+                <div class="form-grid">
+                    
+                    <div class="form-group full-width">
+                        <label>상품명</label>
+                        <input type="text" name="product_name" placeholder="예: 부산은행 글로벌 외화 정기예금">
+                    </div>
+
+                    <div class="form-group">
+                        <label>상품상태</label>
+                        <select name="is_active">
+                            <option value="Y">판매중</option>
+                            <option value="N">판매 중단</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>상품타입</label>
+                        <select name="product_type">
+                            <option value="deposit">예금</option>
+                            <option value="savings">적금</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>최소가입기간</label>
+                        <select name="min_period_month">
+                            <option value="1">1개월</option>
+                            <option value="3">3개월</option>
+                            <option value="6">6개월</option>
+                            <option value="12">12개월</option>
+                            <option value="24">24개월</option>
+                            <option value="36">36개월</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>최대가입기간</label>
+                        <select name="max_period_month">
+                            <option value="1">1개월</option>
+                            <option value="3">3개월</option>
+                            <option value="6">6개월</option>
+                            <option value="12">12개월</option>
+                            <option value="24">24개월</option>
+                            <option value="36">36개월</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>최소가입금액 (USD 기준)</label>
+                        <input type="text" name="min_amount" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label>최대가입금액 (USD 기준)</label>
+                        <input type="text" name="max_amount" placeholder="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label>대상고객</label>
+                        <select name="target_customer">
+                            <option value="personal">개인</option>
+                            <option value="company">기업</option>
+                            <option value="all">전체</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>이자 지급 주기</label>
+                        <select name="interest_payment_type">
+                            <option value="MATURITY_PAYMENT">만기일시지급</option>
+                            <option value="MONTHLY_PAYMENT">월이자지급</option>
+                            <option value="SIMPLE_INTEREST">단리</option>
+                            <option value="COMPOUND_INTEREST">복리</option>
+                            <option value="QUARTERLY_PAYMENT">분기지급</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>환율 적용 기준점</label>
+                        <select name="applied_exchange_rate_type">
+                            <option value="CLOSING_RATE">전일 종가</option>
+                            <option value="REALTIME_RATE">실시간 고시 환율</option>
+                            <option value="FIRST_QUOTED_RATE">최초 고시 환율</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>상품설명</label>
+                        <input type="text" name="product_desc" placeholder="상품에 대한 핵심 마케팅 설명을 입력하세요">
+                    </div>
+                </div>
+
+                <div class="submit-area">
+                    <button type="button" class="btn btn-cancel">취소</button>
+                    <button type="submit" class="btn btn-primary">등록 완료</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
