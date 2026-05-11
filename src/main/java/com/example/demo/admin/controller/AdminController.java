@@ -27,8 +27,8 @@ public class AdminController {
 	}
 	
 	@GetMapping("/member")
-	public String member() {
-		as.getUser();
+	public String member(Long user_id) {
+		as.getUser(user_id);
 		return "admin/memberDetail";
 	}
 	
@@ -39,8 +39,8 @@ public class AdminController {
 	}
 	
 	@GetMapping("/admin")
-	public String admin() {
-		as.getAdmin();
+	public String admin(Long admin_id) {
+		as.getAdmin(admin_id);
 		return "admin/adminDetail";
 	}
 	

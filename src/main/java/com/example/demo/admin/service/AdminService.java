@@ -35,19 +35,19 @@ public class AdminService {
 	}
 	
 	public AdminDto getAdmin(Long admin_id) {
-		listDao.getAdmin(admin_id);
+		return listDao.getAdmin(admin_id);
 	}
 	
 	public List<AdminDto> getAdminList() {
-		listDao.getAdmins();
+		return listDao.getAdmins();
 	}
 	
-	public UserDTO getUser() {
-		listDao.getUser();
+	public UserDTO getUser(Long user_id) {
+		return listDao.getUser(user_id);
 	}
 	
 	public List<UserDTO> getUserList() {
-		listDao.getUsers();
+		return listDao.getUsers();
 	}
 	
 }
