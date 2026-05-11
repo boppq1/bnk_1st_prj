@@ -32,4 +32,25 @@ public class ProductDto {
 	LocalDateTime updated_at;
 	String created_by;
 	String updated_by;
+	// 추가
+	String approver;
+	String approve_status;
+	LocalDateTime app_start_date;
+	LocalDateTime app_end_date;
+	String mkt_msg_top;
+	String mkt_msg_bottom;
+	String join_method;
+	String auto_transfer_svc;
+	String revolving_info;
+	String saving_method;
+	String payment_restriction;
+	String precautions;
+	String fx_cash_fee;
+	String auto_reinvestment;
+	String tax_benefit;
+	String payment_limit_info;
+	String data_access_right;
+	String illegal_contract_cancel;
+	String depositor_protection;
+	String rate_category;
 }

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원가입</title>
+<style>
+table {
+	width: 600px;
+	border-collapse: collapse;
+}
+
+td {
+	padding: 10px;
+	border-bottom: 1px solid #eee;
+}
+
+.label-cell {
+	width: 140px;
+	background-color: #f9f9f9;
+	font-weight: bold;
+}
+
+input[type="text"], input[type="password"], input[type="email"], input[type="tel"],
+	input[type="date"] {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 5px;
+}
+/* 우편번호 칸은 짧게 */
+.postcode-input {
+	width: 60% !important;
+	display: inline-block;
+}
+
+.postcode-btn {
+	width: 38%;
+	padding: 5px;
+	cursor: pointer;
+}
+</style>
+</head>
+<body>
+	<form th:action="@{/registerPro}" method="post">
+		<table>
+			<tr>
+				<td class="label-cell">아이디</td>
+				<td><input type="text" name="loginId" th:value="${login_id}"
+					required></td>
+			</tr>
+			<tr>
+				<td class="label-cell">비밀번호</td>
+				<td><input type="password" name="password" th:value="${password}" required></td>
+			</tr>
+			<tr>
+				<td class="label-cell">이름</td>
+				<td><input type="text" name="name" th:value="${name}" required></td>
+			</tr>
+			<tr>
+				<td class="label-cell">휴대폰번호</td>
+				<td><input type="text" name="phon" th:value="${phon}" required></td>
+			</tr>
+			<tr>
+				<td class="label-cell">생일</td>
+				<td><input type="date" name="birth" th:value="${birth}" required></td>
+			</tr>
+			<tr>
+				<td class="label-cell">이메일</td>
+				<td><input type="email" name="email" th:value="${email}" required></td>
+			</tr>
+			<tr>
+				<td class="label-cell">성별</td>
+				<td colspan="2">
+					<input style="margin-left: 20px;" type="radio" name="gender" th:value="${M}" required> 남 
+					<input type="radio"name="gender" value="F" th:value="${F}" required> 여
+				</td>
+			</tr>
+
+			<tr>
+				<td class="label-cell">우편번호</td>
+				<td>
+					<input type="text" name="postalCode" id="postcode" 
+					class="postcode-input" th:value="${postalCode}" readonly required>
+					<input type="button" onclick="DaumPostcode()" value="우편번호 찾기"
+					class="postcode-btn">
+				</td>
+			</tr>
+			<tr>
+				<td class="label-cell">주소</td>
+				<td><input type="text" name="address" id="address" th:value="${address}" readonly required></td>
+			</tr>
+			<tr>
+				<td class="label-cell">상세 주소</td>
+				<td><input type="text" name="address_detail" id="address_detail"
+					th:value="${address_detail}" placeholder="상세주소 입력" required>
+					<input type="hidden" id="extraAddress"></td>
+			</tr>
+			<tr>
+				<td class="label-cell">계좌비밀번호</td>
+				<td><input type="text" name="account_pw"th:value="${account_pw}" required></td>
+			</tr>
+			<tr>
+				<td colspan="2"
+					style="text-align: center; border-bottom: none; padding-top: 20px;">
+					<button type="submit" style="padding: 10px 40px;">가입하기</button>
+				</td>
+			</tr>
+		</table>
+	</form>
+
+	<script
+		src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script>
+		function DaumPostcode() {
+			new kakao.Postcode(
+					{
+						oncomplete : function(data) {
+							// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+							// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+							// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+							var addr = ''; // 주소 변수
+							var extraAddr = ''; // 참고항목 변수
+
+							//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+							if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+								addr = data.roadAddress;
+							} else { // 사용자가 지번 주소를 선택했을 경우(J)
+								addr = data.jibunAddress;
+							}
+
+							// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+							if (data.userSelectedType === 'R') {
+								// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+								// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+								if (data.bname !== ''
+										&& /[동로가]$/.test(data.bname)) {
+									extraAddr += data.bname;
+								}
+								// 건물명이 있고, 공동주택일 경우 추가한다.
+								if (data.buildingName !== ''
+										&& data.apartment === 'Y') {
+									extraAddr += (extraAddr !== '' ? ', '
+											+ data.buildingName
+											: data.buildingName);
+								}
+								// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+								if (extraAddr !== '') {
+									extraAddr = ' (' + extraAddr + ')';
+								}
+								// 조합된 참고항목을 해당 필드에 넣는다.
+								document.getElementById("extraAddress").value = extraAddr;
+
+							} else {
+								document.getElementById("extraAddress").value = '';
+							}
+
+							// [수정된 부분] HTML의 id와 일치시킴
+							document.getElementById('postcode').value = data.zonecode;
+							document.getElementById("address").value = addr
+									+ extraAddr; // 주소 뒤에 참고항목 바로 붙이기
+
+							// 상세주소로 포커스 이동
+							document.getElementById("detailAddress").focus();
+						}
+					}).open();
+		}
+	</script>
+</body>
+</html>

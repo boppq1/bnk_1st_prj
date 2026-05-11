@@ -32,6 +32,8 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+	// Source: https://mvnrepository.com/artifact/org.mindrot/jbcrypt
+	implementation("org.mindrot:jbcrypt:0.4")
 }
 
 tasks.named('test') {
