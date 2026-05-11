@@ -6,7 +6,7 @@
 <!-- 매퍼 만들기 -->
 
 
-<mapper namespace="com.example.mapper.ProductMapper">
+<mapper namespace="com.example.demo.admin.dao.IAdminProductDao">
 
 <insert id="insertProduct">
     insert into PRODUCT

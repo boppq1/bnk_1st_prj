@@ -3,6 +3,7 @@ package com.example.demo.personal.dto;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 public class UserDTO {
