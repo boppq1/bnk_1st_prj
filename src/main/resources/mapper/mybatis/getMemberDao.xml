@@ -4,15 +4,15 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.admin.dao.IListDao">
 	<select id="getAdmin" resultType="com.example.demo.admin.dto.AdminDto">
-		select * from admin_users
+		select * from admin_users where admin_id = #{admin_id}
 	</select>
 	
 	<select id="getAdmins" resultType="com.example.demo.admin.dto.AdminDto">
-		select * from admin_users where id = #{admin_id}
+		select * from admin_users
 	</select>
 	
 	<select id="getUser" resultType="com.example.demo.personal.dto.UserDTO">
-		select * from users where id = #{user_id}
+		select * from users where user_id = #{user_id}
 	</select>
 	
 	<select id="getUsers" resultType="com.example.demo.personal.dto.UserDTO">

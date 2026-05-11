@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.admin.dao.IListDao;
 import com.example.demo.admin.dao.IAdminProductDao;
 import com.example.demo.admin.dto.AdminDto;
+import com.example.demo.admin.dto.ApprovalDto;
 import com.example.demo.admin.dto.ProductDto;
 import com.example.demo.personal.dto.UserDTO;
 
@@ -30,7 +31,7 @@ public class AdminService {
 	}
 	
 	public ProductDto getProduct(Long product_id) {
-		return productDao.getProduct(product_id);
+		return productDao.selectProduct(product_id);
 	}
 	
 	public List<ProductDto> getProducts() {
@@ -51,6 +52,28 @@ public class AdminService {
 	
 	public List<UserDTO> getUserList() {
 		return listDao.getUsers();
+	}
+	
+	public AdminDto updateAdmin(Long admin_id) {
+		return listDao.getAdmin(admin_id);
+	}
+	
+	public UserDTO updateUser(Long user_id) {
+		return listDao.getUser(user_id);
+	}
+	
+	public ApprovalDto getApproval(Long approval_id) {
+		return listDao.getApproval(approval_id);
+	}
+	
+	public List<ApprovalDto> getApprovals() {
+		return listDao.getApprovals();
+	}
+	
+	public boolean approvedStatus(Long product_id, String status) {
+		listDao.updateApproval(product_id, status);
+		listDao.updateProduct(product_id, status);
+		return true;
 	}
 	
 }
