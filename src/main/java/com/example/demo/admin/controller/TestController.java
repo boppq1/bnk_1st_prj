@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class TestController {
-	@GetMapping("/mm")
-	public String index() {
-		return "index";
+	@GetMapping("/index")
+	public String 인덱스() {
+	    return "index";
 	}
 	
 	@GetMapping("/footer")

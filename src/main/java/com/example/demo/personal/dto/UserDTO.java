@@ -11,7 +11,7 @@ public class UserDTO {
 	private String login_id;
 	private String password;
 	private String name;
-	private String phone;
+	private String phon;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private String birth;
 	private String email;

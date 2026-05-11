@@ -1,0 +1,30 @@
+[33m1409945[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature-gunyub[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{0}: checkout: moving from main to feature-gunyub
+[33m1409945[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature-gunyub[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{1}: merge feature-gunyub: Fast-forward
+[33m97ddb76[m HEAD@{2}: checkout: moving from feature-gunyub to main
+[33m1409945[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature-gunyub[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{3}: commit: feat: user.xml수정
+[33m97ddb76[m HEAD@{4}: merge main: Fast-forward
+[33m05416b7[m[33m ([m[1;31morigin/feature-gunyub[m[33m)[m HEAD@{5}: checkout: moving from main to feature-gunyub
+[33m97ddb76[m HEAD@{6}: commit (merge): AdminService 충돌 해결
+[33m918548e[m HEAD@{7}: checkout: moving from feature-gunyub to main
+[33m05416b7[m[33m ([m[1;31morigin/feature-gunyub[m[33m)[m HEAD@{8}: reset: moving to HEAD
+[33m05416b7[m[33m ([m[1;31morigin/feature-gunyub[m[33m)[m HEAD@{9}: checkout: moving from main to feature-gunyub
+[33m918548e[m HEAD@{10}: commit (merge): AdminService 충돌 해결 및 병합 완료
+[33mb1e1a22[m HEAD@{11}: pull origin main: Fast-forward
+[33md3cbb3c[m HEAD@{12}: checkout: moving from feature-gunyub to main
+[33m05416b7[m[33m ([m[1;31morigin/feature-gunyub[m[33m)[m HEAD@{13}: commit: feat: 회원가입중간
+[33mb08c3d9[m HEAD@{14}: pull origin main: updating HEAD
+[33mb08c3d9[m HEAD@{15}: commit: feat: 회원가입중
+[33mb67a731[m HEAD@{16}: commit (merge): AdminService 충돌해결 완료
+[33m769ee5e[m HEAD@{17}: reset: moving to HEAD
+[33m769ee5e[m HEAD@{18}: pull origin main: Fast-forward
+[33md3cbb3c[m HEAD@{19}: reset: moving to HEAD
+[33md3cbb3c[m HEAD@{20}: pull origin main: Fast-forward
+[33m9a6c8dc[m HEAD@{21}: checkout: moving from main to feature-gunyub
+[33md3cbb3c[m HEAD@{22}: pull: Fast-forward
+[33m9a6c8dc[m HEAD@{23}: checkout: moving from feature-gunyub to main
+[33m9a6c8dc[m HEAD@{24}: merge main: Fast-forward
+[33m2349159[m[33m ([m[1;31morigin/feature-hoony[m[33m)[m HEAD@{25}: checkout: moving from main to feature-gunyub
+[33m9a6c8dc[m HEAD@{26}: pull origin main: Fast-forward
+[33m2349159[m[33m ([m[1;31morigin/feature-hoony[m[33m)[m HEAD@{27}: checkout: moving from feature-gunyub to main
+[33m2349159[m[33m ([m[1;31morigin/feature-hoony[m[33m)[m HEAD@{28}: checkout: moving from main to feature-gunyub
+[33m2349159[m[33m ([m[1;31morigin/feature-hoony[m[33m)[m HEAD@{29}: clone: from https://github.com/Yulimindi/banking_system.git

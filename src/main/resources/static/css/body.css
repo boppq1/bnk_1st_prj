@@ -1,0 +1,172 @@
+@charset "UTF-8";
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+	background-color: #f5f6f8;
+}
+
+.container {
+	width: 1100px;
+	margin: 40px auto;
+	display: flex;
+	gap: 24px;
+}
+
+/* 전체 영역 */
+.banner {
+	flex: 1.5;
+}
+
+/* 보이는 창 */
+.banner_viewport {
+	height: 260px;
+	border-radius: 16px;
+	overflow: hidden;
+	position: relative;
+}
+
+/* 움직이는 트랙 */
+.banner_track {
+	display: flex;
+	transition: transform 0.5s ease;
+	height: 100%;
+}
+
+/* 개별 슬라이드 */
+.slide {
+	min-width: 100%;
+	height: 260px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	font-size: 28px;
+	font-weight: bold;
+	color: white;
+	text-decoration: none;
+}
+
+.controls {
+	position: absolute;
+	right: 12px;
+	bottom: 12px;
+
+	display: flex;
+	gap: 6px;
+
+	background: transparent;
+	padding: 0;
+	margin: 0;
+}
+
+/* 공통 버튼 */
+.ctrl-btn {
+	all: unset;
+
+	width: 20px;
+	height: 20px;
+
+	border-radius: 50%;
+	background: rgba(255,255,255,0.85);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	font-size: 12px;
+	cursor: pointer;
+
+	box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+	transition: 0.2s;
+}
+
+/* 작은 버튼 (이전/다음) */
+.ctrl-btn.small {
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background: rgba(255,255,255,0.8);
+	font-size: 12px;
+}
+
+/* 가운데 재생 버튼 */
+.ctrl-btn.play {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background: white;
+	box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+	font-size: 14px;
+	font-weight: bold;
+}
+
+/* hover 효과 */
+.ctrl-btn:hover {
+	transform: scale(1.1);
+	background: white;
+}
+
+.slide:nth-child(1) { background: #dc3545; }
+.slide:nth-child(2) { background: #ff6b6b; }
+.slide:nth-child(3) { background: #c0392b; }
+
+/* 오른쪽 퀵메뉴 */
+.quick_menu {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.quick_menu_item {
+	display: flex;
+	gap: 16px;
+}
+
+.item {
+	flex: 1;
+	height: 122px;
+	background-color: white;
+	border-radius: 16px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+	display: flex;
+	align-items: center;
+	gap: 28px;
+	padding: 20px;
+	justify-content: center;
+	transition: 0.2s;
+	text-decoration: none;
+	color: #222;
+}
+
+.item:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.item:visited {
+	color: #222;
+}
+
+.item-icon {
+	font-size: 40px;
+	color: #dc3545;
+}
+
+.item-content h4 {
+	margin: 0 0 8px;
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.item-text p {
+	margin: 2px 0;
+	font-size: 12px;
+	color: #666;
+}

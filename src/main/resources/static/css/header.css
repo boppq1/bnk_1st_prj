@@ -225,6 +225,7 @@ body {
 
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
 
     transition: all 0.25s ease;
 
@@ -232,11 +233,10 @@ body {
 }
 
 /* 메뉴 hover 시 dropdown */
-.nav-menu:hover + .full-dropdown,
-.full-dropdown:hover {
-
+.menu-area:hover .full-dropdown {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
 }
 
 /* dropdown 내부 */

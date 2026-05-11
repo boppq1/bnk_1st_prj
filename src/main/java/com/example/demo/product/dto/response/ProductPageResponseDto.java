@@ -1,15 +1,17 @@
 package com.example.demo.product.dto.response;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.List;
+import lombok.NoArgsConstructor;
 
 
 // 상품 페이징 응답 DTO,  페이징 정보 포함 응답
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProductPageResponseDto {
 
     private List<ProductListResponseDto> products; // 상품 리스트 

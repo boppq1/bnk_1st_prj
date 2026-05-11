@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.product.dao.ProductDao">
+
+    <!-- 상품 리스트 조회 -->
+    <select id="getProductList"
+            parameterType="com.example.demo.product.dto.request.ProductListRequestDto"
+            resultType="com.example.demo.product.dto.response.ProductListResponseDto">
+
+        SELECT *
+        FROM (
+            SELECT
+                ROWNUM rn,
+                A.*
+            FROM (
+                SELECT
+                    p.product_id,
+                    p.product_name,
+                    p.product_type,
+                    p.target_customer,
+
+                    TO_CHAR(DBMS_LOB.SUBSTR(p.product_desc, 1000, 1)) AS product_desc,
+
+                    p.rate_category,
+                    p.is_active,
+                    p.created_at,
+
+                    p.min_period_month,
+                    p.max_period_month,
+
+                    p.min_amount,
+                    p.max_amount,
+
+                    p.app_start_date,
+                    p.app_end_date,
+
+                    NVL(MIN(r.base_rate), 0) AS min_rate,
+
+                    NVL(MAX(r.base_rate + NVL(r.perferential_rate, 0)), 0) AS max_rate
+
+                FROM product p
+
+                LEFT JOIN rate r
+                    ON p.product_id = r.product_id
+                   AND r.is_active = 'Y'
+
+                WHERE 1=1
+                  AND p.is_active = 'T'
+                  AND p.approve_status = '승인'
+
+                <!-- 검색 -->
+                <if test="keyword != null and keyword != ''">
+                    AND (
+                        p.product_name LIKE '%' || #{keyword} || '%'
+                        OR DBMS_LOB.INSTR(p.product_desc, #{keyword}) > 0
+                    )
+                </if>
+
+                <!-- 상품 타입 -->
+                <if test="productType != null and productType != ''">
+                    AND p.product_type = #{productType}
+                </if>
+
+                <!-- 가입 대상 -->
+                <if test="targetCustomer != null and targetCustomer != ''">
+                    AND (
+                        p.target_customer = #{targetCustomer}
+                        OR p.target_customer = 'all'
+                    )
+                </if>
+
+                GROUP BY
+                    p.product_id,
+                    p.product_name,
+                    p.product_type,
+                    p.target_customer,
+
+                    TO_CHAR(DBMS_LOB.SUBSTR(p.product_desc, 1000, 1)),
+
+                    p.rate_category,
+                    p.is_active,
+                    p.created_at,
+
+                    p.min_period_month,
+                    p.max_period_month,
+
+                    p.min_amount,
+                    p.max_amount,
+
+                    p.app_start_date,
+                    p.app_end_date
+
+                <choose>
+
+                    <!-- 금리순 -->
+                    <when test="sort == 'rate'">
+                        ORDER BY max_rate DESC
+                    </when>
+
+                    <!-- 이름순 -->
+                    <when test="sort == 'name'">
+                        ORDER BY p.product_name ASC
+                    </when>
+
+                    <!-- 최신순 -->
+                    <otherwise>
+                        ORDER BY p.created_at DESC
+                    </otherwise>
+
+                </choose>
+
+            ) A
+            WHERE ROWNUM <![CDATA[<=]]> #{endRow}
+        )
+        WHERE rn <![CDATA[>=]]> #{startRow}
+
+    </select>
+
+
+    <!-- 상품 개수 조회 -->
+    <select id="getProductCount"
+            parameterType="com.example.demo.product.dto.request.ProductListRequestDto"
+            resultType="int">
+
+        SELECT COUNT(*)
+        FROM product p
+
+        WHERE 1=1
+          AND p.is_active = 'T'
+          AND p.approve_status = '승인'
+
+        <if test="targetCustomer != null and targetCustomer != ''">
+            AND (
+                p.target_customer = #{targetCustomer}
+                OR p.target_customer = 'all'
+            )
+        </if>
+
+        <if test="productType != null and productType != ''">
+            AND p.product_type = #{productType}
+        </if>
+
+        <if test="keyword != null and keyword != ''">
+            AND (
+                p.product_name LIKE '%' || #{keyword} || '%'
+                OR DBMS_LOB.INSTR(p.product_desc, #{keyword}) > 0
+            )
+        </if>
+
+    </select>
+
+
+    <!-- 추천 상품 -->
+    <select id="getRecommendProducts"
+            parameterType="string"
+            resultType="com.example.demo.product.dto.response.ProductListResponseDto">
+
+        SELECT *
+        FROM (
+            SELECT
+                p.product_id,
+                p.product_name,
+                p.product_type,
+                p.target_customer,
+
+                TO_CHAR(DBMS_LOB.SUBSTR(p.product_desc, 1000, 1)) AS product_desc,
+
+                p.rate_category,
+
+                p.min_period_month,
+                p.max_period_month,
+
+                p.min_amount,
+                p.max_amount,
+
+                p.app_start_date,
+                p.app_end_date,
+
+                NVL(MIN(r.base_rate), 0) AS min_rate,
+
+                NVL(MAX(r.base_rate + NVL(r.perferential_rate, 0)), 0) AS max_rate
+
+            FROM product p
+
+            LEFT JOIN rate r
+                ON p.product_id = r.product_id
+               AND r.is_active = 'Y'
+
+            WHERE p.is_active = 'T'
+              AND p.approve_status = '승인'
+
+              AND (
+                    p.target_customer = #{targetCustomer}
+                    OR p.target_customer = 'all'
+              )
+
+            GROUP BY
+                p.product_id,
+                p.product_name,
+                p.product_type,
+                p.target_customer,
+
+                TO_CHAR(DBMS_LOB.SUBSTR(p.product_desc, 1000, 1)),
+
+                p.rate_category,
+
+                p.min_period_month,
+                p.max_period_month,
+
+                p.min_amount,
+                p.max_amount,
+
+                p.app_start_date,
+                p.app_end_date
+
+            ORDER BY max_rate DESC
+        )
+        WHERE ROWNUM <![CDATA[<=]]> 3
+
+    </select>
+
+
+    <!-- 상품 상세 -->
+    <select id="getProductDetail"
+            parameterType="long"
+            resultType="com.example.demo.product.dto.response.ProductDetailResponseDto">
+
+        SELECT
+            product_id,
+            is_active,
+            product_name,
+            product_type,
+            target_customer,
+            product_desc,
+
+            min_amount,
+            max_amount,
+
+            min_period_month,
+            max_period_month,
+
+            interest_payment_type,
+            applied_exchange_rate_type,
+
+            app_start_date,
+            app_end_date,
+
+            mkt_msg_top,
+            mkt_msg_bottom,
+
+            join_method,
+            auto_transfer_svc,
+            revolving_info,
+            saving_method,
+
+            payment_restriction,
+            precautions,
+
+            fx_cash_fee,
+            auto_reinvestment,
+
+            tax_benefit,
+            payment_limit_info,
+
+            data_access_right,
+            illegal_contract_cancel,
+
+            depositor_protection,
+
+            rate_category,
+            approve_status
+
+        FROM product
+        WHERE product_id = #{productId}
+
+    </select>
+
+
+    <!-- 통화 정보 -->
+    <select id="getCurrencies"
+            parameterType="long"
+            resultType="com.example.demo.product.dto.response.ProductCurrencyResponseDto">
+
+        SELECT
+            product_currency_id,
+            product_id,
+            currency_code,
+            currency_name,
+            is_available
+
+        FROM product_currency
+
+        WHERE product_id = #{productId}
+          AND is_available = 'Y'
+
+        ORDER BY currency_code
+
+    </select>
+
+
+    <!-- 금리 정보 -->
+    <select id="getRates"
+            parameterType="long"
+            resultType="com.example.demo.product.dto.response.ProductRateResponseDto">
+
+        SELECT
+            rate_id,
+            product_id,
+            currency_code,
+
+            customer_type,
+            residency_type,
+
+            period_month,
+
+            base_rate,
+
+            perferential_rate AS preferential_rate,
+
+            base_rate + NVL(perferential_rate, 0) AS max_rate,
+
+            maturity_rate,
+            early_cancel_rate,
+
+            rate_start_date,
+            rate_end_date,
+
+            is_active,
+            rate_type
+
+        FROM rate
+
+        WHERE product_id = #{productId}
+          AND is_active = 'Y'
+
+        ORDER BY currency_code, period_month ASC
+
+    </select>
+
+
+    <!-- 우대금리 -->
+    <select id="getPreferentialRates"
+            parameterType="long"
+            resultType="com.example.demo.product.dto.response.PreferentialRateResponseDto">
+
+        SELECT
+            p.pref_rate_id,
+            p.rate_id,
+            p.condition_type,
+            p.condition_desc,
+            p.pref_rate
+
+        FROM pref_rate_condition p
+
+        JOIN rate r
+            ON p.rate_id = r.rate_id
+
+        WHERE r.product_id = #{productId}
+          AND r.is_active = 'Y'
+
+        ORDER BY p.pref_rate DESC
+
+    </select>
+
+</mapper>

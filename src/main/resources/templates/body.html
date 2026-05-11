@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/body.css}">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+	<div class="container">
+
+		<div class="banner">
+			<div class="banner_viewport">
+		        <div class="banner_track">
+		
+		            <a href="/" class="slide">배너 1</a>
+		            <a href="/" class="slide">배너 2</a>
+		            <a href="/" class="slide">배너 3</a>
+		
+		        </div>
+		        
+			    <div class="controls">
+			    
+			        <button id="prev" class="ctrl-btn">‹</button>
+		            <button id="toggle" class="ctrl-btn">❚❚</button>
+		            <button id="next" class="ctrl-btn">›</button>
+			        
+			    </div>
+		    </div>		
+		</div>
+
+		<div class="quick_menu">
+
+			<div class="quick_menu_item">
+
+				<a href="" class="item">
+
+					<div class="item-icon">
+						<i class="fa-solid fa-clipboard-check"></i>
+					</div>
+
+					<div class="item-content">
+						<h4>조회</h4>
+		
+						<div class="item-text">
+							<p>계약 조회</p>
+							<p>거래내역 조회</p>
+						</div>
+					</div>
+				</a> <a href="" class="item">
+
+					<div class="item-icon">
+						<i class="fa-solid fa-money-bill-transfer"></i>
+					</div>
+
+					<div class="item-content">
+						<h4>이체</h4>
+		
+						<div class="item-text">
+							<p>계좌 이체</p>
+							<p>자동이체 관리</p>
+						</div>
+					</div>
+				</a>
+			</div>
+
+			<div class="quick_menu_item">
+
+				<a href="" class="item">
+					<div class="item-icon">
+						<i class="fa-solid fa-chart-column"></i>
+					</div>
+
+					<div class="item-content">
+						<h4>환율</h4>
+		
+						<div class="item-text">
+							<p>환율 조회</p>
+							<p>환전 신청</p>
+						</div>
+					</div>
+				</a> <a href="" class="item">
+
+					<div class="item-icon">
+						<i class="fa-solid fa-basket-shopping"></i>
+					</div>
+
+					<div class="item-content">
+						<h4>상품몰</h4>
+		
+						<div class="item-text">
+							<p>예·적금</p>
+							<p>대출·펀드·보험</p>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		
+		<div class="event_board">
+			이벤트 게시판
+		</div>
+		
+		<div class="inquiry_board">
+			문의 게시판
+		</div>
+	</div>
+	
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+		
+		    let index = 0;
+		    let isPlaying = true;
+		    let interval;
+		
+		    const track = document.querySelector(".banner_track");
+		    const slides = document.querySelectorAll(".slide");
+		
+		    const prevBtn = document.getElementById("prev");
+		    const nextBtn = document.getElementById("next");
+		    const toggleBtn = document.getElementById("toggle");
+		
+		    function render() {
+		        track.style.transform = `translateX(-${index * 100}%)`;
+		    }
+		
+		    function next() {
+		        index = (index + 1) % slides.length;
+		        render();
+		    }
+		
+		    function prev() {
+		        index = (index - 1 + slides.length) % slides.length;
+		        render();
+		    }
+		
+		    function start() {
+		        interval = setInterval(next, 3000);
+		        isPlaying = true;
+		        toggleBtn.innerText = "❚❚";
+		    }
+		
+		    function stop() {
+		        clearInterval(interval);
+		        isPlaying = false;
+		        toggleBtn.innerText = "▶";
+		    }
+		
+		    // 이벤트
+		    nextBtn.addEventListener("click", next);
+		    prevBtn.addEventListener("click", prev);
+		
+		    toggleBtn.addEventListener("click", function () {
+		        if (isPlaying) stop();
+		        else start();
+		    });
+		
+		    // 시작
+		    start();
+		
+		});
+	</script>
+</body>
+</html>
