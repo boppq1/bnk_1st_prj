@@ -8,8 +8,8 @@
   <title>BNK 부산은행</title>
 
   <!-- 아이콘 -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+ <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
   <!-- css -->
   <link rel="stylesheet" th:href="@{/css/header.css}">
@@ -78,10 +78,10 @@
       <nav class="nav-menu">
 
         <ul>
-          <li><a href="#">조회</a></li>
-          <li><a href="#">이체</a></li>
-          <li><a href="/fx_home">외환</a></li>
-          <li><a href="/product/personal">금융상품</a></li>
+          <li>조회</li>
+          <li>이체</li>
+          <li class="active-menu">외환</li>
+          <li><a href = "/product/personal">금융상품</a></li>
         </ul>
 
       </nav>
@@ -127,7 +127,7 @@
           <div class="dropdown-column">
             <h4>금융상품</h4>
 
-            <a href="/product/personal">금융상품소개</a>
+            <a href="#">금융상품소개</a>
             <a href="#">외환</a>
           </div>
 
@@ -140,10 +140,7 @@
     <!-- 오른쪽 -->
     <div class="header-right">
 
-      <span class="join-text">
-        <a th:href="@{/registerPage}">회원가입</a>
-      </span>
-
+      <span class="join-text"><a th:href="@{/registerPage}">회원가입</a></span>
       <span class="login-text">로그인</span>
 
       <div class="header-icons">
