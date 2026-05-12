@@ -30,7 +30,7 @@
                     p.app_end_date AS appEndDate,
                     NVL(MIN(r.base_rate), 0) AS minRate,
                     NVL(MAX(r.base_rate + NVL(r.perferential_rate, 0)), 0) AS maxRate
-                FROM product p
+                FROM products p
                 LEFT JOIN rate r
                     ON p.product_id = r.product_id
                    AND r.is_active = 'Y'
@@ -96,7 +96,7 @@
             resultType="int">
 
         SELECT COUNT(*)
-        FROM product p
+        FROM products p
         WHERE 1=1
           AND p.is_active = 'T'
           AND p.approve_status = '승인'
@@ -143,7 +143,7 @@
                 p.app_end_date AS appEndDate,
                 NVL(MIN(r.base_rate), 0) AS minRate,
                 NVL(MAX(r.base_rate + NVL(r.perferential_rate, 0)), 0) AS maxRate
-            FROM product p
+            FROM products p
             LEFT JOIN rate r
                 ON p.product_id = r.product_id
                AND r.is_active = 'Y'
@@ -209,7 +209,7 @@
             depositor_protection AS depositorProtection,
             rate_category AS rateCategory,
             approve_status AS approveStatus
-        FROM product
+        FROM products
         WHERE product_id = #{productId}
 
     </select>
