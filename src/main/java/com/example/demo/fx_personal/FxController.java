@@ -9,7 +9,7 @@ public class FxController {
 	@GetMapping("/fx_home")
 	public String fx_home(){
 		
-		return "fxHome";
+		return "personal/fxHome";
 	}
 	
 }

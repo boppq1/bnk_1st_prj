@@ -110,11 +110,8 @@ body {
 
 /* 메뉴 */
 .nav-menu ul {
-
     display: flex;
-
     gap: 50px;
-
     list-style: none;
 }
 .nav-menu a {
@@ -122,22 +119,22 @@ body {
 	 color: #111;
 }
 
+/* li는 레이아웃만 담당 */
 .nav-menu li {
-
     font-size: 19px;
     font-weight: 600;
-
-    color: #111;
-
-    cursor: pointer;
-
     white-space: nowrap;
+}
 
+/* a가 실제 색 담당 */
+.nav-menu li a {
+    text-decoration: none;
+    color: #111;
     transition: 0.2s;
 }
 
-.nav-menu li:hover,
-.active-menu {
+/* hover */
+.nav-menu li:hover > a {
     color: #e60012;
 }
 .nav-menu a:hover,
@@ -145,6 +142,10 @@ body {
     color: #e60012;
 }
 
+/* active */
+.nav-menu li.active-menu > a {
+    color: #e60012;
+}
 /* =========================
    오른쪽 영역
 ========================= */
