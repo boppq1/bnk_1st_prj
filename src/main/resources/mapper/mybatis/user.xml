@@ -47,5 +47,9 @@
     <select id="checkAccount" resultType="int">
         SELECT COUNT(*) FROM accounts_personal WHERE account_no = #{account_no}
     </select>
-
+	
+    <select id="checkId" resultType="int">
+        SELECT COUNT(*) FROM users WHERE Login_id = #{Login_id}
+    </select>
+	
 </mapper>

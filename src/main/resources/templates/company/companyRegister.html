@@ -44,18 +44,11 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
 		<table>
 			<tr>
 				<td class="label-cell">아이디</td>
-				<td><input type="text" name="login_id" id="login_id" required></td>
-				<td><button id="checkId">아이디 중복 확인</button> </td>
-			</tr>
-			<tr>
-				<td><p id="checkIdText"></p></td>
+				<td><input type="text" name="login_id" required></td>
 			</tr>
 			<tr>
 				<td class="label-cell">비밀번호</td>
-				<td><input type="password" name="password" id="password" required></td>
-			</tr>
-			<tr>
-				<td><p id='passwordText'></p> </td>
+				<td><input type="password" name="password" required></td>
 			</tr>
 			<tr>
 				<td class="label-cell">이름</td>
@@ -71,10 +64,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
 			</tr>
 			<tr>
 				<td class="label-cell">이메일</td>
-				<td><input type="email" name="email" id="email" required></td>
-			</tr>
-			<tr>
-				<td><p id="emailText"></p> </td>
+				<td><input type="email" name="email" required></td>
 			</tr>
 			<tr>
 				<td class="label-cell">성별</td>
@@ -106,10 +96,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
 			</tr>
 			<tr>
 				<td class="label-cell">계좌비밀번호</td>
-				<td><input type="text" name="account_pw" id="account_pw" required></td>
-			</tr>
-			<tr>
-				<td><p id="account_pw_text"></p></td>
+				<td><input type="text" name="account_pw" required></td>
 			</tr>
 			<tr>
 				<td colspan="2"
@@ -121,8 +108,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
 	</form>
 
 	<script
-		src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js">
-	</script>
+		src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 		function DaumPostcode() {
 			new kakao.Postcode(
@@ -178,84 +164,6 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
 						}
 					}).open();
 		}
-		/* 아이디 중복검사 */
-		document.querySelector("#checkId").addEventListener('click', checkId);
-		
-		function checkId(e){
-			
-		    e.preventDefault();
-		    
-		const id = document.querySelector("#login_id").value;
-		    fetch('/checkId', {
-		    	method: 'POST',
-		    	headers: {
-		    		'Content-Type': 'application/json'
-		    	},
-		    	body: JSON.stringify({
-		    		'login_id': id
-		    	})
-		    })
-		     	.then(res => res.json())
-		     	.then(data => {
-		     		const resultText = document.querySelector("#checkIdText");
-		     		if(data.result == '사용가능한아이디'){
-		     			resultText.innerText = '사용가능한 아이디 입니다.'
-		     		}else{
-		     			resultText.innerText = '사용할수 없는 아이디 입니다.'
-		     			resultText.style.color = 'red';
-		     		}
-		     	});
-		}
-		
-		/*  비밀번호 8자리이상 특수문자 포함 */
-		document.querySelector("#password").addEventListener("blur", checkPassword);
-		
-		function checkPassword(){
-			const passwordValue = document.querySelector("#password").value;
-			
-			// 정규표현식 설명:
-		    // ^ : 문자열의 시작
-		    // (?=.*[!@#$%^&*]) : 특수문자가 최소 하나 이상 포함되어야 함
-		    // .{8,} : 어떤 문자든 8자 이상이어야 함
-		    // $ : 문자열의 끝
-		    const passwordRegex = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-		    
-		    const passwordText = document.querySelector("#passwordText");
-		    if(passwordValue == ''){
-		    	passwordText.innerText = '비밀번호를 입력해주세요'
-		    }
-		    
-		    else if(!passwordRegex.test(passwordValue)){
-		    	passwordText.innerText = '비밀번호는 8자이상 특수문자를 포함해야합니다.'
-		    	passwordText.style.color = 'red';
-		    } else{
-		    	passwordText.innerText = '안전한 비밀번호 입니다.'
-		    	passwordText.style.color='green';
-		    }
-		    
-		}
-		
-		/* 이메일 형식 정규식 표현 */
-		document.querySelector("#email").addEventListener("blur", checkEmail);
-		function checkEmail(){
-			const emailText = document.querySelector("#emailText");
-			const emailValue = document.querySelector("#email").value;
-			
-			const regexr= /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
-			
-			if(emailValue == ''){
-				emailText.innerText = "이메일을 입력해 주세요"
-				emailText.style.color = "black"
-			}else if(!regexr.test(emailValue)){
-				emailText.innerText = "올바른 이메일 형식이 아닙니다."
-				emailText.style.color="red";
-			}else{
-				emailText.innerText = "올바른 이메일 입니다";
-				emailText.style.color="green";
-			}
-		}
-		
-		dovu
 	</script>
 </body>
 </html>
