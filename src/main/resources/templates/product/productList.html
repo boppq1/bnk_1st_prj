@@ -1,283 +1,191 @@
 <!DOCTYPE html>
-<html>
-<html xmlns:th="http://www.thymeleaf.org">
-<meta charset="UTF-8">
-<link rel="stylesheet" th:href="@{/css/header.css}">
-<title>Insert title here</title>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>개인 상품몰</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
 </head>
+
 <body>
 
-    <!-- 헤더 -->
-    <div th:replace="~{header :: header}"></div>
+<div th:replace="~{header :: header}"></div>
 
+<div class="product-layout">
 
-    <!-- 상단 배너 -->
-    <section class="product-top-banner">
+    <aside class="product-sidebar">
 
-        <div class="banner-inner">
+        <div class="sidebar-profile">
+            <div class="profile-bank">BNK 부산은행</div>
+            <div class="profile-name">고객님 반갑습니다</div>
+            <div class="profile-date">최근 접속일 2026.05.06</div>
+        </div>
 
-            <div class="banner-text">
+        <button class="logout-btn">LOGOUT</button>
 
-                <p class="banner-sub-title">
-                    BNK 금융상품
-                </p>
+        <nav class="sidebar-category">
+            <a class="active" th:href="@{/product/personal}">상품몰 홈</a>
+            <a th:href="@{/product/personal(productType='예금')}">예금</a>
+            <a th:href="@{/product/personal(productType='적금')}">적금</a>
+            <a th:href="@{/product/personal(productType='대출')}">대출</a>
+            <a th:href="@{/product/personal(productType='카드')}">카드</a>
+            <a th:href="@{/product/personal(productType='외화예금')}">외환</a>
+            <a href="#">퇴직연금</a>
+            <a href="#">펀드</a>
+        </nav>
 
-                <h1 th:text="${pageTitle}">
-                    개인 상품몰
-                </h1>
+    </aside>
 
-                <p class="banner-desc">
-                    고객님께 꼭 맞는 금융상품을 만나보세요.
-                </p>
+    <main class="product-main">
 
+        <section class="product-head">
+            <div>
+                <h1>상품몰</h1>
+                <p>부산은행의 다양한 상품을 한눈에 비교하고 가입하실 수 있습니다</p>
             </div>
 
-        </div>
+            <div class="quick-menu">
+                <a href="#">상품가입내역</a>
+                <a href="#">관심상품</a>
+                <a href="#">비교함</a>
+            </div>
+        </section>
 
-    </section>
+        <form class="product-search" method="get" th:action="@{/product/personal}">
+            <input type="text" name="keyword" placeholder="상품명 또는 키워드를 입력하세요." th:value="${param.keyword}">
+            <select name="productType">
+                <option value="">전체 상품</option>
+                <option value="예금">예금</option>
+                <option value="적금">적금</option>
+                <option value="대출">대출</option>
+                <option value="외화예금">외환</option>
+            </select>
+            <select name="sort">
+                <option value="">최신순</option>
+                <option value="rate">금리순</option>
+                <option value="name">이름순</option>
+            </select>
+            <button type="submit">검색</button>
+        </form>
 
+        <section class="recommend-section">
+            <h2>추천 상품</h2>
 
-    <!-- 상품 검색 -->
-    <section class="product-search-section">
+            <div class="recommend-grid">
+                <article class="recommend-card"
+                         th:each="item, stat : ${products.products}"
+                         th:if="${stat.index < 3}">
 
-        <div class="search-inner">
-
-            <form method="get">
-
-                <div class="search-box">
-
-                    <input type="text"
-                           name="keyword"
-                           placeholder="상품명을 검색하세요"
-                           th:value="${param.keyword}">
-
-                    <button type="submit">
-                        검색
-                    </button>
-
-                </div>
-
-
-                <div class="filter-wrap">
-
-                    <!-- 상품 유형 -->
-                    <select name="productType">
-
-                        <option value="">
-                            전체 상품
-                        </option>
-
-                        <option value="예금">
-                            예금
-                        </option>
-
-                        <option value="적금">
-                            적금
-                        </option>
-
-                        <option value="외화예금">
-                            외화예금
-                        </option>
-
-                        <option value="외화적금">
-                            외화적금
-                        </option>
-
-                    </select>
-
-
-                    <!-- 정렬 -->
-                    <select name="sort">
-
-                        <option value="">
-                            최신순
-                        </option>
-
-                        <option value="rate">
-                            금리순
-                        </option>
-
-                        <option value="name">
-                            이름순
-                        </option>
-
-                    </select>
-
-                    <button type="submit">
-                        적용
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- 상품 리스트 -->
-    <section class="product-list-section">
-
-        <div class="product-list-inner">
-
-            <div class="product-grid">
-
-                <div class="product-card"
-                     th:each="item : ${products.products}">
-
-                    <!-- 카테고리 -->
-                    <div class="card-top">
-
-                        <span class="product-category"
-                              th:text="${item.rateCategory}">
-                            국내
-                        </span>
-
-                        <span class="product-type"
-                              th:text="${item.productType}">
-                            예금
-                        </span>
-
+                    <div class="card-labels">
+                        <span th:text="${item.productType}">예금</span>
+                        <a th:href="@{/product/{id}(id=${item.productId})}">상품 상세</a>
                     </div>
 
+                    <h3 th:text="${item.productName}">상품명</h3>
+                    <p th:text="${item.productDesc}">상품 설명</p>
 
-                    <!-- 상품명 -->
-                    <h2 class="product-name"
-                        th:text="${item.productName}">
-                        상품명
-                    </h2>
-
-
-                    <!-- 설명 -->
-                    <p class="product-desc"
-                       th:text="${item.productDesc}">
-                        상품 설명
-                    </p>
-
-
-                    <!-- 금리 -->
-                    <div class="rate-box">
-
-                        <p class="rate-label">
-                            최고 금리
-                        </p>
-
-                        <h3 class="rate-value">
-                            연
-                            <span th:text="${item.maxRate}">
-                                4.5
-                            </span>
-                            %
-                        </h3>
-
-                    </div>
-
-
-                    <!-- 가입 정보 -->
-                    <div class="product-info">
-
-                        <div class="info-row">
-
-                            <span class="info-title">
-                                가입기간
-                            </span>
-
-                            <span class="info-value">
-                                <span th:text="${item.minPeriodMonth}"></span>
+                    <ul>
+                        <li>
+                            가입대상
+                            <strong th:switch="${item.targetCustomer}">
+                                <span th:case="'all'">전체</span>
+                                <span th:case="'personal'">개인</span>
+                                <span th:case="'company'">기업</span>
+                                <span th:case="*" th:text="${item.targetCustomer}">전체</span>
+                            </strong>
+                        </li>
+                        <li>
+                            최고금리
+                            <strong>연 <span th:text="${item.maxRate}">0</span>%</strong>
+                        </li>
+                        <li>
+                            가입기간
+                            <strong>
+                                <span th:text="${item.minPeriodMonth}">1</span>
                                 ~
-                                <span th:text="${item.maxPeriodMonth}"></span>
-                                개월
-                            </span>
+                                <span th:text="${item.maxPeriodMonth}">36</span>개월
+                            </strong>
+                        </li>
+                    </ul>
+                </article>
+            </div>
+        </section>
 
-                        </div>
-
-
-                        <div class="info-row">
-
-                            <span class="info-title">
-                                가입금액
-                            </span>
-
-                            <span class="info-value">
-
-                                <span th:text="${#numbers.formatInteger(item.minAmount, 3, 'COMMA')}">
-                                    10000
-                                </span>
-
-                                원 ~
-
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- 버튼 -->
-                    <a class="detail-btn"
-                       th:href="@{/product/{id}(id=${item.productId})}">
-
-                        자세히 보기
-
-                    </a>
-
-                </div>
-
+        <section class="all-product-section">
+            <div class="section-title-row">
+                <h2>전체 상품</h2>
+                <span th:text="|총 ${products.totalCount}개|">총 0개</span>
             </div>
 
-        </div>
+            <table class="product-table">
+                <thead>
+                <tr>
+                    <th>상품명</th>
+                    <th>상품분류</th>
+                    <th>가입대상</th>
+                    <th>금리/수수료</th>
+                    <th>상품특징</th>
+                    <th>비교함</th>
+                </tr>
+                </thead>
 
-    </section>
+                <tbody>
+                <tr th:each="item : ${products.products}">
+                    <td>
+                        <a th:href="@{/product/{id}(id=${item.productId})}"
+                           th:text="${item.productName}">
+                            상품명
+                        </a>
+                    </td>
 
+                    <td th:text="${item.productType}">예금</td>
 
+                    <td th:switch="${item.targetCustomer}">
+                        <span th:case="'all'">전체</span>
+                        <span th:case="'personal'">개인</span>
+                        <span th:case="'company'">기업</span>
+                        <span th:case="*" th:text="${item.targetCustomer}">전체</span>
+                    </td>
 
-    <!-- 페이징 -->
-    <section class="paging-section">
+                    <td>
+                        연 <span th:text="${item.maxRate}">0</span>%
+                    </td>
 
-        <div class="paging-wrap">
+                    <td th:text="${item.productDesc}">상품설명</td>
 
-            <!-- 이전 -->
-            <a th:if="${products.page > 1}"
-               th:href="@{${#httpServletRequest.requestURI}(page=${products.page - 1})}">
+                    <td>
+                        <input type="checkbox">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
-                이전
-
-            </a>
-
-
-            <!-- 페이지 번호 -->
-            <th:block th:each="i : ${#numbers.sequence(1, products.totalPage)}">
-
-                <a th:href="@{${#httpServletRequest.requestURI}(page=${i})}"
-                   th:text="${i}"
-                   th:classappend="${i == products.page} ? 'active'">
-
-                    1
-
+            <div class="paging-wrap">
+                <a th:if="${products.page > 1}"
+                   th:href="@{/product/personal(page=${products.page - 1}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}">
+                    이전
                 </a>
 
-            </th:block>
+                <th:block th:each="i : ${#numbers.sequence(1, products.totalPage)}">
+                    <a th:href="@{/product/personal(page=${i}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}"
+                       th:text="${i}"
+                       th:classappend="${i == products.page} ? 'active'">
+                    </a>
+                </th:block>
 
+                <a th:if="${products.page < products.totalPage}"
+                   th:href="@{/product/personal(page=${products.page + 1}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}">
+                    다음
+                </a>
+            </div>
+        </section>
 
-            <!-- 다음 -->
-            <a th:if="${products.page < products.totalPage}"
-               th:href="@{${#httpServletRequest.requestURI}(page=${products.page + 1})}">
+    </main>
 
-                다음
+</div>
 
-            </a>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- 푸터 -->
-    <div th:replace="~{footer :: footer}"></div>
+<div th:replace="~{footer :: footer}"></div>
 
 </body>
-
 </html>
