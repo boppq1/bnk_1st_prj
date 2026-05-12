@@ -1,9 +1,5 @@
 package com.example.demo.admin.service;
 
-
-
-
-
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -54,12 +50,12 @@ public class AdminService {
 		return listDao.getUsers();
 	}
 	
-	public AdminDto updateAdmin(Long admin_id) {
-		return listDao.getAdmin(admin_id);
+	public void updateAdmin(AdminDto dto) {
+		listDao.updateAdmin(dto.getAdmin_id(), dto.getPassword(), dto.getDepartment(), dto.getAdmin_pw(), dto.getName(), dto.getAdmin_role());
 	}
 	
-	public UserDTO updateUser(Long user_id) {
-		return listDao.getUser(user_id);
+	public void updateUser(UserDTO dto) {
+		listDao.updateUser(dto.getUser_id(), dto.getPassword(), dto.getName(), dto.getPhone(), dto.getBirth(), dto.getEmail(), dto.getGender(), dto.getE_name(), dto.getPostal_code(), dto.getAddress(), dto.getAddress_detail());
 	}
 	
 	public ApprovalDto getApproval(Long approval_id) {
@@ -70,9 +66,10 @@ public class AdminService {
 		return listDao.getApprovals();
 	}
 	
+	// 세션에서 관리자 아이디 받아서 넣어야함
 	public boolean approvedStatus(Long product_id, String status) {
-		listDao.updateApproval(product_id, status);
-		listDao.updateProduct(product_id, status);
+		listDao.updateApproval(product_id, status, "admin_01");
+		listDao.updateProduct(product_id, status, "admin_01");
 		return true;
 	}
 	

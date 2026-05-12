@@ -13,10 +13,20 @@
 	</select>
 	
 	<update id="updateApproval">
-		update PRODUCT_APPROVAL_REQUEST set #{param1} where product_id = #{param2}
+		update PRODUCT_REQUESTS set request_status = #{status}, approver_id = #{admin_id} where product_id = #{product_id}
 	</update>
 	
 	<update id="updateProduct">
-		update product set #{param1} where product_id = #{param2}
+		update products set approve_status = #{status}, approver = #{admin_id} where product_id = #{product_id}
+	</update>
+	
+	<update id="updateAdmin">
+		update admin_users set password = #{password}, department = #{department}, admin_pw = #{admin_pw}, name = #{name}, admin_role = #{admin_role}  where admin_id = #{admin_id}
+	</update>
+	
+	<update id="updateUser">
+		update users set password = #{password}, name = #{name}, phone = #{phone}, birth = #{birth}, email = #{email}, gender = #{gender}, e_name = #{e_name}, postal_code = #{postal_code}, address = #{address}, address_detail = #{address_detail} where user_id = #{user_id}
 	</update>
 </mapper>
+
+

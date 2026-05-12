@@ -2,16 +2,24 @@ package com.example.demo.personal.dto;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
 
 	private Long user_id;
 	private String login_id;
 	private String password;
 	private String name;
-	private String phon;
+	private String phone;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private String birth;
 	private String email;
