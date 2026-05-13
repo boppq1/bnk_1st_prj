@@ -79,7 +79,29 @@
 
         <div class="summary-card">
             <h3>이자 지급 방식</h3>
-            <p th:text="${product.interestPaymentType}">만기일시지급</p>
+            <p th:switch="${product.interestPaymentType}">
+
+			    <span th:case="'MATURITY'">
+			        만기일시지급
+			    </span>
+			
+			    <span th:case="'MONTHLY'">
+			        월지급
+			    </span>
+			
+			    <span th:case="'DAILY'">
+			        일지급
+			    </span>
+			
+			    <span th:case="'QUARTERLY'">
+			        분기지급
+			    </span>
+			
+			    <span th:case="*"
+			          th:text="${product.interestPaymentType}">
+			    </span>
+			
+			</p>
         </div>
 
     </section>

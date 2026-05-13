@@ -773,7 +773,7 @@ a { text-decoration: none; color: inherit; }
 
 .compare-user-input {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px;
     margin-bottom: 22px;
 }
@@ -887,4 +887,26 @@ a { text-decoration: none; color: inherit; }
 .rate-cell{
     color:#e31b23;
     font-weight:900;
+}
+.clickable-card {
+    cursor: pointer;
+}
+
+.clickable-row {
+    cursor: pointer;
+}
+
+.clickable-row:hover td {
+    background: var(--red-soft);
+}
+
+.recommend-card a,
+.product-table a {
+    position: relative;
+    z-index: 2;
+}
+
+.product-table input[type="checkbox"] {
+    position: relative;
+    z-index: 3;
 }
