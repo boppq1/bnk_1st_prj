@@ -1,11 +1,144 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>BNK Busan Bank - 멤버 정보 수정</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    
+    <style>
+        :root {
+            --primary-color: #ED1C24;    /* BNK Red */
+            --bg-color: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --border-color: #E0E4E8;
+            --text-main: #212529;
+            --text-label: #6C757D;
+            --sidebar-width: 260px;
+            --header-height: 70px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); display: flex; }
+
+        /* 사이드바 & 헤더 */
+        .sidebar { width: var(--sidebar-width); height: 100vh; background-color: #FFFFFF; border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0; z-index: 100; }
+        .sidebar-logo { padding: 20px 30px; margin-bottom: 30px; }
+        .sidebar-logo img { width: 130px; }
+        .menu-item { display: flex; align-items: center; padding: 15px 30px; color: var(--text-main); text-decoration: none; font-size: 15px; font-weight: 500; }
+        .menu-item i { margin-right: 15px; width: 20px; text-align: center; color: #ADB5BD; }
+        .menu-item.active { background-color: #FFF2F2; color: var(--primary-color); font-weight: 700; border-left: 4px solid var(--primary-color); }
+        .menu-item.active i { color: var(--primary-color); }
+
+        .header { position: fixed; top: 0; left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); height: var(--header-height); background-color: #FFFFFF; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 40px; z-index: 90; }
+
+        /* 메인 컨텐츠 */
+        .main-content { margin-left: var(--sidebar-width); margin-top: var(--header-height); width: calc(100% - var(--sidebar-width)); padding: 40px; }
+        .content-header { margin-bottom: 30px; }
+        .content-title { font-size: 24px; font-weight: 800; }
+
+        /* 수정 폼 카드 */
+        .update-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); padding: 40px; }
+        
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 30px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group.full-width { grid-column: span 2; }
+
+        label { font-size: 14px; font-weight: 600; color: var(--text-label); margin-bottom: 8px; }
+        
+        input[type="text"], input[type="password"], input[type="date"] {
+            height: 48px; padding: 0 15px; border: 1px solid #D9E0E6; border-radius: 8px; font-size: 15px; color: var(--text-main); transition: all 0.2s;
+        }
+        input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(237, 28, 36, 0.05); }
+
+        /* 버튼 영역 */
+        .submit-area { margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; }
+        button[type="submit"] {
+            height: 50px; padding: 0 40px; background-color: var(--primary-color); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+        }
+        button[type="submit"]:hover { background-color: #D61A20; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(237, 28, 36, 0.2); }
+    </style>
 </head>
 <body>
-	<h1>멤버 업데이트 페이지</h1>
-	<hr>
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <img src="https://sites.bnk.co.kr/main/resource/img/common/logo_busan.png" alt="BNK">
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> 대시보드</a></li>
+            <li><a href="#" class="menu-item active"><i class="fa-solid fa-users"></i> 회원 정보 수정</a></li>
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-money-bill-transfer"></i> 거래 내역</a></li>
+        </ul>
+    </div>
+
+    <div class="header">
+        <div class="header-title">멤버 프로필 관리</div>
+    </div>
+
+    <div class="main-content">
+        <div class="content-header">
+            <h1 class="content-title">회원 상세 정보 수정</h1>
+            <p style="color: var(--text-label); font-size: 14px; margin-top: 5px;">고객의 계정 정보 및 개인 정보를 안전하게 업데이트합니다.</p>
+        </div>
+
+        <div class="update-card">
+            <form th:action="@{/admin/updateMember}" th:object="${user}" method="post">
+                <input type="hidden" th:field="*{user_id}">
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>비밀번호</label>
+                        <input type="password" th:field="*{password}" placeholder="새 비밀번호 입력">
+                    </div>
+                    <div class="form-group">
+                        <label>이름</label>
+                        <input type="text" th:field="*{name}">
+                    </div>
+                    <div class="form-group">
+                        <label>핸드폰 번호</label>
+                        <input type="text" th:field="*{phone}">
+                    </div>
+                    <div class="form-group">
+                        <label>생년월일</label>
+                        <input type="date" th:field="*{birth}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>이메일</label>
+                        <input type="text" th:field="*{email}">
+                    </div>
+                    <div class="form-group">
+                        <label>성별</label>
+                        <input type="text" th:field="*{gender}">
+                    </div>
+                    <div class="form-group">
+                        <label>영문 이름</label>
+                        <input type="text" th:field="*{e_name}">
+                    </div>
+                    <div class="form-group">
+                        <label>우편번호</label>
+                        <input type="text" th:field="*{postal_code}">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>주소</label>
+                        <input type="text" th:field="*{address}">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>상세 주소</label>
+                        <input type="text" th:field="*{address_detail}">
+                    </div>
+                </div>
+
+                <div class="submit-area">
+                    <button type="submit">회원 정보 변경 완료</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        if([[${result}]] != null) {
+            alert("수정이 완료되었습니다.");
+        }
+    </script>
 </body>
 </html>

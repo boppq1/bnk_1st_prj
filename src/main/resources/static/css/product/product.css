@@ -707,3 +707,160 @@ a { text-decoration: none; color: inherit; }
     .product-table { font-size: 12px; }
     .quick-menu { flex-wrap: wrap; }
 }
+.compare-action-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin: 18px 0;
+}
+
+.compare-action-wrap button {
+    height: 42px;
+    padding: 0 20px;
+    border: none;
+    border-radius: 12px;
+    background: #e31b23;
+    color: #fff;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.compare-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.compare-modal.active {
+    display: flex;
+}
+
+.compare-modal-box {
+    width: 900px;
+    max-width: 92%;
+    max-height: 86vh;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+}
+
+.compare-modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.compare-modal-head h2 {
+    font-size: 25px;
+    font-weight: 900;
+}
+
+.compare-modal-head button {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: #f3f4f6;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.compare-user-input {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.compare-user-input label {
+    font-size: 13px;
+    font-weight: 800;
+    color: #4b5563;
+}
+
+.compare-user-input input,
+.compare-user-input select {
+    width: 100%;
+    height: 42px;
+    margin-top: 6px;
+    border: 1px solid #d8dde8;
+    border-radius: 10px;
+    padding: 0 12px;
+}
+
+.best-product-box {
+    background: #fff5f5;
+    border: 1px solid #ffd7d9;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.best-label {
+    font-size: 13px;
+    font-weight: 900;
+    color: #e31b23;
+    margin-bottom: 6px;
+}
+
+.best-product-box h3 {
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 8px;
+}
+
+.best-product-box p {
+    color: #4b5563;
+    font-size: 14px;
+}
+
+.compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.compare-table th {
+    height: 44px;
+    background: #fafafa;
+    border-bottom: 1px solid #e5e7eb;
+    font-weight: 900;
+}
+
+.compare-table td {
+    height: 48px;
+    text-align: center;
+    border-bottom: 1px solid #f1f3f7;
+    padding: 8px;
+}
+
+.compare-table td:first-child {
+    text-align: left;
+    font-weight: 800;
+}
+
+.compare-table .best-row {
+    background: #fff8f8;
+}
+
+.compare-table .best-row td:first-child {
+    color: #e31b23;
+}
+
+@media (max-width: 768px) {
+    .compare-user-input {
+        grid-template-columns: 1fr;
+    }
+}
+.compare-sub-title {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 500;
+}

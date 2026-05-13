@@ -61,7 +61,7 @@
 </select>
 
 <select id="selectProduct">
-    select * from product where product_id = #{param1}
+    select * from products where product_id = #{param1}
 </select>
 
     <update id="updateProduct">

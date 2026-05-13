@@ -15,10 +15,9 @@
 <div class="product-layout">
 
     <aside class="product-sidebar">
-
         <div class="sidebar-profile">
             <div class="profile-bank">BNK 부산은행 기업</div>
-            <div class="profile-name">기업 고객님 반갑습니다</div>
+			<div class="profile-name">기업 고객님 반갑습니다</div>
             <div class="profile-date">최근 접속일 2026.05.06</div>
         </div>
 
@@ -26,45 +25,46 @@
 
         <nav class="sidebar-category">
             <a class="active" th:href="@{/product/company}">상품몰 홈</a>
-            <a th:href="@{/product/company(productType='예금')}">예금</a>
-            <a th:href="@{/product/company(productType='대출')}">대출</a>
-            <a th:href="@{/product/company(productType='외화예금')}">외환</a>
+            <a th:href="@{/product/personal(productType='예금')}">예금</a>
+            <a th:href="@{/product/personal(productType='적금')}">적금</a>
+            <a th:href="@{/product/personal(productType='외화예금')}">외환</a>
             <a href="#">퇴직연금</a>
-            <a href="#">신탁</a>
-            <a href="#">B2B전자결제</a>
-            <a href="#">제휴상품</a>
+            <a href="#">펀드</a>
         </nav>
-
     </aside>
 
     <main class="product-main">
 
         <section class="product-head">
             <div>
-                <h1>기업 상품몰</h1>
-                <p>기업 고객을 위한 부산은행 금융상품을 한눈에 확인하실 수 있습니다</p>
+                <h1>상품몰</h1>
+                <p>부산은행의 다양한 상품을 한눈에 비교하고 가입하실 수 있습니다</p>
             </div>
 
             <div class="quick-menu">
                 <a href="#">상품가입내역</a>
                 <a href="#">관심상품</a>
-                <a href="#">비교함</a>
+                <a href="#compareArea">비교함</a>
             </div>
         </section>
 
-        <form class="product-search" method="get" th:action="@{/product/company}">
+        <form class="product-search" method="get" th:action="@{/product/personal}">
             <input type="text" name="keyword" placeholder="상품명 또는 키워드를 입력하세요." th:value="${param.keyword}">
+
             <select name="productType">
                 <option value="">전체 상품</option>
                 <option value="예금">예금</option>
-                <option value="대출">대출</option>
+                <option value="적금">적금</option>
                 <option value="외화예금">외환</option>
+                <option value="외화적금">외화적금</option>
             </select>
+
             <select name="sort">
                 <option value="">최신순</option>
                 <option value="rate">금리순</option>
                 <option value="name">이름순</option>
             </select>
+
             <button type="submit">검색</button>
         </form>
 
@@ -72,46 +72,45 @@
             <h2>추천 상품</h2>
 
             <div class="recommend-grid">
-                <article class="recommend-card"
-                         th:each="item, stat : ${products.products}"
-                         th:if="${stat.index < 3}">
+                <th:block th:each="item, stat : ${products.products}">
+                    <article class="recommend-card" th:if="${stat.index < 3}">
+                        <div class="card-labels">
+                            <span th:text="${item.productType}">예금</span>
+                            <a th:href="@{/product/{id}(id=${item.productId})}">상품 상세</a>
+                        </div>
 
-                    <div class="card-labels">
-                        <span th:text="${item.productType}">예금</span>
-                        <a th:href="@{/product/{id}(id=${item.productId})}">상품 상세</a>
-                    </div>
+                        <h3 th:text="${item.productName}">상품명</h3>
+                        <p th:text="${item.productDesc}">상품 설명</p>
 
-                    <h3 th:text="${item.productName}">상품명</h3>
-                    <p th:text="${item.productDesc}">상품 설명</p>
-
-                    <ul>
-                        <li>
-                            가입대상
-                            <strong th:switch="${item.targetCustomer}">
-                                <span th:case="'all'">전체</span>
-                                <span th:case="'personal'">개인</span>
-                                <span th:case="'company'">기업</span>
-                                <span th:case="*" th:text="${item.targetCustomer}">기업</span>
-                            </strong>
-                        </li>
-                        <li>
-                            최고금리
-                            <strong>연 <span th:text="${item.maxRate}">0</span>%</strong>
-                        </li>
-                        <li>
-                            가입기간
-                            <strong>
-                                <span th:text="${item.minPeriodMonth}">1</span>
-                                ~
-                                <span th:text="${item.maxPeriodMonth}">36</span>개월
-                            </strong>
-                        </li>
-                    </ul>
-                </article>
+                        <ul>
+                            <li>
+                                가입대상
+                                <strong th:switch="${item.targetCustomer}">
+                                    <span th:case="'all'">전체</span>
+                                    <span th:case="'personal'">개인</span>
+                                    <span th:case="'company'">기업</span>
+                                    <span th:case="*" th:text="${item.targetCustomer}">전체</span>
+                                </strong>
+                            </li>
+                            <li>
+                                최고금리
+                                <strong>연 <span th:text="${item.maxRate}">0</span>%</strong>
+                            </li>
+                            <li>
+                                가입기간
+                                <strong>
+                                    <span th:text="${item.minPeriodMonth}">1</span>
+                                    ~
+                                    <span th:text="${item.maxPeriodMonth}">36</span>개월
+                                </strong>
+                            </li>
+                        </ul>
+                    </article>
+                </th:block>
             </div>
         </section>
 
-        <section class="all-product-section">
+        <section class="all-product-section" id="compareArea">
             <div class="section-title-row">
                 <h2>전체 상품</h2>
                 <span th:text="|총 ${products.totalCount}개|">총 0개</span>
@@ -144,7 +143,7 @@
                         <span th:case="'all'">전체</span>
                         <span th:case="'personal'">개인</span>
                         <span th:case="'company'">기업</span>
-                        <span th:case="*" th:text="${item.targetCustomer}">기업</span>
+                        <span th:case="*" th:text="${item.targetCustomer}">전체</span>
                     </td>
 
                     <td>
@@ -154,37 +153,90 @@
                     <td th:text="${item.productDesc}">상품설명</td>
 
                     <td>
-                        <input type="checkbox">
+                        <input type="checkbox"
+                               class="compare-check"
+                               th:data-id="${item.productId}"
+                               th:data-name="${item.productName}"
+                               th:data-type="${item.productType}"
+                               th:data-target="${item.targetCustomer}"
+                               th:data-rate="${item.maxRate}"
+                               th:data-desc="${item.productDesc}"
+                               th:data-min-period="${item.minPeriodMonth}"
+                               th:data-max-period="${item.maxPeriodMonth}"
+                               th:data-min-amount="${item.minAmount}"
+                               th:data-max-amount="${item.maxAmount}">
                     </td>
                 </tr>
                 </tbody>
             </table>
 
+            <div class="compare-action-wrap">
+                <button type="button" id="compareBtn">선택 상품 비교하기</button>
+            </div>
+
             <div class="paging-wrap">
                 <a th:if="${products.page > 1}"
-                   th:href="@{/product/company(page=${products.page - 1}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}">
+                   th:href="@{/product/personal(page=${products.page - 1}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}">
                     이전
                 </a>
 
                 <th:block th:each="i : ${#numbers.sequence(1, products.totalPage)}">
-                    <a th:href="@{/product/company(page=${i}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}"
+                    <a th:href="@{/product/personal(page=${i}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}"
                        th:text="${i}"
-                       th:classappend="${i == products.page} ? 'active'">
-                    </a>
+                       th:classappend="${i == products.page} ? 'active'"></a>
                 </th:block>
 
                 <a th:if="${products.page < products.totalPage}"
-                   th:href="@{/product/company(page=${products.page + 1}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}">
+                   th:href="@{/product/personal(page=${products.page + 1}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}">
                     다음
                 </a>
             </div>
         </section>
 
     </main>
+</div>
 
+<div class="compare-modal" id="compareModal">
+    <div class="compare-modal-box">
+       <div class="compare-modal-head">
+		    <div>
+		        <h2>맞춤 상품 비교</h2>
+		
+		        <p class="compare-sub-title">
+		            내 조건에 맞는 상품을 비교하고 추천 결과를 확인해보세요
+		        </p>
+		    </div>
+            <button type="button" id="compareCloseBtn">×</button>
+        </div>
+
+        <div class="compare-user-input">
+            <label>
+                가입대상
+                <select id="compareTarget">
+                    <option value="personal">개인</option>
+                    <option value="company">기업</option>
+                </select>
+            </label>
+
+            <label>
+                예치 예정 금액
+                <input type="number" id="compareAmount" placeholder="예: 1000000">
+            </label>
+
+            <label>
+                희망 가입기간
+                <input type="number" id="comparePeriod" placeholder="예: 12">
+            </label>
+        </div>
+
+        <div class="compare-result-box" id="compareResultBox">
+            비교할 상품을 선택해주세요.
+        </div>
+    </div>
 </div>
 
 <div th:replace="~{footer :: footer}"></div>
 
+<script th:src="@{/js/product/productComparePopup.js}"></script>
 </body>
 </html>
