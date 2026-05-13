@@ -19,7 +19,23 @@
 		select * from users
 	</select>
 	
+	<select id="getCompanyUser" resultType="com.example.demo.company.dto.CompanyUserDTO">
+		select * from COMPANY_USERS where company_user_id = ${company_user_id}
+	</select>
+	
 	<select id="getCompanyUsers" resultType="com.example.demo.company.dto.CompanyUserDTO">
 		select * from COMPANY_USERS
 	</select>
+	
+	<update id="updateAdmin">
+		update admin_users set password = #{password}, department = #{department}, admin_pw = #{admin_pw}, name = #{name}, admin_role = #{admin_role}  where admin_id = #{admin_id}
+	</update>
+	
+	<update id="updateUser">
+		update users set password = #{password}, name = #{name}, phone = #{phone}, birth = #{birth}, email = #{email}, gender = #{gender}, e_name = #{e_name}, postal_code = #{postal_code}, address = #{address}, address_detail = #{address_detail} where user_id = #{user_id}
+	</update>
+	
+	<update id="updateCompanyUser">
+		update company_users set password = #{password}, name = #{name}, phone = #{phone}, birth = #{birth}, email = #{email}, status = #{status}, gender = #{gender}, e_name = #{e_name} where company_user_id = #{company_user_id}
+	</update>
 </mapper>

@@ -58,6 +58,10 @@ public class AdminService {
 		return listDao.getUsers();
 	}
 	
+	public CompanyUserDTO getCompanyUser(Long company_user_id) {
+		return listDao.getCompanyUser(company_user_id);
+	}
+	
 	public List<CompanyUserDTO> getCompanyUserList() {
 		return listDao.getCompanyUsers();
 	}
@@ -68,6 +72,10 @@ public class AdminService {
 	
 	public void updateUser(UserDTO dto) {
 		listDao.updateUser(dto.getUser_id(), dto.getPassword(), dto.getName(), dto.getPhone(), dto.getBirth(), dto.getEmail(), dto.getGender(), dto.getE_name(), dto.getPostal_code(), dto.getAddress(), dto.getAddress_detail());
+	}
+	
+	public void updateCompanyUser(CompanyUserDTO dto) {
+		listDao.updateCompanyUser(dto);
 	}
 	
 	public ApprovalDto getApproval(Long approval_id) {

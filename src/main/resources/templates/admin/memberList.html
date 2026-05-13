@@ -166,7 +166,7 @@
                             <td th:text="${company.e_name}"></td>
                             <td th:text="${company.created_at}"></td>
                             <td style="text-align: center;">
-                                <a class="btn-update" th:href="@{/admin/updateCompanyPage(company_id=${company.company_id})}">
+                                <a class="btn-update" th:href="@{/admin/updateCompanyMemberPage(company_user_id=${company.company_user_id})}">
                                     <i class="fa-solid fa-pen-to-square"></i> 관리
                                 </a>
                             </td>
