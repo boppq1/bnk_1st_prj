@@ -18,4 +18,8 @@
 	<select id="getUsers" resultType="com.example.demo.personal.dto.UserDTO">
 		select * from users
 	</select>
+	
+	<select id="getCompanyUsers" resultType="com.example.demo.personal.dto.UserDTO">
+		select * from COMPANY_USERS
+	</select>
 </mapper>

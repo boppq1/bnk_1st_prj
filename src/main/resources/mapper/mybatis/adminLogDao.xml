@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.admin.dao.IAdminLogDao">
+
+    <insert id="insertLog">
+        insert into API_LOGS
+        (
+         log_id,
+         url,
+         method,
+         elapsed_ms,
+         request_body,
+         response_code
+        ) values (
+        SEQ_API_LOGS.NEXTVAL,
+        #{url},
+        #{method},
+        #{elapsed_ms},
+        #{request_body},
+        #{response_code}
+        )
+    </insert>
+    
+    <select id="adminLog">
+    	select * from admin_action_logs
+    </select>
+    
+    <select id="userLog">
+    	select * from api_logs
+    </select>
+</mapper>

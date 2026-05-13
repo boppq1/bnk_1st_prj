@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>BNK Busan Bank - 멤버 계정 관리</title>
+    <title>BNK Busan Bank - 고객 통합 관리</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     
@@ -21,68 +21,49 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); display: flex; }
 
-        /* 사이드바 스타일 */
-        .sidebar {
-            width: var(--sidebar-width); height: 100vh; background-color: #FFFFFF;
-            border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0;
-            display: flex; flex-direction: column; z-index: 100;
-        }
-        .sidebar-logo { padding: 10px 30px; margin-bottom: 40px; }
+        /* 사이드바 & 헤더 (기존 스타일 유지) */
+        .sidebar { width: var(--sidebar-width); height: 100vh; background-color: #FFFFFF; border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0; z-index: 100; }
+        .sidebar-logo { padding: 20px 30px; }
         .sidebar-logo img { width: 130px; }
-        .sidebar-menu { list-style: none; flex-grow: 1; }
-        .menu-item {
-            display: flex; align-items: center; padding: 15px 30px; color: var(--text-main);
-            text-decoration: none; font-size: 15px; font-weight: 500; transition: all 0.2s;
-        }
+        .menu-item { display: flex; align-items: center; padding: 15px 30px; color: var(--text-main); text-decoration: none; font-size: 15px; }
+        .menu-item.active { background-color: #FFF2F2; color: var(--primary-color); font-weight: 700; border-left: 4px solid var(--primary-color); }
         .menu-item i { margin-right: 15px; width: 20px; text-align: center; color: #ADB5BD; }
-        .menu-item:hover, .menu-item.active { background-color: #FFF2F2; color: var(--primary-color); }
-        .menu-item:hover i, .menu-item.active i { color: var(--primary-color); }
-        .menu-item.active { font-weight: 700; border-left: 4px solid var(--primary-color); padding-left: 26px; }
+        .menu-item.active i { color: var(--primary-color); }
 
-        /* 헤더 스타일 */
-        .header {
-            position: fixed; top: 0; left: var(--sidebar-width);
-            width: calc(100% - var(--sidebar-width)); height: var(--header-height);
-            background-color: #FFFFFF; border-bottom: 1px solid var(--border-color);
-            display: flex; align-items: center; padding: 0 40px; z-index: 90;
-        }
-        .header-right { margin-left: auto; display: flex; align-items: center; gap: 20px; }
-        .user-profile { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500; }
-        .user-avatar { width: 35px; height: 35px; border-radius: 50%; background-color: #E2E8F0; display: flex; align-items: center; justify-content: center; }
+        .header { position: fixed; top: 0; left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); height: var(--header-height); background-color: #FFFFFF; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 40px; z-index: 90; }
 
-        /* 메인 컨텐츠 영역 */
-        .main-content {
-            margin-left: var(--sidebar-width); margin-top: var(--header-height);
-            width: calc(100% - var(--sidebar-width)); padding: 40px;
-        }
+        /* 메인 컨텐츠 */
+        .main-content { margin-left: var(--sidebar-width); margin-top: var(--header-height); width: calc(100% - var(--sidebar-width)); padding: 40px; }
         .content-header { margin-bottom: 30px; }
-        .content-title { font-size: 24px; font-weight: 800; }
+        .content-title { font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
 
-        /* 테이블 카드 및 스크롤 최적화 */
+        /* 섹션 구분 스타일 */
+        .table-section { margin-bottom: 50px; }
+        .section-title { font-size: 18px; font-weight: 700; margin-bottom: 15px; padding-left: 12px; border-left: 4px solid var(--primary-color); color: #333; display: flex; align-items: center; gap: 8px; }
+
+        /* 테이블 카드 */
         .table-card {
             background-color: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); 
-            overflow-x: auto; /* 컬럼이 많으므로 가로 스크롤 허용 */
+            border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); overflow-x: auto;
         }
-        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 1200px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 1400px; }
         thead { background-color: #FBFBFC; border-bottom: 1px solid var(--border-color); }
-        th { padding: 18px 15px; font-size: 13px; font-weight: 600; color: var(--text-label); white-space: nowrap; }
-        td { padding: 18px 15px; font-size: 14px; border-bottom: 1px solid #F1F3F5; color: var(--text-main); white-space: nowrap; }
+        th { padding: 15px; font-size: 13px; font-weight: 600; color: var(--text-label); border-right: 1px solid #f0f0f0; }
+        td { padding: 15px; font-size: 14px; border-bottom: 1px solid #F1F3F5; white-space: nowrap; }
         tr:hover { background-color: #F8F9FA; }
 
-        /* 수정 버튼 스타일 */
+        /* 배지 스타일 */
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .badge-user { background-color: #E3F2FD; color: #1976D2; }
+        .badge-company { background-color: #F3E5F5; color: #7B1FA2; }
+
+        /* 수정 버튼 */
         .btn-update {
-            padding: 6px 12px; border-radius: 6px; background-color: #F1F3F5;
+            padding: 6px 12px; border-radius: 6px; background-color: white;
             color: var(--text-main); text-decoration: none; font-size: 13px; font-weight: 600;
-            transition: all 0.2s; border: 1px solid #DEE2E6;
+            border: 1px solid #DEE2E6; transition: 0.2s;
         }
         .btn-update:hover { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
-        
-        /* 상태 배지 */
-        .status-badge {
-            padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;
-            background-color: #E3F2FD; color: #1976D2;
-        }
     </style>
 </head>
 <body>
@@ -92,72 +73,105 @@
         </div>
         <ul class="sidebar-menu">
             <li><a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> 대시보드</a></li>
-            <li><a href="#" class="menu-item active"><i class="fa-solid fa-users"></i> 회원 및 보안 관리</a></li>
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-money-bill-transfer"></i> 거래 및 자산 관리</a></li>
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-coins"></i> 외환 및 환전 관리</a></li>
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-file-invoice-dollar"></i> 송금 및 결제 심사</a></li>
+            <li><a href="#" class="menu-item active"><i class="fa-solid fa-users"></i> 회원 통합 관리</a></li>
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-file-signature"></i> 상품 승인 관리</a></li>
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-list-check"></i> 시스템 로그</a></li>
         </ul>
     </div>
 
     <div class="header">
-        <div class="header-title">멤버 리스트</div>
-        <div class="header-right">
-            <div class="user-profile">
-                <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
-                <span>최고 관리자 OOO</span>
-            </div>
-        </div>
+        <div class="header-title">뱅킹 서비스 고객 관리 센터</div>
     </div>
 
     <div class="main-content">
         <div class="content-header">
-            <h1 class="content-title">뱅킹 서비스 이용 고객 현황</h1>
-            <p style="color: var(--text-label); font-size: 14px; margin-top: 5px;">등록된 모든 고객 정보를 조회하고 상세 설정을 수정할 수 있습니다.</p>
+            <h1 class="content-title">등록 고객 통합 현황</h1>
+            <p style="color: var(--text-label); font-size: 14px; margin-top: 5px;">개인 및 기업 고객의 데이터를 한눈에 확인하고 관리할 수 있습니다.</p>
         </div>
 
-        <div class="table-card">
-            <table>
-                <thead>
-                    <tr>
-                        <th>번호</th>
-                        <th>아이디</th>
-                        <th>비밀번호</th>
-                        <th>이름</th>
-                        <th>핸드폰번호</th>
-                        <th>생일</th>
-                        <th>이메일</th>
-                        <th>상태</th>
-                        <th>성별</th>
-                        <th>영문명</th>
-                        <th>우편번호</th>
-                        <th>주소</th>
-                        <th>세부주소</th>
-                        <th style="text-align: center;">관리</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="user : ${userList}">
-                        <td th:text="${user.user_id}" style="font-weight: 600; color: var(--primary-color);"></td>
-                        <td th:text="${user.login_id}"></td>
-                        <td th:text="${user.password}" style="color: #ADB5BD;"></td>
-                        <td th:text="${user.name}" style="font-weight: 600;"></td>
-                        <td th:text="${user.phone}"></td>
-                        <td th:text="${user.birth}"></td>
-                        <td th:text="${user.email}"></td>
-                        <td><span class="status-badge" th:text="${user.status}"></span></td>
-                        <td th:text="${user.gender}"></td>
-                        <td th:text="${user.e_name}"></td>
-                        <td th:text="${user.postal_code}"></td>
-                        <td th:text="${user.address}"></td>
-                        <td th:text="${user.address_detail}"></td>
-                        <td style="text-align: center;">
-                            <a class="btn-update" th:href="@{/admin/updateMemberPage(user_id=${user.user_id})}">
-                                <i class="fa-solid fa-user-pen"></i> 수정
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- 섹션 1: 개인 고객 리스트 -->
+        <div class="table-section">
+            <div class="section-title"><i class="fa-solid fa-user"></i> 개인 고객 (Individual Users)</div>
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>아이디</th>
+                            <th>이름</th>
+                            <th>핸드폰번호</th>
+                            <th>생년월일</th>
+                            <th>이메일</th>
+                            <th>상태</th>
+                            <th>성별</th>
+                            <th>영문명</th>
+                            <th>주소</th>
+                            <th style="text-align: center;">관리</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="user : ${userList}">
+                            <td th:text="${user.user_id}" style="font-weight: 700; color: var(--primary-color);"></td>
+                            <td th:text="${user.login_id}"></td>
+                            <td th:text="${user.name}" style="font-weight: 600;"></td>
+                            <td th:text="${user.phone}"></td>
+                            <td th:text="${user.birth}"></td>
+                            <td th:text="${user.email}"></td>
+                            <td><span class="badge badge-user" th:text="${user.status}"></span></td>
+                            <td th:text="${user.gender}"></td>
+                            <td th:text="${user.e_name}"></td>
+                            <td th:text="${user.address}"></td>
+                            <td style="text-align: center;">
+                                <a class="btn-update" th:href="@{/admin/updateMemberPage(user_id=${user.user_id})}">
+                                    <i class="fa-solid fa-user-pen"></i> 수정
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 섹션 2: 기업 고객 리스트 -->
+        <div class="table-section">
+            <div class="section-title"><i class="fa-solid fa-building"></i> 기업 고객 (Corporate Clients)</div>
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>사업자번호</th>
+                            <th>아이디</th>
+                            <th>기업명</th>
+                            <th>대표번호</th>
+                            <th>설립일</th>
+                            <th>이메일</th>
+                            <th>상태</th>
+                            <th>영문명</th>
+                            <th style="text-align: center;">관리</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="company : ${companylist}">
+                            <td th:text="${company.company_id}" style="font-weight: 700; color: #7B1FA2;"></td>
+                            <td th:text="${company.business_no}"></td>
+                            <td th:text="${company.login_id}"></td>
+                            <td th:text="${company.name}" style="font-weight: 600;"></td>
+                            <td th:text="${company.phone}"></td>
+                            <td th:text="${company.birth}"></td>
+                            <td th:text="${company.email}"></td>
+                            <td><span class="badge badge-company" th:text="${company.status}"></span></td>
+                            <td th:text="${company.e_name}"></td>
+                            <td style="text-align: center;">
+                                <!-- 기업 고객 수정 페이지 경로는 유림님의 컨트롤러 설정에 맞춰 확인하세요 -->
+                                <a class="btn-update" th:href="@{/admin/updateCompanyPage(company_id=${company.company_id})}">
+                                    <i class="fa-solid fa-pen-to-square"></i> 관리
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </body>

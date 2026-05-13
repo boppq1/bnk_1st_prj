@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.example.demo.admin.dto.AdminDto;
 import com.example.demo.admin.dto.ApprovalDto;
-import com.example.demo.admin.dto.ProductDto;
+import com.example.demo.company.dto.CompanyUserDTO;
 import com.example.demo.personal.dto.UserDTO;
 
 @Mapper
@@ -17,6 +17,7 @@ public interface IListDao {
 	UserDTO getUser(@Param("user_id") Long user_id);
 	List<UserDTO> getUsers();
 	// ApprovalDto getApproval(@Param("product_id") Long product_id);
+	List<CompanyUserDTO> getCompanyUsers();
 	List<ApprovalDto> getApprovals();
 	ApprovalDto getApproval(Long approval_id);
 	void updateApproval(@Param("product_id") Long product_id, @Param("status")String status, @Param("admin_id") String admin_id);

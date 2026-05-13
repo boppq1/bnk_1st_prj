@@ -28,6 +28,7 @@ public class AdminController {
 	@GetMapping("/memberList")
 	public String memberListPage(Model m) {
 		m.addAttribute("userList", as.getUserList());
+		m.addAttribute("companyList", as.getCompanyUserList());
 		return "admin/memberList";
 	}
 
@@ -69,7 +70,7 @@ public class AdminController {
 		return "redirect:/admin/updateMemberPage?user_id=" + dto.getUser_id() + "&result=true";
 	}
 	
-	// ========== 승인 관련 ========== 
+	// ========== 상품 승인 관련 ========== 
 	
 	@GetMapping("/approvalPage")
 	public String approvalPage(Model m) {
@@ -101,5 +102,21 @@ public class AdminController {
 		return "redirect:/admin/approvalPage";
 	}
 	
+	// ========== 로그 관련 ==========
+	
+	@GetMapping("/adminLogPage")
+	public String adminLogPage(Model m) {
+		m.addAttribute("admin", as.adminLog());
+		m.addAttribute("user", as.userLog());
+		return "/admin/adminLog";
+	}
+	
+	
+	// ========== 환전 내역 관련 ==========
+	@GetMapping("/exchangeListPage")
+	public String exchangeListPage(Model m) {
+		m.addAttribute("exchangeList", as.exchangeList());
+		return "/admin/exchangeList";
+	}
 	
 }

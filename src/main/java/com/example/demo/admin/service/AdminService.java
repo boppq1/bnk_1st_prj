@@ -5,10 +5,16 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.admin.dao.IListDao;
+import com.example.demo.admin.dao.IAdminExchangeDao;
+import com.example.demo.admin.dao.IAdminLogDao;
 import com.example.demo.admin.dao.IAdminProductDao;
+import com.example.demo.admin.dto.AdminActionLogDto;
 import com.example.demo.admin.dto.AdminDto;
+import com.example.demo.admin.dto.ApiLogDto;
 import com.example.demo.admin.dto.ApprovalDto;
+import com.example.demo.admin.dto.ExchangeRequestDto;
 import com.example.demo.admin.dto.ProductDto;
+import com.example.demo.company.dto.CompanyUserDTO;
 import com.example.demo.personal.dto.UserDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +25,8 @@ public class AdminService {
 	
 	final IAdminProductDao productDao;
 	final IListDao listDao;
+	final IAdminLogDao logDao;
+	final IAdminExchangeDao exchangeDao;
 	
 	public boolean makeProduct(ProductDto dto) {
 		dto.setCreated_by("admin");
@@ -50,6 +58,10 @@ public class AdminService {
 		return listDao.getUsers();
 	}
 	
+	public List<CompanyUserDTO> getCompanyUserList() {
+		return listDao.getCompanyUsers();
+	}
+	
 	public void updateAdmin(AdminDto dto) {
 		listDao.updateAdmin(dto.getAdmin_id(), dto.getPassword(), dto.getDepartment(), dto.getAdmin_pw(), dto.getName(), dto.getAdmin_role());
 	}
@@ -73,5 +85,16 @@ public class AdminService {
 		return true;
 	}
 	
+	public List<AdminActionLogDto> adminLog() {
+		return logDao.adminLog();
+	}
+	
+	public List<ApiLogDto> userLog() {
+		return logDao.userLog();
+	}
+	
+	public List<ExchangeRequestDto> exchangeList() {
+		return exchangeDao.exchangeList();
+	}
 }
 

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BNK Busan Bank - 로그 관리 센터</title>
+    <!-- Font Awesome & Pretendard -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    
+    <style>
+        :root {
+            --primary-color: #ED1C24;    /* BNK Red */
+            --bg-color: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --border-color: #E0E4E8;
+            --text-main: #212529;
+            --text-label: #6C757D;
+            --sidebar-width: 260px;
+            --header-height: 70px;
+            
+            /* 메서드별 컬러 */
+            --color-get: #28a745;
+            --color-post: #007bff;
+            --color-put: #fd7e14;
+            --color-delete: #dc3545;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); display: flex; min-height: 100vh; }
+
+        /* 사이드바 & 헤더 (일관성 유지) */
+        .sidebar { width: var(--sidebar-width); height: 100vh; background-color: #FFFFFF; border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0; z-index: 100; }
+        .sidebar-logo { padding: 20px 30px; margin-bottom: 20px; }
+        .sidebar-logo img { width: 130px; }
+        .menu-item { display: flex; align-items: center; padding: 15px 30px; color: var(--text-main); text-decoration: none; font-size: 15px; }
+        .menu-item i { margin-right: 15px; width: 20px; text-align: center; color: #ADB5BD; }
+        .menu-item.active { background-color: #FFF2F2; color: var(--primary-color); font-weight: 700; border-left: 4px solid var(--primary-color); }
+        .menu-item.active i { color: var(--primary-color); }
+
+        .header { position: fixed; top: 0; left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); height: var(--header-height); background-color: #FFFFFF; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 40px; z-index: 90; }
+
+        /* 메인 컨텐츠 */
+        .main-content { margin-left: var(--sidebar-width); margin-top: var(--header-height); width: calc(100% - var(--sidebar-width)); padding: 40px; }
+        
+        .content-header { margin-bottom: 30px; }
+        .content-title { font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+
+        /* 섹션 카드 */
+        .log-section { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); padding: 25px; margin-bottom: 40px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-left: 4px solid var(--primary-color); padding-left: 15px; }
+        .section-header h2 { font-size: 18px; font-weight: 700; color: #333; }
+
+        /* 테이블 디자인 */
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 900px; }
+        th { padding: 12px 15px; font-size: 13px; font-weight: 600; color: var(--text-label); background-color: #FBFBFC; border-bottom: 2px solid var(--border-color); }
+        td { padding: 15px; font-size: 14px; border-bottom: 1px solid #F1F3F5; color: var(--text-main); word-break: break-all; }
+        tr:hover { background-color: #F8F9FA; }
+
+        /* 메서드 태그 */
+        .method-badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 800; color: white; text-transform: uppercase; }
+        .method-get { background-color: var(--color-get); }
+        .method-post { background-color: var(--color-post); }
+        .method-put { background-color: var(--color-put); }
+        .method-delete { background-color: var(--color-delete); }
+
+        /* 코드 및 본문 스타일 */
+        .code-text { font-family: 'Courier New', monospace; font-size: 12px; color: #555; background: #f4f4f4; padding: 4px 8px; border-radius: 4px; max-width: 200px; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .status-success { color: #28a745; font-weight: 700; }
+        .status-error { color: #dc3545; font-weight: 700; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <img src="https://sites.bnk.co.kr/main/resource/img/common/logo_busan.png" alt="BNK 부산은행">
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> 대시보드</a></li>
+            <li><a href="#" class="menu-item active"><i class="fa-solid fa-list-check"></i> 로그 관리</a></li>
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-users-gear"></i> 관리자 설정</a></li>
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-shield-halved"></i> 보안 현황</a></li>
+        </ul>
+    </div>
+
+    <div class="header">
+        <div class="header-title">시스템 통합 로그 모니터링</div>
+    </div>
+
+    <div class="main-content">
+        <div class="content-header">
+            <h1 class="content-title"><i class="fa-solid fa-terminal" style="color: var(--primary-color);"></i> 관리자 로그 관리 센터</h1>
+            <p style="color: var(--text-label); font-size: 14px; margin-top: 5px;">사용자 API 호출 기록 및 관리자 주요 활동 로그를 실시간으로 확인합니다.</p>
+        </div>
+
+        <!-- API 로그 섹션 -->
+        <div class="log-section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-network-wired"></i> 사용자 API 로그</h2>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>로그 ID</th>
+                            <th>요청 URL</th>
+                            <th>메서드</th>
+                            <th>소요 시간</th>
+                            <th>요청 본문</th>
+                            <th>상태 코드</th>
+                            <th>IP 주소</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="users : ${user}">
+                            <td th:text="${users.log_id}" style="font-weight: 600;"></td>
+                            <td th:text="${users.url}" style="color: #444;"></td>
+                            <td>
+                                <!-- 메서드별 배지 처리 -->
+                                <span th:text="${users.method}" 
+                                      th:classappend="'method-badge ' + (${users.method == 'GET' ? 'method-get' : (users.method == 'POST' ? 'method-post' : (users.method == 'PUT' ? 'method-put' : 'method-delete'))})">
+                                </span>
+                            </td>
+                            <td><span th:text="${users.elapsed_ms} + ' ms'" style="color: #666;"></span></td>
+                            <td><span class="code-text" th:text="${users.request_body ?: '-'}"></span></td>
+                            <td>
+                                <span th:text="${users.response_code}" 
+                                      th:classappend="${users.response_code >= 400 ? 'status-error' : 'status-success'}">
+                                </span>
+                            </td>
+                            <td th:text="${users.ip_address}" style="font-size: 13px; color: #888;"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 관리자 로그 섹션 -->
+        <div class="log-section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-user-shield"></i> 관리자 활동 로그</h2>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>로그 ID</th>
+                            <th>수행 작업</th>
+                            <th>작업 대상</th>
+                            <th>생성 일시</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="admins : ${admin}">
+                            <td th:text="${admins.log_id}" style="font-weight: 600;"></td>
+                            <td>
+                                <i class="fa-solid fa-caret-right" style="color: var(--primary-color); margin-right: 5px;"></i>
+                                <span th:text="${admins.action}" style="font-weight: 500;"></span>
+                            </td>
+                            <td th:text="${admins.target}"></td>
+                            <td th:text="${admins.created_at}" style="color: #666;"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
