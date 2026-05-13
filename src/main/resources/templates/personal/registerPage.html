@@ -2,125 +2,298 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
 <title>회원가입</title>
 <style>
-table {
-	width: 600px;
-	border-collapse: collapse;
-}
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; }
 
-td {
-	padding: 10px;
-	border-bottom: 1px solid #eee;
-}
+  .register-page {
+    background: #f5f5f5;
+    min-height: 100vh;
+    padding: 32px 16px 64px;
+  }
 
-.label-cell {
-	width: 140px;
-	background-color: #f9f9f9;
-	font-weight: bold;
-}
+  .register-card {
+    max-width: 620px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+  }
 
-input[type="text"], input[type="password"], input[type="email"], input[type="tel"],
-	input[type="date"] {
-	width: 100%;
-	box-sizing: border-box;
-	padding: 5px;
-}
-/* 우편번호 칸은 짧게 */
-.postcode-input {
-	width: 60% !important;
-	display: inline-block;
-}
+  .register-card-header {
+    background: #e8001c;
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 
-.postcode-btn {
-	width: 38%;
-	padding: 5px;
-	cursor: pointer;
-}
+  .register-card-header h2 {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+  }
+
+  .register-card-body {
+    padding: 28px 28px 36px;
+  }
+
+  /* 섹션 타이틀 */
+  .sec-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #e8001c;
+    letter-spacing: 0.04em;
+    border-left: 3px solid #e8001c;
+    padding-left: 8px;
+    margin: 24px 0 14px;
+  }
+
+  .sec-title:first-child { margin-top: 0; }
+
+  .divider { height: 1px; background: #eee; margin: 20px 0 0; }
+
+  /* 필드 */
+  .field { margin-bottom: 10px; }
+
+  .field label {
+    display: block;
+    font-size: 12px;
+    color: #555;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .field input[type="text"],
+  .field input[type="password"],
+  .field input[type="email"],
+  .field input[type="tel"],
+  .field input[type="date"] {
+    width: 100%;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    font-size: 13px;
+    color: #222;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .field input:focus {
+    border-color: #e8001c;
+    box-shadow: 0 0 0 2px rgba(232, 0, 28, 0.1);
+  }
+
+  .field input[readonly] {
+    background: #f9f9f9;
+    color: #888;
+  }
+
+  /* 2열 그리드 */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* 인라인 버튼 행 */
+  .input-btn-row {
+    display: flex;
+    gap: 6px;
+  }
+
+  .input-btn-row input { flex: 1; }
+
+  /* 버튼 공통 */
+  .bnk-btn {
+    height: 36px;
+    padding: 0 14px;
+    border: 1px solid #bbb;
+    border-radius: 2px;
+    font-size: 12px;
+    background: #fff;
+    color: #444;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .bnk-btn:hover { border-color: #e8001c; color: #e8001c; }
+
+  /* 힌트 텍스트 */
+  .hint { font-size: 11px; margin-top: 4px; }
+  .hint.ok  { color: #008000; }
+  .hint.err { color: #e8001c; }
+  .hint.info { color: #999; }
+
+  /* 라디오 */
+  .radio-group {
+    display: flex;
+    gap: 20px;
+    height: 36px;
+    align-items: center;
+  }
+
+  .radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    color: #333;
+    cursor: pointer;
+    font-weight: 400;
+  }
+
+  .radio-group input[type="radio"] { accent-color: #e8001c; }
+
+  /* 제출 영역 */
+  .submit-wrap { text-align: center; margin-top: 28px; }
+
+  .submit-btn {
+    width: 180px;
+    height: 44px;
+    background: #e8001c;
+    color: #fff;
+    border: none;
+    border-radius: 2px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .submit-btn:hover { background: #c00018; }
+
+  .submit-notice {
+    font-size: 11px;
+    color: #999;
+    margin-top: 10px;
+  }
 </style>
 </head>
 <body>
-	<form th:action="@{/registerPro}" method="post">
-		<table>
-			<tr>
-				<td class="label-cell">아이디</td>
-				<td><input type="text" name="login_id" id="login_id" required></td>
-				<td><button id="checkId">아이디 중복 확인</button> </td>
-			</tr>
-			<tr>
-				<td><p id="checkIdText"></p></td>
-			</tr>
-			<tr>
-				<td class="label-cell">비밀번호</td>
-				<td><input type="password" name="password" id="password" required></td>
-			</tr>
-			<tr>
-				<td><p id='passwordText'></p> </td>
-			</tr>
-			<tr>
-				<td class="label-cell">이름</td>
-				<td><input type="text" name="name" required></td>
-			</tr>
-			<tr>
-				<td class="label-cell">휴대폰번호</td>
-				<td><input type="text" name="phone" required></td>
-			</tr>
-			<tr>
-				<td class="label-cell">생일</td>
-				<td><input type="date" name="birth" required></td>
-			</tr>
-			<tr>
-				<td class="label-cell">이메일</td>
-				<td><input type="email" name="email" id="email" required></td>
-			</tr>
-			<tr>
-				<td><p id="emailText"></p> </td>
-			</tr>
-			<tr>
-				<td class="label-cell">성별</td>
-				<td colspan="2"><input style="margin-left: 20px;" type="radio"
-					name="gender" value="M" required> 남 <input type="radio"
-					name="gender" value="F" required> 여</td>
-			</tr>
-			<tr>
-				<td class="label-cell">우편번호</td>
-				<td><input type="text" name="postal_code" id="postcode"
-					class="postcode-input" readonly required> <input
-					type="button" onclick="DaumPostcode()" value="우편번호 찾기"
-					class="postcode-btn"></td>
-			</tr>
-			<tr>
-				<td class="label-cell">주소</td>
-				<td><input type="text" name="address" id="address" readonly
-					required></td>
-			</tr>
-			<tr>
-				<td class="label-cell">상세 주소</td>
-				<td><input type="text" name="address_detail"
-					id="address_detail" placeholder="상세주소 입력" required> <input
-					type="hidden" id="extraAddress"></td>
-			</tr>
-			<tr>
-				<td class="label-cell">영어이름</td>
-				<td><input type="text" name="e_name" required></td>
-			</tr>
-			<tr>
-				<td class="label-cell">계좌비밀번호</td>
-				<td><input type="text" name="account_pw" id="account_pw" required></td>
-			</tr>
-			<tr>
-				<td><p id="account_pw_text"></p></td>
-			</tr>
-			<tr>
-				<td colspan="2"
-					style="text-align: center; border-bottom: none; padding-top: 20px;">
-					<button type="submit" style="padding: 10px 40px;">가입하기</button>
-				</td>
-			</tr>
-		</table>
-	</form>
+  <div th:replace="~{header :: header}"></div>
 
-	<script
+  <div class="register-page">
+    <div class="register-card">
+      <div class="register-card-header">
+        <h2>회원가입</h2>
+      </div>
+
+      <div class="register-card-body">
+        <form th:action="@{/registerPro}" method="post">
+
+          <!-- 계정 정보 -->
+          <div class="sec-title">계정 정보</div>
+
+          <div class="field">
+            <label for="login_id">아이디</label>
+            <div class="input-btn-row">
+              <input type="text" name="login_id" id="login_id" placeholder="영문/숫자 4~10자" required>
+              <button type="button" class="bnk-btn" id="checkId">중복 확인</button>
+            </div>
+            <p class="hint info" id="duplText"></p>
+            <p class="hint info" id="checkIdText"></p>
+          </div>
+
+          <div class="field">
+            <label for="password">비밀번호</label>
+            <input type="password" name="password" id="password" placeholder="8자 이상, 특수문자 포함" required>
+            <p class="hint info" id="passwordText"></p>
+          </div>
+
+          <!-- 개인 정보 -->
+          <div class="divider"></div>
+          <div class="sec-title">개인 정보</div>
+
+          <div class="two-col">
+            <div class="field">
+              <label>이름</label>
+              <input type="text" name="name" placeholder="홍길동" required>
+            </div>
+            <div class="field">
+              <label>영어 이름</label>
+              <input type="text" name="e_name" placeholder="Hong Gildong" required>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="field">
+              <label>휴대폰 번호</label>
+              <input type="tel" name="phone" placeholder="010-0000-0000" required>
+            </div>
+            <div class="field">
+              <label>생년월일</label>
+              <input type="date" name="birth" required>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="field">
+              <label for="email">이메일</label>
+              <input type="email" name="email" id="email" placeholder="example@email.com" required>
+              <p class="hint info" id="emailText"></p>
+            </div>
+            <div class="field">
+              <label>성별</label>
+              <div class="radio-group">
+                <label><input type="radio" name="gender" value="M" required> 남</label>
+                <label><input type="radio" name="gender" value="F"> 여</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 주소 -->
+          <div class="divider"></div>
+          <div class="sec-title">주소</div>
+
+          <div class="field">
+            <label>우편번호</label>
+            <div class="input-btn-row">
+              <input type="text" name="postal_code" id="postcode" readonly placeholder="우편번호" style="max-width:160px;" required>
+              <button type="button" class="bnk-btn" onclick="DaumPostcode()">우편번호 찾기</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>주소</label>
+            <input type="text" name="address" id="address" readonly placeholder="우편번호 검색 후 자동 입력" required>
+            <input type="hidden" id="extraAddress">
+          </div>
+
+          <div class="field">
+            <label>상세 주소</label>
+            <input type="text" name="address_detail" id="address_detail" placeholder="상세주소 입력" required>
+          </div>
+
+          <!-- 보안 -->
+          <div class="divider"></div>
+          <div class="sec-title">보안</div>
+
+          <div class="field" style="max-width:260px;">
+            <label for="account_pw">계좌 비밀번호</label>
+            <input type="text" name="account_pw" id="account_pw" placeholder="숫자 4~6자리" required>
+            <p class="hint info" id="account_pw_text"></p>
+          </div>
+
+          <div class="submit-wrap">
+            <button type="submit" class="submit-btn">가입하기</button>
+            <p class="submit-notice">입력하신 정보는 안전하게 보호됩니다.</p>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+<script
 		src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js">
 	</script>
 	<script>
@@ -178,6 +351,28 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
 						}
 					}).open();
 		}
+		
+		/* 아이디 형식 검사*/ 
+		document.querySelector("#login_id").addEventListener('input', duplId); 
+
+		function duplId() {
+			
+		    const regexr = /^[A-Za-z0-9]{4,10}$/;
+		    
+		    const id = document.querySelector("#login_id").value; 
+		    const duplText = document.querySelector("#duplText");
+		    
+		    if (id === "") {
+		        duplText.innerText = "";
+		    } else if (!regexr.test(id)) { 
+		        duplText.innerText = "아이디는 영문/숫자 4~10자여야 합니다.";
+		        duplText.style.color = "red";
+		    } else {
+		        duplText.innerText = "올바른 아이디 형식입니다.";
+		        duplText.style.color = "green";
+		    }
+		}
+		
 		/* 아이디 중복검사 */
 		document.querySelector("#checkId").addEventListener('click', checkId);
 		
@@ -208,7 +403,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
 		}
 		
 		/*  비밀번호 8자리이상 특수문자 포함 */
-		document.querySelector("#password").addEventListener("blur", checkPassword);
+		document.querySelector("#password").addEventListener("input", checkPassword);
 		
 		function checkPassword(){
 			const passwordValue = document.querySelector("#password").value;
@@ -236,7 +431,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
 		}
 		
 		/* 이메일 형식 정규식 표현 */
-		document.querySelector("#email").addEventListener("blur", checkEmail);
+		document.querySelector("#email").addEventListener("input", checkEmail);
 		function checkEmail(){
 			const emailText = document.querySelector("#emailText");
 			const emailValue = document.querySelector("#email").value;
@@ -254,8 +449,9 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
 				emailText.style.color="green";
 			}
 		}
-		
-		dovu
+
 	</script>
+
+  <div th:replace="~{footer :: footer}"></div>
 </body>
 </html>
