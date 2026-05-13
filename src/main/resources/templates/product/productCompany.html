@@ -153,6 +153,16 @@
                     <td th:text="${item.productDesc}">상품설명</td>
 
                     <td>
+                    <!-- checkbox : JS에서 체크된 상품들을 찾기 위해 붙인 클래스. 
+                    item.productId: 상품 ID 를 HTML에 저장 해둠
+                    item.productName: 상품명을 저장
+                    item.productType : 예금/적금/외화예금 같은 상품 분류 저장.
+                    item.targetCustomer: 가입 대상 저장. 값은 all, personal, company
+                    item.maxRate: 최고 금리 저장
+                    item.productDesc: 상품 설명 저장
+                    th:data-min-period, th:data-max-period: 최소/최대 가입 기간 저장
+                    th:data-min-amount, th:data-max-amount: 최소/최대 가입 금액 저장 
+                    즉 체크박스 하나 안에 비교에 필요한 상품 정보를 다 숨겨둔 거임-->
                         <input type="checkbox"
                                class="compare-check"
                                th:data-id="${item.productId}"
@@ -169,7 +179,7 @@
                 </tr>
                 </tbody>
             </table>
-
+			<!-- JS가 이 버튼을 찾아서 클릭 이벤트를 검, 사용자가 이버튼을 누르면 체크된 상품을 찾고 상품정보를 꺼내서 비교 팝업을 연다 -->
             <div class="compare-action-wrap">
                 <button type="button" id="compareBtn">선택 상품 비교하기</button>
             </div>
@@ -195,8 +205,9 @@
 
     </main>
 </div>
-
+<!-- 비교 팝업 전체: 처음에는 css 에서 display: none; 해놔서 안보임 버튼을 누르면 js가 modal.classList.add("active");를 실행 해서 보이게 함-->
 <div class="compare-modal" id="compareModal">
+	<!-- 실제로는 하얀 박스 이지만 안에는 제모그 닫기 버튼, 사용자 조건 입력, 비교 결과가 들어가있음 -->
     <div class="compare-modal-box">
        <div class="compare-modal-head">
 		    <div>
@@ -208,7 +219,7 @@
 		    </div>
             <button type="button" id="compareCloseBtn">×</button>
         </div>
-
+	<!--  사용자가 개인인지 기업인지 선택 하고 js 점수 계산에서 비교 -->
         <div class="compare-user-input">
             <label>
                 가입대상
@@ -217,18 +228,18 @@
                     <option value="company">기업</option>
                 </select>
             </label>
-
+			<!-- 사용자가 얼마 넣을 건지 입력. JS에서 상품의 최소/최대 가입금액과 비교 -->
             <label>
                 예치 예정 금액
                 <input type="number" id="compareAmount" placeholder="예: 1000000">
             </label>
-
+			<!--  사용자가 몇개월 가입하고 싶은지 입력. -->
             <label>
                 희망 가입기간
                 <input type="number" id="comparePeriod" placeholder="예: 12">
             </label>
         </div>
-
+		<!-- 결과 출력 영역, 처음에는 안내 문구만 나오고 비교하기 버튼을 누르면 js가 html을 새로 넣음, 추천 상품, 비교 테이블, 점수, 추천이유가 여기안에 렌더링이 된다. -->
         <div class="compare-result-box" id="compareResultBox">
             비교할 상품을 선택해주세요.
         </div>
