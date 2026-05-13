@@ -8,19 +8,6 @@
 <h1>관리자 메인 대시보드</h1>
 <hr>
 
-<<<<<<< Updated upstream
-<a th:href="@{/admin/adminMain}">홈</a><br>
-<a th:href="@{/adminJoin}">회원가입</a><br>
-<a th:href="@{/adminLogin}">로그인</a><br>
-<a th:href="@{/admin/adminMyPage}">관리자 마이페이지</a><br>
-
-<!-- 보호된 페이지 최하단에 추가 -->
-<script th:src="@{/js/api.js}"></script>
-<script>
-	// 토큰 없으면 조용히 로그인 페이지로 이동
-	requireLogin();
-</script>
-=======
 <!-- 세션에 loginId가 있을 때만 표시 -->
 <div th:if="${session.loginId != null}">
 	<p>
@@ -36,6 +23,5 @@
 <a th:href="@{/adminLogin}">로그인</a><br>
 <a th:href="@{/adminMyPage}">관리자 마이페이지</a><br>
 
->>>>>>> Stashed changes
 </body>
 </html>

@@ -39,7 +39,7 @@
 
         SELECT *
         FROM ADMIN_USERS
-        WHERE admin_id = #{admin_id}
+        WHERE login_id = #{login_id}
 
     </select>
 

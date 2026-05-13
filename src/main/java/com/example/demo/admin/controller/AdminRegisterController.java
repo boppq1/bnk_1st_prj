@@ -4,8 +4,6 @@ import com.example.demo.admin.dao.IAdminActionDao;
 import com.example.demo.admin.dao.IAdminDao;
 import com.example.demo.admin.dto.AdminActionLogDto;
 import com.example.demo.admin.dto.AdminDto;
-import com.example.demo.admin.interceptor.JwtUtil;
-import com.example.demo.admin.interceptor.TokenResponse;
 import com.example.demo.admin.service.AdminMergeService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +29,7 @@ public class AdminRegisterController {
     }
 
     @PostMapping("/admin/join")
-    public String join(@ModelAttribute AdminDto dto) {
+    public String join(AdminDto dto) {
         int result = serv.join(dto);  // ✅ dao → serv 로 변경
 
         actionDao.insertActionLog(
@@ -80,38 +78,27 @@ public class AdminRegisterController {
 
 
 @PostMapping("/admin/login")
-public String login(@ModelAttribute AdminDto dto,
+public String login(@RequestParam("login_id") String loginId,
+                    @RequestParam("password") String password,
                     HttpSession session) {
+
+    AdminDto dto = new AdminDto();
+    dto.setLogin_id(loginId);
+    dto.setPassword(password);
 
     AdminDto admin = serv.login(dto);
 
-    System.out.println(admin);
-
-    // 로그인 성공
     if(admin != null) {
 
-        session.setAttribute(
-                "adminId",
-                admin.getAdmin_id()
-        );
-
-        session.setAttribute(
-                "loginId",
-                admin.getLogin_id()
-        );
-
-        session.setAttribute(
-                "name",
-                admin.getName()
-        );
+        session.setAttribute("adminId", admin.getAdmin_id());
+        session.setAttribute("loginId", admin.getLogin_id());
+        session.setAttribute("name", admin.getName());
 
         System.out.println("Session ID: " + session.getId());
-
 
         return "redirect:/admin/adminMain";
     }
 
-    // 로그인 실패
     return "redirect:/adminLogin";
 }
 
