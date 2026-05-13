@@ -1,36 +1,156 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>BNK Busan Bank - 관리자 계정 관리</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    
+    <style>
+        :root {
+            --primary-color: #ED1C24;    /* BNK Red */
+            --bg-color: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --border-color: #E0E4E8;
+            --text-main: #212529;
+            --text-label: #6C757D;
+            --sidebar-width: 260px;
+            --header-height: 70px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); display: flex; }
+
+        /* 사이드바 스타일 */
+        .sidebar {
+            width: var(--sidebar-width); height: 100vh; background-color: #FFFFFF;
+            border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0;
+            display: flex; flex-direction: column; z-index: 100;
+        }
+        .sidebar-logo { padding: 10px 30px; margin-bottom: 40px; }
+        .sidebar-logo img { width: 130px; }
+        .sidebar-menu { list-style: none; flex-grow: 1; }
+        .menu-item {
+            display: flex; align-items: center; padding: 15px 30px; color: var(--text-main);
+            text-decoration: none; font-size: 15px; font-weight: 500; transition: all 0.2s;
+        }
+        .menu-item i { margin-right: 15px; width: 20px; text-align: center; color: #ADB5BD; }
+        .menu-item:hover, .menu-item.active {
+            background-color: #FFF2F2; color: var(--primary-color);
+        }
+        .menu-item:hover i, .menu-item.active i { color: var(--primary-color); }
+        .menu-item.active { font-weight: 700; border-left: 4px solid var(--primary-color); padding-left: 26px; }
+
+        /* 헤더 스타일 */
+        .header {
+            position: fixed; top: 0; left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width)); height: var(--header-height);
+            background-color: #FFFFFF; border-bottom: 1px solid var(--border-color);
+            display: flex; align-items: center; padding: 0 40px; z-index: 90;
+        }
+        .header-right { margin-left: auto; display: flex; align-items: center; gap: 20px; }
+        .user-profile { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500; }
+        .user-avatar { width: 35px; height: 35px; border-radius: 50%; background-color: #E2E8F0; display: flex; align-items: center; justify-content: center; }
+
+        /* 메인 컨텐츠 영역 */
+        .main-content {
+            margin-left: var(--sidebar-width); margin-top: var(--header-height);
+            width: calc(100% - var(--sidebar-width)); padding: 40px;
+        }
+        .content-header { margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .content-title { font-size: 24px; font-weight: 800; }
+
+        /* 테이블 카드 디자인 */
+        .table-card {
+            background-color: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); overflow: hidden;
+        }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        thead { background-color: #FBFBFC; border-bottom: 1px solid var(--border-color); }
+        th { padding: 18px 20px; font-size: 14px; font-weight: 600; color: var(--text-label); }
+        td { padding: 18px 20px; font-size: 15px; border-bottom: 1px solid #F1F3F5; color: var(--text-main); }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background-color: #F8F9FA; }
+
+        /* 수정 버튼 스타일 */
+        .btn-update {
+            padding: 6px 12px; border-radius: 6px; background-color: #F1F3F5;
+            color: var(--text-main); text-decoration: none; font-size: 13px; font-weight: 600;
+            transition: all 0.2s; border: 1px solid #DEE2E6;
+        }
+        .btn-update:hover { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+        
+        /* 배지 스타일 (직위/역할용) */
+        .badge {
+            padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;
+            background-color: #E9ECEF; color: #495057;
+        }
+    </style>
 </head>
 <body>
-	<h1>관리자 리스트 페이지</h1>
-	<hr>
-	<table border=1>
-		<thead>
-			<tr>
-				<td>번호</td>
-				<td>아이디</td>
-				<td>비밀번호</td>
-				<td>부서</td>
-				<td>관리자 비밀번호</td>
-				<td>이름</td>
-				<td>직위</td>
-			</tr>
-		</thead>
-		
-		<tbody>
-			<tr th:each="admin : ${adminList}">
-				<td th:text="${admin.admin_id}"></td>
-				<td th:text="${admin.login_id}"></td>
-				<td th:text="${admin.password}"></td>
-				<td th:text="${admin.department}"></td>
-				<td th:text="${admin.admin_pw}"></td>
-				<td th:text="${admin.name}"></td>
-				<td th:text="${admin.admin_role}"></td>
-			</tr>
-		</tbody>
-	</table>
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <img src="https://sites.bnk.co.kr/main/resource/img/common/logo_busan.png" alt="BNK 부산은행">
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> 대시보드</a></li>
+            <li><a href="#" class="menu-item active"><i class="fa-solid fa-users-gear"></i> 회원 및 보안 관리</a></li>
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-money-bill-transfer"></i> 거래 및 자산 관리</a></li>
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-coins"></i> 외환 및 환전 관리</a></li>
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-file-invoice-dollar"></i> 송금 및 결제 심사</a></li>
+        </ul>
+    </div>
+
+    <div class="header">
+        <div class="header-title">관리자 리스트</div>
+        <div class="header-right">
+            <div class="user-profile">
+                <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+                <span>최고 관리자 OOO</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="content-header">
+            <div>
+                <h1 class="content-title">시스템 관리자 현황</h1>
+                <p style="color: var(--text-label); font-size: 14px; margin-top: 5px;">등록된 관리자 계정 리스트를 조회하고 수정할 수 있습니다.</p>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>아이디</th>
+                        <th>비밀번호</th>
+                        <th>부서</th>
+                        <th>관리자 암호</th>
+                        <th>이름</th>
+                        <th>직위</th>
+                        <th style="text-align: center;">관리</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="admin : ${adminList}">
+                        <td th:text="${admin.admin_id}" style="font-weight: 600; color: var(--primary-color);"></td>
+                        <td th:text="${admin.login_id}"></td>
+                        <td th:text="${admin.password}" style="color: #ADB5BD;"></td>
+                        <td th:text="${admin.department}"></td>
+                        <td th:text="${admin.admin_pw}"></td>
+                        <td th:text="${admin.name}" style="font-weight: 600;"></td>
+                        <td><span class="badge" th:text="${admin.admin_role}"></span></td>
+                        <td style="text-align: center;">
+                            <a class="btn-update" th:href="@{/admin/updateAdminPage(admin_id=${admin.admin_id})}">
+                                <i class="fa-solid fa-pen-to-square"></i> 수정
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>

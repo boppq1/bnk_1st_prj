@@ -1,9 +1,5 @@
 package com.example.demo.admin.service;
 
-
-
-
-
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -11,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.admin.dao.IListDao;
 import com.example.demo.admin.dao.IAdminProductDao;
 import com.example.demo.admin.dto.AdminDto;
+import com.example.demo.admin.dto.ApprovalDto;
 import com.example.demo.admin.dto.ProductDto;
 import com.example.demo.personal.dto.UserDTO;
 
@@ -30,7 +27,7 @@ public class AdminService {
 	}
 	
 	public ProductDto getProduct(Long product_id) {
-		return productDao.getProduct(product_id);
+		return productDao.selectProduct(product_id);
 	}
 	
 	public List<ProductDto> getProducts() {
@@ -51,6 +48,29 @@ public class AdminService {
 	
 	public List<UserDTO> getUserList() {
 		return listDao.getUsers();
+	}
+	
+	public void updateAdmin(AdminDto dto) {
+		listDao.updateAdmin(dto.getAdmin_id(), dto.getPassword(), dto.getDepartment(), dto.getAdmin_pw(), dto.getName(), dto.getAdmin_role());
+	}
+	
+	public void updateUser(UserDTO dto) {
+		listDao.updateUser(dto.getUser_id(), dto.getPassword(), dto.getName(), dto.getPhone(), dto.getBirth(), dto.getEmail(), dto.getGender(), dto.getE_name(), dto.getPostal_code(), dto.getAddress(), dto.getAddress_detail());
+	}
+	
+	public ApprovalDto getApproval(Long approval_id) {
+		return listDao.getApproval(approval_id);
+	}
+	
+	public List<ApprovalDto> getApprovals() {
+		return listDao.getApprovals();
+	}
+	
+	// 세션에서 관리자 아이디 받아서 넣어야함
+	public boolean approvedStatus(Long product_id, String status) {
+		listDao.updateApproval(product_id, status, "admin_01");
+		listDao.updateProduct(product_id, status, "admin_01");
+		return true;
 	}
 	
 }

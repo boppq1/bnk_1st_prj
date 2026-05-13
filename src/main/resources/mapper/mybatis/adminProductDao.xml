@@ -5,7 +5,6 @@
 
 <!-- 매퍼 만들기 -->
 
-
 <mapper namespace="com.example.demo.admin.dao.IAdminProductDao">
 
 <insert id="insertProduct">
@@ -59,6 +58,10 @@
 
 <select id="selectAll">
     select * from product
+</select>
+
+<select id="selectProduct">
+    select * from products where product_id = #{param1}
 </select>
 
     <update id="updateProduct">
