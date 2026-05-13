@@ -218,8 +218,7 @@
               <input type="text" name="business_no" id="business_no" placeholder="000-00-0000" required>
               <button type="button" class="bnk-btn" id="check_business_no">사업자번호 조회</button>
             </div>
-            <p class="hint info" id="duplText"></p>
-            <p class="hint info" id="checkIdText"></p>
+            <p class="hint info" id="business_no_text"></p>
           </div>
           
           <!-- 개인 정보 -->
@@ -413,6 +412,8 @@
 		}
 		/* 사업자 번호 조회 */
 		document.querySelector("#check_business_no").addEventListener('click',check_bno);
+		document.querySelector("#business_no_text")
+		const bno = document.querySelector("#business_no").value
 		function check_bno(){
 			
 			fetch('/companyRegisterPro',{
@@ -421,13 +422,14 @@
 		    		'Content-Type': 'application/json'
 		    	},
 		    	body: JSON.stringify({
-		    		'business_no': document.querySelector("#business_no").value
+		    		'business_no': bno
 		    	})
 			})
 			.then(res => res.json())
 			.then(data => {
 				if(data == 200){
 					console.log("사용가능")	
+					
 				} else{ 
 					console.log("사용불가능")
 				}
