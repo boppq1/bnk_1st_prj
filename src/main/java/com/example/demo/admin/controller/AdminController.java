@@ -105,7 +105,8 @@ public class AdminController {
 	
 	@GetMapping("/adminLogPage")
 	public String adminLogPage(Model m) {
-		
+		m.addAttribute("admin", as.adminLog());
+		m.addAttribute("user", as.userLog());
 		return "/admin/adminLog";
 	}
 	
