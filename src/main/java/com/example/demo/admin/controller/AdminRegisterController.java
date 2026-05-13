@@ -21,15 +21,9 @@ public class AdminRegisterController {
 
     private final AdminMergeService serv;
     private final IAdminDao dao;
-<<<<<<< Updated upstream
-    private final JwtUtil jwtUtil;
     private final IAdminActionDao actionDao;
 
-=======
     //private final JwtUtil jwtUtil;
-    private final IAdminActionDao actionDao;
->>>>>>> Stashed changes
-
     @GetMapping("/adminJoin")
     public String joinPage(Model model) {
         model.addAttribute("admin", new AdminDto());
@@ -38,7 +32,6 @@ public class AdminRegisterController {
 
     @PostMapping("/admin/join")
     public String join(@ModelAttribute AdminDto dto) {
-<<<<<<< Updated upstream
         int result = serv.join(dto);  // ✅ dao → serv 로 변경
 
         actionDao.insertActionLog(
@@ -48,11 +41,6 @@ public class AdminRegisterController {
                 )
         );
 
-
-=======
-        int result = serv.join(dto);
-        actionDao.insertActionLog(new AdminActionLogDto("UPDATE_USER", "user_id=" + dto.getAdmin_id()));
->>>>>>> Stashed changes
         System.out.println("result = " + result);
         return "redirect:/adminLogin"; // 가입 후 로그인 페이지로 리다이렉트
     }
@@ -63,22 +51,6 @@ public class AdminRegisterController {
         return "admin/adminLogin";
     }
 
-<<<<<<< Updated upstream
-    @PostMapping("/admin/login")
-    @ResponseBody
-    public ResponseEntity<?> login(@RequestBody AdminDto dto) {
-        AdminDto result = serv.login(dto);
-
-        if (result == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("로그인에 실패했습니다. 아이디 또는 비밀번호를 확인해주세요."); // 사용자에게 구체적 메시지 반환
-        }
-
-        String accessToken = jwtUtil.createAccessToken(result.getAdmin_id());
-        String refreshToken = jwtUtil.createRefreshToken(result.getAdmin_id());
-
-        return ResponseEntity.ok(new TokenResponse(accessToken, refreshToken));
-=======
 //    @PostMapping("/admin/login") // 로그인 엔드포인트
 //    @ResponseBody
 //    public ResponseEntity<?> login(@RequestBody AdminDto dto, HttpSession session) {
@@ -176,7 +148,6 @@ public String login(@ModelAttribute AdminDto dto,
         serv.updateMyPage(dto);
 
         return "redirect:/admin/adminMyPage";
->>>>>>> Stashed changes
     }
 
 

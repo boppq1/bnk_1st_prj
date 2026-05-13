@@ -14,10 +14,6 @@ public class AdminActionLogDto {
     String target;
     String created_at;
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
     public AdminActionLogDto(String action, String target) {
         this.action = action;
         this.target = target;
