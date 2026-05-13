@@ -69,7 +69,7 @@ public class AdminController {
 		return "redirect:/admin/updateMemberPage?user_id=" + dto.getUser_id() + "&result=true";
 	}
 	
-	// ========== 승인 관련 ========== 
+	// ========== 상품 승인 관련 ========== 
 	
 	@GetMapping("/approvalPage")
 	public String approvalPage(Model m) {
@@ -99,6 +99,14 @@ public class AdminController {
 	public String rejected(Model m, @RequestParam("product_id") Long product_id) {
 		as.approvedStatus(product_id, "REJECTED");
 		return "redirect:/admin/approvalPage";
+	}
+	
+	// ========== 로그 관련 ==========
+	
+	@GetMapping("/adminLogPage")
+	public String adminLogPage(Model m) {
+		
+		return "/admin/adminLog";
 	}
 	
 	
