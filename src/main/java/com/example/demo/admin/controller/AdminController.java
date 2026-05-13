@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.admin.dto.AdminDto;
 import com.example.demo.admin.service.AdminService;
+import com.example.demo.company.dto.CompanyUserDTO;
 import com.example.demo.personal.dto.UserDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -68,6 +69,22 @@ public class AdminController {
 	public String updateMember(UserDTO dto, Model m) {
 		as.updateUser(dto);
 		return "redirect:/admin/updateMemberPage?user_id=" + dto.getUser_id() + "&result=true";
+	}
+	
+	@GetMapping("/updateCompanyMemberPage")
+	public String updateCompanyMemberPage(@RequestParam("company_user_id") Long company_user_id, Model m, @RequestParam(required=false, name="result") String result) {
+		m.addAttribute("company", as.getCompanyUser(company_user_id));
+		if(result != null) {
+			m.addAttribute("result", result);
+			System.out.println("있다");
+		}
+		return "admin/updateCompanyMember";
+	}
+	
+	@PostMapping("/updateCompanyMember")
+	public String updateCompanyMember(CompanyUserDTO dto, Model m) {
+		as.updateCompanyUser(dto);
+		return "redirect:/admin/updateCompanyMemberPage?company_user_id=" + dto.getCompany_user_id() + "&result=true";
 	}
 	
 	// ========== 상품 승인 관련 ========== 
