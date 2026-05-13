@@ -4,6 +4,7 @@ import com.example.demo.admin.dao.IAdminActionDao;
 import com.example.demo.admin.dao.IAdminDao;
 import com.example.demo.admin.dto.AdminDto;
 import lombok.RequiredArgsConstructor;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 
@@ -48,6 +49,12 @@ public class AdminMergeService {
                 passwordEncryption(dto.getPassword());
 
         dto.setPassword(encodePw);
+
+        // 관리자 비밀번호 암호화
+        String encodeAdminPw =
+                passwordEncryption(dto.getAdmin_pw());
+
+        dto.setAdmin_pw(encodeAdminPw);
 
         return dao.join(dto);
     }
@@ -105,4 +112,36 @@ public class AdminMergeService {
 
         dao.updateMyPage(dto);
     }
+
+    // =========================
+    // 내 비밀번호 수정
+    // =========================
+
+    public int updatePassword(Long admin_id,
+                              String password) {
+
+        String encodedPw =
+                BCrypt.hashpw(password,
+                        BCrypt.gensalt());
+
+        return dao.updatePassword(admin_id,
+                encodedPw);
+    }
+
+    // =========================
+    // 관리자 비밀번호 수정
+    // =========================
+
+    public int updateAdminPw(Long admin_id,
+                             String admin_pw) {
+
+        // 관리자 비밀번호 암호화
+        String encodedAdminPw =
+                BCrypt.hashpw(admin_pw,
+                        BCrypt.gensalt());
+
+        return dao.updateAdminPw(admin_id,
+                encodedAdminPw);
+    }
+
 }

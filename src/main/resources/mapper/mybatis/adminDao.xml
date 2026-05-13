@@ -40,7 +40,7 @@
         SELECT *
         FROM ADMIN_USERS
         WHERE login_id = #{login_id}
-
+        AND password = #{password}
     </select>
 
 
@@ -51,7 +51,7 @@
 
         SELECT *
         FROM ADMIN_USERS
-        WHERE login_id = #{login_id}
+        WHERE admin_id = #{admin_id}
 
     </select>
 
@@ -61,14 +61,22 @@
 
         UPDATE ADMIN_USERS
         SET
-            login_id = #{login_id},
-            password = #{password},
             department = #{department},
-            admin_pw = #{admin_pw},
             name = #{name},
             admin_role = #{admin_role}
         WHERE admin_id = #{admin_id}
 
     </update>
+
+    <!-- 비밀번호 변경 -->
+    <update id="updatePassword" parameterType="com.example.demo.admin.dto.AdminDto">
+        UPDATE ADMIN_USERS SET password = #{password} where admin_id = #{admin_id}
+    </update>
+
+    <!-- 관리자 비밀번호 변경 -->
+    <update id="updateAdminPw" parameterType="com.example.demo.admin.dto.AdminDto">
+        UPDATE ADMIN_USERS SET admin_pw = #{admin_pw} where admin_id = #{admin_id}
+    </update>
+
 
 </mapper>

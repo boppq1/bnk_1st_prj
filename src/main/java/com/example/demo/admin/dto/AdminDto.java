@@ -15,7 +15,7 @@ public class AdminDto {
     String login_id;
     String password;
     String department;
-    Long admin_pw;
+    String admin_pw;
     String name;
     String admin_role;
 

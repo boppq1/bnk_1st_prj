@@ -1,28 +1,278 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>관리자 마이페이지</title>
+
+    <style>
+
+        .popup {
+            display: none;
+
+            position: fixed;
+
+            top: 50%;
+            left: 50%;
+
+            transform: translate(-50%, -50%);
+
+            width: 300px;
+
+            padding: 20px;
+
+            border: 1px solid black;
+
+            background-color: white;
+        }
+
+        .popup.active {
+            display: block;
+        }
+
+    </style>
+
 </head>
 <body>
-<h1>마이페이지</h1>
 
-<script src="/js/api.js"></script>
+<h2>관리자 마이페이지</h2>
+
+<!-- 조회 영역 -->
+<div>
+
+    <p>
+        <strong>Login ID :</strong>
+        <span th:text="${admin.login_id}"></span>
+    </p>
+
+    <p>
+        <strong>Department :</strong>
+        <span th:text="${admin.department}"></span>
+    </p>
+
+    <p>
+        <strong>Name :</strong>
+        <span th:text="${admin.name}"></span>
+    </p>
+
+    <p>
+        <strong>Admin Role :</strong>
+        <span th:text="${admin.admin_role}"></span>
+    </p>
+
+</div>
+
+<hr>
+
+<!-- 수정 폼 -->
+<h3>내 정보 수정</h3>
+
+<form th:action="@{/admin/update}"
+      method="post">
+
+    <!-- hidden -->
+    <input type="hidden"
+           name="admin_id"
+           th:value="${admin.admin_id}">
+
+    <div>
+        <label>Department</label>
+
+        <select name="department">
+
+            <option value="상품"
+                    th:selected="${admin.department == '상품'}">
+                상품
+            </option>
+
+            <option value="외환"
+                    th:selected="${admin.department == '외환'}">
+                외환
+            </option>
+
+            <option value="전체"
+                    th:selected="${admin.department == '전체'}">
+                전체
+            </option>
+
+        </select>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Name</label>
+
+        <input type="text"
+               name="name"
+               th:value="${admin.name}">
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>Admin Role</label>
+
+        <select name="admin_role">
+
+            <option value="chief"
+                    th:selected="${admin.admin_role == 'chief'}">
+                chief
+            </option>
+
+            <option value="head"
+                    th:selected="${admin.admin_role == 'head'}">
+                head
+            </option>
+
+            <option value="executive"
+                    th:selected="${admin.admin_role == 'executive'}">
+                executive
+            </option>
+
+        </select>
+
+    </div>
+
+    <br>
+
+    <button type="submit">
+        수정하기
+    </button>
+
+</form>
+
+<hr>
+
+<!-- 비밀번호 변경 버튼 -->
+<button type="button"
+        onclick="openPasswordPopup()">
+
+    비밀번호 변경
+
+</button>
+
+<!-- 관리자 비밀번호 변경 버튼 -->
+<button type="button"
+        onclick="openAdminPwPopup()">
+
+    관리자 비밀번호 변경
+
+</button>
+
+<!-- 비밀번호 팝업 -->
+<div class="popup"
+     id="passwordPopup">
+
+    <h3>비밀번호 변경</h3>
+
+    <form th:action="@{/admin/updatePassword}"
+          method="post">
+
+        <input type="hidden"
+               name="admin_id"
+               th:value="${admin.admin_id}">
+
+        <div>
+            <label>새 비밀번호</label>
+
+            <input type="password"
+                   name="password">
+        </div>
+
+        <br>
+
+        <button type="submit">
+            변경하기
+        </button>
+
+        <button type="button"
+                onclick="closePasswordPopup()">
+
+            닫기
+
+        </button>
+
+    </form>
+
+</div>
+
+<!-- 관리자 비밀번호 팝업 -->
+<div class="popup"
+     id="adminPwPopup">
+
+    <h3>관리자 비밀번호 변경</h3>
+
+    <form th:action="@{/admin/updateAdminPw}"
+          method="post">
+
+        <input type="hidden"
+               name="admin_id"
+               th:value="${admin.admin_id}">
+
+        <div>
+            <label>새 관리자 비밀번호</label>
+
+            <input type="password"
+                   name="admin_pw">
+        </div>
+
+        <br>
+
+        <button type="submit">
+            변경하기
+        </button>
+
+        <button type="button"
+                onclick="closeAdminPwPopup()">
+
+            닫기
+
+        </button>
+
+    </form>
+
+</div>
+
 <script>
-    // ✅ 보호된 페이지: 토큰 없으면 즉시 차단
-    if (!requireLogin()) {
-        // requireLogin() 내부에서 이미 redirect 처리됨
-    } else {
-        loadMyPage();
+
+    // 비밀번호 팝업 열기
+    function openPasswordPopup() {
+
+        document
+            .getElementById("passwordPopup")
+            .classList
+            .add("active");
     }
 
-    async function loadMyPage() {
-        const res = await apiFetch("/admin/mypage");
-        if (!res) return;
+    // 비밀번호 팝업 닫기
+    function closePasswordPopup() {
 
-        const data = await res.json();
-        console.log(data);
+        document
+            .getElementById("passwordPopup")
+            .classList
+            .remove("active");
     }
+
+    // 관리자 비밀번호 팝업 열기
+    function openAdminPwPopup() {
+
+        document
+            .getElementById("adminPwPopup")
+            .classList
+            .add("active");
+    }
+
+    // 관리자 비밀번호 팝업 닫기
+    function closeAdminPwPopup() {
+
+        document
+            .getElementById("adminPwPopup")
+            .classList
+            .remove("active");
+    }
+
 </script>
+
 </body>
 </html>

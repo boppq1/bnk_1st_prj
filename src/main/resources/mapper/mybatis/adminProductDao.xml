@@ -3,102 +3,178 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!-- 매퍼 만들기 -->
-
 <mapper namespace="com.example.demo.admin.dao.IAdminProductDao">
 
-<insert id="insertProduct">
-    insert into PRODUCT
-           (
-           product_id,
-           is_active,
-           product_name,
-           product_type,
-           min_period_month,
-           max_period_month,
-           min_amount,
-           max_amount,
-           target_customer,
-           product_desc,
-           interest_payment_type,
-           applied_exchange_rate_type,
-           created_at,
-           updated_at,
-           created_by,
-           approver,
-           approve_status,
-           updated_by,
-           app_start_date,
-           app_end_date,
-           mkt_msg_top,
-           mkt_msg_bottom,
-           join_method,
-           auto_transfer_svc,
-           revolving_info,
-           saving_method,
-           payment_restriction,
-           precautions,
-           fx_cash_fee,
-           auto_reinvestment,
-           tax_benefit,
-           payment_limit_info,
-           data_access_right,
-           illegal_contract_cancel,
-           depositor_protection,
-           rate_category)
-           values ( SEQ_PRODUCT.NEXTVAL, #{product_name}, #{is_active}, #{product_type},
-            #{min_period_month}, #{max_period_month}, #{min_amount}, #{max_amount},
-            #{target_customer}, #{product_desc}, #{interest_payment_type}, #{applied_exchange_rate_type},
-    #{created_at}, #{updated_at}, #{created_by}, #{updated_by}, #{approver}, #{approve_status},
-    #{app_start_date}, #{app_end_date}, #{mkt_msg_top}, #{mkt_msg_bottom}, #{join_method}, #{auto_transfer_svc},
-    #{saving_method}, #{payment_restriction}, #{precautions}, #{fx_cash_fee}, #{auto_reinvestment}, #{tax_benefit},
-    #{payment_limit_info}, #{data_access_right}, #{illegal_contract_cancel}, #{depositor_protection},
-    #{rate_category})
-</insert>
+    <!-- 상품 등록 -->
+    <insert id="registerPro"
+            parameterType="com.example.demo.admin.dto.ProductDto">
 
-<select id="selectAll">
-    select * from product
-</select>
+        INSERT INTO PRODUCT
+        (
+            product_id,
+            is_active,
+            product_name,
+            product_type,
+            min_period_month,
+            max_period_month,
+            min_amount,
+            max_amount,
+            target_customer,
+            product_desc,
+            interest_payment_type,
+            applied_exchange_rate_type,
+            created_at,
+            updated_at,
+            created_by,
+            approver,
+            updated_by,
+            app_start_date,
+            app_end_date,
+            mkt_msg_top,
+            mkt_msg_bottom,
+            join_method,
+            auto_transfer_svc,
+            revolving_info,
+            saving_method,
+            payment_restriction,
+            precautions,
+            fx_cash_fee,
+            auto_reinvestment,
+            tax_benefit,
+            payment_limit_info,
+            data_access_right,
+            illegal_contract_cancel,
+            depositor_protection,
+            rate_category
+        )
 
-<select id="selectProduct">
-    select * from products where product_id = #{param1}
-</select>
+        VALUES
+            (
+                SEQ_PRODUCT.NEXTVAL,
+                #{is_active},
+                #{product_name},
+                #{product_type},
+                #{min_period_month},
+                #{max_period_month},
+                #{min_amount},
+                #{max_amount},
+                #{target_customer},
+                #{product_desc},
+                #{interest_payment_type},
+                #{applied_exchange_rate_type},
+                SYSDATE,
+                SYSDATE,
+                #{created_by},
+                #{approver},
+                #{updated_by},
+                #{app_start_date},
+                #{app_end_date},
+                #{mkt_msg_top},
+                #{mkt_msg_bottom},
+                #{join_method},
+                #{auto_transfer_svc},
+                #{revolving_info},
+                #{saving_method},
+                #{payment_restriction},
+                #{precautions},
+                #{fx_cash_fee},
+                #{auto_reinvestment},
+                #{tax_benefit},
+                #{payment_limit_info},
+                #{data_access_right},
+                #{illegal_contract_cancel},
+                #{depositor_protection},
+                #{rate_category}
+            )
 
-    <update id="updateProduct">
+    </insert>
+
+    <!-- 상품 목록 조회 -->
+    <select id="listPro"
+            resultType="com.example.demo.admin.dto.ProductDto">
+
+        SELECT
+            product_id,
+            product_name,
+            approve_status,
+            created_at,
+            created_by,
+            is_active
+        FROM PRODUCT
+        ORDER BY product_id DESC
+
+    </select>
+
+    <!-- 상품 상세 조회 -->
+    <select id="listDetail"
+            parameterType="long"
+            resultType="com.example.demo.admin.dto.ProductDto">
+
+        SELECT *
+        FROM PRODUCT
+        WHERE product_id = #{product_id}
+
+    </select>
+
+    <!-- 상태별 조회 -->
+    <select id="selectByStatus"
+            parameterType="String"
+            resultType="com.example.demo.admin.dto.ProductDto">
+
+        SELECT
+            product_id,
+            product_name,
+            approve_status,
+            created_at,
+            created_by,
+            is_active
+        FROM PRODUCT
+        WHERE approve_status = #{approve_status}
+        ORDER BY product_id DESC
+
+    </select>
+
+    <!-- 상품 수정 -->
+    <update id="updatePro"
+            parameterType="com.example.demo.admin.dto.ProductDto">
 
         UPDATE PRODUCT
         SET
-            product_name = #{productName},
-            min_amount = #{minAmount},
-            max_amount = #{maxAmount},
-            app_start_date = #{appStartDate},
-            app_end_date = #{appEndDate},
-            mkt_msg_top = #{mktMsgTop},
-            mkt_msg_bottom = #{mktMsgBottom},
+            product_name = #{product_name},
+            min_amount = #{min_amount},
+            max_amount = #{max_amount},
+            app_start_date = #{app_start_date},
+            app_end_date = #{app_end_date},
+            mkt_msg_top = #{mkt_msg_top},
+            mkt_msg_bottom = #{mkt_msg_bottom},
             precautions = #{precautions},
-            approve_status = #{approveStatus},
+            approve_status = #{approve_status},
             updated_at = SYSDATE,
-            updated_by = #{updatedBy}
-        WHERE product_id = #{productId}
+            updated_by = #{updated_by}
+        WHERE product_id = #{product_id}
 
     </update>
 
-    <update id="updateProductStatus">
+    <!-- 상품 사용 여부 변경 판매 중인지 아닌지 -->
+    <update id="updateProductStatus"
+            parameterType="com.example.demo.admin.dto.ProductDto">
 
         UPDATE PRODUCT
         SET
-            is_active = #{isActive},
+            is_active = #{is_active},
             updated_at = SYSDATE,
-            updated_by = #{updatedBy}
-        WHERE product_id = #{productId}
+            updated_by = #{updated_by}
+        WHERE product_id = #{product_id}
 
     </update>
 
-    <delete id="deletePro">
-        delete table PRODUCT where product_id = #{product_id}
+    <!-- 상품 삭제 -->
+    <delete id="deletePro"
+            parameterType="long">
+
+        DELETE FROM PRODUCT
+        WHERE product_id = #{product_id}
+
     </delete>
-
-
-
 
 </mapper>

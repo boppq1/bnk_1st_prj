@@ -1,73 +1,73 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin Test Form</title>
-</head>
-<body>
+    <!DOCTYPE html>
+    <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Admin Test Form</title>
+    </head>
+    <body>
 
-<h2>Admin 등록 테스트</h2>
+    <h2>Admin 등록 테스트</h2>
 
-<form th:action="@{/admin/join}" th:object="${admin}" method="post">
-    <div>
-        <label>Login ID</label>
-        <input type="text" th:field="*{login_id}">
-    </div>
+    <form th:action="@{/admin/join}" th:object="${admin}" method="post">
+        <div>
+            <label>Login ID</label>
+            <input type="text" th:field="*{login_id}">
+        </div>
 
-    <br>
+        <br>
 
-    <div>
-        <label>Password</label>
-        <input type="password" th:field="*{password}">
-    </div>
+        <div>
+            <label>Password</label>
+            <input type="password" th:field="*{password}">
+        </div>
 
-    <br>
+        <br>
 
-    <div>
-        <label>Department</label>
+        <div>
+            <label>Department</label>
 
-        <select th:field="*{department}">
-            <option value="">부서 선택</option>
+            <select th:field="*{department}">
+                <option value="">부서 선택</option>
 
-            <option value="상품">상품</option>
-            <option value="외환">외환</option>
-            <option value="전체">전체</option>
-        </select>
-    </div>
+                <option value="상품">상품</option>
+                <option value="외환">외환</option>
+                <option value="전체">전체</option>
+            </select>
+        </div>
 
-    <br>
+        <br>
 
-    <div>
-        <label>Admin PW</label>
-        <input type="number" th:field="*{admin_pw}">
-    </div>
+        <div>
+            <label>Admin PW</label>
+            <input type="number" th:field="*{admin_pw}">
+        </div>
 
-    <br>
+        <br>
 
-    <div>
-        <label>Name</label>
-        <input type="text" th:field="*{name}">
-    </div>
+        <div>
+            <label>Name</label>
+            <input type="text" th:field="*{name}">
+        </div>
 
-    <br>
+        <br>
 
-    <div>
-        <label>Admin Role</label>
+        <div>
+            <label>Admin Role</label>
 
-        <select th:field="*{admin_role}">
-            <option value="">권한 선택</option>
+            <select th:field="*{admin_role}">
+                <option value="">권한 선택</option>
 
-            <option value="chief">chief</option>
-            <option value="head">head</option>
-            <option value="executive">executive</option>
-        </select>
-    </div>
+                <option value="chief">chief</option>
+                <option value="head">head</option>
+                <option value="executive">executive</option>
+            </select>
+        </div>
 
-    <br>
+        <br>
 
-    <button type="submit">전송</button>
+        <button type="submit">전송</button>
 
-</form>
+    </form>
 
-</body>
-</html>
+    </body>
+    </html>

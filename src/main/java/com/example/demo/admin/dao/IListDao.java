@@ -21,6 +21,6 @@ public interface IListDao {
 	ApprovalDto getApproval(Long approval_id);
 	void updateApproval(@Param("product_id") Long product_id, @Param("status")String status, @Param("admin_id") String admin_id);
 	void updateProduct(@Param("product_id") Long product_id, @Param("status") String status, @Param("admin_id") String admin_id);
-	void updateAdmin(@Param("admin_id") Long admin_id, @Param("password") String password, @Param("department") String department, @Param("admin_pw") Long admin_pw, @Param("name") String name, @Param("admin_role") String admin_role);
+	void updateAdmin(@Param("admin_id") Long admin_id, @Param("password") String password, @Param("department") String department, @Param("admin_pw") String admin_pw, @Param("name") String name, @Param("admin_role") String admin_role);
 	void updateUser(@Param("user_id") Long user_id, @Param("password") String password, @Param("name") String name, @Param("phone") String phone, @Param("birth") String birth, @Param("email") String email, @Param("gender") String gender, @Param("e_name") String e_name, @Param("postal_code") String postal_code, @Param("address") String address, @Param("address_detail") String address_detail);
 }

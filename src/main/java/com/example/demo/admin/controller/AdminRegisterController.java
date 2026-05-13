@@ -88,6 +88,7 @@ public String login(@RequestParam("login_id") String loginId,
 
     AdminDto admin = serv.login(dto);
 
+    // 로그인 성공
     if(admin != null) {
 
         session.setAttribute("adminId", admin.getAdmin_id());
@@ -99,7 +100,8 @@ public String login(@RequestParam("login_id") String loginId,
         return "redirect:/admin/adminMain";
     }
 
-    return "redirect:/adminLogin";
+    // 로그인 실패
+    return "redirect:/adminLogin?error=true";
 }
 
 
@@ -115,7 +117,7 @@ public String login(@RequestParam("login_id") String loginId,
 
         // 로그인 안 됨
         if(adminId == null) {
-            return "redirect:/admin/login";
+            return "redirect:/adminLogin";
         }
 
         AdminDto dto = new AdminDto();
@@ -136,6 +138,27 @@ public String login(@RequestParam("login_id") String loginId,
 
         return "redirect:/admin/adminMyPage";
     }
+
+    @PostMapping("/admin/passwordUpdate")
+    public String updatePassword(Long admin_id,
+                                 String password) {
+
+        serv.updatePassword(admin_id,
+                password);
+
+        return "redirect:/admin/adminMyPage";
+    }
+
+    @PostMapping("/admin/updateAdminPw")
+    public String updateAdminPw(Long admin_id,
+                                String admin_pw) {
+
+        serv.updateAdminPw(admin_id,
+                admin_pw);
+
+        return "redirect:/admin/adminMyPage";
+    }
+
 
 
 
