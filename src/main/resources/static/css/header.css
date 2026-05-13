@@ -21,25 +21,18 @@ body {
 .main-header {
     width: 100%;
     background: white;
-
     border-bottom: 2px solid #e60012;
-
     position: relative;
-
     display: flex;
     justify-content: center;
 }
 
 /* 내부 영역 */
 .header-inner {
-
     width: 100%;
     max-width: 1100px;
-
     height: 96px;
-
     padding: 0 30px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -51,9 +44,7 @@ body {
 .header-left {
     display: flex;
     align-items: center;
-
     gap: 30px;
-
     flex-shrink: 0;
 }
 
@@ -70,16 +61,11 @@ body {
 }
 
 .bank-type a {
-
     text-decoration: none;
-
     color: #666;
-
     font-size: 15px;
     font-weight: 500;
-
     white-space: nowrap;
-
     transition: 0.2s;
 }
 
@@ -98,13 +84,10 @@ body {
    메뉴 영역
 ========================= */
 .menu-area {
-
     height: 100%;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     flex-grow: 1;
 }
 
@@ -114,9 +97,10 @@ body {
     gap: 50px;
     list-style: none;
 }
+
 .nav-menu a {
-	 text-decoration: none;
-	 color: #111;
+    text-decoration: none;
+    color: #111;
 }
 
 /* li는 레이아웃만 담당 */
@@ -137,10 +121,7 @@ body {
 .nav-menu li:hover > a {
     color: #e60012;
 }
-.nav-menu a:hover,
-.active-menu {
-    color: #e60012;
-}
+
 .nav-menu a:hover,
 .active-menu {
     color: #e60012;
@@ -150,28 +131,22 @@ body {
 .nav-menu li.active-menu > a {
     color: #e60012;
 }
+
 /* =========================
    오른쪽 영역
 ========================= */
 .header-right {
-
     display: flex;
     align-items: center;
-
     gap: 20px;
-
     flex-shrink: 0;
 }
 
 .join-text,
 .login-text {
-
     font-size: 14px;
-
     cursor: pointer;
-
     white-space: nowrap;
-
     transition: 0.2s;
 }
 
@@ -182,20 +157,14 @@ body {
 
 /* 아이콘 */
 .header-icons {
-
     display: flex;
-
     gap: 15px;
-
     font-size: 22px;
-
     cursor: pointer;
 }
 
 .header-icons i {
-
     color: #111;
-
     transition: 0.2s;
 }
 
@@ -204,45 +173,38 @@ body {
 }
 
 .header-right {
-
     display: flex;
     align-items: center;
-
     gap: 20px;
-
     flex-shrink: 0;
-
     position: relative;
     z-index: 1000;
 }
+
 /* =========================
    드롭다운
 ========================= */
 .full-dropdown {
-
     position: absolute;
-
     top: 96px;
-
     left: 0;
-
     width: 100%;
-
     background: white;
-
     border-top: 1px solid #eee;
-
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
     padding: 40px 0;
-
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-
     transition: all 0.25s ease;
-
     z-index: 999;
+}
+
+/* JS로 제어할 active 클래스 */
+.full-dropdown.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 /* 메뉴 hover 시 dropdown */
@@ -254,18 +216,12 @@ body {
 
 /* dropdown 내부 */
 .dropdown-inner {
-
     width: 100%;
     max-width: 1100px;
-
     margin: 0 auto;
-
     padding: 0 30px;
-
     display: flex;
-
     justify-content: flex-start;
-
     gap: 80px;
 }
 
@@ -276,36 +232,85 @@ body {
 
 /* 제목 */
 .dropdown-column h4 {
-
     font-size: 17px;
-
     margin-bottom: 15px;
-
     color: #111;
 }
 
 /* 메뉴 */
 .dropdown-column a {
-
     display: block;
-
     text-decoration: none;
-
     color: #666;
-
     font-size: 14px;
-
     margin-bottom: 10px;
-
     white-space: nowrap;
-
     transition: 0.2s;
 }
 
 /* hover */
 .dropdown-column a:hover {
-
     color: #e60012;
-
     text-decoration: underline;
+}
+
+/* =========================
+   로그인 드롭다운
+========================= */
+.login-area {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.login-text {
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.login-text:hover {
+    color: #e60012;
+}
+
+/* 드롭다운 */
+.login-dropdown {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 100%; /* 드롭다운을 로그인 텍스트 아래에 위치 */
+    padding-top: 5px; /* 브릿지 역할 */
+    width: auto; /* 중요: 고정폭 제거 */
+    white-space: nowrap; /* 줄바꿈 방지 */
+    background: white;
+    border: 1px solid #eee;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: row; /* 핵심: 세로 → 가로 */
+    gap: 5px; /* 버튼 간격 */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: 0.2s;
+    z-index: 2000;
+}
+
+/* hover 시 표시 */
+.login-area:hover .login-dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* 링크 */
+.login-dropdown a {
+    padding: 10px 14px;
+    text-decoration: none;
+    font-size: 13px;
+    color: #333;
+    white-space: nowrap;
+}
+
+.login-dropdown a:hover {
+    color: #e60012;
 }

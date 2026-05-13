@@ -18,6 +18,6 @@ public interface IAdminDao {
                        @Param("password") String password);
 
     int updateAdminPw(@Param("admin_id") Long admin_id,
-                       @Param("Admin_pw") String Admin_pw);
+                       @Param("admin_pw") String Admin_pw);
 
 }

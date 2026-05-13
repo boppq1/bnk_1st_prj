@@ -40,7 +40,6 @@
         SELECT *
         FROM ADMIN_USERS
         WHERE login_id = #{login_id}
-        AND password = #{password}
     </select>
 
 

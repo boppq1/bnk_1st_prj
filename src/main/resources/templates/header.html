@@ -140,8 +140,18 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     <!-- 오른쪽 -->
     <div class="header-right">
 
-      <span class="join-text"><a th:href="@{/registerPage}">회원가입</a></span>
-      <span class="login-text">로그인</span>
+      <!-- 로그인 드롭다운 -->
+      <div class="login-area">
+
+        <span class="login-text">로그인</span>
+
+        <!-- 드롭다운 -->
+        <div class="login-dropdown">
+          <a th:href="@{/personal/personalMain}">개인뱅킹</a>
+          <a th:href="@{/company/companyMain}">기업뱅킹</a>
+        </div>
+
+      </div>
 
       <div class="header-icons">
         <i class="fa-solid fa-magnifying-glass"></i>

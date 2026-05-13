@@ -160,13 +160,17 @@
 
 </button>
 
+<hr>
+<a href="/admin/logout">로그아웃</a>
+
+
 <!-- 비밀번호 팝업 -->
 <div class="popup"
      id="passwordPopup">
 
     <h3>비밀번호 변경</h3>
 
-    <form th:action="@{/admin/updatePassword}"
+    <form th:action="@{/admin/passwordUpdate}"
           method="post">
 
         <input type="hidden"
@@ -231,6 +235,7 @@
         </button>
 
     </form>
+
 
 </div>
 
