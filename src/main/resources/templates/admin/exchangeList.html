@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BNK Busan Bank - 환전 거래 내역 관리</title>
+    <!-- Font Awesome & Pretendard -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    
+    <style>
+        :root {
+            --primary-color: #ED1C24;    /* BNK Red */
+            --bg-color: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --border-color: #E0E4E8;
+            --text-main: #212529;
+            --text-label: #6C757D;
+            --sidebar-width: 260px;
+            --header-height: 70px;
+            
+            /* 환전 강조 컬러 */
+            --color-withdrawal: #dc3545; /* 출금(Red계열) */
+            --color-deposit: #007bff;    /* 입금(Blue계열) */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); display: flex; min-height: 100vh; }
+
+        /* 사이드바 & 헤더 (일관성 유지) */
+        .sidebar { width: var(--sidebar-width); height: 100vh; background-color: #FFFFFF; border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0; z-index: 100; }
+        .sidebar-logo { padding: 20px 30px; margin-bottom: 20px; }
+        .sidebar-logo img { width: 130px; }
+        .menu-item { display: flex; align-items: center; padding: 15px 30px; color: var(--text-main); text-decoration: none; font-size: 15px; }
+        .menu-item i { margin-right: 15px; width: 20px; text-align: center; color: #ADB5BD; }
+        .menu-item.active { background-color: #FFF2F2; color: var(--primary-color); font-weight: 700; border-left: 4px solid var(--primary-color); }
+        .menu-item.active i { color: var(--primary-color); }
+
+        .header { position: fixed; top: 0; left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); height: var(--header-height); background-color: #FFFFFF; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 40px; z-index: 90; }
+
+        /* 메인 컨텐츠 */
+        .main-content { margin-left: var(--sidebar-width); margin-top: var(--header-height); width: calc(100% - var(--sidebar-width)); padding: 40px; }
+        
+        .content-header { margin-bottom: 30px; }
+        .content-title { font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+
+        /* 테이블 카드 */
+        .table-card {
+            background-color: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); overflow: hidden;
+        }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        thead { background-color: #FBFBFC; border-bottom: 2px solid var(--border-color); }
+        th { padding: 15px; font-size: 13px; font-weight: 600; color: var(--text-label); text-align: center; }
+        td { padding: 18px 15px; font-size: 14px; border-bottom: 1px solid #F1F3F5; text-align: center; }
+        tr:hover { background-color: #F8F9FA; }
+
+        /* 통화 및 금액 강조 */
+        .currency-tag { font-weight: 800; font-size: 12px; padding: 2px 6px; border-radius: 4px; background: #eee; margin-right: 4px; }
+        .amount-val { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; }
+        .withdrawal { color: var(--color-withdrawal); }
+        .deposit { color: var(--color-deposit); }
+        
+        /* 회원 유형 배지 */
+        .type-badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; background: #f0f0f0; color: #555; }
+        .type-individual { background: #E3F2FD; color: #1976D2; }
+        .type-corporate { background: #F3E5F5; color: #7B1FA2; }
+
+        /* 화살표 아이콘 */
+        .flow-icon { color: #ADB5BD; margin: 0 10px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <img src="https://sites.bnk.co.kr/main/resource/img/common/logo_busan.png" alt="BNK 부산은행">
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> 대시보드</a></li>
+            <li><a href="#" class="menu-item active"><i class="fa-solid fa-coins"></i> 외환 및 환전 관리</a></li>
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-file-signature"></i> 상품 승인 심사</a></li>
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-users"></i> 회원 통합 관리</a></li>
+        </ul>
+    </div>
+
+    <div class="header">
+        <div class="header-title">외환 업무 지원 시스템</div>
+    </div>
+
+    <div class="main-content">
+        <div class="content-header">
+            <h1 class="content-title"><i class="fa-solid fa-money-bill-transfer" style="color: var(--primary-color);"></i> 환전 요청 내역 조회</h1>
+            <p style="color: var(--text-label); font-size: 14px; margin-top: 5px;">실시간으로 발생하는 모든 환전 거래 내역과 적용 환율을 모니터링합니다.</p>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>요청 ID</th>
+                        <th>회원 유형</th>
+                        <th>출금 계좌</th>
+                        <th>입금 계좌</th>
+                        <th>거래 통화 흐름</th>
+                        <th>출금 금액</th>
+                        <th>입금 금액</th>
+                        <th>적용 환율</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="exchange : ${exchangeList}">
+                        <td th:text="${exchange.exchange_id}" style="font-weight: 700; color: #333;"></td>
+                        <td>
+                            <!-- 유형별 배지 분기 처리 -->
+                            <span th:text="${exchange.type}" 
+                                  th:classappend="${exchange.type == '개인' ? 'type-badge type-individual' : 'type-badge type-corporate'}">
+                            </span>
+                        </td>
+                        <td th:text="${exchange.from_account}" style="font-size: 13px; color: #666;"></td>
+                        <td th:text="${exchange.to_account}" style="font-size: 13px; color: #666;"></td>
+                        <td>
+                            <span class="currency-tag" th:text="${exchange.from_currency}"></span>
+                            <i class="fa-solid fa-chevron-right flow-icon"></i>
+                            <span class="currency-tag" th:text="${exchange.to_currency}"></span>
+                        </td>
+                        <td class="amount-val withdrawal" th:text="${exchange.from_amount}"></td>
+                        <td class="amount-val deposit" th:text="${exchange.to_amount}"></td>
+                        <td style="font-weight: 700; color: var(--primary-color);">
+                            <i class="fa-solid fa-chart-line" style="font-size: 12px; margin-right: 4px;"></i>
+                            <span th:text="${exchange.applied_rate}"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

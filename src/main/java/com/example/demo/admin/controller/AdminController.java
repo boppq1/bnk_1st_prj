@@ -112,4 +112,11 @@ public class AdminController {
 	}
 	
 	
+	// ========== 환전 내역 관련 ==========
+	@GetMapping("/exchangeListPage")
+	public String exchangeListPage(Model m) {
+		m.addAttribute("exchangeList", as.exchangeList());
+		return "/admin/exchangeList";
+	}
+	
 }

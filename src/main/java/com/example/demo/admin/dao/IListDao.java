@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.example.demo.admin.dto.AdminDto;
 import com.example.demo.admin.dto.ApprovalDto;
-import com.example.demo.admin.dto.ProductDto;
+import com.example.demo.company.dto.CompanyUserDTO;
 import com.example.demo.personal.dto.UserDTO;
 
 @Mapper
