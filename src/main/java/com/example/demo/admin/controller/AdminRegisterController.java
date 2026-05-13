@@ -97,7 +97,7 @@
 
             System.out.println("Session ID: " + session.getId());
 
-            return "redirect:/admin/adminMain";
+            return "redirect:/admin/adminMyPage";
         }
 
         // 로그인 실패

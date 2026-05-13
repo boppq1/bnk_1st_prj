@@ -40,8 +40,6 @@ public class AdminMergeService {
 
     // =========================
     // 회원가입
-    // =========================
-    // 회원가입
     public int join(AdminDto dto) {
 
         // 비밀번호 암호화

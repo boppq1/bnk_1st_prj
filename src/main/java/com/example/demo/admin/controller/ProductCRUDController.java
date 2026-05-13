@@ -17,16 +17,16 @@ public class ProductCRUDController {
     private final AdminProductService serv;
 
     // 상품 등록 페이지
-    @GetMapping("/register")
+    @GetMapping("/admin/productRegisterPage")
     public String registerPage(Model model) {
 
         model.addAttribute("product", new ProductDto());
 
-        return "admin/product/registerProduct";
+        return "admin/productRegisterPage";
     }
 
     // 상품 등록
-    @PostMapping("/register")
+    @PostMapping("/admin/productRegister")
     public String registerProduct(ProductDto dto,
                                   HttpSession session) {
 
@@ -46,7 +46,7 @@ public class ProductCRUDController {
 
 
     // 상품 목록 조회
-    @GetMapping("/list")
+    @GetMapping("/admin/productListPage")
     public String listPro(Model model) {
 
         List<ProductDto> list =
@@ -54,11 +54,11 @@ public class ProductCRUDController {
 
         model.addAttribute("list", list);
 
-        return "admin/product/productList";
+        return "admin/productListPage";
     }
 
     // 상태별 조회
-    @GetMapping("/status")
+    @GetMapping("/admin/proStatus")
     public String selectByStatus(
             @RequestParam("approve_status")
             String approve_status,
@@ -143,5 +143,7 @@ public class ProductCRUDController {
 
         return "redirect:/admin/product/list";
     }
+
+
 
 }

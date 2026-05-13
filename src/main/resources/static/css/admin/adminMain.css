@@ -1,0 +1,214 @@
+@charset "UTF-8";
+
+:root {
+    --primary-color: #ED1C24;
+    --bg-color: #F8F9FA;
+    --border-color: #E0E4E8;
+    --text-main: #212529;
+    --text-label: #6C757D;
+    --text-muted: #ADB5BD;
+    --card-bg: #FFFFFF;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0; padding: 0;
+    font-family: 'Pretendard', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 상단 헤더 바 */
+.top-bar {
+    width: 100%;
+    height: 70px;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 60px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.top-bar img {
+    width: 130px;
+}
+
+.top-bar-right {
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* 메인 영역 */
+.main-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+}
+
+.center-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+}
+
+/* 환영 텍스트 */
+.welcome-section {
+    text-align: center;
+}
+
+.welcome-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #FFF2F2;
+    color: var(--primary-color);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #FFCDD0;
+}
+
+.welcome-badge i {
+    font-size: 12px;
+}
+
+.welcome-title {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1.3;
+    margin-bottom: 12px;
+}
+
+.welcome-title span {
+    color: var(--primary-color);
+}
+
+.welcome-desc {
+    font-size: 16px;
+    color: var(--text-label);
+    line-height: 1.6;
+}
+
+/* 카드 2개 나란히 */
+.card-row {
+    display: flex;
+    gap: 24px;
+}
+
+.action-card {
+    width: 280px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    text-decoration: none;
+    color: var(--text-main);
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.action-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.10);
+    border-color: #FFCDD0;
+}
+
+.card-icon-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+}
+
+.card-icon-wrap.red {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(237, 28, 36, 0.3);
+}
+
+.card-icon-wrap.gray {
+    background-color: #F1F5F9;
+    color: #64748B;
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.card-desc {
+    font-size: 14px;
+    color: var(--text-label);
+    line-height: 1.5;
+}
+
+.card-btn {
+    margin-top: 8px;
+    width: 100%;
+    height: 46px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-btn.primary {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 8px rgba(237, 28, 36, 0.2);
+}
+
+.card-btn.primary:hover {
+    background-color: #D61A20;
+}
+
+.card-btn.outline {
+    background-color: transparent;
+    color: var(--text-main);
+    border: 1.5px solid var(--border-color);
+}
+
+.card-btn.outline:hover {
+    background-color: #F8F9FA;
+    border-color: #CBD5E1;
+}
+
+/* 하단 푸터 */
+.footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 13px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    background-color: #FFFFFF;
+}

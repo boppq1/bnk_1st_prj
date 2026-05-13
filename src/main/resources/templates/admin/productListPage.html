@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>상품 목록</title>
+</head>
+<body>
+
+<h1>상품 목록</h1>
+
+<a href="/admin/makeProductPage">상품 등록</a>
+
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>상품명</th>
+    <th>가격</th>
+    <th>상태</th>
+    <th>상세</th>
+    <th>수정</th>
+    <th>삭제</th>
+  </tr>
+
+  <tr th:each="p : ${list}">
+    <td th:text="${p.product_id}"></td>
+    <td th:text="${p.product_name}"></td>
+    <td th:text="${p.price}"></td>
+    <td th:text="${p.approve_status}"></td>
+
+    <td>
+      <a th:href="@{/detail/{id}(id=${p.product_id})}">상세</a>
+    </td>
+
+    <td>
+      <a th:href="@{/update/{id}(id=${p.product_id})}">수정</a>
+    </td>
+
+    <td>
+      <a th:href="@{/delete/{id}(id=${p.product_id})}">삭제</a>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
