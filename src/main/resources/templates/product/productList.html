@@ -25,9 +25,9 @@
 
         <nav class="sidebar-category">
             <a class="active" th:href="@{/product/personal}">상품몰 홈</a>
-            <a th:href="@{/product/personal(productType='예금')}">예금</a>
-            <a th:href="@{/product/personal(productType='적금')}">적금</a>
-            <a th:href="@{/product/personal(productType='외화예금')}">외환</a>
+            <a th:href="@{/product/personal(productType='DEPOSIT')}">예금</a>
+            <a th:href="@{/product/personal(productType='SAVINGS')}">적금</a>
+            <a th:href="@{/product/personal(productType='FOREIGN_DEP')}">외환</a>
             <a href="#">퇴직연금</a>
             <a href="#">펀드</a>
         </nav>
@@ -53,10 +53,10 @@
 
             <select name="productType">
                 <option value="">전체 상품</option>
-                <option value="예금">예금</option>
-                <option value="적금">적금</option>
-                <option value="외화예금">외환</option>
-                <option value="외화적금">외화적금</option>
+                <option value="DEPOSIT">예금</option>
+                <option value="SAVINGS">적금</option>
+                <option value="FOREIGN_DEP">외화예금</option>
+                <option value="FOREIGN_SAV">외화적금</option>
             </select>
 
             <select name="sort">
@@ -75,7 +75,13 @@
                 <th:block th:each="item, stat : ${products.products}">
                     <article class="recommend-card" th:if="${stat.index < 3}">
                         <div class="card-labels">
-                            <span th:text="${item.productType}">예금</span>
+                            <span th:switch="${item.productType}">
+                                <span th:case="'DEPOSIT'">예금</span>
+                                <span th:case="'SAVINGS'">적금</span>
+                                <span th:case="'FOREIGN_DEP'">외화예금</span>
+                                <span th:case="'FOREIGN_SAV'">외화적금</span>
+                                <span th:case="*" th:text="${item.productType}">상품</span>
+                            </span>
                             <a th:href="@{/product/{id}(id=${item.productId})}">상품 상세</a>
                         </div>
 
@@ -85,11 +91,11 @@
                         <ul>
                             <li>
                                 가입대상
-                                <strong th:switch="${item.targetCustomer}">
-                                    <span th:case="'all'">전체</span>
-                                    <span th:case="'personal'">개인</span>
-                                    <span th:case="'company'">기업</span>
-                                    <span th:case="*" th:text="${item.targetCustomer}">전체</span>
+                                <strong th:switch="${item.targetLarge}">
+                                    <span th:case="'ALL'">전체고객</span>
+                                    <span th:case="'PERSONAL'">개인고객</span>
+                                    <span th:case="'COMPANY'">기업고객</span>
+                                    <span th:case="*" th:text="${item.targetLarge}">전체고객</span>
                                 </strong>
                             </li>
                             <li>
@@ -137,13 +143,19 @@
                         </a>
                     </td>
 
-                    <td th:text="${item.productType}">예금</td>
+                    <td th:switch="${item.productType}">
+                        <span th:case="'DEPOSIT'">예금</span>
+                        <span th:case="'SAVINGS'">적금</span>
+                        <span th:case="'FOREIGN_DEP'">외화예금</span>
+                        <span th:case="'FOREIGN_SAV'">외화적금</span>
+                        <span th:case="*" th:text="${item.productType}">상품</span>
+                    </td>
 
-                    <td th:switch="${item.targetCustomer}">
-                        <span th:case="'all'">전체</span>
-                        <span th:case="'personal'">개인</span>
-                        <span th:case="'company'">기업</span>
-                        <span th:case="*" th:text="${item.targetCustomer}">전체</span>
+                    <td th:switch="${item.targetLarge}">
+                        <span th:case="'ALL'">전체고객</span>
+                        <span th:case="'PERSONAL'">개인고객</span>
+                        <span th:case="'COMPANY'">기업고객</span>
+                        <span th:case="*" th:text="${item.targetLarge}">전체고객</span>
                     </td>
 
                     <td>
@@ -158,7 +170,7 @@
                                th:data-id="${item.productId}"
                                th:data-name="${item.productName}"
                                th:data-type="${item.productType}"
-                               th:data-target="${item.targetCustomer}"
+                               th:data-target="${item.targetLarge}"
                                th:data-rate="${item.maxRate}"
                                th:data-desc="${item.productDesc}"
                                th:data-min-period="${item.minPeriodMonth}"
@@ -199,13 +211,12 @@
 <div class="compare-modal" id="compareModal">
     <div class="compare-modal-box">
         <div class="compare-modal-head">
-		    <div>
-		        <h2>맞춤 상품 비교</h2>
-		
-		        <p class="compare-sub-title">
-		            내 조건에 맞는 상품을 비교하고 추천 결과를 확인해보세요
-		        </p>
-		    </div>
+            <div>
+                <h2>맞춤 상품 비교</h2>
+                <p class="compare-sub-title">
+                    내 조건에 맞는 상품을 비교하고 추천 결과를 확인해보세요
+                </p>
+            </div>
             <button type="button" id="compareCloseBtn">×</button>
         </div>
 
@@ -213,8 +224,8 @@
             <label>
                 가입대상
                 <select id="compareTarget">
-                    <option value="personal">개인</option>
-                    <option value="company">기업</option>
+                    <option value="PERSONAL">개인</option>
+                    <option value="COMPANY">기업</option>
                 </select>
             </label>
 

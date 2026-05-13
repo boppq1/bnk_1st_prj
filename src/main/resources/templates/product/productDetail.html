@@ -16,7 +16,15 @@
 
     <section class="detail-hero">
 
-        <p class="detail-label" th:text="${product.productType}">상품 유형</p>
+        <p class="detail-label" th:switch="${product.productType}">
+            <span th:case="'DEPOSIT'">예금</span>
+            <span th:case="'SAVINGS'">적금</span>
+            <span th:case="'FOREIGN_DEP'">외화예금</span>
+            <span th:case="'FOREIGN_SAV'">외화적금</span>
+            <span th:case="'CORP_DEP'">기업예금</span>
+            <span th:case="'CORP_SAV'">기업적금</span>
+            <span th:case="*" th:text="${product.productType}">상품 유형</span>
+        </p>
 
         <h1 th:text="${product.productName}">상품명</h1>
 
@@ -28,11 +36,25 @@
 
         <div class="summary-card">
             <h3>가입 대상</h3>
-            <p th:switch="${product.targetCustomer}">
-                <span th:case="'all'">전체</span>
-                <span th:case="'personal'">개인</span>
-                <span th:case="'company'">기업</span>
-                <span th:case="*" th:text="${product.targetCustomer}">전체</span>
+            <p th:switch="${product.targetLarge}">
+                <span th:case="'ALL'">전체고객</span>
+                <span th:case="'PERSONAL'">개인고객</span>
+                <span th:case="'COMPANY'">기업고객</span>
+                <span th:case="*" th:text="${product.targetLarge}">전체고객</span>
+            </p>
+        </div>
+
+        <div class="summary-card">
+            <h3>세부 대상</h3>
+            <p th:switch="${product.targetDetail}">
+                <span th:case="'ALL'">제한 없음</span>
+                <span th:case="'YOUTH'">청년고객</span>
+                <span th:case="'SENIOR'">시니어고객</span>
+                <span th:case="'CHILD'">어린이고객</span>
+                <span th:case="'STARTUP'">스타트업</span>
+                <span th:case="'SME'">중소기업</span>
+                <span th:case="'PUBLIC'">공공기관</span>
+                <span th:case="*" th:text="${product.targetDetail}">제한 없음</span>
             </p>
         </div>
 
@@ -40,6 +62,9 @@
             <h3>가입금액</h3>
             <p>
                 <span th:text="${#numbers.formatInteger(product.minAmount, 3, 'COMMA')}">10,000</span>원 ~
+                <span th:if="${product.maxAmount != null}"
+                      th:text="${#numbers.formatInteger(product.maxAmount, 3, 'COMMA')}">100,000,000</span>
+                <span th:if="${product.maxAmount != null}">원</span>
             </p>
         </div>
 

@@ -20,7 +20,7 @@ public class ProductViewController {
     @GetMapping("/product/personal")
     public String personalProductPage(ProductListRequestDto dto, Model model) {
 
-        dto.setTargetCustomer("personal");
+        dto.setTargetLarge("PERSONAL");
 
         model.addAttribute("pageTitle", "개인 상품몰");
         model.addAttribute("customerType", "personal");
@@ -29,12 +29,11 @@ public class ProductViewController {
         return "product/productList";
     }
 
-
     // 기업 상품몰
     @GetMapping("/product/company")
     public String companyProductPage(ProductListRequestDto dto, Model model) {
 
-        dto.setTargetCustomer("company");
+        dto.setTargetLarge("COMPANY");
 
         model.addAttribute("pageTitle", "기업 상품몰");
         model.addAttribute("customerType", "company");
@@ -43,19 +42,13 @@ public class ProductViewController {
         return "product/productCompany";
     }
 
-
     // 상품 상세
     @GetMapping("/product/{productId}")
     public String productDetailPage(
             @PathVariable("productId") Long productId,
             Model model
     ) {
-
-        model.addAttribute(
-                "product",
-                productService.getProductDetail(productId)
-        );
-
+        model.addAttribute("product", productService.getProductDetail(productId));
         return "product/productDetail";
     }
 }

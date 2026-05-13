@@ -18,7 +18,8 @@ public class ProductDetailResponseDto {
 
     private String productType; // 상품 유형
 
-    private String targetCustomer; // 가입 대상
+    private String targetLarge;// 고객 유형: personal(개인), company(기업), all(전체)
+	private String targetDetail; // 고객 유형 소분류: 나이대로 분류
 
     private Integer minPeriodMonth; // 최소 가입 기간
 

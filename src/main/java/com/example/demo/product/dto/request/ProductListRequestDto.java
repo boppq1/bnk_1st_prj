@@ -6,7 +6,8 @@ import lombok.Data;
 
 @Data
 public class ProductListRequestDto {
-	private String targetCustomer; // 고객 유형: personal(개인), company(기업)
+	private String targetLarge;// 고객 유형: personal(개인), company(기업), all(전체)
+	private String targetDetail; // 고객 유형 소분류: 나이대로 분류
     private String productType;    // 상품 유형: 예금, 적금, 외화예금
     private String rateCategory;   // 금리 카테고리: 국내, 외환
     private String keyword;		   // 검색 키워드: 상품명, 상품 설명 검색용

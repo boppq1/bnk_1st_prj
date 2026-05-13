@@ -32,5 +32,5 @@ public interface ProductDao {
     List<PreferentialRateResponseDto> getPreferentialRates(Long productId);
 
     // 추천 상품
-    List<ProductListResponseDto> getRecommendProducts(String targetCustomer);
-}
+    List<ProductListResponseDto> getRecommendProducts(ProductListRequestDto dto);
+    }

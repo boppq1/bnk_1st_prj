@@ -24,43 +24,42 @@ public class ProductController {
     private final ProductService productService;
 
     // 전체 상품 리스트
-    // 예: /api/products?page=1&size=10
     @GetMapping
     public ProductPageResponseDto getProducts(ProductListRequestDto dto) {
         return productService.getProductList(dto);
     }
 
     // 개인 상품 리스트
-    // 예: /api/products/personal?page=1&size=10
     @GetMapping("/personal")
     public ProductPageResponseDto getPersonalProducts(ProductListRequestDto dto) {
-        dto.setTargetCustomer("personal");
+        dto.setTargetLarge("PERSONAL");
         return productService.getProductList(dto);
     }
 
     // 기업 상품 리스트
-    // 예: /api/products/company?page=1&size=10
     @GetMapping("/company")
     public ProductPageResponseDto getCompanyProducts(ProductListRequestDto dto) {
-        dto.setTargetCustomer("company");
+        dto.setTargetLarge("COMPANY");
         return productService.getProductList(dto);
     }
 
-	 // 추천 상품
-	 // 예: /api/products/recommend?targetCustomer=personal
-	 @GetMapping("/recommend")
-	 public List<ProductListResponseDto> getRecommendProducts(
-	         @RequestParam("targetCustomer") String targetCustomer
-	 ) {
-	     return productService.getRecommendProducts(targetCustomer);
-	 }
-	
-	 // 상품 상세
-	 // 예: /api/products/1
-	 @GetMapping("/{productId}")
-	 public ProductDetailResponseDto getProductDetail(
-	         @PathVariable("productId") Long productId
-	 ) {
-	     return productService.getProductDetail(productId);
-	 }
+    // 추천 상품
+    // 예: /api/products/recommend?targetLarge=PERSONAL
+    @GetMapping("/recommend")
+    public List<ProductListResponseDto> getRecommendProducts(
+            @RequestParam("targetLarge") String targetLarge
+    ) {
+        ProductListRequestDto dto = new ProductListRequestDto();
+        dto.setTargetLarge(targetLarge.toUpperCase());
+
+        return productService.getRecommendProducts(dto);
+    }
+
+    // 상품 상세
+    @GetMapping("/{productId}")
+    public ProductDetailResponseDto getProductDetail(
+            @PathVariable("productId") Long productId
+    ) {
+        return productService.getProductDetail(productId);
+    }
 }

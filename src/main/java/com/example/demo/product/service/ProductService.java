@@ -42,7 +42,7 @@ public class ProductService {
 		return detail;
 	}
 //	추천 상품
-	public List<ProductListResponseDto> getRecommendProducts(String target){
-		return dao.getRecommendProducts(target);
+	public List<ProductListResponseDto> getRecommendProducts(ProductListRequestDto dto) {
+	    return dao.getRecommendProducts(dto);
 	}
 }
