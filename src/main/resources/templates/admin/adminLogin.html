@@ -1,39 +1,85 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>관리자 로그인</title>
-</head>
+    <title>BNK Busan Bank - 관리자 로그인</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <link rel="stylesheet" th:href="@{/css/admin/adminLogin.css}">
 
+</head>
 <body>
 
-<div class="login-box">
+<!-- 상단 바 -->
+<div class="top-bar">
+    <img src="/images/BNKlogo.png" alt="BNK 부산은행 로고">
+    <a href="/admin/adminMain" class="top-bar-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        메인으로 돌아가기
+    </a>
+</div>
 
-    <h2>관리자 로그인</h2>
+<!-- 메인 -->
+<div class="main-wrapper">
+    <div class="login-card">
 
-    <script th:if="${param.error}">
-        alert("아이디 또는 비밀번호를 다시 확인해 주세요!!!");
-    </script>
+        <div class="card-header">
+            <div class="icon-wrap">
+                <i class="fa-solid fa-right-to-bracket"></i>
+            </div>
+            <h2>관리자 로그인</h2>
+            <p>BNK 부산은행 관리자 포털에 로그인하세요</p>
+        </div>
 
-    <!-- 로그인 폼 -->
-    <form th:action="@{/admin/login}" method="post">
+        <!-- 에러 시 표시 (Thymeleaf) -->
+        <div class="error-alert" th:if="${param.error}">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            아이디 또는 비밀번호를 다시 확인해 주세요.
+        </div>
 
-        <label for="login_id">아이디</label>
-        <input type="text"
-               id="login_id"
-               name="login_id"
-               placeholder="아이디 입력"
-               required>
+        <form th:action="@{/admin/login}" method="post">
 
-        <label for="password">비밀번호</label>
-        <input type="password"
-               id="password"
-               name="password"
-               placeholder="비밀번호 입력"
-               required>
+            <div class="form-group">
+                <label for="login_id">아이디</label>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text"
+                           id="login_id"
+                           name="login_id"
+                           placeholder="아이디를 입력하세요"
+                           required>
+                </div>
+            </div>
 
-        <button type="submit">로그인</button>
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           placeholder="비밀번호를 입력하세요"
+                           required>
+                </div>
+            </div>
 
-    </form>
+            <button type="submit" class="btn-submit">
+                로그인
+            </button>
+
+        </form>
+
+        <div class="card-footer-link">
+            아직 계정이 없으신가요? &nbsp;<a href="/admimJoin">회원가입하기</a>
+        </div>
+
+    </div>
+</div>
+
+<!-- 하단 -->
+<div class="footer">
+    &copy; 2024 BNK Busan Bank. All rights reserved. &nbsp;|&nbsp; IT Strategy Team
+</div>
+
 </body>
 </html>

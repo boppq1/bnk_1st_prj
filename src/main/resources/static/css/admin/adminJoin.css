@@ -1,0 +1,241 @@
+@charset "UTF-8";
+
+:root {
+    --primary-color: #ED1C24;
+    --bg-color: #F8F9FA;
+    --border-color: #E0E4E8;
+    --text-main: #212529;
+    --text-label: #6C757D;
+    --text-muted: #ADB5BD;
+    --card-bg: #FFFFFF;
+    --input-focus-border: #999999;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0; padding: 0;
+    font-family: 'Pretendard', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 상단 바 */
+.top-bar {
+    width: 100%;
+    height: 70px;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 60px;
+}
+.top-bar img { width: 130px; }
+.top-bar-back {
+    margin-left: auto;
+    font-size: 14px;
+    color: var(--text-label);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+}
+.top-bar-back:hover { color: var(--primary-color); }
+
+/* 메인 */
+.main-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 60px 20px;
+}
+
+/* 가입 카드 */
+.join-card {
+    width: 100%;
+    max-width: 580px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+    padding: 50px 48px;
+}
+
+.card-header {
+    margin-bottom: 36px;
+    text-align: center;
+}
+.card-header .icon-wrap {
+    width: 56px;
+    height: 56px;
+    background-color: #F1F5F9;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #64748B;
+    margin-bottom: 20px;
+}
+.card-header h2 {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+.card-header p {
+    font-size: 15px;
+    color: var(--text-label);
+}
+
+/* 폼 그리드 */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    grid-column: span 2;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-label);
+    margin-bottom: 8px;
+}
+
+.input-wrap {
+    position: relative;
+}
+.input-wrap i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select {
+    width: 100%;
+    height: 48px;
+    padding: 0 15px 0 44px;
+    border: 1px solid #D9E0E6;
+    border-radius: 8px;
+    font-size: 15px;
+    color: var(--text-main);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    background-color: white;
+}
+
+select {
+    padding-left: 44px;
+    cursor: pointer;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--input-focus-border);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+input::placeholder { color: var(--text-muted); }
+
+/* 구분선 */
+.section-divider {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 4px 0;
+}
+.section-divider span {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+.section-divider hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid var(--border-color);
+}
+
+/* 버튼 영역 */
+.submit-area {
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    height: 50px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    flex: 1;
+}
+
+.btn-cancel {
+    background-color: #E2E8F0;
+    color: var(--text-main);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-cancel:hover { background-color: #CBD5E1; }
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 8px rgba(237, 28, 36, 0.2);
+}
+.btn-primary:hover {
+    background-color: #D61A20;
+    box-shadow: 0 6px 12px rgba(237, 28, 36, 0.3);
+}
+
+.card-footer-link {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-label);
+}
+.card-footer-link a {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+}
+.card-footer-link a:hover { text-decoration: underline; }
+
+/* 하단 */
+.footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 13px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    background-color: #FFFFFF;
+}
