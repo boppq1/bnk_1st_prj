@@ -412,11 +412,11 @@
 		}
 		/* 사업자 번호 조회 */
 		document.querySelector("#check_business_no").addEventListener('click',check_bno);
-		document.querySelector("#business_no_text")
-		const bno = document.querySelector("#business_no").value
 		function check_bno(){
+		const bno_text = document.querySelector("#business_no_text")
+		const bno = document.querySelector("#business_no").value
 			
-			fetch('/companyRegisterPro',{
+			fetch('/selectBno',{
 				method : 'post',
 				headers: {
 		    		'Content-Type': 'application/json'
@@ -428,10 +428,14 @@
 			.then(res => res.json())
 			.then(data => {
 				if(data == 200){
-					console.log("사용가능")	
+					console.log("사용가능")
+					bno_text.innerText = '인증되었습니다.'
+					bno_text.style.color='green';
 					
 				} else{ 
 					console.log("사용불가능")
+					bno_text.innerText = '확인되지 않는 사업자번호 입니다.'
+					bno_text.style.color='red';
 				}
 			})
 		}

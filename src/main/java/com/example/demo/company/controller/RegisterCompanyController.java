@@ -26,8 +26,9 @@ public class RegisterCompanyController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/companyRegisterPro")
+	@PostMapping("/selectBno")
 	public int 사업자번호조회(@RequestBody Map<String,String> business_no) {
+		System.out.println("사업자번호조희 비동기 통신 컨트롤러");
 		System.out.println(business_no.get("business_no"));
 		if(service.selectBno(business_no.get("business_no")) == true) {
 			return 200;

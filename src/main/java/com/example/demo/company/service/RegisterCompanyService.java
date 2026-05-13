@@ -21,6 +21,7 @@ public class RegisterCompanyService {
 	// 사업자 번호 확인하기
 	public boolean selectBno(String bno) {
 		if(companyDAO.selectBno(bno) == 1) {
+			System.out.println("서비스에서 사업자 번호 확인 : "+ bno);
 			return true;			
 		}
 		return false;

@@ -6,7 +6,7 @@
 
 	<!-- 사업자 번호 조희 -->
 	<select id="selectBno" resultType="int">
-		SELECT count(*) from companies
+		SELECT count(*) from companies WHERE business_no = #{business_no}  
 	</select>    
 	<insert id="">
 		INSERT INTO company_users (company_user_id, company_Id, login_id, password, name, phone,
