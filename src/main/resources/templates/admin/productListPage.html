@@ -1,45 +1,266 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>상품 목록</title>
+  <title>BNK 관리자 - 상품 조회</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+  <link rel="stylesheet" th:href="@{/css/admin/product/productListPage.css}">
+
+
 </head>
 <body>
 
-<h1>상품 목록</h1>
+<div class="sidebar">
+  <div class="sidebar-profile">
+    <div class="profile-avatar"><i class="fa-solid fa-user-tie"></i></div>
+    <div class="profile-name" th:text="${admin.name + ' 관리자'}">홍길동 관리자</div>
+    <div class="profile-role" th:text="${admin.admin_role}">chief</div>
+  </div>
+  <div class="sidebar-logo"><img src="https://sites.bnk.co.kr/main/resource/img/common/logo_busan.png" alt="BNK 부산은행"></div>
+  <ul class="sidebar-menu">
+    <li class="menu-section-title">메인</li>
+    <li><a href="/admin/dashboard" class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+    <li class="menu-section-title">상품 관리</li>
+    <li><a href="/admin/product/register" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
+    <li><a href="/admin/product/list" class="menu-item active"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
+    <li class="menu-section-title">업무</li>
+    <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
+    <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
+    <li><a href="/admin/account" class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
+    <li class="menu-section-title">관리</li>
+    <li><a href="/admin/members" class="menu-item"><i class="fa-solid fa-users-gear"></i> 회원/관리자 관리</a></li>
+    <li><a href="/admin/logs" class="menu-item"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
+    <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
+  </ul>
+  <div class="sidebar-footer"><p>© 2024 BNK Busan Bank</p><p>IT Strategy Team</p></div>
+</div>
 
-<a href="/admin/makeProductPage">상품 등록</a>
+<div class="header">
+  <div class="header-breadcrumb">
+    <span class="breadcrumb-home">상품 관리</span>
+    <i class="fa-solid fa-chevron-right breadcrumb-sep"></i>
+    <span class="breadcrumb-current">상품 조회</span>
+  </div>
+  <div class="header-right">
+    <div class="header-user">
+      <div class="header-avatar"><i class="fa-solid fa-user"></i></div>
+      <span class="header-rank" th:text="${admin.admin_role + ' '}">chief </span>
+      <span th:text="${admin.name + ' 님'}">홍길동 님</span>
+      <i class="fa-solid fa-chevron-down" style="font-size:11px; color:var(--text-muted);"></i>
+    </div>
+  </div>
+</div>
 
-<table border="1">
-  <tr>
-    <th>ID</th>
-    <th>상품명</th>
-    <th>가격</th>
-    <th>상태</th>
-    <th>상세</th>
-    <th>수정</th>
-    <th>삭제</th>
-  </tr>
+<div class="main-content">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">상품 조회</h1>
+      <p class="page-subtitle">등록된 외화 상품 목록을 조회하고 관리합니다.</p>
+    </div>
+    <a href="/admin/product/register" class="btn-primary"><i class="fa-solid fa-plus"></i> 상품 등록</a>
+  </div>
 
-  <tr th:each="p : ${list}">
-    <td th:text="${p.product_id}"></td>
-    <td th:text="${p.product_name}"></td>
-    <td th:text="${p.price}"></td>
-    <td th:text="${p.approve_status}"></td>
+  <!-- 필터 바 -->
+  <div class="filter-bar">
+    <select>
+      <option value="">전체 타입</option>
+      <option value="deposit">예금</option>
+      <option value="savings">적금</option>
+    </select>
+    <select>
+      <option value="">전체 상태</option>
+      <option value="Y">판매중</option>
+      <option value="N">판매중단</option>
+    </select>
+    <select>
+      <option value="">결재 상태</option>
+      <option value="검토중">검토중</option>
+      <option value="승인">승인</option>
+      <option value="반려">반려</option>
+    </select>
+    <input type="text" placeholder="상품명으로 검색...">
+    <button class="btn-search"><i class="fa-solid fa-search"></i> 검색</button>
+    <button class="btn-reset"><i class="fa-solid fa-rotate-left"></i> 초기화</button>
+  </div>
 
-    <td>
-      <a th:href="@{/detail/{id}(id=${p.product_id})}">상세</a>
-    </td>
+  <!-- 테이블 -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <span class="table-card-title">상품 목록</span>
+      <span class="table-count">총 <strong th:text="${totalCount}">24</strong>개</span>
+    </div>
+    <table class="data-table">
+      <thead>
+      <tr>
+        <th>No.</th>
+        <th>상품명</th>
+        <th>타입</th>
+        <th>판매 상태</th>
+        <th>결재 상태</th>
+        <th>가입 기간</th>
+        <th>대상</th>
+        <th>등록일</th>
+        <th>관리</th>
+      </tr>
+      </thead>
+      <tbody th:each="p, stat : ${products}">
+      <tr>
+        <td th:text="${stat.count}">1</td>
+        <td style="font-weight:600;" th:text="${p.product_name}">부산은행 글로벌 외화 정기예금</td>
+        <td th:text="${p.product_type}">예금</td>
+        <td>
+          <span class="badge badge-green" th:if="${p.is_active == 'Y'}">판매중</span>
+          <span class="badge badge-gray" th:if="${p.is_active == 'N'}">중단</span>
+        </td>
+        <td>
+          <span class="badge badge-blue" th:if="${p.approve_status == '승인'}">승인</span>
+          <span class="badge badge-red" th:if="${p.approve_status == '검토중'}">검토중</span>
+        </td>
+        <td th:text="${p.min_period_month + '~' + p.max_period_month + '개월'}">3~12개월</td>
+        <td th:text="${p.target_large}">전체</td>
+        <td th:text="${p.created_at}">2024-05-01</td>
+        <td>
+          <div class="action-btns">
+            <button class="btn-icon" title="상세" onclick="openDetail(this)"><i class="fa-solid fa-eye"></i></button>
+            <button class="btn-icon" title="수정"><i class="fa-solid fa-pen"></i></button>
+            <button class="btn-icon danger" title="삭제"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+      <!-- 목업 -->
+      <tbody>
+      <tr>
+        <td>1</td>
+        <td style="font-weight:600;">부산은행 글로벌 외화 정기예금</td>
+        <td>예금</td>
+        <td><span class="badge badge-green">판매중</span></td>
+        <td><span class="badge badge-blue">승인</span></td>
+        <td>3~12개월</td><td>전체</td><td>2024-05-01</td>
+        <td><div class="action-btns">
+          <button class="btn-icon" onclick="openDetail()"><i class="fa-solid fa-eye"></i></button>
+          <button class="btn-icon"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn-icon danger"><i class="fa-solid fa-trash"></i></button>
+        </div></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td style="font-weight:600;">BNK 청년 USD 적금</td>
+        <td>적금</td>
+        <td><span class="badge badge-green">판매중</span></td>
+        <td><span class="badge badge-red">검토중</span></td>
+        <td>12~24개월</td><td>개인</td><td>2024-04-15</td>
+        <td><div class="action-btns">
+          <button class="btn-icon" onclick="openDetail()"><i class="fa-solid fa-eye"></i></button>
+          <button class="btn-icon"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn-icon danger"><i class="fa-solid fa-trash"></i></button>
+        </div></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td style="font-weight:600;">부산은행 기업 외화 전용 예금</td>
+        <td>예금</td>
+        <td><span class="badge badge-gray">중단</span></td>
+        <td><span class="badge badge-blue">승인</span></td>
+        <td>6~36개월</td><td>기업</td><td>2024-03-22</td>
+        <td><div class="action-btns">
+          <button class="btn-icon" onclick="openDetail()"><i class="fa-solid fa-eye"></i></button>
+          <button class="btn-icon"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn-icon danger"><i class="fa-solid fa-trash"></i></button>
+        </div></td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="pagination">
+      <button class="page-btn"><i class="fa-solid fa-chevron-left"></i></button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+  </div>
+</div>
 
-    <td>
-      <a th:href="@{/update/{id}(id=${p.product_id})}">수정</a>
-    </td>
+<!-- 상세 팝업 모달 -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">상품 상세 정보</span>
+      <button class="modal-close" onclick="closeDetail()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-grid">
+        <div class="detail-item full">
+          <label>상품명</label>
+          <div class="detail-value" style="font-size:16px; font-weight:700;">부산은행 글로벌 외화 정기예금</div>
+        </div>
+        <hr class="detail-divider">
+        <div class="detail-item">
+          <label>상품 타입</label>
+          <div class="detail-value">예금 (deposit)</div>
+        </div>
+        <div class="detail-item">
+          <label>판매 상태</label>
+          <div class="detail-value"><span class="badge badge-green">판매중</span></div>
+        </div>
+        <div class="detail-item">
+          <label>결재 상태</label>
+          <div class="detail-value"><span class="badge badge-blue">승인</span></div>
+        </div>
+        <div class="detail-item">
+          <label>결재자</label>
+          <div class="detail-value">김부산</div>
+        </div>
+        <div class="detail-item">
+          <label>최소 금액</label>
+          <div class="detail-value">$ 100</div>
+        </div>
+        <div class="detail-item">
+          <label>최대 금액</label>
+          <div class="detail-value">$ 50,000</div>
+        </div>
+        <div class="detail-item">
+          <label>가입 기간</label>
+          <div class="detail-value">3개월 ~ 12개월</div>
+        </div>
+        <div class="detail-item">
+          <label>이자 지급 방식</label>
+          <div class="detail-value">만기일시지급</div>
+        </div>
+        <div class="detail-item">
+          <label>환율 기준</label>
+          <div class="detail-value">전일 종가</div>
+        </div>
+        <div class="detail-item">
+          <label>대상 고객</label>
+          <div class="detail-value">전체 (ALL)</div>
+        </div>
+        <hr class="detail-divider">
+        <div class="detail-item full">
+          <label>상품 설명</label>
+          <div class="detail-value" style="line-height:1.7; color:var(--text-label);">글로벌 외화 자산을 안정적으로 운용할 수 있는 BNK 부산은행의 대표 외화 정기예금 상품입니다.</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-modal-close" onclick="closeDetail()">닫기</button>
+      <button class="btn-modal-edit"><i class="fa-solid fa-pen"></i> 수정</button>
+      <button class="btn-modal-delete"><i class="fa-solid fa-trash"></i> 삭제</button>
+    </div>
+  </div>
+</div>
 
-    <td>
-      <a th:href="@{/delete/{id}(id=${p.product_id})}">삭제</a>
-    </td>
-  </tr>
-</table>
-
+<script>
+  function openDetail() {
+    document.getElementById('detailModal').classList.add('active');
+  }
+  function closeDetail() {
+    document.getElementById('detailModal').classList.remove('active');
+  }
+  document.getElementById('detailModal').addEventListener('click', function(e) {
+    if (e.target === this) closeDetail();
+  });
+</script>
 </body>
 </html>

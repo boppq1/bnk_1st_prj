@@ -5,66 +5,7 @@
     <title>BNK Busan Bank - 고객 통합 관리</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    
-    <style>
-        :root {
-            --primary-color: #ED1C24;    /* BNK Red */
-            --bg-color: #F8F9FA;
-            --card-bg: #FFFFFF;
-            --border-color: #E0E4E8;
-            --text-main: #212529;
-            --text-label: #6C757D;
-            --sidebar-width: 260px;
-            --header-height: 70px;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); display: flex; }
-
-        /* 사이드바 & 헤더 (기존 스타일 유지) */
-        .sidebar { width: var(--sidebar-width); height: 100vh; background-color: #FFFFFF; border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0; z-index: 100; }
-        .sidebar-logo { padding: 20px 30px; }
-        .sidebar-logo img { width: 130px; }
-        .menu-item { display: flex; align-items: center; padding: 15px 30px; color: var(--text-main); text-decoration: none; font-size: 15px; }
-        .menu-item.active { background-color: #FFF2F2; color: var(--primary-color); font-weight: 700; border-left: 4px solid var(--primary-color); }
-        .menu-item i { margin-right: 15px; width: 20px; text-align: center; color: #ADB5BD; }
-        .menu-item.active i { color: var(--primary-color); }
-
-        .header { position: fixed; top: 0; left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); height: var(--header-height); background-color: #FFFFFF; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 40px; z-index: 90; }
-
-        /* 메인 컨텐츠 */
-        .main-content { margin-left: var(--sidebar-width); margin-top: var(--header-height); width: calc(100% - var(--sidebar-width)); padding: 40px; }
-        .content-header { margin-bottom: 30px; }
-        .content-title { font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
-
-        /* 섹션 구분 스타일 */
-        .table-section { margin-bottom: 50px; }
-        .section-title { font-size: 18px; font-weight: 700; margin-bottom: 15px; padding-left: 12px; border-left: 4px solid var(--primary-color); color: #333; display: flex; align-items: center; gap: 8px; }
-
-        /* 테이블 카드 */
-        .table-card {
-            background-color: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); overflow-x: auto;
-        }
-        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 1400px; }
-        thead { background-color: #FBFBFC; border-bottom: 1px solid var(--border-color); }
-        th { padding: 15px; font-size: 13px; font-weight: 600; color: var(--text-label); border-right: 1px solid #f0f0f0; }
-        td { padding: 15px; font-size: 14px; border-bottom: 1px solid #F1F3F5; white-space: nowrap; }
-        tr:hover { background-color: #F8F9FA; }
-
-        /* 배지 스타일 */
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
-        .badge-user { background-color: #E3F2FD; color: #1976D2; }
-        .badge-company { background-color: #F3E5F5; color: #7B1FA2; }
-
-        /* 수정 버튼 */
-        .btn-update {
-            padding: 6px 12px; border-radius: 6px; background-color: white;
-            color: var(--text-main); text-decoration: none; font-size: 13px; font-weight: 600;
-            border: 1px solid #DEE2E6; transition: 0.2s;
-        }
-        .btn-update:hover { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/admin/memberList.css}">
 </head>
 <body>
     <div class="sidebar">

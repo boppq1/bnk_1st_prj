@@ -1,31 +1,350 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>상품 등록</title>
+  <title>BNK 관리자 - 상품 등록</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+  <link rel="stylesheet" th:href="@{/css/admin/product/productRegisterPage.css}">
+
 </head>
 <body>
 
-<h1>상품 등록</h1>
+<div class="sidebar">
+  <div class="sidebar-profile">
+    <div class="profile-avatar"><i class="fa-solid fa-user-tie"></i></div>
+    <div class="profile-name" th:text="${admin.name + ' 관리자'}">홍길동 관리자</div>
+    <div class="profile-role" th:text="${admin.admin_role}">chief</div>
+  </div>
+  <div class="sidebar-logo">
+    <img src="https://sites.bnk.co.kr/main/resource/img/common/logo_busan.png" alt="BNK 부산은행">
+  </div>
+  <ul class="sidebar-menu">
+    <li class="menu-section-title">메인</li>
+    <li><a href="/admin/dashboard" class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+    <li class="menu-section-title">상품 관리</li>
+    <li><a href="/admin/product/register" class="menu-item active"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
+    <li><a href="/admin/product/list" class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
+    <li class="menu-section-title">업무</li>
+    <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
+    <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
+    <li><a href="/admin/account" class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
+    <li class="menu-section-title">관리</li>
+    <li><a href="/admin/members" class="menu-item"><i class="fa-solid fa-users-gear"></i> 회원/관리자 관리</a></li>
+    <li><a href="/admin/logs" class="menu-item"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
+    <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
+  </ul>
+  <div class="sidebar-footer"><p>© 2024 BNK Busan Bank</p><p>IT Strategy Team</p></div>
+</div>
 
-<form th:action="@{/admin/productRegister}" method="post" th:object="${product}">
+<div class="header">
+  <div class="header-breadcrumb">
+    <span class="breadcrumb-home">상품 관리</span>
+    <i class="fa-solid fa-chevron-right breadcrumb-sep"></i>
+    <span class="breadcrumb-current">상품 등록</span>
+  </div>
+  <div class="header-right">
+    <div class="header-user">
+      <div class="header-avatar"><i class="fa-solid fa-user"></i></div>
+      <span class="header-rank" th:text="${admin.admin_role + ' '}">chief </span>
+      <span th:text="${admin.name + ' 님'}">홍길동 님</span>
+      <i class="fa-solid fa-chevron-down" style="font-size:11px; color:var(--text-muted);"></i>
+    </div>
+  </div>
+</div>
 
-  <div>
-    상품명: <input type="text" th:field="*{product_name}">
+<div class="main-content">
+  <div class="page-header">
+    <h1 class="page-title">외화 상품 등록</h1>
+    <p class="page-subtitle">5단계에 걸쳐 새로운 금융 상품 정보를 입력하세요.</p>
   </div>
 
-  <div>
-    가격: <input type="number" th:field="*{price}">
+  <!-- 탭 네비게이션 -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="openTab('basic', this)">
+      <span class="tab-num">1</span> 기본정보
+    </button>
+    <button class="tab-btn" onclick="openTab('amount', this)">
+      <span class="tab-num">2</span> 금액 / 기간
+    </button>
+    <button class="tab-btn" onclick="openTab('target', this)">
+      <span class="tab-num">3</span> 대상 설정
+    </button>
+    <button class="tab-btn" onclick="openTab('desc', this)">
+      <span class="tab-num">4</span> 설명
+    </button>
+    <button class="tab-btn" onclick="openTab('policy', this)">
+      <span class="tab-num">5</span> 정책 / 약관
+    </button>
   </div>
 
-  <div>
-    설명: <input type="text" th:field="*{description}">
-  </div>
+  <form id="productForm">
 
-  <button type="submit">등록</button>
-</form>
+    <!-- ① 기본정보 -->
+    <div id="basic" class="form-section active">
+      <div class="register-card">
+        <div class="section-heading"><i class="fa-solid fa-info-circle"></i> 기본 정보</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>상품명 <span class="required">*</span></label>
+            <input type="text" name="product_name" placeholder="예: 부산은행 글로벌 외화 정기예금">
+          </div>
+          <div class="form-group">
+            <label>상품 타입 <span class="required">*</span></label>
+            <select name="product_type">
+              <option value="deposit">예금 (Deposit)</option>
+              <option value="savings">적금 (Savings)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>판매 상태</label>
+            <select name="is_active">
+              <option value="Y">판매중 (Y)</option>
+              <option value="N">판매중단 (N)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>금리 카테고리 <span class="required">*</span></label>
+            <input type="text" name="rate_category" placeholder="예: FIXED / VARIABLE">
+          </div>
+          <div class="form-group">
+            <label>결재 상태</label>
+            <input type="text" name="approve_status" value="검토중" readonly style="background:#FAFBFC; color:var(--text-muted);">
+          </div>
+          <div class="form-group">
+            <label>등록자 (created_by)</label>
+            <input type="text" name="created_by" placeholder="admin">
+          </div>
+          <div class="form-group">
+            <label>수정자 (updated_by)</label>
+            <input type="text" name="updated_by">
+          </div>
+          <div class="form-group">
+            <label>결재자 (approver)</label>
+            <input type="text" name="approver">
+          </div>
+        </div>
+      </div>
+      <div class="submit-area">
+        <button type="button" class="btn btn-cancel" onclick="history.back()">취소</button>
+        <button type="button" class="btn btn-next" onclick="openTab('amount', null)">다음 단계 <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
 
-<a href="/admin/productListPage">목록으로</a>
+    <!-- ② 금액/기간 -->
+    <div id="amount" class="form-section">
+      <div class="register-card">
+        <div class="section-heading"><i class="fa-solid fa-dollar-sign"></i> 금액 / 기간</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>최소 가입 금액 (USD)</label>
+            <input type="number" name="min_amount" placeholder="0">
+          </div>
+          <div class="form-group">
+            <label>최대 가입 금액 (USD)</label>
+            <input type="number" name="max_amount" placeholder="0">
+          </div>
+          <div class="form-group">
+            <label>최소 가입 기간</label>
+            <select name="min_period_month">
+              <option value="1">1개월</option>
+              <option value="3">3개월</option>
+              <option value="6">6개월</option>
+              <option value="12">12개월</option>
+              <option value="24">24개월</option>
+              <option value="36">36개월</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>최대 가입 기간</label>
+            <select name="max_period_month">
+              <option value="1">1개월</option>
+              <option value="3">3개월</option>
+              <option value="6">6개월</option>
+              <option value="12">12개월</option>
+              <option value="24">24개월</option>
+              <option value="36">36개월</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>이자 지급 방식</label>
+            <select name="interest_payment_type">
+              <option value="MATURITY_PAYMENT">만기일시지급</option>
+              <option value="MONTHLY_PAYMENT">월이자지급</option>
+              <option value="SIMPLE_INTEREST">단리</option>
+              <option value="COMPOUND_INTEREST">복리</option>
+              <option value="QUARTERLY_PAYMENT">분기지급</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>환율 적용 기준</label>
+            <select name="applied_exchange_rate_type">
+              <option value="CLOSING_RATE">전일 종가</option>
+              <option value="REALTIME_RATE">실시간 고시 환율</option>
+              <option value="FIRST_QUOTED_RATE">최초 고시 환율</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="submit-area">
+        <button type="button" class="btn btn-prev" onclick="openTab('basic', null)"><i class="fa-solid fa-arrow-left"></i> 이전</button>
+        <button type="button" class="btn btn-next" onclick="openTab('target', null)">다음 단계 <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
 
+    <!-- ③ 대상 -->
+    <div id="target" class="form-section">
+      <div class="register-card">
+        <div class="section-heading"><i class="fa-solid fa-users"></i> 대상 고객 설정</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>대상 고객 (대분류)</label>
+            <select name="target_large">
+              <option value="ALL">전체 (ALL)</option>
+              <option value="PERSONAL">개인 (PERSONAL)</option>
+              <option value="COMPANY">기업 (COMPANY)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>대상 고객 (소분류)</label>
+            <select name="target_detail">
+              <option value="">-- 선택 안 함 --</option>
+              <option value="YOUTH">청년 (YOUTH)</option>
+              <option value="SENIOR">시니어 (SENIOR)</option>
+              <option value="SME">중소기업 (SME)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="submit-area">
+        <button type="button" class="btn btn-prev" onclick="openTab('amount', null)"><i class="fa-solid fa-arrow-left"></i> 이전</button>
+        <button type="button" class="btn btn-next" onclick="openTab('desc', null)">다음 단계 <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- ④ 설명 -->
+    <div id="desc" class="form-section">
+      <div class="register-card">
+        <div class="section-heading"><i class="fa-solid fa-align-left"></i> 상품 설명</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>상품 설명 (product_desc)</label>
+            <textarea name="product_desc" placeholder="상품의 핵심 설명을 입력하세요"></textarea>
+          </div>
+          <div class="form-group full">
+            <label>마케팅 메시지 상단 (mkt_msg_top)</label>
+            <textarea name="mkt_msg_top" class="tall" placeholder="배너 등 상단에 노출되는 마케팅 문구"></textarea>
+          </div>
+          <div class="form-group full">
+            <label>마케팅 메시지 하단 (mkt_msg_bottom)</label>
+            <textarea name="mkt_msg_bottom" class="tall" placeholder="하단 보조 마케팅 문구"></textarea>
+          </div>
+          <div class="form-group">
+            <label>저축 방법 (saving_method)</label>
+            <input type="text" name="saving_method" placeholder="예: 자동이체 / 창구 입금">
+          </div>
+        </div>
+      </div>
+      <div class="submit-area">
+        <button type="button" class="btn btn-prev" onclick="openTab('target', null)"><i class="fa-solid fa-arrow-left"></i> 이전</button>
+        <button type="button" class="btn btn-next" onclick="openTab('policy', null)">다음 단계 <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- ⑤ 정책 -->
+    <div id="policy" class="form-section">
+      <div class="register-card">
+        <div class="section-heading"><i class="fa-solid fa-file-shield"></i> 정책 / 약관 CLOB</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>가입 방법 (join_method)</label>
+            <textarea name="join_method" class="tall"></textarea>
+          </div>
+          <div class="form-group full">
+            <label>자동이체 서비스 (auto_transfer_svc)</label>
+            <textarea name="auto_transfer_svc" class="tall"></textarea>
+          </div>
+          <div class="form-group">
+            <label>리볼빙 정보 (revolving_info)</label>
+            <textarea name="revolving_info" class="tall"></textarea>
+          </div>
+          <div class="form-group">
+            <label>지급 제한 (payment_restriction)</label>
+            <textarea name="payment_restriction" class="tall"></textarea>
+          </div>
+          <div class="form-group">
+            <label>유의사항 (precautions)</label>
+            <textarea name="precautions" class="tall"></textarea>
+          </div>
+          <div class="form-group">
+            <label>외화 현찰 수수료 (fx_cash_fee)</label>
+            <textarea name="fx_cash_fee" class="tall"></textarea>
+          </div>
+          <div class="form-group">
+            <label>자동 재투자 (auto_reinvestment)</label>
+            <textarea name="auto_reinvestment" class="tall"></textarea>
+          </div>
+          <div class="form-group">
+            <label>세제 혜택 (tax_benefit)</label>
+            <textarea name="tax_benefit" class="tall"></textarea>
+          </div>
+          <div class="form-group">
+            <label>지급 한도 정보 (payment_limit_info)</label>
+            <textarea name="payment_limit_info" class="tall"></textarea>
+          </div>
+          <div class="form-group">
+            <label>데이터 접근 권한 (data_access_right)</label>
+            <textarea name="data_access_right" class="tall"></textarea>
+          </div>
+          <div class="form-group">
+            <label>불법계약 해지 (illegal_contract_cancel)</label>
+            <textarea name="illegal_contract_cancel" class="tall"></textarea>
+          </div>
+          <div class="form-group">
+            <label>예금자 보호 (depositor_protection)</label>
+            <textarea name="depositor_protection" class="tall"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="submit-area">
+        <button type="button" class="btn btn-prev" onclick="openTab('desc', null)"><i class="fa-solid fa-arrow-left"></i> 이전</button>
+        <div class="btn-group">
+          <button type="button" class="btn btn-cancel" onclick="history.back()">취소</button>
+          <button type="button" class="btn btn-submit" onclick="submitProduct()"><i class="fa-solid fa-check"></i> 등록 완료</button>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<script>
+  function openTab(id, btn) {
+    document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if (btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    } else {
+      const tabMap = { basic: 0, amount: 1, target: 2, desc: 3, policy: 4 };
+      document.querySelectorAll('.tab-btn').forEach((b, i) => {
+        b.classList.toggle('active', i === tabMap[id]);
+      });
+    }
+  }
+
+  function submitProduct() {
+    const form = document.getElementById("productForm");
+    const data = Object.fromEntries(new FormData(form));
+    fetch("/product/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+            .then(res => res.text())
+            .then(() => alert("상품이 성공적으로 등록되었습니다."))
+            .catch(err => console.error(err));
+  }
+</script>
 </body>
 </html>

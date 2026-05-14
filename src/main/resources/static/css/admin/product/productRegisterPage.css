@@ -1,0 +1,164 @@
+@charset "UTF-8";
+
+
+:root {
+    --primary: #ED1C24; --primary-light: #FFF2F2; --primary-dark: #D61A20;
+    --sidebar-width: 260px; --header-height: 70px;
+    --bg: #F8F9FA; --card-bg: #FFFFFF; --border: #E0E4E8;
+    --text-main: #212529; --text-label: #6C757D; --text-muted: #ADB5BD;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
+body { background: var(--bg); color: var(--text-main); display: flex; overflow: hidden; }
+
+.sidebar {
+    width: var(--sidebar-width); height: 100vh; background: var(--card-bg);
+    border-right: 1px solid var(--border); position: fixed; left: 0; top: 0;
+    display: flex; flex-direction: column; z-index: 100;
+}
+.sidebar-profile {
+    padding: 28px 24px 20px; border-bottom: 1px solid var(--border);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.profile-avatar {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary) 0%, #ff6b6b 100%);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 24px; box-shadow: 0 4px 12px rgba(237,28,36,0.25);
+}
+.profile-name { font-size: 15px; font-weight: 700; }
+.profile-role { font-size: 12px; font-weight: 600; background: var(--primary-light); color: var(--primary); padding: 3px 10px; border-radius: 20px; }
+.sidebar-logo { padding: 16px 24px 8px; }
+.sidebar-logo img { width: 110px; }
+.sidebar-menu { list-style: none; flex-grow: 1; padding: 8px 0; overflow-y: auto; }
+.menu-section-title { font-size: 11px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; padding: 16px 24px 6px; }
+.menu-item { display: flex; align-items: center; padding: 12px 24px; color: var(--text-main); text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.18s; }
+.menu-item i:first-child { margin-right: 12px; width: 18px; text-align: center; color: var(--text-muted); font-size: 14px; transition: color 0.18s; }
+.menu-item:hover { background: var(--primary-light); color: var(--primary); }
+.menu-item:hover i:first-child { color: var(--primary); }
+.menu-item.active { color: var(--primary); font-weight: 700; background: var(--primary-light); border-left: 3px solid var(--primary); padding-left: 21px; }
+.menu-item.active i:first-child { color: var(--primary); }
+.arrow-icon { margin-left: auto; font-size: 11px; }
+.sidebar-footer { padding: 16px 24px; border-top: 1px solid var(--border); }
+.sidebar-footer p { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+.header {
+    position: fixed; top: 0; left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width)); height: var(--header-height);
+    background: var(--card-bg); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 40px; z-index: 90;
+}
+.header-breadcrumb { display: flex; align-items: center; gap: 8px; }
+.breadcrumb-home { color: var(--text-muted); font-size: 13px; }
+.breadcrumb-sep { color: var(--text-muted); font-size: 11px; }
+.breadcrumb-current { font-size: 15px; font-weight: 700; }
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 20px; }
+.header-user { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; }
+.header-rank { font-size: 13px; font-weight: 400; color: var(--text-label); }
+.header-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, #ff6b6b 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; }
+
+.main-content {
+    margin-left: var(--sidebar-width); margin-top: var(--header-height);
+    width: calc(100% - var(--sidebar-width)); height: calc(100vh - var(--header-height));
+    overflow-y: auto; padding: 36px 40px;
+}
+
+.page-header { margin-bottom: 28px; }
+.page-title { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+.page-subtitle { font-size: 14px; color: var(--text-label); }
+
+/* ── 탭 UI ── */
+.tab-nav {
+    display: flex; gap: 0;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 28px;
+}
+.tab-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 24px; font-size: 14px; font-weight: 600;
+    color: var(--text-label); background: none; border: none;
+    cursor: pointer; border-bottom: 2px solid transparent;
+    margin-bottom: -2px; transition: all 0.18s;
+}
+.tab-btn:hover { color: var(--text-main); }
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+.tab-btn .tab-num {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--border); color: var(--text-muted);
+    font-size: 11px; display: flex; align-items: center; justify-content: center;
+}
+.tab-btn.active .tab-num { background: var(--primary); color: white; }
+
+/* ── 폼 섹션 ── */
+.form-section { display: none; }
+.form-section.active { display: block; }
+
+.register-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); padding: 36px;
+}
+.section-heading {
+    font-size: 15px; font-weight: 700; color: var(--text-main);
+    margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+}
+.section-heading i { color: var(--primary); }
+
+.form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px 28px; }
+.form-group { display: flex; flex-direction: column; }
+.form-group.full { grid-column: span 2; }
+.form-group.triple { grid-column: span 2; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px 28px; }
+
+label { font-size: 13px; font-weight: 600; color: var(--text-label); margin-bottom: 7px; }
+.required { color: var(--primary); margin-left: 2px; }
+
+input[type="text"], input[type="number"], select, textarea {
+    height: 46px; padding: 0 14px;
+    border: 1px solid #D9E0E6; border-radius: 8px;
+    font-size: 14px; color: var(--text-main);
+    font-family: 'Pretendard', sans-serif;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    background: white;
+}
+textarea { height: 100px; padding: 12px 14px; resize: vertical; line-height: 1.6; }
+textarea.tall { height: 80px; }
+input:focus, select:focus, textarea:focus {
+    outline: none; border-color: #999; box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+}
+input::placeholder, textarea::placeholder { color: var(--text-muted); }
+
+/* 탭 진행 표시 */
+.tab-progress {
+    display: flex; align-items: center; gap: 0;
+    margin-bottom: 28px;
+}
+.progress-step {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 500; color: var(--text-muted);
+}
+.progress-step.done { color: #10B981; }
+.progress-step.active { color: var(--primary); font-weight: 700; }
+.progress-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--border);
+}
+.progress-step.done .progress-dot { background: #10B981; }
+.progress-step.active .progress-dot { background: var(--primary); }
+.progress-line { flex: 1; height: 1px; background: var(--border); margin: 0 10px; }
+.progress-line.done { background: #10B981; }
+
+/* 하단 버튼 */
+.submit-area {
+    margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+}
+.btn-group { display: flex; gap: 12px; }
+.btn { height: 46px; padding: 0 28px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; border: none; transition: all 0.18s; font-family: 'Pretendard', sans-serif; }
+.btn-ghost { background: none; border: 1px solid var(--border); color: var(--text-label); }
+.btn-ghost:hover { border-color: #999; color: var(--text-main); }
+.btn-cancel { background: #F1F3F5; color: var(--text-main); }
+.btn-cancel:hover { background: #E2E8F0; }
+.btn-prev { background: none; border: 1px solid var(--primary); color: var(--primary); }
+.btn-prev:hover { background: var(--primary-light); }
+.btn-next { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(237,28,36,0.22); }
+.btn-next:hover { background: var(--primary-dark); }
+.btn-submit { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(237,28,36,0.22); }
+.btn-submit:hover { background: var(--primary-dark); }
