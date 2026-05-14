@@ -97,7 +97,7 @@ public class AdminController {
 	
 	@GetMapping("/approvalDetailPage")
 	public String approvalDetailPage(Model m, @RequestParam("product_id") Long product_id) {
-		m.addAttribute("approvalList", as.getProduct(product_id));
+		m.addAttribute("approvalList", as.getApproval(product_id));
 		return "admin/approvalDetailPage";
 	}
 	

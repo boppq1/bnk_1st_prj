@@ -13,6 +13,7 @@ import com.example.demo.admin.dto.AdminDto;
 import com.example.demo.admin.dto.ApiLogDto;
 import com.example.demo.admin.dto.ApprovalDto;
 import com.example.demo.admin.dto.ExchangeRequestDto;
+import com.example.demo.admin.dto.ProductApprovalDto;
 import com.example.demo.admin.dto.ProductDto;
 import com.example.demo.company.dto.CompanyUserDTO;
 import com.example.demo.personal.dto.UserDTO;
@@ -27,20 +28,6 @@ public class AdminService {
 	final IListDao listDao;
 	final IAdminLogDao logDao;
 	final IAdminExchangeDao exchangeDao;
-	
-//	public boolean makeProduct(ProductDto dto) {
-//		dto.setCreated_by("admin");
-//		productDao.insertProduct(dto.getProduct_name(), dto.getIs_active(), dto.getProduct_type(), dto.getMin_period_month(), dto.getMax_period_month(), dto.getMin_amount(), dto.getMax_amount(), dto.getTarget_customer(), dto.getProduct_desc(), dto.getInterest_payment_type(), dto.getApplied_exchange_rate_type(), dto.getCreated_by());
-//		return true;
-//	}
-//
-//	public ProductDto getProduct(Long product_id) {
-//		return productDao.selectProduct(product_id);
-//	}
-//
-//	public List<ProductDto> getProducts() {
-//		return productDao.getProducts();
-//	}
 	
 	public AdminDto getAdmin(Long admin_id) {
 		return listDao.getAdmin(admin_id);
@@ -78,8 +65,8 @@ public class AdminService {
 		listDao.updateCompanyUser(dto);
 	}
 	
-	public ApprovalDto getApproval(Long approval_id) {
-		return listDao.getApproval(approval_id);
+	public ProductApprovalDto getApproval(Long product_id) {
+		return listDao.getApproval(product_id);
 	}
 	
 	public List<ApprovalDto> getApprovals() {
