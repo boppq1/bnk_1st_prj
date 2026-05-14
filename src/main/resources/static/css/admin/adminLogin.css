@@ -1,0 +1,219 @@
+@charset "UTF-8";
+
+
+:root {
+    --primary-color: #ED1C24;
+    --bg-color: #F8F9FA;
+    --border-color: #E0E4E8;
+    --text-main: #212529;
+    --text-label: #6C757D;
+    --text-muted: #ADB5BD;
+    --card-bg: #FFFFFF;
+    --input-focus-border: #999999;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0; padding: 0;
+    font-family: 'Pretendard', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 상단 바 */
+.top-bar {
+    width: 100%;
+    height: 70px;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 60px;
+}
+.top-bar img {
+    width: 130px;
+}
+.top-bar-back {
+    margin-left: auto;
+    font-size: 14px;
+    color: var(--text-label);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+}
+.top-bar-back:hover {
+    color: var(--primary-color);
+}
+
+/* 메인 */
+.main-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+}
+
+/* 로그인 카드 */
+.login-card {
+    width: 100%;
+    max-width: 460px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+    padding: 50px 48px;
+}
+
+.card-header {
+    margin-bottom: 36px;
+    text-align: center;
+}
+
+.card-header .icon-wrap {
+    width: 56px;
+    height: 56px;
+    background-color: var(--primary-color);
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: white;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(237, 28, 36, 0.3);
+}
+
+.card-header h2 {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+
+.card-header p {
+    font-size: 15px;
+    color: var(--text-label);
+}
+
+/* 에러 알림 */
+.error-alert {
+    background-color: #FFF2F2;
+    border: 1px solid #FFCDD0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 폼 */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-label);
+    margin-bottom: 8px;
+}
+
+.input-wrap {
+    position: relative;
+}
+
+.input-wrap i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 15px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    height: 50px;
+    padding: 0 15px 0 44px;
+    border: 1px solid #D9E0E6;
+    border-radius: 8px;
+    font-size: 15px;
+    color: var(--text-main);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: var(--input-focus-border);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+input::placeholder {
+    color: var(--text-muted);
+}
+
+/* 제출 버튼 */
+.btn-submit {
+    width: 100%;
+    height: 52px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 8px rgba(237, 28, 36, 0.2);
+}
+
+.btn-submit:hover {
+    background-color: #D61A20;
+    box-shadow: 0 6px 12px rgba(237, 28, 36, 0.3);
+}
+
+/* 하단 링크 */
+.card-footer-link {
+    margin-top: 28px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-label);
+}
+
+.card-footer-link a {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.card-footer-link a:hover {
+    text-decoration: underline;
+}
+
+/* 하단 */
+.footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 13px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    background-color: #FFFFFF;
+}

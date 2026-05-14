@@ -75,7 +75,9 @@
 
             <div class="recommend-grid">
                 <th:block th:each="item, stat : ${products.products}">
-                    <article class="recommend-card" th:if="${stat.index < 3}">
+                    <article class="recommend-card clickable-card"
+			         th:if="${stat.index < 3}"
+			         th:onclick="|location.href='@{/product/{id}(id=${item.productId})}'|">
                         <div class="card-labels">
                             <span th:switch="${item.productType}">
                                 <span th:case="'DEPOSIT'">예금</span>
@@ -139,7 +141,9 @@
                 </thead>
 
                 <tbody>
-                <tr th:each="item : ${products.products}">
+                <tr th:each="item : ${products.products}"
+    class="clickable-row"
+    th:onclick="|location.href='@{/product/{id}(id=${item.productId})}'|">
                     <td>
                         <a th:href="@{/product/{id}(id=${item.productId})}"
                            th:text="${item.productName}">
@@ -172,17 +176,19 @@
 
                     <td>
                         <input type="checkbox"
-                               class="compare-check"
-                               th:data-id="${item.productId}"
-                               th:data-name="${item.productName}"
-                               th:data-type="${item.productType}"
-                               th:data-target="${item.targetLarge}"
-                               th:data-rate="${item.maxRate}"
-                               th:data-desc="${item.productDesc}"
-                               th:data-min-period="${item.minPeriodMonth}"
-                               th:data-max-period="${item.maxPeriodMonth}"
-                               th:data-min-amount="${item.minAmount}"
-                               th:data-max-amount="${item.maxAmount}">
+					       class="compare-check"
+					       onclick="event.stopPropagation();"
+					       th:data-id="${item.productId}"
+					       th:data-name="${item.productName}"
+					       th:data-type="${item.productType}"
+					       th:data-target="${item.targetLarge}"
+					       th:data-target-detail="${item.targetDetail}"
+					       th:data-rate="${item.maxRate}"
+					       th:data-desc="${item.productDesc}"
+					       th:data-min-period="${item.minPeriodMonth}"
+					       th:data-max-period="${item.maxPeriodMonth}"
+					       th:data-min-amount="${item.minAmount}"
+					       th:data-max-amount="${item.maxAmount}">
                     </td>
                 </tr>
                 </tbody>
@@ -244,6 +250,10 @@
                 희망 가입기간
                 <input type="number" id="comparePeriod" placeholder="예: 12">
             </label>
+            <label>
+			    나이
+			    <input type="number" id="compareAge" placeholder="예: 25">
+			</label>
         </div>
 
         <div class="compare-result-box" id="compareResultBox">

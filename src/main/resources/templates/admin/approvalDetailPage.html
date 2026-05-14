@@ -5,64 +5,8 @@
     <title>BNK Busan Bank - 상품 승인 상세 검토</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    
-    <style>
-        :root {
-            --primary-color: #ED1C24;    /* BNK Red */
-            --bg-color: #F4F7F9;
-            --card-bg: #FFFFFF;
-            --border-color: #E2E8F0;
-            --text-main: #1E293B;
-            --text-label: #64748B;
-            --sidebar-width: 260px;
-            --header-height: 70px;
-        }
+    <link rel="stylesheet" th:href="@{/css/admin/approvalDetailPage.css}">
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); display: flex; }
-
-        /* 사이드바 */
-        .sidebar { width: var(--sidebar-width); height: 100vh; background-color: #FFFFFF; border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0; z-index: 100; }
-        .sidebar-logo { padding: 25px 30px; }
-        .sidebar-logo img { width: 130px; }
-        .menu-item { display: flex; align-items: center; padding: 15px 30px; color: var(--text-main); text-decoration: none; font-size: 15px; }
-        .menu-item.active { background-color: #FFF2F2; color: var(--primary-color); font-weight: 700; border-left: 4px solid var(--primary-color); }
-        .menu-item i { margin-right: 15px; width: 20px; text-align: center; }
-
-        /* 헤더 */
-        .header { position: fixed; top: 0; left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); height: var(--header-height); background-color: #FFFFFF; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 40px; z-index: 90; }
-
-        /* 메인 컨텐츠 */
-        .main-content { margin-left: var(--sidebar-width); margin-top: var(--header-height); width: calc(100% - var(--sidebar-width)); padding: 40px; padding-bottom: 120px; }
-        
-        .content-header { margin-bottom: 30px; }
-        .content-title { font-size: 26px; font-weight: 800; color: #0F172A; }
-
-        /* 상세 정보 섹션 카드 */
-        .detail-card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); padding: 30px; margin-bottom: 25px; }
-        .section-title { font-size: 18px; font-weight: 700; color: #334155; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #F1F5F9; display: flex; align-items: center; gap: 10px; }
-        .section-title i { color: var(--primary-color); }
-
-        /* 정보 그리드 레이아웃 */
-        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
-        .info-item { display: flex; flex-direction: column; gap: 6px; }
-        .info-item.full-width { grid-column: span 3; }
-        .info-label { font-size: 13px; font-weight: 600; color: var(--text-label); }
-        .info-value { font-size: 15px; font-weight: 500; color: #1E293B; padding: 10px; background: #F8FAFC; border-radius: 6px; border: 1px solid #F1F5F9; min-height: 40px; }
-        .info-value.highlight { color: var(--primary-color); font-weight: 700; }
-
-        /* 하단 고정 액션 바 */
-        .bottom-action-bar {
-            position: fixed; bottom: 0; left: var(--sidebar-width); width: calc(100% - var(--sidebar-width));
-            background: #FFFFFF; border-top: 1px solid var(--border-color); padding: 20px 40px;
-            display: flex; justify-content: center; gap: 20px; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); z-index: 110;
-        }
-        .btn-decision { border: none; padding: 15px 50px; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.2s; }
-        .btn-approve { background-color: #10B981; color: white; }
-        .btn-pending { background-color: #64748B; color: white; }
-        .btn-reject { background-color: var(--primary-color); color: white; }
-        .btn-decision:hover { transform: translateY(-2px); filter: brightness(1.1); }
-    </style>
 </head>
 <body>
     <div class="sidebar">

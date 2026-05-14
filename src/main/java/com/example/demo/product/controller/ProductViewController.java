@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.demo.product.dto.request.ProductListRequestDto;
+import com.example.demo.product.service.ProductPdfService;
 import com.example.demo.product.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductViewController {
 
     private final ProductService productService;
+    private final ProductPdfService productPdfService;
 
     // 개인 상품몰
     @GetMapping("/product/personal")
@@ -48,7 +50,13 @@ public class ProductViewController {
             @PathVariable("productId") Long productId,
             Model model
     ) {
-        model.addAttribute("product", productService.getProductDetail(productId));
+
+        model.addAttribute("product",
+                productService.getProductDetail(productId));
+
+        model.addAttribute("pdf",
+                productPdfService.getPdfByProductId(productId));
+
         return "product/productDetail";
     }
 }

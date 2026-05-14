@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.product.dao.ProductPdfDao">
+
+    <select id="findByProductId"
+            parameterType="long"
+            resultType="com.example.demo.product.dto.ProductPdfDto">
+
+        SELECT
+            pdf_id AS pdfId,
+            product_id AS productId,
+            basic_terms_path AS basicTermsPath,
+            category_terms_path AS categoryTermsPath,
+            special_terms_path AS specialTermsPath,
+            product_guide_path AS productGuidePath
+        FROM product_pdfs
+        WHERE product_id = #{productId}
+
+    </select>
+
+</mapper>

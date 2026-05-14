@@ -1,73 +1,134 @@
-    <!DOCTYPE html>
-    <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>Admin Test Form</title>
-    </head>
-    <body>
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BNK Busan Bank - 관리자 회원가입</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <link rel="stylesheet" th:href="@{/css/admin/adminJoin.css}">
+</head>
+<body>
 
-    <h2>Admin 등록 테스트</h2>
+<!-- 상단 바 -->
+<div class="top-bar">
+    <img src="/images/BNKlogo.png" alt="BNK 부산은행 로고">
+    <a href="/admin/adminMain" class="top-bar-back">
+        <i class="fa-solid fa-arrow-left"></i>
+        메인으로 돌아가기
+    </a>
+</div>
 
-    <form th:action="@{/admin/join}" th:object="${admin}" method="post">
-        <div>
-            <label>Login ID</label>
-            <input type="text" th:field="*{login_id}">
+<!-- 메인 -->
+<div class="main-wrapper">
+    <div class="join-card">
+
+        <div class="card-header">
+            <div class="icon-wrap">
+                <i class="fa-solid fa-user-plus"></i>
+            </div>
+            <h2>관리자 회원가입</h2>
+            <p>새로운 관리자 계정을 등록합니다</p>
         </div>
 
-        <br>
+        <form th:action="@{/admin/join}" th:object="${admin}" method="post">
+            <div class="form-grid">
 
-        <div>
-            <label>Password</label>
-            <input type="password" th:field="*{password}">
+                <!-- 계정 정보 구분 -->
+                <div class="section-divider">
+                    <span>계정 정보</span>
+                    <hr>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>아이디 (Login ID)</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" th:field="*{login_id}" placeholder="아이디를 입력하세요">
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>비밀번호</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" th:field="*{password}" placeholder="비밀번호를 입력하세요">
+                    </div>
+                </div>
+
+                <!-- 개인 정보 구분 -->
+                <div class="section-divider">
+                    <span>개인 정보</span>
+                    <hr>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>이름 (Name)</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-id-badge"></i>
+                        <input type="text" th:field="*{name}" placeholder="실명을 입력하세요">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>부서 (Department)</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-building"></i>
+                        <select th:field="*{department}">
+                            <option value="">부서 선택</option>
+                            <option value="상품">상품</option>
+                            <option value="외환">외환</option>
+                            <option value="전체">전체</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>권한 (Admin Role)</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <select th:field="*{admin_role}">
+                            <option value="">권한 선택</option>
+                            <option value="chief">Chief (최고 관리자)</option>
+                            <option value="head">Head (부서장)</option>
+                            <option value="executive">Executive (실무)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 보안 구분 -->
+                <div class="section-divider">
+                    <span>보안 설정</span>
+                    <hr>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>관리자 인증 번호 (Admin PW)</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-key"></i>
+                        <input type="password" th:field="*{admin_pw}" placeholder="관리자 인증 번호를 입력하세요">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="submit-area">
+                <a href="/admin" class="btn btn-cancel">취소</a>
+                <button type="submit" class="btn btn-primary">가입 완료</button>
+            </div>
+
+        </form>
+
+        <div class="card-footer-link">
+            이미 계정이 있으신가요? &nbsp;<a href="/adminLogin">로그인하기</a>
         </div>
 
-        <br>
+    </div>
+</div>
 
-        <div>
-            <label>Department</label>
+<!-- 하단 -->
+<div class="footer">
+    &copy; 2024 BNK Busan Bank. All rights reserved. &nbsp;|&nbsp; IT Strategy Team
+</div>
 
-            <select th:field="*{department}">
-                <option value="">부서 선택</option>
-
-                <option value="상품">상품</option>
-                <option value="외환">외환</option>
-                <option value="전체">전체</option>
-            </select>
-        </div>
-
-        <br>
-
-        <div>
-            <label>Admin PW</label>
-            <input type="number" th:field="*{admin_pw}">
-        </div>
-
-        <br>
-
-        <div>
-            <label>Name</label>
-            <input type="text" th:field="*{name}">
-        </div>
-
-        <br>
-
-        <div>
-            <label>Admin Role</label>
-
-            <select th:field="*{admin_role}">
-                <option value="">권한 선택</option>
-
-                <option value="chief">chief</option>
-                <option value="head">head</option>
-                <option value="executive">executive</option>
-            </select>
-        </div>
-
-        <br>
-
-        <button type="submit">전송</button>
-
-    </form>
-
-    </body>
-    </html>
+</body>
+</html>

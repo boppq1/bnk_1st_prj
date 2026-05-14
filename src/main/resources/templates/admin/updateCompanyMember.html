@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BNK Busan Bank - 기업 멤버 정보 수정</title>
+    <!-- Font Awesome & Pretendard -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <link rel="stylesheet" th:href="@{/css/admin/product/updateCompanyMember.css}">
+
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <img src="https://sites.bnk.co.kr/main/resource/img/common/logo_busan.png" alt="BNK">
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> 대시보드</a></li>
+            <li><a href="#" class="menu-item active"><i class="fa-solid fa-building-user"></i> 기업 멤버 관리</a></li>
+            <li><a href="#" class="menu-item"><i class="fa-solid fa-file-signature"></i> 상품 승인 심사</a></li>
+        </ul>
+    </div>
+
+    <div class="header">
+        <div class="header-title">기업 금융 서비스 관리 센터</div>
+    </div>
+
+    <div class="main-content">
+        <div class="content-header">
+            <h1 class="content-title"><i class="fa-solid fa-user-gear" style="color: var(--accent-purple);"></i> 기업 멤버 정보 업데이트</h1>
+            <p style="color: var(--text-label); font-size: 14px; margin-top: 5px;">기업 고객의 소속 멤버 정보를 안전하게 수정하고 동기화합니다.</p>
+        </div>
+
+        <div class="update-card">
+            <!-- 기존 폼 구조 및 필드 매핑 100% 유지 -->
+            <form th:action="@{/admin/updateCompanyMember}" th:object="${company}" method="post">
+                <input type="hidden" th:field="*{company_user_id}">
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-lock"></i> 비밀번호</label>
+                        <input type="password" th:field="*{password}" placeholder="변경할 새 비밀번호 입력">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-signature"></i> 이름</label>
+                        <input type="text" th:field="*{name}">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-mobile-screen"></i> 핸드폰 번호</label>
+                        <input type="text" th:field="*{phone}">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-calendar-day"></i> 생년월일</label>
+                        <input type="date" th:field="*{birth}" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-envelope"></i> 이메일</label>
+                        <input type="text" th:field="*{email}">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-user-check"></i> 계정 상태</label>
+                        <input type="text" th:field="*{status}" placeholder="예: 활성, 정지">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-venus-mars"></i> 성별</label>
+                        <input type="text" th:field="*{gender}">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-language"></i> 영문 이름</label>
+                        <input type="text" th:field="*{e_name}">
+                    </div>
+                </div>
+
+                <div class="submit-area">
+                    <button type="submit">
+                        <i class="fa-solid fa-floppy-disk"></i> 기업 정보 변경 완료
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        if([[${result}]] != null) {
+            alert("수정이 완료되었습니다.");
+        }
+    </script>
+</body>
+</html>

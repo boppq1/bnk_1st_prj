@@ -21,7 +21,7 @@
         )
         VALUES
             (
-                SEQ_ADMIN_USERS.NEXTVAL,
+                seq_admin_id.NEXTVAL,
                 #{login_id},
                 #{password},
                 #{department},

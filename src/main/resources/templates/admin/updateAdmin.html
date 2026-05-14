@@ -5,59 +5,8 @@
     <title>BNK Busan Bank - 관리자 설정 수정</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    
-    <style>
-        :root {
-            --primary-color: #ED1C24;    /* BNK Red */
-            --bg-color: #F8F9FA;
-            --card-bg: #FFFFFF;
-            --border-color: #E0E4E8;
-            --text-main: #212529;
-            --text-label: #6C757D;
-            --sidebar-width: 260px;
-            --header-height: 70px;
-        }
+    <link rel="stylesheet" th:href="@{/css/admin/updateAdmin.css}">
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); display: flex; }
-
-        /* 사이드바 & 헤더 */
-        .sidebar { width: var(--sidebar-width); height: 100vh; background-color: #FFFFFF; border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0; z-index: 100; }
-        .sidebar-logo { padding: 20px 30px; margin-bottom: 30px; }
-        .sidebar-logo img { width: 130px; }
-        .menu-item { display: flex; align-items: center; padding: 15px 30px; color: var(--text-main); text-decoration: none; font-size: 15px; }
-        .menu-item i { margin-right: 15px; width: 20px; text-align: center; color: #ADB5BD; }
-        .menu-item.active { background-color: #FFF2F2; color: var(--primary-color); font-weight: 700; border-left: 4px solid var(--primary-color); }
-        .menu-item.active i { color: var(--primary-color); }
-
-        .header { position: fixed; top: 0; left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); height: var(--header-height); background-color: #FFFFFF; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 40px; z-index: 90; }
-
-        /* 메인 컨텐츠 */
-        .main-content { margin-left: var(--sidebar-width); margin-top: var(--header-height); width: calc(100% - var(--sidebar-width)); padding: 40px; }
-        .content-header { margin-bottom: 30px; }
-        .content-title { font-size: 24px; font-weight: 800; }
-
-        /* 수정 폼 카드 */
-        .update-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); padding: 40px; max-width: 800px; }
-        
-        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 30px; }
-        .form-group { display: flex; flex-direction: column; }
-        .form-group.full-width { grid-column: span 2; }
-
-        label { font-size: 14px; font-weight: 600; color: var(--text-label); margin-bottom: 8px; }
-        
-        input[type="text"], input[type="password"], select {
-            height: 48px; padding: 0 15px; border: 1px solid #D9E0E6; border-radius: 8px; font-size: 15px; color: var(--text-main); transition: all 0.2s; background-color: white;
-        }
-        input:focus, select:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(237, 28, 36, 0.05); }
-
-        /* 버튼 영역 */
-        .submit-area { margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; }
-        button[type="submit"] {
-            height: 50px; padding: 0 50px; background-color: var(--primary-color); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s;
-        }
-        button[type="submit"]:hover { background-color: #D61A20; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(237, 28, 36, 0.2); }
-    </style>
 </head>
 <body>
     <div class="sidebar">
