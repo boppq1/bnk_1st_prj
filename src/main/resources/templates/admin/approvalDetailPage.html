@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <link rel="stylesheet" th:href="@{/css/admin/approvalDetailPage.css}">
-
 </head>
 <body>
     <div class="sidebar">
@@ -29,53 +28,65 @@
             <div class="content-header">
                 <div>
                     <h1 class="content-title">상품 심사 정보: <span th:text="${approval.product_name}">상품명</span></h1>
-                    <p style="color: var(--text-label); font-size: 14px;">상품 ID: <span th:text="${approval.product_id}">#001</span> | 현재 상태: <span th:text="${approval.approve_status}">PENDING</span></p>
+                    <p style="color: var(--text-label); font-size: 14px;">
+                        상품 ID: <span th:text="${approval.product_id}">#001</span> | 
+                        현재 상태: <span th:text="${approval.approve_status}" style="font-weight: 700; color: var(--primary-color);">PENDING</span>
+                    </p>
                 </div>
             </div>
 
+            <!-- 섹션 1: 기본 정보 및 가입 조건 -->
             <div class="detail-card">
                 <div class="section-title"><i class="fa-solid fa-circle-info"></i> 기본 정보 및 가입 조건</div>
                 <div class="info-grid">
                     <div class="info-item"><span class="info-label">상품명</span><div class="info-value highlight" th:text="${approval.product_name}"></div></div>
                     <div class="info-item"><span class="info-label">상품 유형</span><div class="info-value" th:text="${approval.product_type}"></div></div>
                     <div class="info-item"><span class="info-label">판매 여부</span><div class="info-value" th:text="${approval.is_active}"></div></div>
+                    <div class="info-item"><span class="info-label">가입 대상(대)</span><div class="info-value" th:text="${approval.target_large}"></div></div>
+                    <div class="info-item"><span class="info-label">가입 대상(소)</span><div class="info-value" th:text="${approval.target_detail}"></div></div>
+                    <div class="info-item"><span class="info-label">금리 분류</span><div class="info-value" th:text="${approval.rate_category}"></div></div>
                     <div class="info-item"><span class="info-label">최소 가입기간</span><div class="info-value" th:text="${approval.min_period_month} + '개월'"></div></div>
                     <div class="info-item"><span class="info-label">최대 가입기간</span><div class="info-value" th:text="${approval.max_period_month} + '개월'"></div></div>
-                    <div class="info-item"><span class="info-label">금리 분류</span><div class="info-value" th:text="${approval.rate_category}"></div></div>
+                    <div class="info-item"><span class="info-label">가입 가능 여부</span><div class="info-value" th:text="${approval.is_available}"></div></div>
                     <div class="info-item"><span class="info-label">최소 가입금액</span><div class="info-value" th:text="${approval.min_amount}"></div></div>
                     <div class="info-item"><span class="info-label">최대 가입금액</span><div class="info-value" th:text="${approval.max_amount}"></div></div>
-                    <div class="info-item"><span class="info-label">가입 대상</span><div class="info-value" th:text="${approval.target_customer}"></div></div>
-                </div>
-            </div>
-
-            <div class="detail-card">
-                <div class="section-title"><i class="fa-solid fa-money-bill-transfer"></i> 이자 지급 및 환율 설정</div>
-                <div class="info-grid">
                     <div class="info-item"><span class="info-label">이자 지급 방식</span><div class="info-value" th:text="${approval.interest_payment_type}"></div></div>
-                    <div class="info-item"><span class="info-label">적용 환율 기준</span><div class="info-value" th:text="${approval.applied_exchange_rate_type}"></div></div>
-                    <div class="info-item"><span class="info-label">외화 현찰 수수료</span><div class="info-value" th:text="${approval.fx_cash_fee}"></div></div>
-                    <div class="info-item"><span class="info-label">자동 재투자 안내</span><div class="info-value" th:text="${approval.auto_reinvestment}"></div></div>
-                    <div class="info-item"><span class="info-label">자동이체 적립 서비스</span><div class="info-value" th:text="${approval.auto_transfer_svc}"></div></div>
-                    <div class="info-item"><span class="info-label">세금우대 정보</span><div class="info-value" th:text="${approval.tax_benefit}"></div></div>
                 </div>
             </div>
 
+            <!-- 섹션 2: 통화 및 환율 정보 -->
+            <div class="detail-card">
+                <div class="section-title"><i class="fa-solid fa-money-bill-transfer"></i> 통화 및 환율 설정</div>
+                <div class="info-grid">
+                    <div class="info-item"><span class="info-label">통화 코드</span><div class="info-value" th:text="${approval.currency_code}"></div></div>
+                    <div class="info-item"><span class="info-label">통화명</span><div class="info-value" th:text="${approval.currency_name}"></div></div>
+                    <div class="info-item"><span class="info-label">적용 환율 기준</span><div class="info-value" th:text="${approval.applied_exchange_rate_type}"></div></div>
+                    <div class="info-item"><span class="info-label">신청 시작일</span><div class="info-value" th:text="${approval.app_start_date}"></div></div>
+                    <div class="info-item"><span class="info-label">신청 종료일</span><div class="info-value" th:text="${approval.app_end_date}"></div></div>
+                </div>
+            </div>
+
+            <!-- 섹션 3: 금리 상세 정보 (추가된 DTO 필드 반영) -->
+            <div class="detail-card">
+                <div class="section-title"><i class="fa-solid fa-percent"></i> 금리 및 우대 조건</div>
+                <div class="info-grid">
+                    <div class="info-item"><span class="info-label">기본 금리</span><div class="info-value" th:text="${approval.base_rate} + '%'"></div></div>
+                    <div class="info-item"><span class="info-label">만기 금리</span><div class="info-value" th:text="${approval.maturity_rate} + '%'"></div></div>
+                    <div class="info-item"><span class="info-label">중도해지 금리</span><div class="info-value" th:text="${approval.early_cancel_rate} + '%'"></div></div>
+                    <div class="info-item"><span class="info-label">우대 금리</span><div class="info-value highlight" th:text="${approval.preferential_rate} + '%'"></div></div>
+                    <div class="info-item"><span class="info-label">금리 유형</span><div class="info-value" th:text="${approval.rate_type}"></div></div>
+                    <div class="info-item"><span class="info-label">거주자 유형</span><div class="info-value" th:text="${approval.residency_type}"></div></div>
+                    <div class="info-item full-width"><span class="info-label">우대 조건 설명</span><div class="info-value" th:text="${approval.condition_desc}"></div></div>
+                    <div class="info-item"><span class="info-label">금리 적용 시작일</span><div class="info-value" th:text="${approval.rate_start_date}"></div></div>
+                    <div class="info-item"><span class="info-label">금리 적용 종료일</span><div class="info-value" th:text="${approval.rate_end_date}"></div></div>
+                </div>
+            </div>
+
+            <!-- 섹션 4: 마케팅 및 상세 설명 -->
             <div class="detail-card">
                 <div class="section-title"><i class="fa-solid fa-bullhorn"></i> 마케팅 및 상세 설명</div>
                 <div class="info-grid">
-                    <div class="info-item full-width"><span class="info-label">상품 설명</span><div class="info-value" th:text="${approval.product_desc}"></div></div>
-                    <div class="info-item full-width"><span class="info-label">마케팅 문구(상)</span><div class="info-value" th:text="${approval.mkt_msg_top}"></div></div>
-                    <div class="info-item full-width"><span class="info-label">마케팅 문구(하)</span><div class="info-value" th:text="${approval.mkt_msg_bottom}"></div></div>
-                </div>
-            </div>
-
-            <div class="detail-card">
-                <div class="section-title"><i class="fa-solid fa-shield-halved"></i> 규정 및 유의사항</div>
-                <div class="info-grid">
-                    <div class="info-item full-width"><span class="info-label">원금 및 이자지급 제한</span><div class="info-value" th:text="${approval.payment_restriction}"></div></div>
-                    <div class="info-item full-width"><span class="info-label">유의사항</span><div class="info-value" th:text="${approval.precautions}"></div></div>
-                    <div class="info-item"><span class="info-label">예금자보호공시</span><div class="info-value" th:text="${approval.depositor_protection}"></div></div>
-                    <div class="info-item"><span class="info-label">위법계약해지권</span><div class="info-value" th:text="${approval.illegal_contract_cancel}"></div></div>
+                    <div class="info-item full-width"><span class="info-label">상품 상세 설명</span><div class="info-value" th:text="${approval.product_desc}"></div></div>
                 </div>
             </div>
 

@@ -4,12 +4,150 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
  <mapper namespace="com.example.demo.admin.dao.IListDao">
-	<select id="getApproval" resultType="com.example.demo.admin.dto.ApprovalDto">
-		select * from product where product_id = #{product_id}
-	</select>
+	<resultMap id="approvalMap"
+           type="com.example.demo.admin.dto.ProductApprovalDto">
+
+    <!-- products -->
+    <id property="product_id" column="product_id"/>
+
+    <result property="product_name" column="product_name"/>
+    <result property="product_type" column="product_type"/>
+    <result property="is_active" column="is_active"/>
+    <result property="target_large" column="target_large"/>
+    <result property="target_detail" column="target_detail"/>
+
+    <!-- CLOB -->
+    <result property="product_desc"
+            column="product_desc"
+            jdbcType="CLOB"/>
+
+    <result property="min_period_month" column="min_period_month"/>
+    <result property="max_period_month" column="max_period_month"/>
+
+    <!-- NUMBER(18,2) -->
+    <result property="min_amount" column="min_amount"/>
+    <result property="max_amount" column="max_amount"/>
+
+    <result property="interest_payment_type" column="interest_payment_type"/>
+    <result property="applied_exchange_rate_type" column="applied_exchange_rate_type"/>
+    <result property="rate_category" column="rate_category"/>
+    <result property="approve_status" column="approve_status"/>
+
+    <!-- DATE -->
+    <result property="app_start_date" column="app_start_date"/>
+    <result property="app_end_date" column="app_end_date"/>
+
+
+
+    <!-- product_currencies -->
+    <result property="currency_code" column="currency_code"/>
+    <result property="currency_name" column="currency_name"/>
+    <result property="is_available" column="is_available"/>
+
+
+
+    <!-- interest_rates -->
+    <result property="rate_id" column="rate_id"/>
+    <result property="customer_type" column="customer_type"/>
+    <result property="residency_type" column="residency_type"/>
+    <result property="period_month" column="period_month"/>
+
+    <!-- NUMBER(5,2) -->
+    <result property="base_rate" column="base_rate"/>
+    <result property="maturity_rate" column="maturity_rate"/>
+    <result property="early_cancel_rate" column="early_cancel_rate"/>
+
+    <result property="rate_type" column="rate_type"/>
+
+    <!-- NUMBER(5,2) -->
+    <result property="preferential_rate" column="preferential_rate"/>
+
+    <!-- DATE -->
+    <result property="rate_start_date" column="rate_start_date"/>
+    <result property="rate_end_date" column="rate_end_date"/>
+
+
+
+    <!-- preferential_rate_conditions -->
+    <result property="pref_rate_id" column="pref_rate_id"/>
+    <result property="condition_type" column="condition_type"/>
+
+    <!-- CLOB -->
+    <result property="condition_desc"
+            column="condition_desc"
+            jdbcType="CLOB"/>
+
+    <!-- NUMBER(5,2) -->
+    <result property="pref_rate" column="pref_rate"/>
+
+</resultMap>
+
+
+
+<select id="getApproval"
+        parameterType="long"
+        resultMap="approvalMap">
+
+    SELECT
+        p.product_id,
+        p.product_name,
+        p.product_type,
+        p.is_active,
+        p.target_large,
+        p.target_detail,
+        p.product_desc,
+        p.min_period_month,
+        p.max_period_month,
+        p.min_amount,
+        p.max_amount,
+        p.interest_payment_type,
+        p.applied_exchange_rate_type,
+        p.rate_category,
+        p.approve_status,
+        p.app_start_date,
+        p.app_end_date,
+
+        pc.currency_code,
+        pc.currency_name,
+        pc.is_available,
+
+        ir.rate_id,
+        ir.customer_type,
+        ir.residency_type,
+        ir.period_month,
+        ir.base_rate,
+        ir.maturity_rate,
+        ir.early_cancel_rate,
+        ir.rate_type,
+        ir.preferential_rate,
+        ir.rate_start_date,
+        ir.rate_end_date,
+
+        prc.pref_rate_id,
+        prc.condition_type,
+        prc.condition_desc,
+        prc.pref_rate
+
+    FROM products p
+
+    LEFT JOIN product_currencies pc
+        ON p.product_id = pc.product_id
+
+    LEFT JOIN interest_rates ir
+        ON p.product_id = ir.product_id
+        AND pc.currency_code = ir.currency_code
+
+    LEFT JOIN preferential_rate_conditions prc
+        ON ir.rate_id = prc.rate_id
+
+    WHERE p.product_id = #{product_id}
+
+    ORDER BY ir.period_month, prc.pref_rate_id
+
+</select>
 	
 	<select id="getApprovals" resultType="com.example.demo.admin.dto.ApprovalDto">
-		select * from PRODUCT_APPROVAL_REQUEST where request_status not in 'APPROVED'
+		select * from PRODUCT_REQUESTS where request_status not in 'APPROVED'
 	</select>
 	
 	<update id="updateApproval">

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.example.demo.admin.dto.AdminDto;
 import com.example.demo.admin.dto.ApprovalDto;
+import com.example.demo.admin.dto.ProductApprovalDto;
 import com.example.demo.company.dto.CompanyUserDTO;
 import com.example.demo.personal.dto.UserDTO;
 
@@ -16,11 +17,10 @@ public interface IListDao {
 	List<AdminDto> getAdmins();
 	UserDTO getUser(@Param("user_id") Long user_id);
 	List<UserDTO> getUsers();
-	// ApprovalDto getApproval(@Param("product_id") Long product_id);
 	CompanyUserDTO getCompanyUser(@Param("company_user_id") Long company_user_id);
 	List<CompanyUserDTO> getCompanyUsers();
 	List<ApprovalDto> getApprovals();
-	ApprovalDto getApproval(Long approval_id);
+	ProductApprovalDto getApproval(@Param("product_id") Long product_id);
 	void updateApproval(@Param("product_id") Long product_id, @Param("status")String status, @Param("admin_id") String admin_id);
 	void updateProduct(@Param("product_id") Long product_id, @Param("status") String status, @Param("admin_id") String admin_id);
 	void updateAdmin(@Param("admin_id") Long admin_id, @Param("password") String password, @Param("department") String department, @Param("admin_pw") String admin_pw, @Param("name") String name, @Param("admin_role") String admin_role);
