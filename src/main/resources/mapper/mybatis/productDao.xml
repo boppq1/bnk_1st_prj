@@ -203,48 +203,33 @@
 
 
     <select id="getProductDetail"
-            parameterType="long"
-            resultType="com.example.demo.product.dto.response.ProductDetailResponseDto">
+        parameterType="long"
+        resultType="com.example.demo.product.dto.response.ProductDetailResponseDto">
 
-        SELECT
-            product_id AS productId,
-            is_active AS isActive,
-            product_name AS productName,
-            product_type AS productType,
-            target_large AS targetLarge,
-            target_detail AS targetDetail,
-            product_desc AS productDesc,
-            min_amount AS minAmount,
-            max_amount AS maxAmount,
-            min_period_month AS minPeriodMonth,
-            max_period_month AS maxPeriodMonth,
-            interest_payment_type AS interestPaymentType,
-            applied_exchange_rate_type AS appliedExchangeRateType,
-            app_start_date AS appStartDate,
-            app_end_date AS appEndDate,
-            mkt_msg_top AS mktMsgTop,
-            mkt_msg_bottom AS mktMsgBottom,
-            join_method AS joinMethod,
-            auto_transfer_svc AS autoTransferSvc,
-            revolving_info AS revolvingInfo,
-            saving_method AS savingMethod,
-            payment_restriction AS paymentRestriction,
-            precautions AS precautions,
-            fx_cash_fee AS fxCashFee,
-            auto_reinvestment AS autoReinvestment,
-            tax_benefit AS taxBenefit,
-            payment_limit_info AS paymentLimitInfo,
-            data_access_right AS dataAccessRight,
-            illegal_contract_cancel AS illegalContractCancel,
-            depositor_protection AS depositorProtection,
-            rate_category AS rateCategory,
-            approve_status AS approveStatus
-        FROM products
-        WHERE product_id = #{productId}
-          AND is_active = 'Y'
-          AND approve_status = '승인'
+    SELECT
+        product_id AS productId,
+        is_active AS isActive,
+        product_name AS productName,
+        product_type AS productType,
+        target_large AS targetLarge,
+        target_detail AS targetDetail,
+        product_desc AS productDesc,
+        min_amount AS minAmount,
+        max_amount AS maxAmount,
+        min_period_month AS minPeriodMonth,
+        max_period_month AS maxPeriodMonth,
+        interest_payment_type AS interestPaymentType,
+        applied_exchange_rate_type AS appliedExchangeRateType,
+        app_start_date AS appStartDate,
+        app_end_date AS appEndDate,
+        rate_category AS rateCategory,
+        approve_status AS approveStatus
+    FROM products
+    WHERE product_id = #{productId}
+      AND is_active = 'Y'
+      AND approve_status = '승인'
 
-    </select>
+</select>
 
 
     <select id="getCurrencies"
