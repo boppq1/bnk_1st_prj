@@ -13,7 +13,7 @@
                    resultType="long"
                    order="BEFORE">
 
-            SELECT SEQ_PRODUCT.NEXTVAL
+            SELECT SEQ_PRODUCTS.NEXTVAL
             FROM DUAL
 
         </selectKey>
@@ -35,7 +35,6 @@
         applied_exchange_rate_type,
         created_at,
         created_by,
-        approve_status,
         app_start_date,
         app_end_date,
         mkt_msg_top,
@@ -73,7 +72,6 @@
         #{applied_exchange_rate_type},
         SYSDATE,
         #{created_by},
-        '검토중',
         #{app_start_date},
         #{app_end_date},
         #{mkt_msg_top},

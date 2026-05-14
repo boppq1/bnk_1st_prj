@@ -28,19 +28,19 @@ public class AdminService {
 	final IAdminLogDao logDao;
 	final IAdminExchangeDao exchangeDao;
 	
-	public boolean makeProduct(ProductDto dto) {
-		dto.setCreated_by("admin");
-		productDao.insertProduct(dto.getProduct_name(), dto.getIs_active(), dto.getProduct_type(), dto.getMin_period_month(), dto.getMax_period_month(), dto.getMin_amount(), dto.getMax_amount(), dto.getTarget_customer(), dto.getProduct_desc(), dto.getInterest_payment_type(), dto.getApplied_exchange_rate_type(), dto.getCreated_by());
-		return true;
-	}
-	
-	public ProductDto getProduct(Long product_id) {
-		return productDao.selectProduct(product_id);
-	}
-	
-	public List<ProductDto> getProducts() {
-		return productDao.getProducts();
-	}
+//	public boolean makeProduct(ProductDto dto) {
+//		dto.setCreated_by("admin");
+//		productDao.insertProduct(dto.getProduct_name(), dto.getIs_active(), dto.getProduct_type(), dto.getMin_period_month(), dto.getMax_period_month(), dto.getMin_amount(), dto.getMax_amount(), dto.getTarget_customer(), dto.getProduct_desc(), dto.getInterest_payment_type(), dto.getApplied_exchange_rate_type(), dto.getCreated_by());
+//		return true;
+//	}
+//
+//	public ProductDto getProduct(Long product_id) {
+//		return productDao.selectProduct(product_id);
+//	}
+//
+//	public List<ProductDto> getProducts() {
+//		return productDao.getProducts();
+//	}
 	
 	public AdminDto getAdmin(Long admin_id) {
 		return listDao.getAdmin(admin_id);

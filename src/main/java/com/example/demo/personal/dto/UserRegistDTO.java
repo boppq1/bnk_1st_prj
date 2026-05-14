@@ -19,5 +19,5 @@ public class UserRegistDTO {
 	private String postal_code;
 	private String address;
 	private String address_detail;
-	private int account_pw;
+	private String account_pw;
 }

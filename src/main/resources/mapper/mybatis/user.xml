@@ -9,7 +9,7 @@
             user_id, login_id, password, name, phone, birth, email, status, gender,
             e_name, postal_code, address, address_detail, created_at
         ) VALUES (
-            user_id_seq.NEXTVAL,
+            SEQ_USERS.NEXTVAL,
             #{login_id},
             #{password},
             #{name},
@@ -31,11 +31,11 @@
            account_id, account_pw, bank_name, account_no, user_id, balance, currency, account_status,
            limit_one_time, limit_daily
        ) VALUES (
-           account_id_seq.NEXTVAL,
+           SEQ_ACCOUNTS_PERSONAL.NEXTVAL,
            #{account_pw},
            #{bank_name},
            #{account_no},
-           user_id_seq.CURRVAL,
+           SEQ_USERS.CURRVAL,
            #{balance},
            #{currency},
            #{account_status},
@@ -49,11 +49,11 @@
            account_id, account_pw, bank_name, account_no, user_id,  account_status,
            limit_one_time, limit_daily
        ) VALUES (
-           account_id_seq.NEXTVAL,
+           SEQ_FOREIGN_ACCOUNTS_PERSONAL.NEXTVAL,
            #{account_pw},
            #{bank_name},
            #{account_no},
-           user_id_seq.CURRVAL,
+           SEQ_USERS.CURRVAL,
            #{account_status},
            #{limit_one_time},
            #{limit_daily}

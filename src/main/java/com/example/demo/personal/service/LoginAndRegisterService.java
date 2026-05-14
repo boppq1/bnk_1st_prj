@@ -17,7 +17,7 @@ public class LoginAndRegisterService {
 	
 	private final RandomAccount_no getAccount;
 	private final LoginAndRegisterIDAO dao;
-	
+	// 부족한점 외국계좌번호랑 국내계좌번호 다르게 넣어야하는데 일단 나중에 ~~ 기업은 제대로 만들거
 	@Transactional 
     public int register(UserRegistDTO dto) {
         if (dto != null) {
@@ -25,10 +25,13 @@ public class LoginAndRegisterService {
             dto.setPassword(encryptedPassword);
             System.out.println("서비스에서 ----------------------------- dto");
             System.out.println(dto.toString());
-            dao.insertUser(dto);
+
+            	dao.insertUser(dto);				
+
             Accounts_personalDTO account = new Accounts_personalDTO();
-            account.setAccount_pw(dto.getAccount_pw());
-            account.setBank_name("부산은행");
+            String encryptedAcPassword = passwordEncryption(dto.getAccount_pw());
+            account.setAccount_pw(encryptedAcPassword);
+            account.setBank_name("BNK");
             
             String accountNumber;
             while(true) {
@@ -44,6 +47,7 @@ public class LoginAndRegisterService {
             account.setBalance(0);
             account.setLimit_one_time(100);
             account.setLimit_daily(300);
+            
             dao.insertAccount(account);
             dao.insertFxAccount(account);
             return 1;
@@ -65,7 +69,7 @@ public class LoginAndRegisterService {
 	}
 	// 아이디 중복확인
 	public boolean checkId(String id) {
-		System.out.println("서비스 받은 id" + id);
+		System.out.println("company 서비스 받은 id" + id);
 		System.out.println();
 		if(dao.checkId(id) == 1) {
 			return true;

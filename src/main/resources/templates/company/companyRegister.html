@@ -218,8 +218,7 @@
               <input type="text" name="business_no" id="business_no" placeholder="000-00-0000" required>
               <button type="button" class="bnk-btn" id="check_business_no">사업자번호 조회</button>
             </div>
-            <p class="hint info" id="duplText"></p>
-            <p class="hint info" id="checkIdText"></p>
+            <p class="hint info" id="business_no_text"></p>
           </div>
           
           <!-- 개인 정보 -->
@@ -316,7 +315,7 @@
 		    e.preventDefault();
 		    
 		const id = document.querySelector("#login_id").value;
-		    fetch('/checkId', {
+		    fetch('/companyCheckId', {
 		    	method: 'POST',
 		    	headers: {
 		    		'Content-Type': 'application/json'
@@ -414,19 +413,30 @@
 		/* 사업자 번호 조회 */
 		document.querySelector("#check_business_no").addEventListener('click',check_bno);
 		function check_bno(){
+		const bno_text = document.querySelector("#business_no_text")
+		const bno = document.querySelector("#business_no").value
 			
-			fetch('/companyRegisterPro',{
+			fetch('/selectBno',{
 				method : 'post',
 				headers: {
 		    		'Content-Type': 'application/json'
 		    	},
 		    	body: JSON.stringify({
-		    		'business_no': document.querySelector("#business_no").value
+		    		'business_no': bno
 		    	})
 			})
 			.then(res => res.json())
 			.then(data => {
-				console.log(data)
+				if(data == 200){
+					console.log("사용가능")
+					bno_text.innerText = '인증되었습니다.'
+					bno_text.style.color='green';
+					
+				} else{ 
+					console.log("사용불가능")
+					bno_text.innerText = '확인되지 않는 사업자번호 입니다.'
+					bno_text.style.color='red';
+				}
 			})
 		}
 	</script>
