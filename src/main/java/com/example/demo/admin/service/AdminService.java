@@ -135,6 +135,9 @@ public class AdminService {
 		return listDao.getSuggestCompanySearch();
 	}
 	
+	public void keywordBan(String keyword, Long adm_no) {
+		listDao.keywordBan(keyword, adm_no);
+	}
 	
 	
 }

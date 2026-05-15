@@ -166,4 +166,10 @@ public class AdminController {
 		return "/admin/searchManagement";
 	}
 	
+	@GetMapping("/keywordBan")
+	public String keywordBan(@RequestParam("keyword") String keyword) {
+		as.keywordBan(keyword, (long) 1); // adm_no 으로 세션에서 받아서 바꿔야함
+		return "redirect:/admin/searchManagementPage";
+	}
+	
 }

@@ -42,4 +42,5 @@ public interface IListDao {
 	List<SuggestedSearchDto> getSuggestPersonalSearch();
 	List<SearchLogDto> getSearchCompanyLog();
 	List<SuggestedSearchDto> getSuggestCompanySearch();
+	int keywordBan(@Param("keyword") String keyword, @Param("adm_no") Long adm_no); 
 }
