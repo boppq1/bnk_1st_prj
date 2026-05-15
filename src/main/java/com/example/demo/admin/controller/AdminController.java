@@ -32,7 +32,7 @@ public class AdminController {
 		m.addAttribute("companyList", as.getCompanyUserList());
 		return "admin/memberList";
 	}
-
+	
 	@GetMapping("/adminList")
 	public String adminListPage(Model m) {
 		m.addAttribute("adminList", as.getAdminList());
@@ -120,14 +120,12 @@ public class AdminController {
 	}
 	
 	// ========== 로그 관련 ==========
-	
 	@GetMapping("/adminLogPage")
 	public String adminLogPage(Model m) {
 		m.addAttribute("admin", as.adminLog());
 		m.addAttribute("user", as.userLog());
 		return "/admin/adminLog";
 	}
-	
 	
 	// ========== 환전 내역 관련 ==========
 	@GetMapping("/exchangeListPage")
@@ -139,8 +137,33 @@ public class AdminController {
 	// ========== 계좌 리스트 관련 ==========
 	@GetMapping("/adminAccountPage")
 	public String adminAccountPage(Model m) {
-		
+		m.addAttribute("user", as.getUserList());
+		m.addAttribute("company",as.getCompanies());
 		return "/admin/adminAccount";
+	}
+	
+	@GetMapping("/getCompanyAccounts")
+	public String getCompanyAccounts(Model m, @RequestParam("company_id") Long company_id) {
+		m.addAttribute("domestic", as.getCompanyDomesticAccount(company_id));
+		m.addAttribute("foreign", as.getCompanyForeignAccount(company_id));
+		return "/admin/companyAccount";
+	}
+	
+	@GetMapping("/getPersonalAccounts")
+	public String getPersonalAccounts(Model m, @RequestParam("user_id") Long user_id) {
+		m.addAttribute("domestic", as.getPersonalDomesticAccount(user_id));
+		m.addAttribute("foreign", as.getPersonalForeignAccount(user_id));
+		return "/admin/personalAccount";
+	}
+	
+	// ========== 검색어 관리 ==========
+	@GetMapping("/searchManagementPage")
+	public String searchManagementPage(Model m) {
+		m.addAttribute("search_per", as.getSearchPersonal());
+		m.addAttribute("suggest_per", as.getSuggestPersonal());
+		m.addAttribute("search_com", as.getSearchCompany());
+		m.addAttribute("suggest_com", as.getSuggestCompany());
+		return "/admin/searchManagement";
 	}
 	
 }

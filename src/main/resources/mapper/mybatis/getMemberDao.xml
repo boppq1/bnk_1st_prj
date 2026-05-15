@@ -19,6 +19,10 @@
 		select * from users
 	</select>
 	
+	<select id="getCompanies" resultType="com.example.demo.admin.dto.CompaniesDto">
+		select * from companies
+	</select>
+	
 	<select id="getCompanyUser" resultType="com.example.demo.company.dto.CompanyUserDTO">
 		select * from COMPANY_USERS where company_user_id = ${company_user_id}
 	</select>
@@ -38,4 +42,36 @@
 	<update id="updateCompanyUser">
 		update company_users set password = #{password}, name = #{name}, phone = #{phone}, birth = #{birth}, email = #{email}, status = #{status}, gender = #{gender}, e_name = #{e_name} where company_user_id = #{company_user_id}
 	</update>
+	
+	<select id="getPersonalDomesticAccount" resultType="com.example.demo.personal.dto.Accounts_personalDTO">
+		select * from ACCOUNTS_PERSONAL where user_id = #{user_id}
+	</select>
+	
+	<select id="getPersonalForeignAccount" resultType="com.example.demo.personal.dto.Foreign_accounts_personal">
+		select * from FOREIGN_ACCOUNTS_PERSONAL where user_id = #{user_id}
+	</select>
+	
+	<select id="getCompanyDomesticAccount" resultType="com.example.demo.company.dto.AccountsCompanyDTO">
+		select * from ACCOUNTS_COMPANY where company_id = #{company_id}
+	</select>
+	
+	<select id="getCompanyForeignAccount" resultType="com.example.demo.company.dto.ForeignAccountsCompanyDTO">
+		select * from FOREIGN_ACCOUNTS_COMPANY where company_id = #{company_id}
+	</select>
+	
+	<select id="getSearchPersonalLog" resultType="com.example.demo.admin.dto.SearchLogDto">
+		select * from search_log where role_type = 'ROLE_PERSONAL'
+	</select>
+	
+	<select id="getSuggestPersonalSearch" resultType="com.example.demo.admin.dto.SuggestedSearchDto">
+		select * from suggested_search where role_type = 'ROLE_PERSONAL'
+	</select>
+	
+	<select id="getSearchCompanyLog" resultType="com.example.demo.admin.dto.SearchLogDto">
+		select * from search_log where role_type = 'ROLE_COMPANY'
+	</select>
+	
+	<select id="getSuggestCompanySearch" resultType="com.example.demo.admin.dto.SuggestedSearchDto">
+		select * from suggested_search where role_type = 'ROLE_COMPANY'
+	</select>
 </mapper>

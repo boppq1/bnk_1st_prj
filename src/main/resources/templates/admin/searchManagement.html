@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>검색어 관리</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>검색한 시간</th>
+				<th>검색한 사람 ID</th>
+				<th>타입</th>
+				<th>검색어</th>
+				<th>검색 횟수</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each = "searchh : ${search_per}">
+				<td th:text="${searchh.search_no}"></td>
+				<td th:text="${searchh.search_time}"></td>
+				<td th:text="${searchh.searcher}"></td>
+				<td th:text="${searchh.role_type}"></td>
+				<td th:text="${searchh.keyword}"></td>
+				<td th:text="${searchh.search_volume}"></td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>타입</th>
+				<th>검색어</th>
+				<th>검색 횟수</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each = "suggestt : ${suggest_per}">
+				<td th:text="${suggestt.suggested_no}"></td>
+				<td th:text="${suggestt.role_type}"></td>
+				<td th:text="${suggestt.keyword}"></td>
+				<td th:text="${suggestt.search_volume}"></td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<table>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>검색한 시간</th>
+				<th>검색한 사람 ID</th>
+				<th>타입</th>
+				<th>검색어</th>
+				<th>검색 횟수</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each = "searchh : ${search_com}">
+				<td th:text="${searchh.search_no}"></td>
+				<td th:text="${searchh.search_time}"></td>
+				<td th:text="${searchh.searcher}"></td>
+				<td th:text="${searchh.role_type}"></td>
+				<td th:text="${searchh.keyword}"></td>
+				<td th:text="${searchh.search_volume}"></td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>타입</th>
+				<th>검색어</th>
+				<th>검색 횟수</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each = "suggestt : ${suggest_com}">
+				<td th:text="${suggestt.suggested_no}"></td>
+				<td th:text="${suggestt.role_type}"></td>
+				<td th:text="${suggestt.keyword}"></td>
+				<td th:text="${suggestt.search_volume}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

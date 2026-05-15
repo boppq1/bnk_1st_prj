@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import com.example.demo.company.dto.AccountsCompanyDTO;
 import com.example.demo.company.dto.CompanyDto;
 import com.example.demo.company.dto.CompanyUserDTO;
-import com.example.demo.company.dto.ForeginAccountsCompanyDTO;
+import com.example.demo.company.dto.ForeignAccountsCompanyDTO;
 
 @Mapper
 public interface ICompanyRegisterDAO {
@@ -24,7 +24,7 @@ public interface ICompanyRegisterDAO {
 	// 회원가입 C
 	int insertCompanyUser(CompanyUserDTO dto);
 	int insertAC(AccountsCompanyDTO dto);
-	int insertFAC(ForeginAccountsCompanyDTO dto);
+	int insertFAC(ForeignAccountsCompanyDTO dto);
 	
 	
 }

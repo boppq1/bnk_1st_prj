@@ -44,9 +44,9 @@ public class LoginAndRegisterService {
             account.setAccount_no(accountNumber);
             account.setAccount_status("정상");
             account.setCurrency("KRW");
-            account.setBalance(0);
-            account.setLimit_one_time(100);
-            account.setLimit_daily(300);
+            account.setBalance((long) 0);
+            account.setLimit_one_time((long) 100);
+            account.setLimit_daily((long) 300);
             
             dao.insertAccount(account);
             dao.insertFxAccount(account);

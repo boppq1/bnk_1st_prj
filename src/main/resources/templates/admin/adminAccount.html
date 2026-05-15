@@ -7,5 +7,40 @@
 <body>
 	<h1>사용자 계좌 관리 페이지</h1>
 	<hr>
+	<table>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>기업명</th>
+				<th>상세보기</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="companies : ${company}">
+				<td th:text="${companies.company_id}"></td>
+				<td th:text="${companies.company_name}"></td>
+				<td><a th:href="@{/admin/getCompanyAccounts(company_id=${companies.company_id})}">상세보기</a></td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<table>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>이름</th>
+				<th>상세보기</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="users : ${user}">
+				<td th:text="${users.user_id}"></td>
+				<td th:text="${users.name}"></td>
+				<td><a th:href="@{/admin/getPersonalAccounts(user_id=${users.user_id})}">상세보기</a></td>
+			</tr>
+		</tbody>
+	</table>
 </body>
 </html>
