@@ -11,90 +11,93 @@
 
         SELECT *
         FROM (
-            SELECT ROWNUM AS rn, A.* <!-- 행번호를 붙이는 코드 -->
+            SELECT ROWNUM AS rn, A.*
             FROM (
                 SELECT
-                    p.product_id AS productId, <!-- B 컬럼명을 DTO 필드명으로 변환. -->
-                    p.product_name AS productName,
-                    p.product_type AS productType,
-                    p.target_large AS targetLarge,
-                    p.target_detail AS targetDetail,
-                    TO_CHAR(DBMS_LOB.SUBSTR(p.product_desc, 1000, 1)) AS productDesc, <!-- CLOB 타입 잘라서 문자열로 변환.product_desc는 CLOB이라 오류 가능성있음 -->
-                    p.rate_category AS rateCategory,
-                    p.is_active AS isActive,
-                    p.created_at AS createdAt,
-                    p.min_period_month AS minPeriodMonth,
-                    p.max_period_month AS maxPeriodMonth,
-                    p.min_amount AS minAmount,
-                    p.max_amount AS maxAmount,
-                    p.app_start_date AS appStartDate,
-                    p.app_end_date AS appEndDate,
+                    p.prod_no AS productId,
+                    p.prod_nm AS productName,
+                    p.prod_type AS productType,
+                    p.tgt_lrg AS targetLarge,
+                    p.tgt_dtl AS targetDetail,
+                    TO_CHAR(DBMS_LOB.SUBSTR(p.prod_desc, 1000, 1)) AS productDesc,
+                    p.rate_cat AS rateCategory,
+                    p.active AS isActive,
+                    p.reg_dt AS createdAt,
+                    p.min_prd_mon AS minPeriodMonth,
+                    p.max_prd_mon AS maxPeriodMonth,
+                    p.min_amt AS minAmount,
+                    p.max_amt AS maxAmount,
+                    p.app_start_dt AS appStartDate,
+                    p.app_end_dt AS appEndDate,
                     NVL(MIN(r.base_rate), 0) AS minRate,
-                    NVL(MAX(r.base_rate + NVL(r.preferential_rate, 0)), 0) AS maxRate
+                    NVL(MAX(r.base_rate + NVL(r.pref_rate, 0)), 0) AS maxRate
                 FROM products p
                 LEFT JOIN interest_rates r
-                    ON p.product_id = r.product_id
+                    ON p.prod_no = r.prod_no
                    AND r.is_active = 'Y'
                 WHERE 1=1
-                  AND p.is_active = 'Y'
-                  AND p.approve_status = '승인'
+                  AND p.active = 'Y'
+                  AND p.apv_stat_cd = '승인'
+
                 <if test='foreignOnly != null and foreignOnly.equals("Y")'>
-				    AND p.product_type IN ('FOREIGN_DEP', 'FOREIGN_SAV')
-				</if>
-				<if test="rateCategory != null and rateCategory != ''">
-				    AND p.rate_category = #{rateCategory}
-				</if>
+                    AND p.prod_type IN ('FOREIGN_DEP', 'FOREIGN_SAV')
+                </if>
+
+                <if test="rateCategory != null and rateCategory != ''">
+                    AND p.rate_cat = #{rateCategory}
+                </if>
+
                 <if test="keyword != null and keyword != ''">
                     AND (
-                        p.product_name LIKE '%' || #{keyword} || '%'
-                        OR DBMS_LOB.INSTR(p.product_desc, #{keyword}) > 0
+                        p.prod_nm LIKE '%' || #{keyword} || '%'
+                        OR DBMS_LOB.INSTR(p.prod_desc, #{keyword}) > 0
                     )
                 </if>
 
                 <if test="productType != null and productType != ''">
-                    AND p.product_type = #{productType}
+                    AND p.prod_type = #{productType}
                 </if>
 
                 <if test="targetLarge != null and targetLarge != ''">
                     AND (
-                        p.target_large = #{targetLarge}
-                        OR p.target_large = 'ALL'
+                        p.tgt_lrg = #{targetLarge}
+                        OR p.tgt_lrg = 'ALL'
                     )
                 </if>
 
                 <if test="targetDetail != null and targetDetail != ''">
                     AND (
-                        p.target_detail = #{targetDetail}
-                        OR p.target_detail = 'ALL'
+                        p.tgt_dtl = #{targetDetail}
+                        OR p.tgt_dtl = 'ALL'
                     )
                 </if>
 
                 GROUP BY
-                    p.product_id,
-                    p.product_name,
-                    p.product_type,
-                    p.target_large,
-                    p.target_detail,
-                    TO_CHAR(DBMS_LOB.SUBSTR(p.product_desc, 1000, 1)),
-                    p.rate_category,
-                    p.is_active,
-                    p.created_at,
-                    p.min_period_month,
-                    p.max_period_month,
-                    p.min_amount,
-                    p.max_amount,
-                    p.app_start_date,
-                    p.app_end_date
+                    p.prod_no,
+                    p.prod_nm,
+                    p.prod_type,
+                    p.tgt_lrg,
+                    p.tgt_dtl,
+                    TO_CHAR(DBMS_LOB.SUBSTR(p.prod_desc, 1000, 1)),
+                    p.rate_cat,
+                    p.active,
+                    p.reg_dt,
+                    p.min_prd_mon,
+                    p.max_prd_mon,
+                    p.min_amt,
+                    p.max_amt,
+                    p.app_start_dt,
+                    p.app_end_dt
 
                 <choose>
                     <when test="sort == 'rate'">
                         ORDER BY maxRate DESC
                     </when>
                     <when test="sort == 'name'">
-                        ORDER BY p.product_name ASC
+                        ORDER BY p.prod_nm ASC
                     </when>
                     <otherwise>
-                        ORDER BY p.created_at DESC
+                        ORDER BY p.reg_dt DESC
                     </otherwise>
                 </choose>
             ) A
@@ -104,7 +107,6 @@
 
     </select>
 
-
     <select id="getProductCount"
             parameterType="com.example.demo.product.dto.request.ProductListRequestDto"
             resultType="int">
@@ -112,41 +114,43 @@
         SELECT COUNT(*)
         FROM products p
         WHERE 1=1
-          AND p.is_active = 'Y'
-          AND p.approve_status = '승인'
-          <if test='foreignOnly != null and foreignOnly.equals("Y")'>
-		    AND p.product_type IN ('FOREIGN_DEP', 'FOREIGN_SAV')
-		</if>
-		<if test="rateCategory != null and rateCategory != ''">
-		    AND p.rate_category = #{rateCategory}
-		</if>
+          AND p.active = 'Y'
+          AND p.apv_stat_cd = '승인'
+
+        <if test='foreignOnly != null and foreignOnly.equals("Y")'>
+            AND p.prod_type IN ('FOREIGN_DEP', 'FOREIGN_SAV')
+        </if>
+
+        <if test="rateCategory != null and rateCategory != ''">
+            AND p.rate_cat = #{rateCategory}
+        </if>
+
         <if test="targetLarge != null and targetLarge != ''">
             AND (
-                p.target_large = #{targetLarge}
-                OR p.target_large = 'ALL'
+                p.tgt_lrg = #{targetLarge}
+                OR p.tgt_lrg = 'ALL'
             )
         </if>
 
         <if test="targetDetail != null and targetDetail != ''">
             AND (
-                p.target_detail = #{targetDetail}
-                OR p.target_detail = 'ALL'
+                p.tgt_dtl = #{targetDetail}
+                OR p.tgt_dtl = 'ALL'
             )
         </if>
 
         <if test="productType != null and productType != ''">
-            AND p.product_type = #{productType}
+            AND p.prod_type = #{productType}
         </if>
 
         <if test="keyword != null and keyword != ''">
             AND (
-                p.product_name LIKE '%' || #{keyword} || '%'
-                OR DBMS_LOB.INSTR(p.product_desc, #{keyword}) > 0
+                p.prod_nm LIKE '%' || #{keyword} || '%'
+                OR DBMS_LOB.INSTR(p.prod_desc, #{keyword}) > 0
             )
         </if>
 
     </select>
-
 
     <select id="getRecommendProducts"
             parameterType="com.example.demo.product.dto.request.ProductListRequestDto"
@@ -155,155 +159,157 @@
         SELECT *
         FROM (
             SELECT
-                p.product_id AS productId,
-                p.product_name AS productName,
-                p.product_type AS productType,
-                p.target_large AS targetLarge,
-                p.target_detail AS targetDetail,
-                TO_CHAR(DBMS_LOB.SUBSTR(p.product_desc, 1000, 1)) AS productDesc,
-                p.rate_category AS rateCategory,
-                p.min_period_month AS minPeriodMonth,
-                p.max_period_month AS maxPeriodMonth,
-                p.min_amount AS minAmount,
-                p.max_amount AS maxAmount,
-                p.app_start_date AS appStartDate,
-                p.app_end_date AS appEndDate,
+                p.prod_no AS productId,
+                p.prod_nm AS productName,
+                p.prod_type AS productType,
+                p.tgt_lrg AS targetLarge,
+                p.tgt_dtl AS targetDetail,
+                TO_CHAR(DBMS_LOB.SUBSTR(p.prod_desc, 1000, 1)) AS productDesc,
+                p.rate_cat AS rateCategory,
+                p.min_prd_mon AS minPeriodMonth,
+                p.max_prd_mon AS maxPeriodMonth,
+                p.min_amt AS minAmount,
+                p.max_amt AS maxAmount,
+                p.app_start_dt AS appStartDate,
+                p.app_end_dt AS appEndDate,
                 NVL(MIN(r.base_rate), 0) AS minRate,
-                NVL(MAX(r.base_rate + NVL(r.preferential_rate, 0)), 0) AS maxRate
+                NVL(MAX(r.base_rate + NVL(r.pref_rate, 0)), 0) AS maxRate
             FROM products p
             LEFT JOIN interest_rates r
-                ON p.product_id = r.product_id
+                ON p.prod_no = r.prod_no
                AND r.is_active = 'Y'
-            WHERE p.is_active = 'Y'
-              AND p.approve_status = '승인'
-			<if test='foreignOnly != null and foreignOnly.equals("Y")'>
-			    AND p.product_type IN ('FOREIGN_DEP', 'FOREIGN_SAV')
-			</if>
+            WHERE p.active = 'Y'
+              AND p.apv_stat_cd = '승인'
+
+            <if test='foreignOnly != null and foreignOnly.equals("Y")'>
+                AND p.prod_type IN ('FOREIGN_DEP', 'FOREIGN_SAV')
+            </if>
+
+            <if test="rateCategory != null and rateCategory != ''">
+                AND p.rate_cat = #{rateCategory}
+            </if>
+
             <if test="targetLarge != null and targetLarge != ''">
                 AND (
-                    p.target_large = #{targetLarge}
-                    OR p.target_large = 'ALL'
+                    p.tgt_lrg = #{targetLarge}
+                    OR p.tgt_lrg = 'ALL'
                 )
             </if>
 
             <if test="targetDetail != null and targetDetail != ''">
                 AND (
-                    p.target_detail = #{targetDetail}
-                    OR p.target_detail = 'ALL'
+                    p.tgt_dtl = #{targetDetail}
+                    OR p.tgt_dtl = 'ALL'
                 )
             </if>
 
             GROUP BY
-                p.product_id,
-                p.product_name,
-                p.product_type,
-                p.target_large,
-                p.target_detail,
-                TO_CHAR(DBMS_LOB.SUBSTR(p.product_desc, 1000, 1)),
-                p.rate_category,
-                p.min_period_month,
-                p.max_period_month,
-                p.min_amount,
-                p.max_amount,
-                p.app_start_date,
-                p.app_end_date
+                p.prod_no,
+                p.prod_nm,
+                p.prod_type,
+                p.tgt_lrg,
+                p.tgt_dtl,
+                TO_CHAR(DBMS_LOB.SUBSTR(p.prod_desc, 1000, 1)),
+                p.rate_cat,
+                p.min_prd_mon,
+                p.max_prd_mon,
+                p.min_amt,
+                p.max_amt,
+                p.app_start_dt,
+                p.app_end_dt
             ORDER BY maxRate DESC
         )
         WHERE ROWNUM <![CDATA[<=]]> 3
 
     </select>
 
-
     <select id="getProductDetail"
-        parameterType="long"
-        resultType="com.example.demo.product.dto.response.ProductDetailResponseDto">
+            parameterType="long"
+            resultType="com.example.demo.product.dto.response.ProductDetailResponseDto">
 
-    SELECT
-        product_id AS productId,
-        is_active AS isActive,
-        product_name AS productName,
-        product_type AS productType,
-        target_large AS targetLarge,
-        target_detail AS targetDetail,
-        product_desc AS productDesc,
-        min_amount AS minAmount,
-        max_amount AS maxAmount,
-        min_period_month AS minPeriodMonth,
-        max_period_month AS maxPeriodMonth,
-        interest_payment_type AS interestPaymentType,
-        applied_exchange_rate_type AS appliedExchangeRateType,
-        app_start_date AS appStartDate,
-        app_end_date AS appEndDate,
-        rate_category AS rateCategory,
-        approve_status AS approveStatus
-    FROM products
-    WHERE product_id = #{productId}
-      AND is_active = 'Y'
-      AND approve_status = '승인'
+        SELECT
+            prod_no AS productId,
+            active AS isActive,
+            prod_nm AS productName,
+            prod_type AS productType,
+            tgt_lrg AS targetLarge,
+            tgt_dtl AS targetDetail,
+            prod_desc AS productDesc,
+            min_amt AS minAmount,
+            max_amt AS maxAmount,
+            min_prd_mon AS minPeriodMonth,
+            max_prd_mon AS maxPeriodMonth,
+            int_pay_type AS interestPaymentType,
+            apld_exch_type AS appliedExchangeRateType,
+            app_start_dt AS appStartDate,
+            app_end_dt AS appEndDate,
+            rate_cat AS rateCategory,
+            apv_stat_cd AS approveStatus
+        FROM products
+        WHERE prod_no = #{productId}
+          AND active = 'Y'
+          AND apv_stat_cd = '승인'
 
-</select>
-
+    </select>
 
     <select id="getCurrencies"
             parameterType="long"
             resultType="com.example.demo.product.dto.response.ProductCurrencyResponseDto">
 
         SELECT
-            product_currency_id AS productCurrencyId,
-            product_id AS productId,
-            currency_code AS currencyCode,
-            currency_name AS currencyName,
-            is_available AS isAvailable
+            prod_cur_no AS productCurrencyId,
+            prod_no AS productId,
+            cur_cd AS currencyCode,
+            cur_nm AS currencyName,
+            is_avail AS isAvailable
         FROM product_currencies
-        WHERE product_id = #{productId}
-          AND is_available = 'Y'
-        ORDER BY currency_code
+        WHERE prod_no = #{productId}
+          AND is_avail = 'Y'
+        ORDER BY cur_cd
 
     </select>
-
 
     <select id="getRates"
             parameterType="long"
             resultType="com.example.demo.product.dto.response.ProductRateResponseDto">
 
         SELECT
-            rate_id AS rateId,
-            product_id AS productId,
-            currency_code AS currencyCode,
-            customer_type AS customerType,
-            residency_type AS residencyType,
-            period_month AS periodMonth,
+            rate_no AS rateId,
+            prod_no AS productId,
+            cur_cd AS currencyCode,
+            cust_type AS customerType,
+            res_type AS residencyType,
+            prd_mon AS periodMonth,
             base_rate AS baseRate,
-            preferential_rate AS preferentialRate,
-            base_rate + NVL(preferential_rate, 0) AS maxRate,
-            maturity_rate AS maturityRate,
-            early_cancel_rate AS earlyCancelRate,
-            rate_start_date AS rateStartDate,
-            rate_end_date AS rateEndDate,
+            pref_rate AS preferentialRate,
+            base_rate + NVL(pref_rate, 0) AS maxRate,
+            mtr_rate AS maturityRate,
+            early_cxl_rate AS earlyCancelRate,
+            rate_start_dt AS rateStartDate,
+            rate_end_dt AS rateEndDate,
             is_active AS isActive,
             rate_type AS rateType
         FROM interest_rates
-        WHERE product_id = #{productId}
+        WHERE prod_no = #{productId}
           AND is_active = 'Y'
-        ORDER BY currency_code, period_month ASC
+        ORDER BY cur_cd, prd_mon ASC
 
     </select>
-
 
     <select id="getPreferentialRates"
             parameterType="long"
             resultType="com.example.demo.product.dto.response.PreferentialRateResponseDto">
 
         SELECT
-            p.pref_rate_id AS prefRateId,
-            p.rate_id AS rateId,
-            p.condition_type AS conditionType,
-            p.condition_desc AS conditionDesc,
+            p.pref_rate_no AS prefRateId,
+            p.rate_no AS rateId,
+            p.cond_type AS conditionType,
+            p.cond_desc AS conditionDesc,
             p.pref_rate AS prefRate
         FROM preferential_rate_conditions p
         JOIN interest_rates r
-            ON p.rate_id = r.rate_id
-        WHERE r.product_id = #{productId}
+            ON p.rate_no = r.rate_no
+        WHERE r.prod_no = #{productId}
           AND r.is_active = 'Y'
         ORDER BY p.pref_rate DESC
 

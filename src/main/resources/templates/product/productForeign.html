@@ -24,57 +24,312 @@
         <button class="logout-btn">LOGOUT</button>
 
         <nav class="sidebar-category">
+		
 		    <a class="active" th:href="@{/product/foreign}">외환</a>
-		    <a th:href="@{/product/foreign(productType='FOREIGN_DEP')}">외화예금</a>
-		    <a th:href="@{/product/foreign(productType='FOREIGN_SAV')}">외화적금</a>
-		    <a href="#">외화송금</a>
-		    <a href="#">환전</a>
-		    <a href="#">환율</a>
+		
 		    <div class="foreign-dropdown">
-
-			    <button type="button"
-			            class="foreign-dropdown-btn">
-			
-			        <span>유학/이주/여행</span>
-			        <span class="foreign-arrow">›</span>
-			
-			    </button>
-			
-			    <div class="foreign-dropdown-menu">
-			
-			        <div class="foreign-group">
-			            <button type="button" class="foreign-sub-title">ㆍ유학</button>
-			
-			            <div class="foreign-sub-menu">
-			                <a href="#">- 해외유학서비스안내</a>
-			                <a href="#">- 유학경비환전/송금</a>
-			                <a href="#">- 해외유학지원서비스</a>
-			            </div>
-			        </div>
-			
-			        <div class="foreign-group">
-			            <button type="button" class="foreign-sub-title">ㆍ이주</button>
-			
-			            <div class="foreign-sub-menu">
-			                <a href="#">- 해외이주서비스안내</a>
-			                <a href="#">- 해외이주비환전/송금</a>
-			            </div>
-			        </div>
-			
-			        <div class="foreign-group">
-			            <button type="button" class="foreign-sub-title">ㆍ여행</button>
-			
-			            <div class="foreign-sub-menu">
-			                <a href="#">- 여행시유의사항</a>
-			                <a href="#">- 여행경비환전</a>
-			            </div>
-			        </div>
-			
-			    </div>
-			
-			</div>
-		    <a href="#">패키지</a>
-		    <a href="#">외환이용가이드</a>
+		        <button type="button" class="foreign-dropdown-btn">
+		            <span>외화예금</span>
+		            <span class="foreign-arrow">›</span>
+		        </button>
+		
+		        <div class="foreign-dropdown-menu">
+		            <div class="foreign-sub-menu active">
+		                <a th:href="@{/product/foreign(productType='FOREIGN_DEP')}">- 외화예금상품</a>
+		                <a th:href="@{/foreign/deposit/foreignDepositGuide}">- 외화예금안내</a>
+		                <a th:href="@{/foreign/deposit/foreignDepositBenefit}">- 외화예금우대서비스</a>
+		            </div>
+		        </div>
+		    </div>
+		
+		    <div class="foreign-dropdown">
+		        <button type="button" class="foreign-dropdown-btn">
+		            <span>외화송금</span>
+		            <span class="foreign-arrow">›</span>
+		        </button>
+		
+		        <div class="foreign-dropdown-menu">
+		            <div class="foreign-group">
+		                <button type="button" class="foreign-sub-title">ㆍ외화송금서비스</button>
+		                <div class="foreign-sub-menu">
+		                    <a th:href="@{/foreign/remittance/remittanceInternet}">- 인터넷외화송금서비스</a>
+		                    <a th:href="@{/foreign/remittance/remittanceBNKGlobal}">- BNK공동해외송금서비스</a>
+		                    <a th:href="@{/foreign/remittance/remittanceFast}">- 해외즉시송금서비스</a>
+		                    <a th:href="@{/foreign/remittance/remittanceAuto}">- 해외즉시자동송금서비스</a>
+		                    <a th:href="@{/foreign/remittance/remittanceChina}">- 중국지역스피드송금서비스</a>
+		                    <a th:href="@{/foreign/remittance/remittanceCurrency}">- 이종통화송금서비스</a>
+		                    <a th:href="@{/foreign/remittance/remittanceRateAuto}">- 지정환율자동송금서비스</a>
+		                    <a th:href="@{/foreign/remittance/remittanceMobile}">- 모바일송금서비스</a>
+		                    <a th:href="@{/foreign/remittance/remittanceEmail}">- 해외송금 E-mail 서비스</a>
+		                    <a th:href="@{/foreign/remittance/remittanceKRW}">- 원화 해외송금서비스</a>
+		                </div>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <button type="button" class="foreign-sub-title">ㆍ외화송금보내기</button>
+		                <div class="foreign-sub-menu">
+		                    <a th:href="@{/foreign/remittance/remittanceGuide}">- 송금안내</a>
+		                    <a th:href="@{/foreign/remittance/remittanceMethod}">- 송금방법</a>
+		                    <a th:href="@{/foreign/remittance/remittanceCountryInfo}">- 국가별송금시필요정보</a>
+		                </div>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <a class="foreign-single-link" th:href="@{/foreign/remittance/remittanceReceive}">ㆍ외화송금받기</a>
+		            </div>
+		        </div>
+		    </div>
+		
+		    <div class="foreign-dropdown">
+		        <button type="button" class="foreign-dropdown-btn">
+		            <span>수출입금융</span>
+		            <span class="foreign-arrow">›</span>
+		        </button>
+		
+		        <div class="foreign-dropdown-menu">
+		            <div class="foreign-group">
+		                <button type="button" class="foreign-sub-title">ㆍ수출업무</button>
+		                <div class="foreign-sub-menu">
+		                    <a th:href="@{/foreign/tradeFinance/export/exportAgreement}">- 수출거래약정</a>
+		                    <a th:href="@{/foreign/tradeFinance/export/exportLCNotice}">- 수출신용장통지</a>
+		                    <a th:href="@{/foreign/tradeFinance/export/exportLCTransfer}">- 수출신용장양도</a>
+		                    <a th:href="@{/foreign/tradeFinance/export/exportBillPurchase}">- 수출환어음매입</a>
+		                    <a th:href="@{/foreign/tradeFinance/export/exportCollection}">- 수출환어음추심</a>
+		                    <a th:href="@{/foreign/tradeFinance/export/exportTracking}">- 수출서류 TRACKING 서비스</a>
+		                    <a th:href="@{/foreign/tradeFinance/export/exportDebtService}">- 해외채권추심대행서비스</a>
+		                    <a th:href="@{/foreign/tradeFinance/export/exportForgaiting}">- 포페이팅 서비스</a>
+		                </div>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <button type="button" class="foreign-sub-title">ㆍ수입업무</button>
+		                <div class="foreign-sub-menu">
+		                    <a th:href="@{/foreign/tradeFinance/import/importAgreement}">- 수입거래약정</a>
+		                    <a th:href="@{/foreign/tradeFinance/import/importLCOpen}">- 수입신용장개설</a>
+		                    <a th:href="@{/foreign/tradeFinance/import/importGuarantee}">- 수입화물선취보증서발급</a>
+		                    <a th:href="@{/foreign/tradeFinance/import/importDocumentRelease}">- 선적서류인도</a>
+		                    <a th:href="@{/foreign/tradeFinance/import/importInternetLC}">- 인터넷수입신용장개설</a>
+		                    <a th:href="@{/foreign/tradeFinance/import/importUsance}">- 당행인수내국수입유산스서비스</a>
+		                    <a th:href="@{/foreign/tradeFinance/import/importChinaTrade}">- 중국위안화무역결제서비스</a>
+		                </div>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <button type="button" class="foreign-sub-title">ㆍ내국신용장/무역금융</button>
+		                <div class="foreign-sub-menu">
+		                    <a th:href="@{/foreign/tradeFinance/domestic/domesticLC}">- 내국신용장개설</a>
+		                    <a th:href="@{/foreign/tradeFinance/domestic/domesticCollection}">- 판매대금추심의뢰서매입</a>
+		                    <a th:href="@{/foreign/tradeFinance/domestic/domesticSettlement}">- 내국신용장의 결제</a>
+		                    <a th:href="@{/foreign/tradeFinance/domestic/purchaseConfirm}">- 구매확인서업무안내</a>
+		                    <a th:href="@{/foreign/tradeFinance/domestic/tradeFinanceGuide}">- 무역금융업무안내</a>
+		                </div>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <button type="button" class="foreign-sub-title">ㆍ전자무역</button>
+		                <div class="foreign-sub-menu">
+		                    <a th:href="@{/foreign/tradeFinance/electronic/ediGuide}">- EDI업무안내</a>
+		                    <a th:href="@{/foreign/tradeFinance/electronic/ediApply}">- EDI신청방법</a>
+		                    <a th:href="@{/foreign/tradeFinance/electronic/ediSupport}">- EDI지원서비스</a>
+		                </div>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <a class="foreign-single-link" th:href="@{/foreign/tradeFinance/customsConsulting}">ㆍ수출입통관 상담 서비스 안내</a>
+		            </div>
+		        </div>
+		    </div>
+		
+		    <div class="foreign-dropdown">
+		        <button type="button" class="foreign-dropdown-btn">
+		            <span>국내외투자</span>
+		            <span class="foreign-arrow">›</span>
+		        </button>
+		
+		        <div class="foreign-dropdown-menu">
+		            <div class="foreign-sub-menu active">
+		                <a th:href="@{/foreign/investment/overseasInvestment}">- 해외직접투자</a>
+		                <a th:href="@{/foreign/investment/overseasBranch}">- 해외사무소(지사)설치</a>
+		                <a th:href="@{/foreign/investment/overseasRealEstate}">- 해외부동산투자</a>
+		                <a th:href="@{/foreign/investment/foreignDomesticInvestment}">- 외국인국내투자</a>
+		                <a th:href="@{/foreign/investment/foreignDomesticRealEstate}">- 외국인국내부동산투자</a>
+		            </div>
+		        </div>
+		    </div>
+		
+		    <div class="foreign-dropdown">
+		        <button type="button" class="foreign-dropdown-btn">
+		            <span>환전</span>
+		            <span class="foreign-arrow">›</span>
+		        </button>
+		
+		        <div class="foreign-dropdown-menu">
+		            <div class="foreign-group">
+		                <button type="button" class="foreign-sub-title">ㆍ환전안내</button>
+		                <div class="foreign-sub-menu">
+		                    <a th:href="@{/foreign/exchange/exchangeCurrency}">- 환전가능통화</a>
+		                    <a th:href="@{/foreign/exchange/exchangeAmount}">- 환전가능금액</a>
+		                    <a th:href="@{/foreign/exchange/exchangeTip}">- 환전요령</a>
+		                    <a th:href="@{/foreign/exchange/fakeMoneyGuide}">- 위변조화폐식별요령</a>
+		                </div>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <button type="button" class="foreign-sub-title">ㆍ환전 서비스 안내</button>
+		                <div class="foreign-sub-menu">
+		                    <a th:href="@{/foreign/exchange/autoExchange}">- 지정환율자동환전</a>
+		                    <a th:href="@{/foreign/exchange/exchangeGift}">- 외화 선물하기</a>
+		                    <a th:href="@{/foreign/exchange/oneExchange}">- ONE환전</a>
+		                </div>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <button type="button" class="foreign-sub-title">ㆍ환율우대</button>
+		                <div class="foreign-sub-menu">
+		                    <a th:href="@{/foreign/exchange/preferentialGuide}">- 환율우대란</a>
+		                    <a th:href="@{/foreign/exchange/preferentialType}">- 환율우대종류</a>
+		                </div>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <a class="foreign-single-link" th:href="@{/foreign/exchange/exchangeCalculator}">ㆍ환전계산기</a>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <a class="foreign-single-link" th:href="@{/foreign/exchange/hubBranch}">ㆍ동북아허브영업점</a>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <a class="foreign-single-link" th:href="@{/foreign/exchange/foreignCheckGuide}">ㆍ외화수표매입안내</a>
+		            </div>
+		        </div>
+		    </div>
+		
+		    <div class="foreign-dropdown">
+		        <button type="button" class="foreign-dropdown-btn">
+		            <span>환율</span>
+		            <span class="foreign-arrow">›</span>
+		        </button>
+		
+		        <div class="foreign-dropdown-menu">
+		            <div class="foreign-group">
+		                <button type="button" class="foreign-sub-title">ㆍ환율 제공 서비스</button>
+		                <div class="foreign-sub-menu">
+		                    <a th:href="@{/foreign/exchangeRate/rateNotification}">- 지정환율통지서비스</a>
+		                    <a th:href="@{/foreign/exchangeRate/emailRate}">- 이메일 환율 통지 서비스</a>
+		                    <a th:href="@{/foreign/exchangeRate/freeRate}">- 무료환율서비스</a>
+		                </div>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <a class="foreign-single-link" th:href="@{/foreign/exchangeRate/riskManagement}">ㆍ환리스크관리</a>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <a class="foreign-single-link" th:href="@{/foreign/exchangeRate/preferentialCoupon}">ㆍ환율우대쿠폰</a>
+		            </div>
+		        </div>
+		    </div>
+		
+		    <div class="foreign-dropdown">
+		        <button type="button" class="foreign-dropdown-btn">
+		            <span>유학/이주/여행</span>
+		            <span class="foreign-arrow">›</span>
+		        </button>
+		
+		        <div class="foreign-dropdown-menu">
+		            <div class="foreign-group">
+		                <button type="button" class="foreign-sub-title">ㆍ유학</button>
+		                <div class="foreign-sub-menu">
+		                    <a th:href="@{/foreign/studyMigrationTravel/studyGuide}">- 해외유학서비스안내</a>
+		                    <a th:href="@{/foreign/studyMigrationTravel/studyExchange}">- 유학경비환전/송금</a>
+		                    <a th:href="@{/foreign/studyMigrationTravel/studySupport}">- 해외유학지원서비스</a>
+		                </div>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <button type="button" class="foreign-sub-title">ㆍ이주</button>
+		                <div class="foreign-sub-menu">
+		                    <a th:href="@{/foreign/studyMigrationTravel/migrationGuide}">- 해외이주서비스안내</a>
+		                    <a th:href="@{/foreign/studyMigrationTravel/migrationExchange}">- 해외이주비환전/송금</a>
+		                </div>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <button type="button" class="foreign-sub-title">ㆍ여행</button>
+		                <div class="foreign-sub-menu">
+		                    <a th:href="@{/foreign/studyMigrationTravel/travelNotice}">- 여행시유의사항</a>
+		                    <a th:href="@{/foreign/studyMigrationTravel/travelExchange}">- 여행경비환전</a>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		
+		    <div class="foreign-dropdown">
+		        <button type="button" class="foreign-dropdown-btn">
+		            <span>부가서비스</span>
+		            <span class="foreign-arrow">›</span>
+		        </button>
+		
+		        <div class="foreign-dropdown-menu">
+		            <div class="foreign-group">
+		                <button type="button" class="foreign-sub-title">ㆍ환율/이율조회</button>
+		                <div class="foreign-sub-menu">
+		                    <a th:href="@{/foreign/additionalService/exchangeRateSearch}">- 환율조회</a>
+		                    <a th:href="@{/foreign/additionalService/periodExchangeRate}">- 기간별환율조회</a>
+		                    <a th:href="@{/foreign/additionalService/foreignDepositRate}">- 외화예금이율</a>
+		                    <a th:href="@{/foreign/additionalService/overseasMarketRate}">- 해외시장주요금리</a>
+		                </div>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <a class="foreign-single-link" th:href="@{/foreign/additionalService/foreignFormProgram}">ㆍ외환서식 프로그램</a>
+		            </div>
+		        </div>
+		    </div>
+		
+		    <div class="foreign-dropdown">
+		        <button type="button" class="foreign-dropdown-btn">
+		            <span>글로벌파워셀러 특화서비스</span>
+		            <span class="foreign-arrow">›</span>
+		        </button>
+		
+		        <div class="foreign-dropdown-menu">
+		            <div class="foreign-sub-menu active">
+		                <a th:href="@{/foreign/globalPowerSeller/globalPowerSellerGuide}">- 서비스 안내</a>
+		            </div>
+		        </div>
+		    </div>
+		
+		    <div class="foreign-dropdown">
+		        <button type="button" class="foreign-dropdown-btn">
+		            <span>외환이용가이드</span>
+		            <span class="foreign-arrow">›</span>
+		        </button>
+		
+		        <div class="foreign-dropdown-menu">
+		            <div class="foreign-group">
+		                <a class="foreign-single-link" th:href="@{/foreign/guide/foreignConsulting}">ㆍ외환상담안내</a>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <a class="foreign-single-link" th:href="@{/foreign/guide/foreignLaw}">ㆍ법규/규정</a>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <button type="button" class="foreign-sub-title">ㆍ수수료</button>
+		                <div class="foreign-sub-menu">
+		                    <a th:href="@{/foreign/guide/exportImportFee}">- 수출입관련수수료</a>
+		                    <a th:href="@{/foreign/guide/exchangeRemittanceFee}">- 환전/송금관련 수수료</a>
+		                </div>
+		            </div>
+		
+		            <div class="foreign-group">
+		                <a class="foreign-single-link" th:href="@{/foreign/guide/foreignFAQ}">ㆍ외환 FAQ</a>
+		            </div>
+		        </div>
+		    </div>
+		
 		</nav>
     </aside>
 

@@ -11,14 +11,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             resultType="com.example.demo.product.dto.ProductPdfDto">
 
         SELECT
-            pdf_id AS pdfId,
-            product_id AS productId,
+            pdf_no AS pdfId,
+            prod_no AS productId,
             basic_terms_path AS basicTermsPath,
-            category_terms_path AS categoryTermsPath,
+            cat_terms_path AS categoryTermsPath,
             special_terms_path AS specialTermsPath,
             product_guide_path AS productGuidePath
         FROM product_pdfs
-        WHERE product_id = #{productId}
+        WHERE prod_no = #{productId}
 
     </select>
 
