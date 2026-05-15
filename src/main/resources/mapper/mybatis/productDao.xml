@@ -11,15 +11,15 @@
 
         SELECT *
         FROM (
-            SELECT ROWNUM AS rn, A.*
+            SELECT ROWNUM AS rn, A.* <!-- 행번호를 붙이는 코드 -->
             FROM (
                 SELECT
-                    p.product_id AS productId,
+                    p.product_id AS productId, <!-- B 컬럼명을 DTO 필드명으로 변환. -->
                     p.product_name AS productName,
                     p.product_type AS productType,
                     p.target_large AS targetLarge,
                     p.target_detail AS targetDetail,
-                    TO_CHAR(DBMS_LOB.SUBSTR(p.product_desc, 1000, 1)) AS productDesc,
+                    TO_CHAR(DBMS_LOB.SUBSTR(p.product_desc, 1000, 1)) AS productDesc, <!-- CLOB 타입 잘라서 문자열로 변환.product_desc는 CLOB이라 오류 가능성있음 -->
                     p.rate_category AS rateCategory,
                     p.is_active AS isActive,
                     p.created_at AS createdAt,
@@ -38,7 +38,12 @@
                 WHERE 1=1
                   AND p.is_active = 'Y'
                   AND p.approve_status = '승인'
-
+                <if test='foreignOnly != null and foreignOnly.equals("Y")'>
+				    AND p.product_type IN ('FOREIGN_DEP', 'FOREIGN_SAV')
+				</if>
+				<if test="rateCategory != null and rateCategory != ''">
+				    AND p.rate_category = #{rateCategory}
+				</if>
                 <if test="keyword != null and keyword != ''">
                     AND (
                         p.product_name LIKE '%' || #{keyword} || '%'
@@ -109,7 +114,12 @@
         WHERE 1=1
           AND p.is_active = 'Y'
           AND p.approve_status = '승인'
-
+          <if test='foreignOnly != null and foreignOnly.equals("Y")'>
+		    AND p.product_type IN ('FOREIGN_DEP', 'FOREIGN_SAV')
+		</if>
+		<if test="rateCategory != null and rateCategory != ''">
+		    AND p.rate_category = #{rateCategory}
+		</if>
         <if test="targetLarge != null and targetLarge != ''">
             AND (
                 p.target_large = #{targetLarge}
@@ -166,7 +176,9 @@
                AND r.is_active = 'Y'
             WHERE p.is_active = 'Y'
               AND p.approve_status = '승인'
-
+			<if test='foreignOnly != null and foreignOnly.equals("Y")'>
+			    AND p.product_type IN ('FOREIGN_DEP', 'FOREIGN_SAV')
+			</if>
             <if test="targetLarge != null and targetLarge != ''">
                 AND (
                     p.target_large = #{targetLarge}

@@ -12,7 +12,7 @@ public class ProductListRequestDto {
     private String rateCategory;   // 금리 카테고리: 국내, 외환
     private String keyword;		   // 검색 키워드: 상품명, 상품 설명 검색용
     private String sort;           // 정렬 조건: latest(최신순), rate(금리순), name(이름순)
-
+    private String foreignOnly; // 외환만 조회
     private int page = 1;		// 현재 페이지 번호
     private int size = 10;		// 페이지당 조회 갯수
 
