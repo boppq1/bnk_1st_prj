@@ -12,10 +12,17 @@ import com.example.demo.admin.dto.AdminActionLogDto;
 import com.example.demo.admin.dto.AdminDto;
 import com.example.demo.admin.dto.ApiLogDto;
 import com.example.demo.admin.dto.ApprovalDto;
+import com.example.demo.admin.dto.CompaniesDto;
 import com.example.demo.admin.dto.ExchangeRequestDto;
 import com.example.demo.admin.dto.ProductApprovalDto;
 import com.example.demo.admin.dto.ProductDto;
+import com.example.demo.admin.dto.SearchLogDto;
+import com.example.demo.admin.dto.SuggestedSearchDto;
+import com.example.demo.company.dto.AccountsCompanyDTO;
 import com.example.demo.company.dto.CompanyUserDTO;
+import com.example.demo.company.dto.ForeignAccountsCompanyDTO;
+import com.example.demo.personal.dto.Accounts_personalDTO;
+import com.example.demo.personal.dto.Foreign_accounts_personal;
 import com.example.demo.personal.dto.UserDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -91,5 +98,44 @@ public class AdminService {
 	public List<ExchangeRequestDto> exchangeList() {
 		return exchangeDao.exchangeList();
 	}
+	
+	public List<CompaniesDto> getCompanies() {
+		return listDao.getCompanies();
+	}
+	
+	public List<Accounts_personalDTO> getPersonalDomesticAccount(Long user_id) {
+		return listDao.getPersonalDomesticAccount(user_id);
+	}
+	
+	public List<Foreign_accounts_personal> getPersonalForeignAccount(Long user_id) {
+		return listDao.getPersonalForeignAccount(user_id);
+	}
+	
+	public List<AccountsCompanyDTO> getCompanyDomesticAccount(Long company_id) {
+		return listDao.getCompanyDomesticAccount(company_id);
+	}
+	
+	public List<ForeignAccountsCompanyDTO> getCompanyForeignAccount(Long company_id) {
+		return listDao.getCompanyForeignAccount(company_id);
+	}
+	
+	public List<SearchLogDto> getSearchPersonal() {
+		return listDao.getSearchPersonalLog();
+	}
+	
+	public List<SuggestedSearchDto> getSuggestPersonal() {
+		return listDao.getSuggestPersonalSearch();
+	}
+	
+	public List<SearchLogDto> getSearchCompany() {
+		return listDao.getSearchCompanyLog();
+	}
+	
+	public List<SuggestedSearchDto> getSuggestCompany() {
+		return listDao.getSuggestCompanySearch();
+	}
+	
+	
+	
 }
 

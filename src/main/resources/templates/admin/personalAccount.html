@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>개인 계좌 목록</h1>
+	<hr>
+	<table>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>계좌번호</th>
+				<th>상세보기</th>
+			</tr>
+			
+		</thead>
+		
+		<tbody>
+			<tr th:each="domesticAccount : ${domestic}">
+				<td th:text="${domesticAccount.account_id}"></td>
+				<td th:text="${domesticAccount.account_no}"></td>
+				<td><a th:href="@{*}"></a></td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<table>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>계좌번호</th>
+				<th>상세보기</th>
+			</tr>
+			
+		</thead>
+		
+		<tbody>
+			<tr th:each="foreignAccount : ${foreign}">
+				<td th:text="${foreignAccount.account_id}"></td>
+				<td th:text="${foreignAccount.account_no}"></td>
+				<td><a th:href="@{*}"></a></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

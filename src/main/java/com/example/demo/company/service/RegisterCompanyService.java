@@ -9,7 +9,7 @@ import com.example.demo.company.dao.ICompanyRegisterDAO;
 import com.example.demo.company.dto.AccountsCompanyDTO;
 import com.example.demo.company.dto.CompanyDto;
 import com.example.demo.company.dto.CompanyUserDTO;
-import com.example.demo.company.dto.ForeginAccountsCompanyDTO;
+import com.example.demo.company.dto.ForeignAccountsCompanyDTO;
 import com.example.demo.personal.service.LoginAndRegisterService;
 import com.example.demo.randomNumber.RandomAccount_no;
 
@@ -65,18 +65,18 @@ public class RegisterCompanyService {
             	System.out.println("회사정보 불러오는 서비스에서 오류");
             	return "회상정보오류서비스단";
             }
-            newAC.setCompany_id(companyInfo.getCompany_id());
-            newAC.setBalance(0);
+            newAC.setCompany_id((long) companyInfo.getCompany_id());
+            newAC.setBalance((long) 0);
             newAC.setCurrency("KRW");
             newAC.setAccount_status("정상");
-            newAC.setLimit_one_time(500000000);
+            newAC.setLimit_one_time((long) 500000000);
             newAC.setLimit_daily(1000000000L);
             
             if(companyDAO.insertAC(newAC) != 1) {
             	System.out.println("기업국내계좌 넣을떄 오류");
             }
             
-            ForeginAccountsCompanyDTO newFAC = new ForeginAccountsCompanyDTO();
+            ForeignAccountsCompanyDTO newFAC = new ForeignAccountsCompanyDTO();
             newFAC.setAccount_pw(newAccPw);
             newFAC.setBank_name("BNK");
             
@@ -87,9 +87,9 @@ public class RegisterCompanyService {
             	}
             }
             newFAC.setAccount_no(newAcc);
-            newFAC.setCompany_id(companyInfo.getCompany_id());
+            newFAC.setCompany_id((long) companyInfo.getCompany_id());
             newFAC.setAccount_status("정상");
-            newFAC.setLimit_one_time(500000000);
+            newFAC.setLimit_one_time((long) 500000000);
             newFAC.setLimit_daily(1000000000L);
             
             if(companyDAO.insertFAC(newFAC) != 1) {

@@ -5,13 +5,14 @@ import lombok.Data;
 @Data
 public class Accounts_personalDTO {
 
+	private Long account_id;
 	private String account_pw;
 	private String bank_name;
 	private String account_no;
-	private String user_id;
-	private int balance;
+	private Long user_id;
+	private Long balance;
 	private String currency;
 	private String account_status;
-	private int limit_one_time;
-	private int limit_daily;
+	private Long limit_one_time;
+	private Long limit_daily;
 }
