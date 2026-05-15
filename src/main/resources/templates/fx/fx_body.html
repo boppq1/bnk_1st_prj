@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/fx/fxHome.css}">
+<link rel="stylesheet" th:href="@{/css/fx/fxChart.css}">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<script src="/js/fx/fxHome.js"></script>
+<body>
+	<div class="container">
+		<div class="main-content">
+
+			<div class="text-subtitle">환율, 환전, 송금, 해외투자까지</div>
+			<div class="text-title">BNK 부산은행 외환 서비스</div>
+
+			<div class="banner-quick-wrap">
+				<div class="banner-wrap">
+					<div class="banner-slider">
+						<a href="/" class="slide">배너 1</a> <a href="/" class="slide">배너
+							2</a> <a href="/" class="slide">배너 3</a>
+					</div>
+				</div>
+				<div class="quick-menu-wrap">
+					<div class="quick-item">
+						<a href="" class="item">
+
+							<div class="item-icon">
+								<i class="fa-solid fa-clipboard-check"></i>
+							</div>
+
+							<div class="item-content">
+								<h4>환율 조회</h4>
+							</div>
+						</a>
+					</div>
+					<div class="quick-item">
+						<a href="" class="item">
+
+							<div class="item-icon">
+								<i class="fa-solid fa-clipboard-check"></i>
+							</div>
+
+							<div class="item-content">
+								<h4>환전 신청</h4>
+							</div>
+						</a>
+					</div>
+					<div class="quick-item">
+						<a href="" class="item">
+
+							<div class="item-icon">
+								<i class="fa-solid fa-clipboard-check"></i>
+							</div>
+
+							<div class="item-content">
+								<h4>환전조회/관리</h4>
+							</div>
+						</a>
+					</div>
+					<div class="quick-item">
+						<a href="" class="item">
+
+							<div class="item-icon">
+								<i class="fa-solid fa-clipboard-check"></i>
+							</div>
+
+							<div class="item-content">
+								<h4>국내외화이체</h4>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="research-section">리서치 섹션 타이틀 및 탭 란</div>
+			<div class="research-list">리서치 카드 목록 란 (JP모간, 골드만삭스, 스티펠,
+				국채태통증권)</div>
+
+		</div>
+
+		<div class="sidebar">
+			<!-- 상단 타이틀 -->
+			<div class="sidebar-header">
+				<span class="sidebar-title">환율</span> <a href=""
+					class="sidebar-link">바로가기</a>
+			</div>
+
+			<!-- 환율 조회 폼 -->
+			<div class="sidebar-form">
+				<select class="sidebar-select" name="currency">
+					<option value="USD">USD (미국 달러)</option>
+					<option value="JPY">JPY (일본 엔)</option>
+					<option value="EUR">EUR (유로)</option>
+					<option value="CNY">CNY (중국 위안)</option>
+				</select> <select class="sidebar-select" name="rateType">
+					<option value="standard">매매기준율</option>
+					<option value="buy">전신환 매입</option>
+					<option value="sell">전신환 매도</option>
+				</select>
+
+				<div class="sidebar-form-bottom">
+					<button class="sidebar-btn" type="button">조회</button>
+				</div>
+			</div>
+
+			<!-- 환율 결과 -->
+			<div class="sidebar-rate">
+				<span class="rate-value">환율 란</span> <span
+					class="rate-change up">증가율 란</span>
+			</div>
+
+			<!-- 기간 탭 -->
+			<div class="sidebar-tabs">
+				<button class="tab-btn active" data-period="1w">1주일</button>
+				<button class="tab-btn" data-period="1m">1개월</button>
+				<button class="tab-btn" data-period="3m">3개월</button>
+			</div>
+
+			<!-- 차트 영역 -->
+			<div class="sidebar-chart">
+				<canvas id="rateChart"></canvas>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

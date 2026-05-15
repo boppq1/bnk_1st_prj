@@ -49,7 +49,10 @@
         </section>
 
         <form class="product-search" method="get" th:action="@{/product/company}">
-            <input type="text" name="keyword" placeholder="상품명 또는 키워드를 입력하세요." th:value="${param.keyword}">
+            <input type="text"
+                   name="keyword"
+                   placeholder="상품명 또는 키워드를 입력하세요."
+                   th:value="${param.keyword}">
 
             <select name="productType">
                 <option value="">전체 상품</option>
@@ -76,8 +79,10 @@
             <div class="recommend-grid">
                 <th:block th:each="item, stat : ${products.products}">
                     <article class="recommend-card clickable-card"
-			         th:if="${stat.index < 3}"
-			         th:onclick="|location.href='@{/product/{id}(id=${item.productId})}'|">
+                             th:if="${stat.index < 3}"
+                             th:data-url="@{/product/{id}(id=${item.productId})}"
+                             onclick="location.href=this.dataset.url">
+
                         <div class="card-labels">
                             <span th:switch="${item.productType}">
                                 <span th:case="'DEPOSIT'">예금</span>
@@ -88,7 +93,11 @@
                                 <span th:case="'CORP_SAV'">기업적금</span>
                                 <span th:case="*" th:text="${item.productType}">상품</span>
                             </span>
-                            <a th:href="@{/product/{id}(id=${item.productId})}">상품 상세</a>
+
+                            <a th:href="@{/product/{id}(id=${item.productId})}"
+                               onclick="event.stopPropagation();">
+                                상품 상세
+                            </a>
                         </div>
 
                         <h3 th:text="${item.productName}">상품명</h3>
@@ -142,11 +151,14 @@
 
                 <tbody>
                 <tr th:each="item : ${products.products}"
-    class="clickable-row"
-    th:onclick="|location.href='@{/product/{id}(id=${item.productId})}'|">
+                    class="clickable-row"
+                    th:data-url="@{/product/{id}(id=${item.productId})}"
+                    onclick="location.href=this.dataset.url">
+
                     <td>
                         <a th:href="@{/product/{id}(id=${item.productId})}"
-                           th:text="${item.productName}">
+                           th:text="${item.productName}"
+                           onclick="event.stopPropagation();">
                             상품명
                         </a>
                     </td>
@@ -176,19 +188,19 @@
 
                     <td>
                         <input type="checkbox"
-					       class="compare-check"
-					       onclick="event.stopPropagation();"
-					       th:data-id="${item.productId}"
-					       th:data-name="${item.productName}"
-					       th:data-type="${item.productType}"
-					       th:data-target="${item.targetLarge}"
-					       th:data-target-detail="${item.targetDetail}"
-					       th:data-rate="${item.maxRate}"
-					       th:data-desc="${item.productDesc}"
-					       th:data-min-period="${item.minPeriodMonth}"
-					       th:data-max-period="${item.maxPeriodMonth}"
-					       th:data-min-amount="${item.minAmount}"
-					       th:data-max-amount="${item.maxAmount}">
+                               class="compare-check"
+                               onclick="event.stopPropagation();"
+                               th:data-id="${item.productId}"
+                               th:data-name="${item.productName}"
+                               th:data-type="${item.productType}"
+                               th:data-target="${item.targetLarge}"
+                               th:data-target-detail="${item.targetDetail}"
+                               th:data-rate="${item.maxRate}"
+                               th:data-desc="${item.productDesc}"
+                               th:data-min-period="${item.minPeriodMonth}"
+                               th:data-max-period="${item.maxPeriodMonth}"
+                               th:data-min-amount="${item.minAmount}"
+                               th:data-max-amount="${item.maxAmount}">
                     </td>
                 </tr>
                 </tbody>
@@ -198,7 +210,7 @@
                 <button type="button" id="compareBtn">선택 상품 비교하기</button>
             </div>
 
-            <div class="paging-wrap">
+            <div class="paging-wrap" th:if="${products.totalPage > 0}">
                 <a th:if="${products.page > 1}"
                    th:href="@{/product/company(page=${products.page - 1}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}">
                     이전
@@ -207,7 +219,8 @@
                 <th:block th:each="i : ${#numbers.sequence(1, products.totalPage)}">
                     <a th:href="@{/product/company(page=${i}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}"
                        th:text="${i}"
-                       th:classappend="${i == products.page} ? 'active'"></a>
+                       th:classappend="${i == products.page} ? 'active'">
+                    </a>
                 </th:block>
 
                 <a th:if="${products.page < products.totalPage}"
@@ -250,10 +263,11 @@
                 희망 가입기간
                 <input type="number" id="comparePeriod" placeholder="예: 12">
             </label>
+
             <label>
-			    나이
-			    <input type="number" id="compareAge" placeholder="예: 25">
-			</label>
+                나이
+                <input type="number" id="compareAge" placeholder="예: 25">
+            </label>
         </div>
 
         <div class="compare-result-box" id="compareResultBox">
@@ -265,5 +279,6 @@
 <div th:replace="~{footer :: footer}"></div>
 
 <script th:src="@{/js/product/productComparePopup.js}"></script>
+
 </body>
 </html>

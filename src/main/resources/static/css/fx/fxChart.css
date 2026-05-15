@@ -1,0 +1,183 @@
+@charset "UTF-8";
+
+/* ==============================
+   사이드바
+============================== */
+.sidebar {
+  flex: 1;
+  min-width: 220px;
+  background-color: #ffffff;
+  border: 1px solid #e8d8d8;
+  border-radius: 12px;
+  padding: 20px 18px;
+}
+ 
+/* 상단 타이틀 */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+ 
+.sidebar-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+ 
+.sidebar-link {
+  font-size: 12px;
+  color: #c0392b;
+  text-decoration: none;
+  border-bottom: 1px solid #c0392b;
+  padding-bottom: 1px;
+}
+ 
+.sidebar-link:hover {
+  color: #8b0000;
+  border-color: #8b0000;
+}
+ 
+/* 조회 폼 */
+.sidebar-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+ 
+.sidebar-select {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 13px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  color: #333;
+  background-color: #fff;
+  cursor: pointer;
+  outline: none;
+  appearance: auto;
+}
+ 
+.sidebar-select:focus {
+  border-color: #c0392b;
+}
+ 
+/* 조회 버튼 + 캐릭터 가로 배치 */
+.sidebar-form-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 2px;
+}
+ 
+.sidebar-btn {
+  flex: 1;
+  padding: 9px 0;
+  background-color: #c0392b;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+ 
+.sidebar-btn:hover {
+  background-color: #8b0000;
+}
+ 
+/* 캐릭터 이미지 */
+.sidebar-character {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+  border: 1px solid #eee;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+ 
+.character-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+ 
+/* 환율 결과 숫자 */
+.sidebar-rate {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+ 
+.rate-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+}
+ 
+.rate-change {
+  font-size: 13px;
+  font-weight: 500;
+}
+ 
+.rate-change.up {
+  color: #c0392b;
+}
+ 
+.rate-change.down {
+  color: #1a5276;
+}
+ 
+/* 기간 탭 */
+.sidebar-tabs {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 12px;
+}
+ 
+.tab-btn {
+  flex: 1;
+  padding: 7px 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: #888;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  margin-bottom: -1px;
+}
+ 
+.tab-btn:hover {
+  color: #c0392b;
+}
+ 
+.tab-btn.active {
+  color: #c0392b;
+  border-bottom-color: #c0392b;
+  font-weight: 700;
+}
+ 
+/* 차트 영역 */
+.sidebar-chart {
+  width: 100%;
+  height: 140px;
+  position: relative;
+}
+ 
+#rateChart {
+  width: 100% !important;
+  height: 100% !important;
+}
+ 

@@ -12,4 +12,9 @@ public class FxController {
 		return "personal/fxHome";
 	}
 	
+	@GetMapping("/fx_body")
+	public String fx_body() {
+		
+		return "fx/fx_body";
+	}
 }

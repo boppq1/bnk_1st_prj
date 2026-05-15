@@ -173,31 +173,39 @@
 
             <tbody>
 
-            <tr th:each="rate : ${product.rates}">
-
-                <td th:text="${rate.currencyCode}">
-                    KRW
-                </td>
-
-                <td>
-                    <span th:text="${rate.periodMonth}">12</span>개월
-                </td>
-
-                <td>
-                    <span th:text="${rate.baseRate}">3.5</span>%
-                </td>
-
-                <td>
-                    <span th:text="${rate.preferentialRate}">0.5</span>%
-                </td>
-
-                <td>
-                    <span th:text="${rate.maxRate}">4.0</span>%
-                </td>
-
-            </tr>
-
-            </tbody>
+				<tr th:if="${#lists.isEmpty(product.rates)}">
+				
+				    <td colspan="5">
+				        등록된 금리 정보가 없습니다.
+				    </td>
+				
+				</tr>
+				
+				<tr th:each="rate : ${product.rates}">
+				
+				    <td th:text="${rate.currencyCode}">
+				        KRW
+				    </td>
+				
+				    <td>
+				        <span th:text="${rate.periodMonth}">12</span>개월
+				    </td>
+				
+				    <td>
+				        <span th:text="${rate.baseRate}">3.5</span>%
+				    </td>
+				
+				    <td>
+				        <span th:text="${rate.preferentialRate}">0.5</span>%
+				    </td>
+				
+				    <td>
+				        <span th:text="${rate.maxRate}">4.0</span>%
+				    </td>
+				
+				</tr>
+				
+				</tbody>
 
         </table>
 
@@ -264,9 +272,9 @@
 	            <label>적용 금리 (%)</label>
 	
 	            <input type="number"
-	                   id="detailRate"
-	                   step="0.01"
-	                   th:value="${product.rates[0].maxRate}">
+			       id="detailRate"
+			       step="0.01"
+			       th:value="${#lists.isEmpty(product.rates) ? 0 : product.rates[0].maxRate}">
 	
 	        </div>
 	
