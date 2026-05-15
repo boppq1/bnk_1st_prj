@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>기업 상품몰</title>
+    <title>외환 상품몰</title>
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <link rel="stylesheet" th:href="@{/css/product/product.css}">
     <link rel="stylesheet" th:href="@{/css/footer.css}">
@@ -16,45 +16,90 @@
 
     <aside class="product-sidebar">
         <div class="sidebar-profile">
-            <div class="profile-bank">BNK 부산은행 기업</div>
-            <div class="profile-name">기업 고객님 반갑습니다</div>
+            <div class="profile-bank">BNK 부산은행 외환</div>
+			<div class="profile-name">외환 고객님 반갑습니다</div>
             <div class="profile-date">최근 접속일 2026.05.06</div>
         </div>
 
         <button class="logout-btn">LOGOUT</button>
 
         <nav class="sidebar-category">
-            <a class="active" th:href="@{/product/company}">상품몰 홈</a>
-            <a th:href="@{/product/company(productType='CORP_DEP')}">기업예금</a>
-            <a th:href="@{/product/company(productType='CORP_SAV')}">기업적금</a>
-            <a th:href="@{/product/company(productType='FOREIGN_DEP')}">외환</a>
-            <a href="#">퇴직연금</a>
-            <a href="#">펀드</a>
-        </nav>
+		    <a class="active" th:href="@{/product/foreign}">외환</a>
+		    <a th:href="@{/product/foreign(productType='FOREIGN_DEP')}">외화예금</a>
+		    <a th:href="@{/product/foreign(productType='FOREIGN_SAV')}">외화적금</a>
+		    <a href="#">외화송금</a>
+		    <a href="#">환전</a>
+		    <a href="#">환율</a>
+		    <div class="foreign-dropdown">
+
+			    <button type="button"
+			            class="foreign-dropdown-btn">
+			
+			        <span>유학/이주/여행</span>
+			        <span class="foreign-arrow">›</span>
+			
+			    </button>
+			
+			    <div class="foreign-dropdown-menu">
+			
+			        <div class="foreign-group">
+			            <button type="button" class="foreign-sub-title">ㆍ유학</button>
+			
+			            <div class="foreign-sub-menu">
+			                <a href="#">- 해외유학서비스안내</a>
+			                <a href="#">- 유학경비환전/송금</a>
+			                <a href="#">- 해외유학지원서비스</a>
+			            </div>
+			        </div>
+			
+			        <div class="foreign-group">
+			            <button type="button" class="foreign-sub-title">ㆍ이주</button>
+			
+			            <div class="foreign-sub-menu">
+			                <a href="#">- 해외이주서비스안내</a>
+			                <a href="#">- 해외이주비환전/송금</a>
+			            </div>
+			        </div>
+			
+			        <div class="foreign-group">
+			            <button type="button" class="foreign-sub-title">ㆍ여행</button>
+			
+			            <div class="foreign-sub-menu">
+			                <a href="#">- 여행시유의사항</a>
+			                <a href="#">- 여행경비환전</a>
+			            </div>
+			        </div>
+			
+			    </div>
+			
+			</div>
+		    <a href="#">패키지</a>
+		    <a href="#">외환이용가이드</a>
+		</nav>
     </aside>
 
     <main class="product-main">
 
         <section class="product-head">
             <div>
-                <h1>기업 상품몰</h1>
-                <p>기업 고객을 위한 예금, 적금, 외환 상품을 한눈에 비교하고 가입하실 수 있습니다</p>
+                <h1>외환 상품몰</h1>
+				<p>외화예금, 외화적금, 환전, 송금 등 외환 서비스를 한눈에 확인할 수 있습니다</p>
             </div>
 
-            <div class="quick-menu">
-                <a href="#">상품가입내역</a>
-                <a href="#">관심상품</a>
-                <a href="#compareArea">비교함</a>
-            </div>
+            <select name="productType">
+			    <option value="">전체 외환 상품</option>
+			    <option value="FOREIGN_DEP">외화예금</option>
+			    <option value="FOREIGN_SAV">외화적금</option>
+			</select>
         </section>
 
-        <form class="product-search" method="get" th:action="@{/product/company}">
+        <form class="product-search" method="get" th:action="@{/product/foreign}">
             <input type="text"
                    name="keyword"
                    placeholder="상품명 또는 키워드를 입력하세요."
                    th:value="${param.keyword}">
 
-            
+
 
             <select name="sort">
                 <option value="">최신순</option>
@@ -204,19 +249,19 @@
 
             <div class="paging-wrap" th:if="${products.totalPage > 0}">
                 <a th:if="${products.page > 1}"
-                   th:href="@{/product/company(page=${products.page - 1}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}">
+                   th:href="@{/product/foreign(page=${products.page - 1}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}">
                     이전
                 </a>
 
                 <th:block th:each="i : ${#numbers.sequence(1, products.totalPage)}">
-                    <a th:href="@{/product/company(page=${i}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}"
+                    <a th:href="@{/product/foreign(page=${i}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}"
                        th:text="${i}"
                        th:classappend="${i == products.page} ? 'active'">
                     </a>
                 </th:block>
 
                 <a th:if="${products.page < products.totalPage}"
-                   th:href="@{/product/company(page=${products.page + 1}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}">
+                   th:href="@{/product/foreign(page=${products.page + 1}, keyword=${param.keyword}, productType=${param.productType}, sort=${param.sort})}">
                     다음
                 </a>
             </div>
@@ -241,9 +286,9 @@
             <label>
                 가입대상
                 <select id="compareTarget">
-                    <option value="PERSONAL">개인</option>
-                    <option value="COMPANY" selected>기업</option>
-                </select>
+				    <option value="PERSONAL" selected>개인</option>
+				    <option value="COMPANY">기업</option>
+				</select>
             </label>
 
             <label>
@@ -271,6 +316,6 @@
 <div th:replace="~{footer :: footer}"></div>
 
 <script th:src="@{/js/product/productComparePopup.js}"></script>
-
+<script th:src="@{/js/product/foreign.js}"></script>
 </body>
 </html>

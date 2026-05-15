@@ -59,4 +59,21 @@ public class ProductViewController {
 
         return "product/productDetail";
     }
+    
+    // 외환 상품몰
+    @GetMapping("/product/foreign")
+    public String foreignProductPage(ProductListRequestDto dto, Model model) {
+
+        model.addAttribute("pageTitle", "외환 상품몰");
+        model.addAttribute("customerType", "foreign");
+
+        // 외환 메인일 때: 외화예금 + 외화적금 전체 조회
+        if (dto.getProductType() == null || dto.getProductType().isBlank()) {
+            dto.setForeignOnly("Y");
+        }
+
+        model.addAttribute("products", productService.getProductList(dto));
+
+        return "product/productForeign";
+    }
 }
