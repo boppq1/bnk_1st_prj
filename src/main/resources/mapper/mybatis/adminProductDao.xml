@@ -5,123 +5,102 @@
 
 <mapper namespace="com.example.demo.admin.dao.IAdminProductDao">
 
+
     <!-- 상품 등록 -->
-    <insert id="registerPro"
-            parameterType="com.example.demo.admin.dto.ProductDto">
+    <insert id="insertPro">
 
-        <selectKey keyProperty="product_id"
-                   resultType="long"
-                   order="BEFORE">
-
-            SELECT SEQ_PRODUCTS.NEXTVAL
-            FROM DUAL
-
-        </selectKey>
-
-        INSERT INTO products
-        (
-        product_id,
-        is_active,
-        product_name,
-        product_type,
-        min_period_month,
-        max_period_month,
-        min_amount,
-        max_amount,
-        target_large,
-        target_detail,
-        product_desc,
-        interest_payment_type,
-        applied_exchange_rate_type,
-        created_at,
-        created_by,
-        app_start_date,
-        app_end_date,
-        mkt_msg_top,
-        mkt_msg_bottom,
-        join_method,
-        auto_transfer_svc,
-        revolving_info,
-        saving_method,
-        payment_restriction,
-        precautions,
-        fx_cash_fee,
-        auto_reinvestment,
-        tax_benefit,
-        payment_limit_info,
-        data_access_right,
-        illegal_contract_cancel,
-        depositor_protection,
-        rate_category
+        INSERT INTO PRODUCTS (
+            product_id,
+            product_name,
+            product_type,
+            min_period_month,
+            max_period_month,
+            min_amount,
+            max_amount,
+            target_large,
+            target_detail,
+            product_desc,
+            interest_payment_type,
+            applied_exchange_rate_type,
+            created_at,
+            created_by,
+            rate_category
         )
-
-        VALUES
-        (
-        #{product_id},
-        #{is_active},
-        #{product_name},
-        #{product_type},
-        #{min_period_month},
-        #{max_period_month},
-        #{min_amount},
-        #{max_amount},
-        #{target_large},
-        #{target_detail},
-        #{product_desc},
-        #{interest_payment_type},
-        #{applied_exchange_rate_type},
-        SYSDATE,
-        #{created_by},
-        #{app_start_date},
-        #{app_end_date},
-        #{mkt_msg_top},
-        #{mkt_msg_bottom},
-        #{join_method},
-        #{auto_transfer_svc},
-        #{revolving_info},
-        #{saving_method},
-        #{payment_restriction},
-        #{precautions},
-        #{fx_cash_fee},
-        #{auto_reinvestment},
-        #{tax_benefit},
-        #{payment_limit_info},
-        #{data_access_right},
-        #{illegal_contract_cancel},
-        #{depositor_protection},
-        #{rate_category}
-        )
+        VALUES (
+                   SEQ_PRODUCTS.NEXTVAL,
+                   #{product_name},
+                   #{product_type},
+                   #{min_period_month},
+                   #{max_period_month},
+                   #{min_amount},
+                   #{max_amount},
+                   #{target_large},
+                   #{target_detail},
+                   #{product_desc},
+                   #{interest_payment_type},
+                   #{applied_exchange_rate_type},
+                   SYSDATE,
+                   #{created_by},
+                   #{rate_category}
+               )
 
     </insert>
 
 
-    <!-- 상품 요청 등록 -->
-    <insert id="insertProRequest"
-            parameterType="com.example.demo.admin.dto.ProductDto">
+    <!-- 현재 상품 번호 -->
+    <select id="selectCurrentProductNo"
+            resultType="long">
 
-        INSERT INTO product_requests
-        (
+        SELECT SEQ_PRODUCTS.CURRVAL
+        FROM DUAL
+
+    </select>
+
+
+    <!-- PDF 등록 -->
+    <insert id="insertProPdf">
+
+        INSERT INTO PRODUCT_PDFS (
+            pdf_id,
+            product_id,
+            basic_terms_path,
+            category_terms_path,
+            special_terms_path,
+            product_guide_path,
+            created_at
+        )
+        VALUES (
+                   SEQ_PRODUCT_PDFS.NEXTVAL,
+                   #{product_id},
+                   #{basic_terms_path, jdbcType=VARCHAR},
+                   #{category_terms_path, jdbcType=VARCHAR},
+                   #{special_terms_path, jdbcType=VARCHAR},
+                   #{product_guide_path, jdbcType=VARCHAR},
+                   SYSDATE
+               )
+
+    </insert>
+
+
+    <!-- 상품 신청 등록 -->
+    <insert id="insertProRequest">
+
+        INSERT INTO PRODUCT_REQUESTS (
             request_id,
             product_id,
             requester_id,
-            approver_id,
             request_status,
             request_type,
-            rejection_reason,
-            requested_at
+            requeste_date
         )
-
-        VALUES
-            (
-                SEQ_REQUEST_ID.NEXTVAL,
-                #{product_id},
-                #{created_by},
-                NULL,
-                'REQUESTED',
-                'CREATE',
-                NULL,
-                SYSTIMESTAMP
-            )
+        VALUES (
+                   SEQ_PRODUCT_REQUESTS.NEXTVAL,
+                   #{requester_id},
+                   #{product_id},
+                   'WAITING',
+                   'CREATE',
+                   SYSDATE
+               )
 
     </insert>
 
@@ -131,14 +110,19 @@
             resultType="com.example.demo.admin.dto.ProductDto">
 
         SELECT
-            product_id,
+            product_no,
             product_name,
+            product_type,
+            min_amount,
+            max_amount,
             approve_status,
-            created_at,
+            create_date,
             created_by,
-            is_active
-        FROM products
-        ORDER BY product_id DESC
+            active
+
+        FROM PRODUCTS
+
+        ORDER BY product_no DESC
 
     </select>
 
@@ -148,9 +132,41 @@
             parameterType="long"
             resultType="com.example.demo.admin.dto.ProductDto">
 
-        SELECT *
-        FROM products
-        WHERE product_id = #{product_id}
+        SELECT
+            P.product_no,
+            P.product_name,
+            P.product_type,
+            P.min_period_month,
+            P.max_period_month,
+            P.min_amount,
+            P.max_amount,
+            P.target_large,
+            P.target_detail,
+            P.product_desc,
+            P.interest_payment_type,
+            P.applied_exchange_rate_type,
+            P.create_date,
+            P.update_date,
+            P.created_by,
+            P.approver,
+            P.approve_status,
+            P.updated_by,
+            P.app_start_date,
+            P.app_end_date,
+            P.rate_category,
+            P.active,
+
+            PDF.basic_terms_path,
+            PDF.category_terms_path,
+            PDF.special_terms_path,
+            PDF.product_guide_path
+
+        FROM PRODUCTS P
+
+                 LEFT JOIN PRODUCT_PDFS PDF
+                           ON P.product_no = PDF.product_no
+
+        WHERE P.product_no = #{product_no}
 
     </select>
 
@@ -161,29 +177,45 @@
             resultType="com.example.demo.admin.dto.ProductDto">
 
         SELECT
-            product_id,
+            product_no,
             product_name,
+            product_type,
             approve_status,
-            created_at,
+            create_date,
             created_by,
-            is_active
-        FROM products
+            active
+
+        FROM PRODUCTS
+
         WHERE approve_status = #{approve_status}
-        ORDER BY product_id DESC
+
+        ORDER BY product_no DESC
 
     </select>
 
 
-    <!-- 상품 수정 -->
-    <update id="updatePro"
+    <!-- 상품 저장 수정 -->
+    <update id="saveProduct"
             parameterType="com.example.demo.admin.dto.ProductDto">
 
-        UPDATE products
+        UPDATE PRODUCTS
 
         <set>
 
             <if test="product_name != null">
                 product_name = #{product_name},
+            </if>
+
+            <if test="product_type != null">
+                product_type = #{product_type},
+            </if>
+
+            <if test="min_period_month != null">
+                min_period_month = #{min_period_month},
+            </if>
+
+            <if test="max_period_month != null">
+                max_period_month = #{max_period_month},
             </if>
 
             <if test="min_amount != null">
@@ -194,40 +226,156 @@
                 max_amount = #{max_amount},
             </if>
 
+            <if test="target_large != null">
+                target_large = #{target_large},
+            </if>
+
+            <if test="target_detail != null">
+                target_detail = #{target_detail},
+            </if>
+
             <if test="product_desc != null">
                 product_desc = #{product_desc},
             </if>
 
-            <if test="mkt_msg_top != null">
-                mkt_msg_top = #{mkt_msg_top},
+            <if test="interest_payment_type != null">
+                interest_payment_type = #{interest_payment_type},
             </if>
 
-            <if test="mkt_msg_bottom != null">
-                mkt_msg_bottom = #{mkt_msg_bottom},
+            <if test="applied_exchange_rate_type != null">
+                applied_exchange_rate_type = #{applied_exchange_rate_type},
             </if>
 
-            <if test="join_method != null">
-                join_method = #{join_method},
+            <if test="app_start_date != null">
+                app_start_date = #{app_start_date},
             </if>
 
-            <if test="precautions != null">
-                precautions = #{precautions},
+            <if test="app_end_date != null">
+                app_end_date = #{app_end_date},
             </if>
 
-            <if test="tax_benefit != null">
-                tax_benefit = #{tax_benefit},
+            <if test="rate_category != null">
+                rate_category = #{rate_category},
             </if>
 
-            <if test="approve_status != null">
-                approve_status = #{approve_status},
-            </if>
+            approve_status = 'SAVE',
 
-            updated_at = SYSDATE,
+            update_date = SYSDATE,
             updated_by = #{updated_by}
 
         </set>
 
-        WHERE product_id = #{product_id}
+        WHERE product_no = #{product_no}
+        AND approve_status = 'SAVE'
+
+    </update>
+
+    <!-- 상품 제출 -->
+    <update id="submitProduct"
+            parameterType="com.example.demo.admin.dto.ProductDto">
+
+        UPDATE PRODUCTS
+
+        <set>
+
+            <if test="product_name != null">
+                product_name = #{product_name},
+            </if>
+
+            <if test="product_type != null">
+                product_type = #{product_type},
+            </if>
+
+            <if test="min_period_month != null">
+                min_period_month = #{min_period_month},
+            </if>
+
+            <if test="max_period_month != null">
+                max_period_month = #{max_period_month},
+            </if>
+
+            <if test="min_amount != null">
+                min_amount = #{min_amount},
+            </if>
+
+            <if test="max_amount != null">
+                max_amount = #{max_amount},
+            </if>
+
+            <if test="target_large != null">
+                target_large = #{target_large},
+            </if>
+
+            <if test="target_detail != null">
+                target_detail = #{target_detail},
+            </if>
+
+            <if test="product_desc != null">
+                product_desc = #{product_desc},
+            </if>
+
+            <if test="interest_payment_type != null">
+                interest_payment_type = #{interest_payment_type},
+            </if>
+
+            <if test="applied_exchange_rate_type != null">
+                applied_exchange_rate_type = #{applied_exchange_rate_type},
+            </if>
+
+            <if test="app_start_date != null">
+                app_start_date = #{app_start_date},
+            </if>
+
+            <if test="app_end_date != null">
+                app_end_date = #{app_end_date},
+            </if>
+
+            <if test="rate_category != null">
+                rate_category = #{rate_category},
+            </if>
+
+            approve_status = 'SUBMIT',
+
+            update_date = SYSDATE,
+            updated_by = #{updated_by}
+
+        </set>
+
+        WHERE product_no = #{product_no}
+        AND approve_status = 'SAVE'
+
+    </update>
+
+
+    <!-- PDF 수정 -->
+    <update id="updateProPdf"
+            parameterType="com.example.demo.admin.dto.ProductDto">
+
+        UPDATE PRODUCT_PDFS
+
+        <set>
+
+            <if test="basic_terms_path != null">
+                basic_terms_path = #{basic_terms_path},
+            </if>
+
+            <if test="category_terms_path != null">
+                category_terms_path = #{category_terms_path},
+            </if>
+
+            <if test="special_terms_path != null">
+                special_terms_path = #{special_terms_path},
+            </if>
+
+            <if test="product_guide_path != null">
+                product_guide_path = #{product_guide_path},
+            </if>
+
+            update_date = SYSDATE
+
+        </set>
+
+        WHERE product_no = #{product_no}
 
     </update>
 
@@ -236,25 +384,43 @@
     <update id="updateProductStatus"
             parameterType="com.example.demo.admin.dto.ProductDto">
 
-        UPDATE products
+        UPDATE PRODUCTS
         SET
-            is_active = #{is_active},
-            updated_at = SYSDATE,
+            active = #{active},
+            update_date = SYSDATE,
             updated_by = #{updated_by}
-        WHERE product_id = #{product_id}
+
+        WHERE product_no = #{product_no}
 
     </update>
+
+
+    <!-- PDF 삭제 -->
+    <delete id="deleteProductPdf"
+            parameterType="long">
+
+        DELETE FROM PRODUCT_PDFS
+        WHERE product_no = #{product_no}
+
+    </delete>
+
+
+    <!-- 신청 삭제 -->
+    <delete id="deleteProductRequest"
+            parameterType="long">
+
+        DELETE FROM PRODUCT_REQUESTS
+        WHERE product_no = #{product_no}
+
+    </delete>
 
 
     <!-- 상품 삭제 -->
     <delete id="deletePro"
             parameterType="long">
 
-        DELETE FROM product_requests
-        WHERE product_id = #{product_id};
-
-        DELETE FROM products
-        WHERE product_id = #{product_id}
+        DELETE FROM PRODUCTS
+        WHERE product_no = #{product_no}
 
     </delete>
 

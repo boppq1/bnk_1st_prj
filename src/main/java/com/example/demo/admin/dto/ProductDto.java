@@ -1,6 +1,7 @@
 package com.example.demo.admin.dto;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,26 +17,46 @@ import lombok.ToString;
 @Builder
 @ToString
 public class ProductDto {
+
 	Long product_id;
-	String is_active;
+
+	String ia_active;
 	String product_name;
 	String product_type;
+
 	Long min_period_month;
 	Long max_period_month;
-	Long min_amount;
-	Long max_amount;
+
+	BigDecimal min_amount;
+	BigDecimal max_amount;
+
 	String target_large;
 	String target_detail;
+
 	String product_desc;
+
 	String interest_payment_type;
 	String applied_exchange_rate_type;
-	LocalDateTime created_at;
-	LocalDateTime updated_at;
+
+	LocalDate create_date;
+	LocalDate update_date;
+
 	String created_by;
 	String approver;
 	String approve_status;
 	String updated_by;
-	LocalDateTime app_start_date;
-	LocalDateTime app_end_date;
+
+	LocalDate app_start_date;
+	LocalDate app_end_date;
+
 	String rate_category;
+
+	// PDF PATH
+	String basic_terms_path;
+	String category_terms_path;
+	String special_terms_path;
+	String product_guide_path;
+
+	// REQUEST
+	String requester_id;
 }
