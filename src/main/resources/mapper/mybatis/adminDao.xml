@@ -11,13 +11,13 @@
 
         INSERT INTO ADMIN_USERS
         (
-            admin_id,
-            login_id,
-            password,
+            adm_no,
+            lgn_id,
+            secu_pw,
             department,
-            admin_pw,
+            secu_adm_pwd,
             name,
-            admin_role
+            adm_role
         )
         VALUES
             (
@@ -33,13 +33,26 @@
     </insert>
 
     <!-- 로그인 -->
+    <resultMap id="adminMap"
+               type="com.example.demo.admin.dto.AdminDto">
+
+        <result property="admin_id" column="adm_no"/>
+        <result property="login_id" column="lgn_id"/>
+        <result property="password" column="secu_pw"/>
+        <result property="department" column="department"/>
+        <result property="admin_pw" column="secu_adm_pwd"/>
+        <result property="name" column="name"/>
+        <result property="admin_role" column="adm_role"/>
+
+    </resultMap>
     <select id="login"
             parameterType="com.example.demo.admin.dto.AdminDto"
-            resultType="com.example.demo.admin.dto.AdminDto">
+            resultMap="adminMap">
 
         SELECT *
         FROM ADMIN_USERS
-        WHERE login_id = #{login_id}
+        WHERE lgn_id = #{login_id}
+
     </select>
 
 
@@ -50,7 +63,7 @@
 
         SELECT *
         FROM ADMIN_USERS
-        WHERE admin_id = #{admin_id}
+        WHERE adm_no = #{admin_id}
 
     </select>
 
@@ -62,19 +75,19 @@
         SET
             department = #{department},
             name = #{name},
-            admin_role = #{admin_role}
-        WHERE admin_id = #{admin_id}
+            adm_role = #{admin_role}
+        WHERE adm_no = #{admin_id}
 
     </update>
 
     <!-- 비밀번호 변경 -->
     <update id="updatePassword" parameterType="com.example.demo.admin.dto.AdminDto">
-        UPDATE ADMIN_USERS SET password = #{password} where admin_id = #{admin_id}
+        UPDATE ADMIN_USERS SET secu_pw = #{password} where adm_no = #{admin_id}
     </update>
 
     <!-- 관리자 비밀번호 변경 -->
     <update id="updateAdminPw" parameterType="com.example.demo.admin.dto.AdminDto">
-        UPDATE ADMIN_USERS SET admin_pw = #{admin_pw} where admin_id = #{admin_id}
+        UPDATE ADMIN_USERS SET secu_adm_pwd = #{admin_pw} where adm_no = #{admin_id}
     </update>
 
 

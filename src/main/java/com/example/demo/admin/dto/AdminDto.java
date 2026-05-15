@@ -19,4 +19,10 @@ public class AdminDto {
     String name;
     String admin_role;
 
+    // Thymeleaf용 camelCase getter 수동 추가
+    public Long getAdminId()     { return admin_id; }
+    public String getLoginId()   { return login_id; }
+    public String getAdminRole() { return admin_role; }
+    public String getAdminPw()   { return admin_pw; }
+
 }

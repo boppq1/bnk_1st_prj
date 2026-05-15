@@ -8,88 +8,108 @@
     <link rel="stylesheet" th:href="@{/css/admin/adminMyPage.css}">
 </head>
 <body>
-
-<!-- 사이드바 -->
+<!-- ===== SIDEBAR ===== -->
 <div class="sidebar">
     <div class="sidebar-logo">
-        <img src="/images/BNKlogo.png" alt="BNK 부산은행 로고">
+        <img th:src="@{/images/BNKlogo.png}" alt="BNK 부산은행">
     </div>
+
+    <div class="sidebar-profile">
+        <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
+        <div class="sp-info">
+            <div class="sp-name" th:text="${admin.name} + ' 관리자'">홍길동 관리자</div>
+            <span class="sp-role" th:text="${admin.admin_role}">chief</span>
+        </div>
+    </div>
+
     <ul class="sidebar-menu">
-        <li><a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> 대시보드</a></li>
-        <li><a href="#" class="menu-item"><i class="fa-solid fa-users-gear"></i> 회원 및 보안 관리 <i class="fa-solid fa-chevron-down arrow-icon"></i></a></li>
-        <li><a href="#" class="menu-item"><i class="fa-solid fa-money-bill-transfer"></i> 거래 및 자산 관리 <i class="fa-solid fa-chevron-down arrow-icon"></i></a></li>
-        <li><a href="#" class="menu-item"><i class="fa-solid fa-coins"></i> 외환 및 환전 관리</a></li>
-        <li><a href="#" class="menu-item"><i class="fa-solid fa-file-invoice-dollar"></i> 송금 및 결제 심사 <i class="fa-solid fa-chevron-down arrow-icon"></i></a></li>
-        <li><a href="#" class="menu-item"><i class="fa-solid fa-receipt"></i> 시스템 운영 로그 <i class="fa-solid fa-chevron-down arrow-icon"></i></a></li>
-        <li><a href="#" class="menu-item active"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
+        <li class="menu-section-title">메인</li>
+        <li><a href="/admin/dashboard" class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+        <li><a href="/admin/adminMyPage" class="menu-item active"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
+
+        <li class="menu-section-title">상품 관리</li>
+        <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
+        <li><a href="/admin/productListPage" class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
+
+        <li class="menu-section-title">업무</li>
+        <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
+        <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
+        <li><a href="/admin/account" class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
+
+        <li class="menu-section-title">관리</li>
+        <li><a href="/admin/members" class="menu-item"><i class="fa-solid fa-users-gear"></i> 회원/관리자 관리</a></li>
+        <li><a href="/admin/logs" class="menu-item"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
+        <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
     </ul>
+
     <div class="sidebar-footer">
-        <p>&copy; 2024 BNK Busan Bank</p>
+        <p>2024 BNK Busan Bank</p>
         <p>IT Strategy Team</p>
     </div>
 </div>
 
-<!-- 헤더 -->
+<!-- ===== HEADER ===== -->
 <div class="header">
-    <div class="header-title">관리자 마이페이지</div>
+    <div class="header-title">마이페이지</div>
+    <div class="header-breadcrumb">
+        <i class="fa-solid fa-chevron-right"></i>
+        <span>계정 설정</span>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span>내 계정 정보</span>
+    </div>
     <div class="header-right">
-        <div class="user-profile">
-            <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
-            <span th:text="${admin.name + ' 관리자'}">관리자</span>
-            <i class="fa-solid fa-chevron-down" style="font-size: 12px;"></i>
+        <div class="header-user">
+            <div class="hu-avatar"><i class="fa-solid fa-user-tie"></i></div>
+            <span th:text="'관리자 '+ ${admin.name} + ' 님'">홍길동 관리자</span>
+            <i class="fa-solid fa-chevron-down hu-chevron"></i>
         </div>
     </div>
 </div>
 
-<!-- 메인 콘텐츠 -->
+<!-- ===== MAIN ===== -->
 <div class="main-content">
 
-    <div class="content-header">
-        <h1 class="content-title">내 계정 정보</h1>
-        <p class="content-subtitle">관리자 계정 정보를 조회하고 수정할 수 있습니다.</p>
+    <div class="page-header">
+        <h1 class="page-title">내 계정 정보</h1>
+        <p class="page-subtitle">관리자 계정 정보를 조회하고 수정할 수 있습니다.</p>
     </div>
 
-    <!-- 프로필 요약 카드 -->
-    <div class="profile-card">
-        <div class="profile-avatar">
-            <i class="fa-solid fa-user-tie"></i>
-        </div>
-        <div class="profile-info">
-            <h3 th:text="${admin.name}">관리자 이름</h3>
-            <div class="profile-meta">
-                    <span class="meta-badge id">
-                        <i class="fa-solid fa-at"></i>
-                        <span th:text="${admin.login_id}">login_id</span>
-                    </span>
-                <span class="meta-badge role">
-                        <i class="fa-solid fa-shield-halved"></i>
-                        <span th:text="${admin.admin_role}">role</span>
-                    </span>
-                <span class="meta-badge dept">
-                        <i class="fa-solid fa-building"></i>
-                        <span th:text="${admin.department}">부서</span>
-                    </span>
+    <!-- 프로필 요약 -->
+    <div class="profile-summary">
+        <div class="ps-avatar"><i class="fa-solid fa-user-tie"></i></div>
+        <div class="ps-info">
+            <div class="ps-name" th:text="${admin.name}">홍길동</div>
+            <div class="ps-badges">
+        <span class="badge badge-green">
+          <i class="fa-solid fa-at"></i>
+          <span th:text="${admin.loginId}">login_id</span>
+        </span>
+                <span class="badge badge-red">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span th:text="${admin.adminRole}">chief</span>
+        </span>
+                <span class="badge badge-slate">
+          <i class="fa-solid fa-building"></i>
+          <span th:text="${admin.department}">상품</span>
+        </span>
             </div>
         </div>
-        <div class="profile-actions">
-            <button type="button" class="btn-sm outline" onclick="openPasswordPopup()">
-                <i class="fa-solid fa-key"></i>
-                비밀번호 변경
+        <div class="ps-actions">
+            <button type="button" class="btn btn-outline" onclick="openPasswordPopup()">
+                <i class="fa-solid fa-key"></i> 비밀번호 변경
             </button>
-            <button type="button" class="btn-sm outline" onclick="openAdminPwPopup()">
-                <i class="fa-solid fa-shield-halved"></i>
-                관리자 PW 변경
+            <button type="button" class="btn btn-outline" onclick="openAdminPwPopup()">
+                <i class="fa-solid fa-shield-halved"></i> 관리자 PW 변경
             </button>
-            <a href="/admin/logout" class="btn-sm danger-outline">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                로그아웃
+            <a href="/admin/logout" class="btn btn-danger-outline">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> 로그아웃
             </a>
         </div>
     </div>
 
     <!-- 정보 수정 카드 -->
-    <div class="edit-card">
-        <div class="card-section-title">
+    <div class="card">
+        <div class="card-header">
             <i class="fa-solid fa-pen-to-square"></i>
             내 정보 수정
         </div>
@@ -104,6 +124,14 @@
                     <div class="input-wrap">
                         <i class="fa-solid fa-id-badge"></i>
                         <input type="text" name="name" th:value="${admin.name}" placeholder="이름을 입력하세요">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>로그인 ID</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-at"></i>
+                        <input type="text" th:value="${admin.loginId}" readonly>
                     </div>
                 </div>
 
@@ -124,8 +152,8 @@
                     <div class="input-wrap">
                         <i class="fa-solid fa-user-shield"></i>
                         <select name="admin_role">
-                            <option value="chief" th:selected="${admin.admin_role == 'chief'}">Chief (최고 관리자)</option>
-                            <option value="head" th:selected="${admin.admin_role == 'head'}">Head (부서장)</option>
+                            <option value="chief"     th:selected="${admin.admin_role == 'chief'}">Chief (최고 관리자)</option>
+                            <option value="head"      th:selected="${admin.admin_role == 'head'}">Head (부서장)</option>
                             <option value="executive" th:selected="${admin.admin_role == 'executive'}">Executive (실무)</option>
                         </select>
                     </div>
@@ -133,83 +161,63 @@
 
             </div>
 
-            <div class="submit-area">
-                <button type="button" class="btn btn-cancel">취소</button>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fa-solid fa-floppy-disk"></i>
-                    수정 저장
+            <div class="form-actions">
+                <button type="button" class="btn btn-lg btn-ghost">취소</button>
+                <button type="submit" class="btn btn-lg btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i> 수정 저장
                 </button>
             </div>
-
         </form>
     </div>
 
 </div>
 
-<!-- 비밀번호 변경 팝업 -->
+<!-- ===== 비밀번호 변경 팝업 ===== -->
 <div class="popup-overlay" id="passwordPopup">
     <div class="popup-box">
         <div class="popup-header">
-            <div class="popup-title">
-                <i class="fa-solid fa-key"></i>
-                비밀번호 변경
-            </div>
-            <button class="popup-close" onclick="closePasswordPopup()">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+            <div class="popup-title"><i class="fa-solid fa-key"></i> 비밀번호 변경</div>
+            <button class="popup-close" onclick="closePasswordPopup()"><i class="fa-solid fa-xmark"></i></button>
         </div>
-
         <form th:action="@{/admin/passwordUpdate}" method="post">
             <input type="hidden" name="admin_id" th:value="${admin.admin_id}">
-
-            <div class="popup-form-group">
+            <div class="popup-group">
                 <label>새 비밀번호</label>
                 <div class="popup-input-wrap">
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" name="password" placeholder="새 비밀번호를 입력하세요">
                 </div>
             </div>
-
             <div class="popup-actions">
-                <button type="button" class="btn btn-cancel" onclick="closePasswordPopup()">취소</button>
+                <button type="button" class="btn btn-ghost" onclick="closePasswordPopup()">취소</button>
                 <button type="submit" class="btn btn-primary">
-                    <i class="fa-solid fa-floppy-disk"></i>
-                    변경하기
+                    <i class="fa-solid fa-floppy-disk"></i> 변경하기
                 </button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- 관리자 비밀번호 변경 팝업 -->
+<!-- ===== 관리자 PW 변경 팝업 ===== -->
 <div class="popup-overlay" id="adminPwPopup">
     <div class="popup-box">
         <div class="popup-header">
-            <div class="popup-title">
-                <i class="fa-solid fa-shield-halved"></i>
-                관리자 비밀번호 변경
-            </div>
-            <button class="popup-close" onclick="closeAdminPwPopup()">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+            <div class="popup-title"><i class="fa-solid fa-shield-halved"></i> 관리자 PW 변경</div>
+            <button class="popup-close" onclick="closeAdminPwPopup()"><i class="fa-solid fa-xmark"></i></button>
         </div>
-
         <form th:action="@{/admin/updateAdminPw}" method="post">
             <input type="hidden" name="admin_id" th:value="${admin.admin_id}">
-
-            <div class="popup-form-group">
+            <div class="popup-group">
                 <label>새 관리자 인증 번호</label>
                 <div class="popup-input-wrap">
                     <i class="fa-solid fa-hashtag"></i>
                     <input type="number" name="admin_pw" placeholder="새 인증 번호를 입력하세요">
                 </div>
             </div>
-
             <div class="popup-actions">
-                <button type="button" class="btn btn-cancel" onclick="closeAdminPwPopup()">취소</button>
+                <button type="button" class="btn btn-ghost" onclick="closeAdminPwPopup()">취소</button>
                 <button type="submit" class="btn btn-primary">
-                    <i class="fa-solid fa-floppy-disk"></i>
-                    변경하기
+                    <i class="fa-solid fa-floppy-disk"></i> 변경하기
                 </button>
             </div>
         </form>
@@ -217,27 +225,16 @@
 </div>
 
 <script>
-    function openPasswordPopup() {
-        document.getElementById("passwordPopup").classList.add("active");
-    }
-    function closePasswordPopup() {
-        document.getElementById("passwordPopup").classList.remove("active");
-    }
-    function openAdminPwPopup() {
-        document.getElementById("adminPwPopup").classList.add("active");
-    }
-    function closeAdminPwPopup() {
-        document.getElementById("adminPwPopup").classList.remove("active");
-    }
+    const passwordPopup = document.getElementById("passwordPopup");
+    const adminPwPopup  = document.getElementById("adminPwPopup");
 
-    // 오버레이 클릭 시 팝업 닫기
-    document.getElementById("passwordPopup").addEventListener("click", function(e) {
-        if (e.target === this) closePasswordPopup();
-    });
-    document.getElementById("adminPwPopup").addEventListener("click", function(e) {
-        if (e.target === this) closeAdminPwPopup();
-    });
+    function openPasswordPopup()  { passwordPopup.classList.add("active"); }
+    function closePasswordPopup() { passwordPopup.classList.remove("active"); }
+    function openAdminPwPopup()   { adminPwPopup.classList.add("active"); }
+    function closeAdminPwPopup()  { adminPwPopup.classList.remove("active"); }
+
+    passwordPopup.addEventListener("click", e => { if (e.target === passwordPopup) closePasswordPopup(); });
+    adminPwPopup.addEventListener("click",  e => { if (e.target === adminPwPopup)  closeAdminPwPopup(); });
 </script>
-
 </body>
 </html>

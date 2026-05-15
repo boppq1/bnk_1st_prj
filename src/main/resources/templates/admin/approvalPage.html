@@ -9,17 +9,58 @@
 
 </head>
 <body>
-    <div class="sidebar">
-        <div class="sidebar-logo">
-            <img src="https://sites.bnk.co.kr/main/resource/img/common/logo_busan.png" alt="BNK 부산은행">
-        </div>
-        <ul class="sidebar-menu">
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> 대시보드</a></li>
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-users-gear"></i> 관리자 관리</a></li>
-            <li><a href="#" class="menu-item active"><i class="fa-solid fa-file-signature"></i> 결제 승인 관리</a></li>
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-coins"></i> 외환 상품 관리</a></li>
-        </ul>
+<!-- 사이드바 -->
+<div class="sidebar">
+    <div class="sidebar-logo"><img src="/images/BNKlogo.png" alt="BNK 부산은행 로고"></div>
+    <ul class="sidebar-menu">
+
+        <!-- 메인 -->
+        <li class="nav-group">
+            <div class="nav-group-label">메인</div>
+            <a href="/admin/dashboard" class="menu-item">i class="fa-solid fa-chart-line"></i> 대시보드 </a>
+            <a href="/admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a>
+        </li>
+
+        <!-- 상품관리 -->
+        <li class="nav-group">
+            <div class="nav-group-label">상품관리</div>
+            <a href="/admin/productListPage" class="menu-item"><i class="fa-solid fa-box-open"></i> 상품 조회</a>
+            <a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-circle-plus"></i> 상품 등록
+            </a>
+        </li>
+
+        <!-- 결재 -->
+        <li class="nav-group">
+            <div class="nav-group-label">결재</div>
+            <a href="/admin/approvalPage" class="menu-item"><i class="fa-solid fa-file-signature"></i> 결재 </a>
+        </li>
+
+        <!-- 외환 -->
+        <li class="nav-group">
+            <div class="nav-group-label">외환</div>
+            <a href="/admin/exchangeListPage" class="menu-item"><i class="fa-solid fa-arrow-right-arrow-left"></i> 환전 내역 조회 </a>
+        </li>
+
+        <!-- 회원 -->
+        <li class="nav-group">
+            <div class="nav-group-label">회원</div>
+            <a href="/admin/account" class="menu-item"><i class="fa-solid fa-piggy-bank"></i> 사용자 계좌 관리</a>
+            <a href="/admin/member" class="menu-item"><i class="fa-solid fa-users"></i> 회원 · 관리자 관리</a>
+            <a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a>
+        </li>
+
+        <!-- 시스템 -->
+        <li class="nav-group">
+            <div class="nav-group-label">시스템</div>
+            <a href="/admin/log" class="menu-item"><i class="fa-solid fa-scroll"></i> 로그 관리</a>
+        </li>
+
+    </ul>
+    <div class="sidebar-footer">
+        <p>&copy; 2025 BNK Busan Bank</p>
+        <p>IT Strategy Team</p>
     </div>
+</div>
 
     <div class="header">
         <div class="header-title">관리자 승인 센터</div>

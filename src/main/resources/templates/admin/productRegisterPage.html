@@ -8,74 +8,61 @@
   <link rel="stylesheet" th:href="@{/css/admin/productRegisterPage.css}">
 </head>
 <body>
-
-<!-- ═══════════════ 사이드바 ═══════════════ -->
+<!-- ===== SIDEBAR ===== -->
 <div class="sidebar">
   <div class="sidebar-logo">
-    <img src="/images/BNKlogo.png" alt="BNK 부산은행 로고">
+    <img th:src="@{/images/BNKlogo.png}" alt="BNK 부산은행">
+  </div>
+
+  <div class="sidebar-profile">
+    <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
+    <div class="sp-info">
+      <div class="sp-name" th:text="${admin.name} + ' 관리자'">홍길동 관리자</div>
+      <span class="sp-role" th:text="${admin.admin_role}">chief</span>
+    </div>
   </div>
 
   <ul class="sidebar-menu">
+    <li class="menu-section-title">메인</li>
+    <li><a href="/admin/dashboard" class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+    <li><a href="/admin/adminMyPage" class="menu-item active"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
 
-    <!-- 메인 -->
-    <div class="nav-group">
-      <div class="nav-group-label">메인</div>
-      <li><a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> 대시보드</a></li>
-    </div>
+    <li class="menu-section-title">상품 관리</li>
+    <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
+    <li><a href="/admin/productListPage" class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
 
-    <!-- 상품관리 -->
-    <div class="nav-group">
-      <div class="nav-group-label">상품관리</div>
-      <li><a href="/admin/productRegisterPage" class="menu-item active"><i class="fa-solid fa-box-open"></i> 상품 등록</a></li>
-      <li><a href="/admin/productListPage" class="menu-item"><i class="fa-solid fa-list-check"></i> 상품 목록</a></li>
-    </div>
+    <li class="menu-section-title">업무</li>
+    <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
+    <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
+    <li><a href="/admin/account" class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
 
-    <!-- 결재 -->
-    <div class="nav-group">
-      <div class="nav-group-label">결재</div>
-      <li><a href="#" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재승인 관리</a></li>
-    </div>
-
-    <!-- 외환 -->
-    <div class="nav-group">
-      <div class="nav-group-label">외환</div>
-      <li><a href="#" class="menu-item"><i class="fa-solid fa-coins"></i> 외환 및 환전 관리</a></li>
-    </div>
-
-    <!-- 회원 -->
-    <div class="nav-group">
-      <div class="nav-group-label">회원</div>
-      <li><a href="#" class="menu-item"><i class="fa-solid fa-users-gear"></i> 회원 및 보안 관리</a></li>
-    </div>
-
-    <!-- 시스템 -->
-    <div class="nav-group">
-      <div class="nav-group-label">시스템</div>
-      <li><a href="#" class="menu-item"><i class="fa-solid fa-magnifying-glass"></i> 검색어 관리</a></li>
-      <li><a href="#" class="menu-item"><i class="fa-solid fa-receipt"></i> 시스템 운영 로그</a></li>
-      <li><a href="admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
-    </div>
-
+    <li class="menu-section-title">관리</li>
+    <li><a href="/admin/members" class="menu-item"><i class="fa-solid fa-users-gear"></i> 회원/관리자 관리</a></li>
+    <li><a href="/admin/logs" class="menu-item"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
+    <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
   </ul>
 
   <div class="sidebar-footer">
-    <p>&copy; 2024 BNK Busan Bank</p>
+    <p>2024 BNK Busan Bank</p>
     <p>IT Strategy Team</p>
   </div>
 </div>
 
-<!-- ═══════════════ 헤더 ═══════════════ -->
+<!-- ===== HEADER ===== -->
 <div class="header">
-  <div class="header-title">상품 등록</div>
+  <div class="header-title">상품 관리</div>
+  <div class="header-breadcrumb">
+    <i class="fa-solid fa-chevron-right"></i>
+    <span>상품 등록</span>
+  </div>
   <div class="header-right">
-    <div class="user-profile">
-      <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
-      <span th:text="${session.name + ' 관리자'}">관리자</span>
-      <i class="fa-solid fa-chevron-down" style="font-size:12px;"></i>
+    <div class="header-user">
+      <div class="hu-avatar"><i class="fa-solid fa-user-tie"></i></div>
+      <span th:text="'관리자 '+ ${admin.name} + ' 님'">홍길동 관리자</span>
+      <i class="fa-solid fa-chevron-down hu-chevron"></i>
     </div>
   </div>
 </div>
-
 <!-- ═══════════════ 메인 콘텐츠 ═══════════════ -->
 <div class="main-content">
 
