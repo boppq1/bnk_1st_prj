@@ -1,10 +1,102 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>BNK 부산은행 외환</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">외환상담안내</h1>
+
+            <div class="deposit-notice-box">
+                외국환 거래 법규, 무역 관련 법규, 수출입 업무, 무역금융 등
+                복잡하고 전문적인 외환관련 업무를 상담해드리고 있습니다.
+                아래 담당자에게 연락을 하시면 상세하고 자세한 도움을 받으실 수 있습니다.
+            </div>
+
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    외환사업부 (대표전화 051-661-4650)
+                </h2>
+
+                <table class="info-table foreign-transfer-table">
+                    <thead>
+                    <tr>
+                        <th>상담분야</th>
+                        <th>전화번호</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>
+                            · 외국환거래법<br>
+                            · 무역금융
+                        </td>
+                        <td>051-661-4654</td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            · 해외직접투자, 해외지사, 해외부동산, 외국인투자<br>
+                            · EDI(전자무역)
+                        </td>
+                        <td>051-661-4665</td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            · 수입실무(수입신용장개설)<br>
+                            · 수입 선적서류 인도
+                        </td>
+                        <td>051-661-4671</td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            · 수출실무(수출환어음매입)<br>
+                            · 신용장통일규칙
+                        </td>
+                        <td>051-661-4665</td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            · 외화송금<br>
+                            · 외국통화환전
+                        </td>
+                        <td>051-661-4661</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

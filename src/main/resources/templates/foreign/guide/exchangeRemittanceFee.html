@@ -2,9 +2,257 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>환전/송금관련수수료</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <!-- 사이드바 -->
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <!-- 본문 -->
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <!-- 제목 -->
+            <h1 class="main-title">환전/송금관련수수료</h1>
+
+            <!-- 환전 관련 수수료 -->
+            <section class="deposit-section">
+
+                <div class="title-row">
+                    <h2 class="deposit-section-title">환전 관련 수수료</h2>
+                    <span class="standard-date">(2026년05월18일 기준)</span>
+                </div>
+
+                <table class="info-table">
+                    <thead>
+                    <tr>
+                        <th colspan="2">구분</th>
+                        <th>수수료</th>
+                        <th>비고</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr>
+                        <td rowspan="2">외화현찰수수료</td>
+                        <td>지폐</td>
+                        <td class="table-left">
+                            · 중국위안화(CNY), 인도네시아루피화(IDR),
+                            말레이시아링깃화(MYR), 필리핀페소화(PHP),
+                            태국바트화(THB), 대만달러화(TWD) : 6.0%
+                            <br><br>
+                            · 상기이외 통화 : 1.75%
+                        </td>
+                        <td>-</td>
+                    </tr>
+
+                    <tr>
+                        <td>주화</td>
+                        <td>50%</td>
+                        <td>고객님이 파실때만50% 적용</td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="2">
+                            외화수표매입(추심)
+                            <br>
+                            관련수수료
+                            <br>
+                            (여행자수표 포함)
+                        </td>
+
+                        <td>외화수표매입(추심)수수료</td>
+
+                        <td class="table-left">
+                            · 미화 1백불 상당액 이하 : 3,000원
+                            <br>
+                            · 미화 1천불 상당액 이하 : 7,000원
+                            <br>
+                            · 미화 1천불 상당액 초과 : 10,000원
+                        </td>
+
+                        <td class="table-left">
+                            · 동일한 통화이거나 동일한 지급지인 경우에는
+                            신청액 총액을 1건으로 취급함
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>우편료</td>
+
+                        <td>
+                            · 특사배달료 :
+                            지역별 10,000원~23,000원
+                        </td>
+
+                        <td>
+                            · 매입 및 추심 시 지역별 특사배달료 받음
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>기타</td>
+                        <td>외화대체료</td>
+                        <td>0.1%</td>
+                        <td>-</td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </section>
+
+            <!-- 송금 관련 수수료 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    송금 관련 수수료
+                </h2>
+
+                <div class="sub-title-box">
+                    ■ 해외 외화송금 관련 수수료
+                </div>
+
+                <div class="sub-desc">
+                    · 해외로 외화송금(당발송금 : 국내 → 해외)
+                </div>
+
+                <div class="sub-desc bold">
+                    창구에서 해외로 송금할 경우
+                </div>
+
+                <!-- 테이블 -->
+                <table class="info-table">
+
+                    <thead>
+                    <tr>
+                        <th rowspan="2">송금수수료부담 구분</th>
+                        <th colspan="2">당발송금수수료</th>
+                        <th rowspan="2">전신료</th>
+                        <th rowspan="2">비고</th>
+                    </tr>
+
+                    <tr>
+                        <th>송금액</th>
+                        <th>수수료</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <!-- Share -->
+                    <tr>
+                        <td rowspan="5">
+                            각자 부담
+                            <br>
+                            (Share)
+                        </td>
+
+                        <td>미화 5백불 상당액 이하</td>
+                        <td>5,000원</td>
+                        <td rowspan="5">8,000원</td>
+
+                        <td rowspan="5" class="table-left">
+                            · 당행 수수료 신청인 부담
+                            <br><br>
+                            · 결제은행(중간경유은행) 수수료,
+                            수취은행 수수료 수취인 부담
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>미화 2천불 상당액 이하</td>
+                        <td>10,000원</td>
+                    </tr>
+
+                    <tr>
+                        <td>미화 5천불 상당액 이하</td>
+                        <td>15,000원</td>
+                    </tr>
+
+                    <tr>
+                        <td>미화 1만불 상당액 이하</td>
+                        <td>20,000원</td>
+                    </tr>
+
+                    <tr>
+                        <td>미화 1만불 상당액 초과</td>
+                        <td>25,000원</td>
+                    </tr>
+
+                    <!-- Beneficiary -->
+                    <tr>
+
+                        <td rowspan="5">
+                            수취인 부담
+                            <br>
+                            (Beneficiary)
+                        </td>
+
+                        <td>미화 5백불 상당액 이하</td>
+                        <td>미국달러화(USD)15 상당액</td>
+
+                        <td rowspan="5">없음</td>
+
+                        <td rowspan="5" class="table-left">
+                            · 당행 수수료, 결제은행(중간경유은행)
+                            수수료, 수취은행 수수료 모두 수취인 부담
+                            <br><br>
+                            · 송금 원금에서 당발송금 수수료 해당 금액을
+                            차감후 송금 처리함
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>미화 2천불 상당액 이하</td>
+                        <td>미국달러화(USD)20 상당액</td>
+                    </tr>
+
+                    <tr>
+                        <td>미화 5천불 상당액 이하</td>
+                        <td>미국달러화(USD)25 상당액</td>
+                    </tr>
+
+                    <tr>
+                        <td>미화 1만불 상당액 이하</td>
+                        <td>미국달러화(USD)30 상당액</td>
+                    </tr>
+
+                    <tr>
+                        <td>미화 1만불 상당액 초과</td>
+                        <td>미국달러화(USD)35 상당액</td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

@@ -133,4 +133,32 @@ public class ForeignViewController {
     public String 해외직접투자() {
     	return "foreign/investment/overseasInvestment";
     }
+	 // =========================
+	 // 외환이용가이드
+	 // =========================
+	
+	 @GetMapping("/guide/foreignConsulting")
+	 public String foreignConsulting() {
+	     return "foreign/guide/foreignConsulting";
+	 }
+	
+	 @GetMapping("/guide/foreignLaw")
+	 public String foreignLaw() {
+	     return "foreign/guide/foreignLaw";
+	 }
+	
+	 @GetMapping("/guide/exportImportFee")
+	 public String exportImportFee() {
+	     return "foreign/guide/exportImportFee";
+	 }
+	
+	 @GetMapping("/guide/exchangeRemittanceFee")
+	 public String exchangeRemittanceFee() {
+	     return "foreign/guide/exchangeRemittanceFee";
+	 }
+	
+	 @GetMapping("/guide/foreignFAQ")
+	 public String foreignFAQ() {
+	     return "foreign/guide/foreignFAQ";
+	 }
 }
