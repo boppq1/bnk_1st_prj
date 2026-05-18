@@ -102,12 +102,6 @@ public class AdminMergeService {
     // =========================
     public void updateMyPage(AdminDto dto) {
 
-        // 비밀번호 다시 암호화
-        String encodePw =
-                passwordEncryption(dto.getPassword());
-
-        dto.setPassword(encodePw);
-
         dao.updateMyPage(dto);
     }
 

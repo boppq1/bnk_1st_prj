@@ -128,7 +128,7 @@
     LEFT JOIN PRODUCTS p ON r.prod_no = p.prod_no
     LEFT JOIN ADMIN_USERS u1 ON r.req_usr_no = u1.lgn_id
     LEFT JOIN ADMIN_USERS u2 ON r.apv_usr_no = u2.lgn_id
-    WHERE r.req_stat_cd != '승인' order by req_no desc
+    WHERE r.req_stat_cd != '승인' AND r.req_stat_cd != '반려' order by req_no desc
 </select>
 	
 	<update id="updateApproval">

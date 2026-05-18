@@ -2,28 +2,33 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>BNK 관리자 - 상품 조회</title>
+  <title>BNK Busan Bank - 상품 목록</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
   <link rel="stylesheet" th:href="@{/css/admin/product/productListPage.css}">
-
 
 </head>
 <body>
 
+<!-- ===== SIDEBAR ===== -->
 <div class="sidebar">
-  <div class="sidebar-profile">
-    <div class="profile-avatar"><i class="fa-solid fa-user-tie"></i></div>
-    <div class="profile-name" th:text="${admin.name + ' 관리자'}">홍길동 관리자</div>
-    <div class="profile-role" th:text="${admin.admin_role}">chief</div>
+  <div class="sidebar-logo">
+    <img th:src="@{/images/BNKlogo.png}" alt="BNK 부산은행">
   </div>
-  <div class="sidebar-logo"><img src="https://sites.bnk.co.kr/main/resource/img/common/logo_busan.png" alt="BNK 부산은행"></div>
+  <div class="sidebar-profile">
+    <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
+    <div class="sp-info">
+      <div class="sp-name" th:text="${admin.name} + ' 관리자'">홍길동 관리자</div>
+      <span class="sp-role" th:text="${admin.adminRole}">chief</span>
+    </div>
+  </div>
   <ul class="sidebar-menu">
     <li class="menu-section-title">메인</li>
     <li><a href="/admin/dashboard" class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+    <li><a href="/admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
     <li class="menu-section-title">상품 관리</li>
-    <li><a href="/admin/product/register" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
-    <li><a href="/admin/product/list" class="menu-item active"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
+    <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
+    <li><a href="/admin/productListPage" class="menu-item active"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
     <li class="menu-section-title">업무</li>
     <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
     <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
@@ -33,233 +38,526 @@
     <li><a href="/admin/logs" class="menu-item"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
     <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
   </ul>
-  <div class="sidebar-footer"><p>© 2024 BNK Busan Bank</p><p>IT Strategy Team</p></div>
+  <div class="sidebar-footer">
+    <p>2024 BNK Busan Bank</p>
+    <p>IT Strategy Team</p>
+  </div>
 </div>
 
+<!-- ===== HEADER ===== -->
 <div class="header">
+  <div class="header-title">상품 관리</div>
   <div class="header-breadcrumb">
-    <span class="breadcrumb-home">상품 관리</span>
-    <i class="fa-solid fa-chevron-right breadcrumb-sep"></i>
-    <span class="breadcrumb-current">상품 조회</span>
+    <i class="fa-solid fa-chevron-right"></i>
+    <span>상품 조회</span>
+    <i class="fa-solid fa-chevron-right"></i>
+    <span>상품 목록</span>
   </div>
   <div class="header-right">
     <div class="header-user">
-      <div class="header-avatar"><i class="fa-solid fa-user"></i></div>
-      <span class="header-rank" th:text="${admin.admin_role + ' '}">chief </span>
-      <span th:text="${admin.name + ' 님'}">홍길동 님</span>
-      <i class="fa-solid fa-chevron-down" style="font-size:11px; color:var(--text-muted);"></i>
+      <div class="hu-avatar"><i class="fa-solid fa-user-tie"></i></div>
+      <span th:text="'관리자 ' + ${admin.name} + ' 님'">홍길동 관리자</span>
+      <i class="fa-solid fa-chevron-down hu-chevron"></i>
     </div>
   </div>
 </div>
 
+<!-- ===== MAIN ===== -->
 <div class="main-content">
+
+  <!-- 페이지 헤더 -->
   <div class="page-header">
-    <div>
-      <h1 class="page-title">상품 조회</h1>
-      <p class="page-subtitle">등록된 외화 상품 목록을 조회하고 관리합니다.</p>
+    <div class="page-header-left">
+      <h1 class="page-title">상품 목록</h1>
+      <p class="page-subtitle">등록된 금융 상품을 조회하고 관리합니다.</p>
     </div>
-    <a href="/admin/product/register" class="btn-primary"><i class="fa-solid fa-plus"></i> 상품 등록</a>
+    <a href="/admin/productRegisterPage" class="btn btn-primary">
+      <i class="fa-solid fa-plus"></i> 새 상품 등록
+    </a>
+  </div>
+
+  <!-- 통계 카드 -->
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-icon red"><i class="fa-solid fa-layer-group"></i></div>
+      <div class="stat-info">
+        <div class="stat-label">전체 상품</div>
+        <div class="stat-value" th:text="${totalCount != null ? totalCount : 0}">48</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon blue"><i class="fa-solid fa-piggy-bank"></i></div>
+      <div class="stat-info">
+        <div class="stat-label">예금 상품</div>
+        <div class="stat-value" th:text="${depositCount != null ? depositCount : 0}">22</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green"><i class="fa-solid fa-sack-dollar"></i></div>
+      <div class="stat-info">
+        <div class="stat-label">적금 상품</div>
+        <div class="stat-value" th:text="${savingCount != null ? savingCount : 0}">26</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon amber"><i class="fa-solid fa-hourglass-half"></i></div>
+      <div class="stat-info">
+        <div class="stat-label">승인 대기</div>
+        <div class="stat-value" th:text="${pendingCount != null ? pendingCount : 0}">5</div>
+      </div>
+    </div>
   </div>
 
   <!-- 필터 바 -->
   <div class="filter-bar">
-    <select>
-      <option value="">전체 타입</option>
-      <option value="deposit">예금</option>
-      <option value="savings">적금</option>
-    </select>
-    <select>
-      <option value="">전체 상태</option>
-      <option value="Y">판매중</option>
-      <option value="N">판매중단</option>
-    </select>
-    <select>
-      <option value="">결재 상태</option>
-      <option value="검토중">검토중</option>
-      <option value="승인">승인</option>
-      <option value="반려">반려</option>
-    </select>
-    <input type="text" placeholder="상품명으로 검색...">
-    <button class="btn-search"><i class="fa-solid fa-search"></i> 검색</button>
-    <button class="btn-reset"><i class="fa-solid fa-rotate-left"></i> 초기화</button>
+    <div class="filter-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="상품명으로 검색...">
+    </div>
+    <div class="filter-select">
+      <select id="typeFilter">
+        <option value="">전체 타입</option>
+        <option value="deposit">예금</option>
+        <option value="saving">적금</option>
+        <option value="exchange">외환</option>
+      </select>
+    </div>
+    <div class="filter-select">
+      <select id="statusFilter">
+        <option value="">전체 상태</option>
+        <option value="SUBMIT">결재 요청</option>
+        <option value="승인">승인 완료</option>
+        <option value="반려">반려</option>
+        <option value="SAVE">임시 저장</option>
+      </select>
+    </div>
+    <div class="filter-divider"></div>
+    <div class="filter-count">
+      총 <strong th:text="${products != null ? #lists.size(products) : 0}">48</strong>개 상품
+    </div>
   </div>
 
-  <!-- 테이블 -->
+  <!-- 상품 테이블 -->
   <div class="table-card">
-    <div class="table-card-header">
-      <span class="table-card-title">상품 목록</span>
-      <span class="table-count">총 <strong th:text="${totalCount}">24</strong>개</span>
+    <div class="table-wrap">
+      <table id="productTable">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>상품명</th>
+          <th>타입</th>
+          <th>대상 고객</th>
+          <th>금리 분류</th>
+          <th>가입 기간</th>
+          <th>결재 상태</th>
+          <th>액션</th>
+        </tr>
+        </thead>
+
+        <tbody th:if="${products != null and !#lists.isEmpty(products)}">
+        <tr th:each="p : ${products}"
+            th:attr="
+      data-id=${p.product_id},
+      data-name=${p.product_name},
+      data-type=${p.product_type},
+      data-status=${p.approve_status},
+      data-target=${p.target_large},
+      data-rate-category=${p.rate_category},
+      data-min-period=${p.min_period_month},
+      data-max-period=${p.max_period_month},
+      data-interest=${p.interest_payment_type},
+      data-exchange-rate=${p.applied_exchange_rate_type}
+">
+          <td>
+            <span class="td-id" th:text="'#' + ${p.product_id}">#001</span>
+          </td>
+          <td>
+            <div class="td-name" th:text="${p.product_name}">BNK 플러스 예금</div>
+            <div class="td-sub"
+                 th:text="${p.product_type == 'deposit'} ? '예금 상품' :
+                          (${p.product_type == 'saving'} ? '적금 상품' : '외환 상품')">
+              예금 상품
+            </div>
+          </td>
+          <td>
+            <span th:if="${p.product_type == 'deposit'}" class="badge badge-blue">
+              <i class="fa-solid fa-piggy-bank"></i> 예금
+            </span>
+            <span th:if="${p.product_type == 'saving'}" class="badge badge-green">
+              <i class="fa-solid fa-sack-dollar"></i> 적금
+            </span>
+            <span th:if="${p.product_type == 'exchange'}" class="badge badge-purple">
+              <i class="fa-solid fa-arrow-right-arrow-left"></i> 외환
+            </span>
+          </td>
+          <td>
+            <span th:if="${p.target_large == 'ALL'}"     class="badge badge-slate">전체</span>
+            <span th:if="${p.target_large == 'PERSONAL'}" class="badge badge-blue">개인</span>
+            <span th:if="${p.target_large == 'COMPANY'}"  class="badge badge-purple">기업</span>
+          </td>
+          <td>
+            <span th:if="${p.rate_category == 'FIXED'}"        class="badge badge-slate">고정</span>
+            <span th:if="${p.rate_category == 'PREFERENTIAL'}" class="badge badge-green">우대</span>
+            <span th:if="${p.rate_category == 'CORP'}"         class="badge badge-amber">변동</span>
+            <span th:if="${p.rate_category == null or p.rate_category == ''}" class="badge badge-slate">-</span>
+          </td>
+          <td>
+            <span th:text="${p.min_period_month} + '~' + ${p.max_period_month} + '개월'">1~12개월</span>
+          </td>
+          <td>
+            <span th:if="${p.approve_status == '승인'}"  class="badge badge-green">
+              <i class="fa-solid fa-circle-check"></i> 승인
+            </span>
+            <span th:if="${p.approve_status == 'SUBMIT'}" class="badge badge-amber">
+              <i class="fa-solid fa-clock"></i> 검토 중
+            </span>
+            <span th:if="${p.approve_status == '반려'}"  class="badge badge-red">
+              <i class="fa-solid fa-circle-xmark"></i> 반려
+            </span>
+            <span th:if="${p.approve_status == 'SAVE'}"  class="badge badge-slate">
+              <i class="fa-solid fa-floppy-disk"></i> 임시 저장
+            </span>
+          </td>
+          <td>
+            <div class="action-btns">
+              <!-- 상세 보기 버튼: 모달 오픈 -->
+              <button type="button" class="act-btn act-view"
+                      onclick="openModal(this.closest('tr'))"
+                      title="상세 보기">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+              <a th:href="@{/admin/updatePro/{id}(id=${p.product_id})}"
+                 class="act-btn act-edit"
+                 title="수정">
+                <i class="fa-solid fa-pen"></i>
+              </a>
+              <button type="button" class="act-btn act-del"
+                      th:attr="onclick='confirmDelete(' + ${p.product_id} + ')'"
+                      title="삭제">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+
+        <!-- 데이터 없을 때 -->
+        <tbody th:if="${products == null or #lists.isEmpty(products)}">
+        <tr>
+          <td colspan="8">
+            <div class="empty-state">
+              <div class="empty-icon"><i class="fa-solid fa-box-open"></i></div>
+              <div class="empty-title">등록된 상품이 없습니다</div>
+              <div class="empty-desc">새 상품 등록 버튼을 눌러 상품을 추가하세요.</div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
-    <table class="data-table">
-      <thead>
-      <tr>
-        <th>No.</th>
-        <th>상품명</th>
-        <th>타입</th>
-        <th>판매 상태</th>
-        <th>결재 상태</th>
-        <th>가입 기간</th>
-        <th>대상</th>
-        <th>등록일</th>
-        <th>관리</th>
-      </tr>
-      </thead>
-      <tbody th:each="p, stat : ${products}">
-      <tr>
-        <td th:text="${stat.count}">1</td>
-        <td style="font-weight:600;" th:text="${p.product_name}">부산은행 글로벌 외화 정기예금</td>
-        <td th:text="${p.product_type}">예금</td>
-        <td>
-          <span class="badge badge-green" th:if="${p.is_active == 'Y'}">판매중</span>
-          <span class="badge badge-gray" th:if="${p.is_active == 'N'}">중단</span>
-        </td>
-        <td>
-          <span class="badge badge-blue" th:if="${p.approve_status == '승인'}">승인</span>
-          <span class="badge badge-red" th:if="${p.approve_status == '검토중'}">검토중</span>
-        </td>
-        <td th:text="${p.min_period_month + '~' + p.max_period_month + '개월'}">3~12개월</td>
-        <td th:text="${p.target_large}">전체</td>
-        <td th:text="${p.created_at}">2024-05-01</td>
-        <td>
-          <div class="action-btns">
-            <button class="btn-icon" title="상세" onclick="openDetail(this)"><i class="fa-solid fa-eye"></i></button>
-            <button class="btn-icon" title="수정"><i class="fa-solid fa-pen"></i></button>
-            <button class="btn-icon danger" title="삭제"><i class="fa-solid fa-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-      <!-- 목업 -->
-      <tbody>
-      <tr>
-        <td>1</td>
-        <td style="font-weight:600;">부산은행 글로벌 외화 정기예금</td>
-        <td>예금</td>
-        <td><span class="badge badge-green">판매중</span></td>
-        <td><span class="badge badge-blue">승인</span></td>
-        <td>3~12개월</td><td>전체</td><td>2024-05-01</td>
-        <td><div class="action-btns">
-          <button class="btn-icon" onclick="openDetail()"><i class="fa-solid fa-eye"></i></button>
-          <button class="btn-icon"><i class="fa-solid fa-pen"></i></button>
-          <button class="btn-icon danger"><i class="fa-solid fa-trash"></i></button>
-        </div></td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td style="font-weight:600;">BNK 청년 USD 적금</td>
-        <td>적금</td>
-        <td><span class="badge badge-green">판매중</span></td>
-        <td><span class="badge badge-red">검토중</span></td>
-        <td>12~24개월</td><td>개인</td><td>2024-04-15</td>
-        <td><div class="action-btns">
-          <button class="btn-icon" onclick="openDetail()"><i class="fa-solid fa-eye"></i></button>
-          <button class="btn-icon"><i class="fa-solid fa-pen"></i></button>
-          <button class="btn-icon danger"><i class="fa-solid fa-trash"></i></button>
-        </div></td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td style="font-weight:600;">부산은행 기업 외화 전용 예금</td>
-        <td>예금</td>
-        <td><span class="badge badge-gray">중단</span></td>
-        <td><span class="badge badge-blue">승인</span></td>
-        <td>6~36개월</td><td>기업</td><td>2024-03-22</td>
-        <td><div class="action-btns">
-          <button class="btn-icon" onclick="openDetail()"><i class="fa-solid fa-eye"></i></button>
-          <button class="btn-icon"><i class="fa-solid fa-pen"></i></button>
-          <button class="btn-icon danger"><i class="fa-solid fa-trash"></i></button>
-        </div></td>
-      </tr>
-      </tbody>
-    </table>
-    <div class="pagination">
-      <button class="page-btn"><i class="fa-solid fa-chevron-left"></i></button>
-      <button class="page-btn active">1</button>
-      <button class="page-btn">2</button>
-      <button class="page-btn">3</button>
-      <button class="page-btn"><i class="fa-solid fa-chevron-right"></i></button>
+
+    <!-- 페이지네이션 -->
+    <div class="pagination" th:if="${totalPage != null and totalPage > 0}">
+      <a th:if="${currentPage > 1}"
+         th:href="@{/admin/productListPage(page=${currentPage - 1})}"
+         class="page-btn">
+        <i class="fa-solid fa-chevron-left"></i>
+      </a>
+      <th:block th:each="i : ${#numbers.sequence(1, totalPage)}">
+        <a th:href="@{/admin/productListPage(page=${i})}"
+           th:text="${i}"
+           th:classappend="${currentPage == i} ? 'active'"
+           class="page-btn"></a>
+      </th:block>
+      <a th:if="${currentPage < totalPage}"
+         th:href="@{/admin/productListPage(page=${currentPage + 1})}"
+         class="page-btn">
+        <i class="fa-solid fa-chevron-right"></i>
+      </a>
     </div>
   </div>
-</div>
 
-<!-- 상세 팝업 모달 -->
-<div class="modal-overlay" id="detailModal">
-  <div class="modal">
+</div><!-- /main-content -->
+
+
+<!-- ═══════════════════════════════════════
+     PRODUCT DETAIL MODAL
+═══════════════════════════════════════ -->
+<div class="modal-backdrop" id="productModal" onclick="handleBackdropClick(event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalProductName">
+
+    <!-- Modal Header -->
     <div class="modal-header">
-      <span class="modal-title">상품 상세 정보</span>
-      <button class="modal-close" onclick="closeDetail()"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header-icon deposit" id="modalHeaderIcon">
+        <i class="fa-solid fa-piggy-bank" id="modalHeaderIconI"></i>
+      </div>
+      <div class="modal-header-text">
+        <div class="modal-product-id" id="modalProductId">#001</div>
+        <div class="modal-product-name" id="modalProductName">BNK 플러스 예금</div>
+        <div class="modal-badges" id="modalBadges"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()" aria-label="닫기">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
     </div>
+
+    <!-- Modal Body -->
     <div class="modal-body">
-      <div class="detail-grid">
-        <div class="detail-item full">
-          <label>상품명</label>
-          <div class="detail-value" style="font-size:16px; font-weight:700;">부산은행 글로벌 외화 정기예금</div>
-        </div>
-        <hr class="detail-divider">
-        <div class="detail-item">
-          <label>상품 타입</label>
-          <div class="detail-value">예금 (deposit)</div>
-        </div>
-        <div class="detail-item">
-          <label>판매 상태</label>
-          <div class="detail-value"><span class="badge badge-green">판매중</span></div>
-        </div>
-        <div class="detail-item">
-          <label>결재 상태</label>
-          <div class="detail-value"><span class="badge badge-blue">승인</span></div>
-        </div>
-        <div class="detail-item">
-          <label>결재자</label>
-          <div class="detail-value">김부산</div>
-        </div>
-        <div class="detail-item">
-          <label>최소 금액</label>
-          <div class="detail-value">$ 100</div>
-        </div>
-        <div class="detail-item">
-          <label>최대 금액</label>
-          <div class="detail-value">$ 50,000</div>
-        </div>
-        <div class="detail-item">
-          <label>가입 기간</label>
-          <div class="detail-value">3개월 ~ 12개월</div>
-        </div>
-        <div class="detail-item">
-          <label>이자 지급 방식</label>
-          <div class="detail-value">만기일시지급</div>
-        </div>
-        <div class="detail-item">
-          <label>환율 기준</label>
-          <div class="detail-value">전일 종가</div>
-        </div>
-        <div class="detail-item">
-          <label>대상 고객</label>
-          <div class="detail-value">전체 (ALL)</div>
-        </div>
-        <hr class="detail-divider">
-        <div class="detail-item full">
-          <label>상품 설명</label>
-          <div class="detail-value" style="line-height:1.7; color:var(--text-label);">글로벌 외화 자산을 안정적으로 운용할 수 있는 BNK 부산은행의 대표 외화 정기예금 상품입니다.</div>
+
+      <!-- 결재 상태 배너 -->
+      <div class="modal-section">
+        <div class="modal-section-title"><i class="fa-solid fa-file-contract"></i> 결재 상태</div>
+        <div class="modal-status-banner" id="modalStatusBanner">
+          <div class="modal-status-icon"><i id="modalStatusIcon"></i></div>
+          <div class="modal-status-text">
+            <div class="modal-status-label">현재 결재 상태</div>
+            <div class="modal-status-value" id="modalStatusValue">승인</div>
+          </div>
         </div>
       </div>
-    </div>
+
+      <!-- 기본 정보 -->
+      <div class="modal-section">
+        <div class="modal-section-title"><i class="fa-solid fa-circle-info"></i> 기본 정보</div>
+        <div class="modal-info-grid">
+          <div class="modal-info-item">
+            <div class="modal-info-label"><i class="fa-solid fa-tag"></i> 상품 타입</div>
+            <div class="modal-info-value" id="modalType">예금</div>
+          </div>
+          <div class="modal-info-item">
+            <div class="modal-info-label"><i class="fa-solid fa-users"></i> 대상 고객</div>
+            <div class="modal-info-value" id="modalTarget">개인</div>
+          </div>
+          <div class="modal-info-item">
+            <div class="modal-info-label"><i class="fa-solid fa-calendar-range"></i> 가입 기간</div>
+            <div class="modal-info-value" id="modalPeriod">1 ~ 12개월</div>
+          </div>
+          <div class="modal-info-item">
+            <div class="modal-info-label"><i class="fa-solid fa-percent"></i> 금리 유형</div>
+            <div class="modal-info-value" id="modalRateCategory">고정</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 그 외 정보 -->
+      <div class="modal-section">
+        <div class="modal-section-title">
+          <i class="fa-solid fa-chart-line"></i> 이자 지급 방식 및 환율 기준
+        </div>
+
+        <div class="modal-info-grid">
+
+          <!-- 이자 지급 방식 -->
+          <div class="modal-info-item">
+            <div class="modal-info-label">
+              <i class="fa-solid fa-arrow-down"></i> 이자 지급 방식
+            </div>
+            <div class="modal-info-value" id="modalInterestPay">-</div>
+          </div>
+
+          <!-- 환율 기준 -->
+          <div class="modal-info-item">
+            <div class="modal-info-label">
+              <i class="fa-solid fa-arrow-up"></i> 적용 환율 기준
+            </div>
+            <div class="modal-info-value" id="modalExchangeRate">-</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 상품 설명 -->
+      <div class="modal-section" id="modalDescSection">
+        <div class="modal-section-title"><i class="fa-solid fa-align-left"></i> 상품 설명</div>
+        <div class="modal-info-item full">
+          <div class="modal-info-value" id="modalDesc"
+               style="font-size:13px; font-weight:500; line-height:1.7; color: var(--text-sub); white-space: pre-wrap; word-break: keep-all;">
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /modal-body -->
+
+    <!-- Modal Footer -->
     <div class="modal-footer">
-      <button class="btn-modal-close" onclick="closeDetail()">닫기</button>
-      <button class="btn-modal-edit"><i class="fa-solid fa-pen"></i> 수정</button>
-      <button class="btn-modal-delete"><i class="fa-solid fa-trash"></i> 삭제</button>
+      <button type="button" class="modal-btn modal-btn-close" onclick="closeModal()">
+        <i class="fa-solid fa-xmark"></i> 닫기
+      </button>
+      <a href="#" class="modal-btn modal-btn-edit" id="modalEditBtn">
+        <i class="fa-solid fa-pen"></i> 수정하기
+      </a>
     </div>
-  </div>
-</div>
+
+  </div><!-- /modal -->
+</div><!-- /modal-backdrop -->
+
 
 <script>
-  function openDetail() {
-    document.getElementById('detailModal').classList.add('active');
+  /* ─────────────────────────────────────────
+     검색 + 필터
+  ───────────────────────────────────────── */
+  const searchInput  = document.getElementById('searchInput');
+  const typeFilter   = document.getElementById('typeFilter');
+  const statusFilter = document.getElementById('statusFilter');
+
+  function applyFilter() {
+    const keyword = searchInput.value.toLowerCase().trim();
+    const type    = typeFilter.value;
+    const status  = statusFilter.value;
+
+    document.querySelectorAll('#productTable tbody tr[data-type]').forEach(function(row) {
+      const name      = row.querySelector('.td-name')?.textContent.toLowerCase() || '';
+      const rowType   = row.getAttribute('data-type')   || '';
+      const rowStatus = row.getAttribute('data-status') || '';
+
+      const matchName   = !keyword || name.includes(keyword);
+      const matchType   = !type   || rowType   === type;
+      const matchStatus = !status || rowStatus === status;
+
+      row.style.display = (matchName && matchType && matchStatus) ? '' : 'none';
+    });
   }
-  function closeDetail() {
-    document.getElementById('detailModal').classList.remove('active');
+
+  searchInput.addEventListener('input',  applyFilter);
+  typeFilter.addEventListener('change',  applyFilter);
+  statusFilter.addEventListener('change', applyFilter);
+
+  /* ─────────────────────────────────────────
+     삭제 확인
+  ───────────────────────────────────────── */
+  function confirmDelete(id) {
+    if (confirm('상품 #' + id + ' 을(를) 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) {
+      window.location.href = '/deletePro/' + id;
+    }
   }
-  document.getElementById('detailModal').addEventListener('click', function(e) {
-    if (e.target === this) closeDetail();
+
+  /* ─────────────────────────────────────────
+     MODAL 로직
+  ───────────────────────────────────────── */
+  let currentProductId = null;
+
+  /* 타입별 설정 맵 */
+  const TYPE_MAP = {
+    'deposit':  { label: '예금',  iconClass: 'deposit',  icon: 'fa-piggy-bank',           badgeClass: 'badge-blue'   },
+    'saving':   { label: '적금',  iconClass: 'saving',   icon: 'fa-sack-dollar',          badgeClass: 'badge-green'  },
+    'exchange': { label: '외환',  iconClass: 'exchange', icon: 'fa-arrow-right-arrow-left', badgeClass: 'badge-purple' }
+  };
+
+  /* 상태별 설정 맵 */
+  const STATUS_MAP = {
+    '승인':   { bannerClass: 'status-green', icon: 'fa-circle-check',  label: '승인 완료' },
+    'SUBMIT': { bannerClass: 'status-amber', icon: 'fa-clock',         label: '검토 중'   },
+    '반려':   { bannerClass: 'status-red',   icon: 'fa-circle-xmark',  label: '반려'      },
+    'SAVE':   { bannerClass: 'status-slate', icon: 'fa-floppy-disk',   label: '임시 저장' }
+  };
+
+  /* 대상 고객 레이블 */
+  const TARGET_MAP = {
+    'ALL':     '전체',
+    'PERSONAL':'개인',
+    'COMPANY': '기업'
+  };
+
+  /* 금리 유형 레이블 */
+  const RATE_MAP = {
+    'FIXED':        '고정 금리',
+    'PREFERENTIAL': '우대 금리',
+    'CORP':         '변동 금리'
+  };
+
+  function openModal(row) {
+    const id           = row.getAttribute('data-id') || '-';
+    const name         = row.getAttribute('data-name') || '-';
+    const type         = row.getAttribute('data-type') || '';
+    const status       = row.getAttribute('data-status') || '';
+    const target       = row.getAttribute('data-target') || '';
+    const rateCategory = row.getAttribute('data-rate-category') || '';
+    const minPeriod    = row.getAttribute('data-min-period') || '-';
+    const maxPeriod    = row.getAttribute('data-max-period') || '-';
+
+    const interestPay  = row.getAttribute('data-interest') || '-';
+    const exchangeRate = row.getAttribute('data-exchange-rate') || '-';
+
+    currentProductId = id;
+
+    // 헤더
+    document.getElementById('modalProductId').textContent = '#' + id;
+    document.getElementById('modalProductName').textContent = name;
+
+    const typeInfo = TYPE_MAP[type] || {
+      label: type,
+      iconClass: 'deposit',
+      icon: 'fa-box',
+      badgeClass: 'badge-slate'
+    };
+
+    document.getElementById('modalHeaderIcon').className =
+            'modal-header-icon ' + typeInfo.iconClass;
+
+    document.getElementById('modalHeaderIconI').className =
+            'fa-solid ' + typeInfo.icon;
+
+    // 기본 정보
+    document.getElementById('modalType').textContent = typeInfo.label;
+    document.getElementById('modalTarget').textContent =
+            TARGET_MAP[target] || target || '-';
+
+    document.getElementById('modalRateCategory').textContent =
+            RATE_MAP[rateCategory] || rateCategory || '-';
+
+    document.getElementById('modalPeriod').textContent =
+            minPeriod + ' ~ ' + maxPeriod + '개월';
+
+    // 핵심 추가 영역
+    document.getElementById('modalInterestPay').textContent = interestPay;
+    document.getElementById('modalExchangeRate').textContent = exchangeRate;
+
+    // 상태 배너
+    const statusInfo = STATUS_MAP[status] || {
+      bannerClass: 'status-slate',
+      icon: 'fa-question',
+      label: status
+    };
+
+    const banner = document.getElementById('modalStatusBanner');
+    banner.className = 'modal-status-banner ' + statusInfo.bannerClass;
+
+    document.getElementById('modalStatusIcon').className =
+            'fa-solid ' + statusInfo.icon;
+
+    document.getElementById('modalStatusValue').textContent =
+            statusInfo.label;
+
+    // 버튼 링크
+    document.getElementById('modalEditBtn').href =
+            '/admin/updatePro/' + id;
+
+    // 오픈
+    document.getElementById('productModal').classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('productModal').classList.remove('is-open');
+    document.body.style.overflow = '';
+    currentProductId = null;
+  }
+
+  function handleBackdropClick(e) {
+    if (e.target === document.getElementById('productModal')) {
+      closeModal();
+    }
+  }
+
+  function goDetail() {
+    if (currentProductId) {
+      window.location.href = '/admin/product/detail/' + currentProductId;
+    }
+  }
+
+  /* ESC 키로 닫기 */
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
   });
 </script>
 </body>

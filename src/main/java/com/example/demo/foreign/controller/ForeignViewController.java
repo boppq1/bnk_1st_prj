@@ -127,4 +127,10 @@ public class ForeignViewController {
     public String travelExchange() {
         return "foreign/studyMigrationTravel/travelExchange";
     }
+    
+    // 국내외 투자 해외직접투자
+    @GetMapping("/investment/overseasInvestment")
+    public String 해외직접투자() {
+    	return "foreign/investment/overseasInvestment";
+    }
 }

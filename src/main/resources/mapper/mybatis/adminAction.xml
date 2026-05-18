@@ -6,6 +6,6 @@
 <mapper namespace="com.example.demo.admin.dao.IAdminActionDao">
     <insert id="insertActionLog">
         insert into ADMIN_ACTION_LOGS
-        (log_id, action, target, created_at) values ( seq_admin_action_logs.NEXTVAL, #{action}, #{target}, SYSDATE)
+        (log_no, action, target, reg_dt) values ( seq_admin_action_logs.NEXTVAL, #{action}, #{target}, SYSDATE)
     </insert>
 </mapper>

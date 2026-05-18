@@ -46,7 +46,8 @@ public interface IListDao {
 	List<KeywordBanDto> getKeywordBanList();
 	int keywordBan(@Param("keyword") String keyword, @Param("adm_no") Long adm_no);
 	KeywordBanDto getKeywordBan(@Param("keyword") String keyword);
-	SearchLogDto getKeyword(@Param("keyword") String keyword);
+	SearchLogDto getCompanyKeyword(@Param("keyword") String keyword);
+	SearchLogDto getPersonalKeyword(@Param("keyword") String keyword);
 	int deleteBanKeyword(@Param("keyword") String keyword);
 	int setSuggestKeyword(@Param("keyword") String keyword, @Param("role") String role, @Param("search_volume") Long search_volume);
 	SearchLogDto getCompanySearchLog(@Param("keyword") String keyword);

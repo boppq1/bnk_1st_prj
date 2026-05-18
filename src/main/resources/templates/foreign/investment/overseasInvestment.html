@@ -1,10 +1,95 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+<meta charset="UTF-8">
+<title>국내외투자(해외직접투자)</title>
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/product/product.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
 <body>
+<div th:replace="~{header :: header}"></div>
 
+<div class="product-layout">
+
+    <!-- 사이드바 -->
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <!-- 본문 -->
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <!-- 상단 제목 -->
+            <h1 class="main-title">해외직접투자</h1>
+
+            <!-- 서비스 안내 -->
+            <section class="service-section">
+
+                <ul class="service-list">
+
+                    <li>
+                        <strong>해외직접투자란</strong>
+
+                        <p>
+                          	해외직접투자는 투자대상기업의 경영에 직접 참가함을 목적으로 하는 생산요소의 국제간 이동형태로 유형의 경영자원인 자본 및 인력뿐만 
+                          	아니라 무형의 경영자원인 경영관리상의 경험과 지식, 노하우, 기술 등의 생산요소를 복합적으로 해외에 이전시키는 기업활동입니다.
+                        </p>
+                    </li>
+
+                    <li>
+                        <strong>형태</strong>
+                        <p>
+                           외국에 기업을 설립하거나 기존의 기업을 매수하는 방법이 일반적이며, 밀접한 경제관계가 수립되어 있는 외국법인에 대하여 
+                           사업수행에 필요한 자금을 장기 대부하여 주는 경우도 포함되나, 경영 참가없이 이자, 배당 또는 시세차익을 목적으로 하는 간접투자는 원칙적으로 허용되지 않습니다.
+                        </p>
+
+                     </li>
+                     <li>
+                     	<strong>환전∙송금신청 및 유효기간</strong>
+                     	<p>
+                     		- 외교통상부에서 해외이주신고 확인서를 발급 받은 날로부터 3년이내에 해외이주비를 환전하거나 송금하여야 합니다.
+                     	</p>
+                     	<p>
+                     		- 해외 이주신고 확인서를 발급 받은 날로부터 1년이내에 이주하지 않은 경우에는 해외이주신고확인서가 무효가 되므로 유의하셔야 합니다.
+                     	</p>
+                     	<p>
+                     		- 이주사실 확인은 여권상 출입국 사실 또는 출입국관리사무소에서 발행한 출입국사실 증명원으로 확인하게 됩니다.
+                     	</p>
+                     </li>
+                </ul>
+                <h2 class="section-title">
+                   외국의 영주권,시민권,비이민투자비자,은퇴비자를 취득하려고 하는 해외이주예정자의 해외이주비
+                </h2>
+                <ul class="service-list">
+                	<li>
+                		<strong>환전∙송금한도</strong>
+                		<p>
+                			- 제한없음
+                		</p>
+                	</li>
+                	<li>
+                		<strong>준비 서류</strong>
+                		<p>- 해외송금신청서 (은행서식)</p>
+                		<p>- 여권 또는 여권 사본(인적 사항 부분)</p>
+                		<p>- 현지기관 또는 영주권 등의 취득업무를 대행하는 자가 발급한 이주예정자임을 증명할 수 있는 서류</p>
+                		<p>- 관할 세무서장 발급 자금출처확인서(세대별 해외이주비 지급 총액이 미화 10만불 상당액을 초과하는 경우)</p>
+                		<p>- 주민등록등본</p>
+                	</li>
+                	<li>
+                		<strong>환전∙송금 신청 및 유효기간</strong>
+                		<p>- 해외이주예정자로 거래 외국환은행을 지정한 날로부터 3년이내에 해외이주비를 환전하거나 송금하여야 합니다.</p>
+                		<p>- 해외이주비의 지급 후 1년 이내에 당해 국가에서 발급된 영주권, 시민권, 비이민 투자 또는 은퇴비자를 취득하였음을 증명하는 서류를 제출하여야 합니다. </p>
+                	</li>
+                </ul>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+<div th:replace="~{footer :: footer}"></div>
 </body>
 </html>

@@ -194,6 +194,14 @@
 		select * from keyword_ban
 	</select>
 	
+	<select id="getPersonalKeyword">
+		select * from search_log where role_type = 'ROLE_PERSONAL' and keyword = #{keyword}
+	</select>
+	
+	<select id="getCompanyKeyword">
+		select * from search_log where role_type = 'ROLE_COMPANY' and keyword = #{keyword}
+	</select>
+	
 	<insert id="keywordBan">
 		insert into keyword_ban values(SEQ_KEYWORD_BAN_SEARCH.nextval, #{keyword}, SYSDATE, #{adm_no})
 	</insert>

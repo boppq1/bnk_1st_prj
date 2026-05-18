@@ -230,8 +230,9 @@ public class AdminController {
 			if(as.getPersonalSuggestKeyword() >= 5) {
 				as.deletePersonalSuggestKeyword();
 			}
-			
+			System.out.println(">>>>> 2 <<<<<");
 			SearchLogDto dto = as.getPersonalSearchLog(keyword);
+			System.out.println(">>>>> 3 <<<<<");
 			Long search_volume;
 			if(dto == null) {
 				search_volume = 0l;

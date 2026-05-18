@@ -90,7 +90,7 @@
 
         // 로그인 성공
         if(admin != null) {
-
+            session.setAttribute("admin", admin);
             session.setAttribute("adminId", admin.getAdmin_id());
             session.setAttribute("loginId", admin.getLogin_id());
             session.setAttribute("name", admin.getName());
@@ -107,27 +107,21 @@
 
 
         @GetMapping("/admin/adminMyPage")
-        public String myPage(HttpSession session,
-                             Model model) {
+        public String myPage(HttpSession session, Model model) {
 
-            Long adminId =
-                    (Long) session.getAttribute("adminId");
+            Long adminId = (Long) session.getAttribute("adminId");
+            String loginId = (String) session.getAttribute("loginId");
 
             System.out.println(adminId);
 
             // 로그인 안 됨
-            if(adminId == null) {
-                return "redirect:/adminLogin";
-            }
+            if(adminId == null) {return "redirect:/adminLogin";}
 
             AdminDto dto = new AdminDto();
             dto.setAdmin_id(adminId);
-
-            AdminDto admin =
-                    serv.selectMyPage(dto);
-
+            AdminDto admin = serv.selectMyPage(dto);
             model.addAttribute("admin", admin);
-
+            System.out.println("Admin Name: " + admin.getName());
             return "admin/adminMyPage";
         }
 
@@ -140,22 +134,16 @@
         }
 
         @PostMapping("/admin/passwordUpdate")
-        public String updatePassword(Long admin_id,
-                                     String password) {
+        public String updatePassword(@RequestParam Long admin_id, @RequestParam String password) {
 
-            serv.updatePassword(admin_id,
-                    password);
-
+            serv.updatePassword(admin_id, password);
             return "redirect:/admin/adminMyPage";
         }
 
         @PostMapping("/admin/updateAdminPw")
-        public String updateAdminPw(Long admin_id,
-                                    String admin_pw) {
+        public String updateAdminPw(@RequestParam Long admin_id, @RequestParam String admin_pw) {
 
-            serv.updateAdminPw(admin_id,
-                    admin_pw);
-
+            serv.updateAdminPw(admin_id, admin_pw);
             return "redirect:/admin/adminMyPage";
         }
 

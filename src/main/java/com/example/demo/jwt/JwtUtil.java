@@ -28,13 +28,13 @@ public class JwtUtil {
 	
 	// 토큰 생성
 	public String generateToken(String username, Map<String, Object> info) {
-		return Jwts.builder()
-				   .subject(username)
-				   .claims(info)
-				   .issuedAt(new Date())
-				   .expiration(new Date(System.currentTimeMillis() + expiration))
-				   .signWith(secretKey)
-				   .compact();
+	    return Jwts.builder()
+	               .claims(info)           // ✅ claims() 먼저
+	               .subject(username)      // ✅ subject()는 반드시 그 다음에
+	               .issuedAt(new Date())
+	               .expiration(new Date(System.currentTimeMillis() + expiration))
+	               .signWith(secretKey)
+	               .compact();
 	}
 
 	//토큰 파싱 토큰을 푸는거
