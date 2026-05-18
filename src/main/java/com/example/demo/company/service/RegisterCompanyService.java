@@ -41,7 +41,7 @@ public class RegisterCompanyService {
             System.out.println(dto.toString());
           
             CompanyDto companies = new CompanyDto();
-            companies = companyDAO.selectCompany(dto.getBusiness_no());
+            companies = companyDAO.selectCompany(companies.getBusiness_no());
             dto.setCompany_id(companies.getCompany_id());
             System.out.println(dto.toString());
             dto.setStatus("정상");

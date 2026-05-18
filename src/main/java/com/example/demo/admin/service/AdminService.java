@@ -2,6 +2,7 @@ package com.example.demo.admin.service;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.admin.dao.IListDao;
@@ -140,6 +141,8 @@ public class AdminService {
 		return listDao.getKeywordBanList();
 	}
 	
+	// 새로운 금지어를 Oracle DB에 추가할 때 사용하는 메서드, 새 단어가 추가되면 기존 스프링 메모리를 비워서 최신화 대기
+	@CacheEvict(value = "forbiddenWords", allEntries = true)
 	public void keywordBan(String keyword, Long adm_no) {
 		listDao.keywordBan(keyword, adm_no);
 	}
@@ -162,11 +165,11 @@ public class AdminService {
 	}
 	
 	public SearchLogDto getCompanySearchLog(String keyword) {
-		return listDao.getKeyword(keyword);
+		return listDao.getCompanyKeyword(keyword);
 	}
 	
 	public SearchLogDto getPersonalSearchLog(String keyword) {
-		return listDao.getKeyword(keyword);
+		return listDao.getPersonalKeyword(keyword);
 	}
 	
 	public SuggestedSearchDto getCompanySuggestKeyword(String keyword) {
