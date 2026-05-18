@@ -3,8 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <title>BNK 부산은행 외환</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">해외유학지원서비스</h1>
+
+            <section class="support-section">
+
+                <h2 class="section-title">제휴 유학원 에듀하우스㈜ 안내</h2>
+
+                <p class="intro-text">
+                    1992년 창사 이래 70만 회원님들을 위한 신속한 유학 정보 공개에 앞장선 국내 최대의 안심 유학 전문 기업입니다.
+                    전세계 21개국, 100여개 협력 지사와 국내 34개 지역에 지사 네트워크를 구축하여 전세계 어디에서나
+                    동일하게 양질의 정보와 서비스를 만날 수 있도록 다양한 편의를 제공합니다.
+                </p>
+
+                <div class="support-logo-box">
+                    <a href="https://www.eduhouse.net/" target="_blank"><img th:src="@{/images/foreign/eduhouse.png}" alt="유학네트 로고"></a>
+                </div>
+
+                <h3 class="sub-title">주요서비스</h3>
+
+                <div class="service-detail">
+                    <h4>EP인증 제도</h4>
+                    <p>전문화된 상담을 위한 EP인증제도로 어느 상황에서도 고객들의 요구에 부응합니다.</p>
+
+                    <h4>회원들을 직접 찾아가는 서비스</h4>
+                    <p>매달 세계유학 박람회 개최로 유학 정보 및 자료 무료 배포, 1:1 전문 상담, 다양한 이벤트를 통한 사이버머니 및 경품 제공 등</p>
+
+                    <h4>경제적인 혜택</h4>
+                    <p>1995년 영어권의 우수한 학생들과 공동으로 한국 학생들을 위한 최초의 장학제도 도입 등 장학 혜택 제공의 선구자적 역할을 하고 있습니다.</p>
+
+                    <h4>ACS 서비스</h4>
+                    <p>해외지사를 통한 현지 유학생들의 체계화된 관리 프로그램으로 출국부터 귀국까지 ‘유학네트’만의 안심서비스를 받을 수 있습니다.</p>
+                </div>
+
+            </section>
+
+            <section class="support-section">
+
+                <h2 class="section-title">제휴 유학원 ㈜매경IC 안내</h2>
+
+                <p class="intro-text">
+                    ㈜매경IC는 1992년부터 글로벌 평생 교육의 리더로 앞장서왔습니다.<br>
+                    감자유학은 ㈜매경IC의 유학 연수 전문 기업으로 국내 10개 지사와 해외 주요 거점 도시에서 지사를 구축하였습니다.<br>
+                    또한 10년 이상 경력의 업계 최고의 유학 전문가들이 모여 고객 만족을 위해 힘쓰고 있습니다.
+                </p>
+
+                <div class="support-logo-box gamja-logo">
+                    <a href="http://www.eduhouse.net" target="_blank"><img th:src="@{/images/foreign/gamja.png}" alt="감자유학 로고"></a>
+                </div>
+
+                <h3 class="sub-title">주요서비스</h3>
+
+                <div class="service-detail">
+                    <h4>유학/연수 서비스</h4>
+                    <p>10년 경력의 유학 전문가들이 1:1 맞춤 유학 컨설팅으로 고객들에게 딱 맞는 유학 프로그램을 제공합니다.</p>
+
+                    <h4>고객 안심 서비스</h4>
+                    <p>현지 지사 관리 시스템과 수업/학비 보장제도, 24시간 비상 연락망으로 안심 서비스를 제공합니다.</p>
+
+                    <h4>장학 서비스</h4>
+                    <p>어학연수, 영어캠프 수속비 무료 제공 / 조기유학, 정규유학 수속비 30% 특별 할인 제공합니다.</p>
+
+                    <h4>고객 편의 서비스</h4>
+                    <p>회원 전용 실시간 수속 확인 페이지 “My 감자” 운영으로 출국부터 귀국까지 편리하게 확인 가능합니다.</p>
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>
