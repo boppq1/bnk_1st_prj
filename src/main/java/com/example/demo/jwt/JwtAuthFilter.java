@@ -49,17 +49,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		}
 
 		// 토큰 유효성 검사
-		if (!jwtUtil.isValid(token) || token == null) {
-			log.info("토큰이 없거나 만료되었습니다. 로그인 페이지로 이동합니다.");
-
-			Cookie deleteCookie = new Cookie("accessToken", null);
-			deleteCookie.setMaxAge(0);
-			deleteCookie.setPath("/");
-			response.addCookie(deleteCookie);
-
-			response.sendRedirect("/loginPage");
-			return; 
-		}
+//		if (!jwtUtil.isValid(token) || token == null) {
+//			log.info("토큰이 없거나 만료되었습니다. 로그인 페이지로 이동합니다.");
+//
+//			Cookie deleteCookie = new Cookie("accessToken", null);
+//			deleteCookie.setMaxAge(0);
+//			deleteCookie.setPath("/");
+//			response.addCookie(deleteCookie);
+//
+//			response.sendRedirect("/loginPage");
+//			return; 
+//		}
 
 		filterChain.doFilter(request, response);
 	}
