@@ -60,8 +60,8 @@ public class LoginAndRegisterService {
 	    return BCrypt.hashpw(password, BCrypt.gensalt());
 	}
 	
-	// 비밀번호 복호화
-	public boolean passwordDecryption(String loginPassword, String dbPassword) {
+	// 비밀번호 일치확인
+	public boolean matchesPassword(String loginPassword, String dbPassword) {
 		if(BCrypt.checkpw(loginPassword, dbPassword)) {
 			return true;
 		}

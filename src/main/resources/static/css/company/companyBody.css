@@ -1,0 +1,354 @@
+@charset "UTF-8";
+
+/* =============================================
+   Google Fonts - 고급스러운 한국어 폰트
+============================================= */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+/* =============================================
+   CSS 변수
+============================================= */
+:root {
+  /* 붉은 계열 팔레트 */
+  --red-900: #7a0000;
+  --red-800: #9b0000;
+  --red-700: #c0000a;
+  --red-600: #d4000d;
+  --red-500: #e8001a;  /* 메인 포인트 컬러 */
+  --red-100: #fff0f0;
+  --red-50:  #fff7f7;
+
+  /* 뉴트럴 */
+  --gray-900: #1a1a1a;
+  --gray-700: #3d3d3d;
+  --gray-500: #767676;
+  --gray-300: #c8c8c8;
+  --gray-100: #f5f5f5;
+  --gray-50:  #fafafa;
+  --white:    #ffffff;
+
+  /* 레이아웃 */
+  --sidebar-width: 176px;
+  --gap: 12px;
+  --radius: 3px;
+  --border: 1px solid var(--gray-300);
+
+  /* 타이포 */
+  --font: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  --fw-light:   300;
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-bold:    700;
+
+  /* 그림자 */
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.07);
+  --shadow-md: 0 2px 10px rgba(0,0,0,0.10);
+
+  /* 트랜지션 */
+  --transition: 0.18s ease;
+}
+
+/* =============================================
+   리셋 & 기본
+============================================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font);
+  font-weight: var(--fw-regular);
+  background-color: var(--gray-100);
+  color: var(--gray-900);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* =============================================
+   페이드인 애니메이션
+============================================= */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =============================================
+   전체 레이아웃
+============================================= */
+.main-layout {
+  display: flex;
+  gap: var(--gap);
+  max-width: 1080px;
+  margin: 32px auto;
+  padding: 0 24px;
+  align-items: flex-start;
+  animation: fadeUp 0.4s ease both;
+}
+
+/* =============================================
+   사이드바
+============================================= */
+.sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  background-color: var(--white);
+  border: var(--border);
+  border-top: 3px solid var(--red-500);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+/* 은행명 영역 */
+.sidebar__header {
+  height: 56px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: var(--border);
+  background-color: var(--white);
+}
+
+/* 로그인 버튼 */
+.sidebar__login {
+  background-color: var(--red-500);
+  transition: background-color var(--transition);
+}
+
+.sidebar__login:hover {
+  background-color: var(--red-700);
+}
+
+.sidebar__login a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  font-size: 12px;
+  font-weight: var(--fw-bold);
+  letter-spacing: 3px;
+  color: var(--white);
+}
+
+/* 메뉴 */
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar__nav a {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: var(--fw-medium);
+  color: var(--gray-700);
+  border-top: var(--border);
+  position: relative;
+  transition: color var(--transition), background-color var(--transition);
+}
+
+.sidebar__nav a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: var(--red-500);
+  transform: scaleY(0);
+  transition: transform var(--transition);
+}
+
+.sidebar__nav a:hover {
+  background-color: var(--red-50);
+  color: var(--red-600);
+}
+
+.sidebar__nav a:hover::before {
+  transform: scaleY(1);
+}
+
+/* =============================================
+   콘텐츠 영역
+============================================= */
+.content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  min-width: 0;
+}
+
+/* =============================================
+   공통 카드 베이스
+============================================= */
+.quick-item1,
+.quick-item2,
+.quick-item3 {
+  background-color: var(--white);
+  border: var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+.quick-item1:hover,
+.quick-item2:hover,
+.quick-item3:hover {
+  border-color: var(--red-500);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+/* 링크 공통 */
+.item1, .item2, .item3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--gray-700);
+}
+
+.item-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.item-content h4 {
+  font-size: 13px;
+  font-weight: var(--fw-medium);
+  color: var(--gray-700);
+  line-height: 1.6;
+  transition: color var(--transition);
+}
+
+.quick-item1:hover .item-content h4,
+.quick-item2:hover .item-content h4,
+.quick-item3:hover .item-content h4 {
+  color: var(--red-600);
+}
+
+/* =============================================
+   퀵 메뉴 (상단 4칸)
+============================================= */
+.quick-menu {
+  display: flex;
+  gap: var(--gap);
+}
+
+.quick-menu .quick-item1 {
+  flex: 1;
+  border-top: 2px solid var(--red-500);
+}
+
+.quick-menu .item1 {
+  padding: 18px 10px;
+}
+
+/* 마지막 카드(로그인 유도) 강조 */
+.quick-menu .quick-item1:last-child {
+  background-color: var(--red-50);
+  border-color: var(--red-500);
+}
+
+.quick-menu .quick-item1:last-child .item-content h4 {
+  color: var(--red-700);
+  font-size: 12px;
+}
+
+/* =============================================
+   배너 슬라이더
+============================================= */
+.banner-section {
+  background-color: var(--white);
+  border: var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.banner-slider {
+  display: flex;
+  min-height: 160px;
+  background: linear-gradient(135deg, var(--gray-50) 0%, var(--red-50) 100%);
+}
+
+.banner-slider .slide {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: var(--fw-light);
+  color: var(--gray-500);
+  letter-spacing: 0.5px;
+  border-right: var(--border);
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.banner-slider .slide:last-child {
+  border-right: none;
+}
+
+.banner-slider .slide:hover {
+  background-color: var(--red-50);
+  color: var(--red-600);
+}
+
+/* =============================================
+   서비스 바로가기 (3칸)
+============================================= */
+.service-shortcuts {
+  display: flex;
+  gap: var(--gap);
+}
+
+.service-shortcuts .quick-item2 {
+  flex: 1;
+  border-top: 2px solid var(--red-800);
+}
+
+.service-shortcuts .item2 {
+  padding: 20px 12px;
+}
+
+.service-shortcuts .item-content h4 {
+  font-size: 13px;
+  font-weight: var(--fw-medium);
+}
+
+/* =============================================
+   공지사항·이벤트 (2칸)
+============================================= */
+.info-section {
+  display: flex;
+  gap: var(--gap);
+}
+
+.info-section .quick-item3 {
+  flex: 1;
+}
+
+.info-section .item3 {
+  padding: 22px 16px;
+}
+
+.info-section .item-content h4 {
+  font-size: 13px;
+  font-weight: var(--fw-medium);
+  color: var(--gray-500);
+  letter-spacing: 0.5px;
+}

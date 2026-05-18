@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
   <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/company/companyBody.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}">
 </head>
 <body>
 
 <div th:replace="~{header :: header}"></div>
-<h1>기업 메인 페이지입니당</h1>
+<div th:replace="~{company/companyBody :: body}"></div>
 <div th:replace="~{footer :: footer}"></div>
 </body>
 </html>

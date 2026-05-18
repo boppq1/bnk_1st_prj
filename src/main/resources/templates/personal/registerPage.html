@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<!-- CSS 파일 연결 -->
+<link rel="stylesheet" type="text/css" th:href="@{/css/personal/personalRegisterPage.css}">
+<title>회원가입</title>
+
+
+</head>
+<body>
+  <div th:replace="~{header :: header}"></div>
+
+  <div class="register-page">
+    <div class="register-card">
+      <div class="register-card-header">
+        <h2>회원가입</h2>
+      </div>
+
+      <div class="register-card-body">
+        <form th:action="@{/registerPro}" method="post">
+
+          <!-- 계정 정보 -->
+          <div class="sec-title">계정 정보</div>
+
+          <div class="field">
+            <label for="login_id">아이디</label>
+            <div class="input-btn-row">
+              <input type="text" name="login_id" id="login_id" placeholder="영문/숫자 4~10자" required>
+              <button type="button" class="bnk-btn" id="checkId">중복 확인</button>
+            </div>
+            <p class="hint info" id="duplText"></p>
+            <p class="hint info" id="checkIdText"></p>
+          </div>
+
+          <div class="field">
+            <label for="password">비밀번호</label>
+            <input type="password" name="password" id="password" placeholder="8자 이상, 특수문자 포함" required>
+            <p class="hint info" id="passwordText"></p>
+          </div>
+
+          <!-- 개인 정보 -->
+          <div class="divider"></div>
+          <div class="sec-title">개인 정보</div>
+
+          <div class="two-col">
+            <div class="field">
+              <label>이름</label>
+              <input type="text" name="name" placeholder="홍길동" required>
+            </div>
+            <div class="field">
+              <label>영어 이름</label>
+              <input type="text" name="e_name" placeholder="Hong Gildong" required>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="field">
+              <label>휴대폰 번호</label>
+              <input type="tel" name="phone" placeholder="010-0000-0000" required>
+            </div>
+            <div class="field">
+              <label>생년월일</label>
+              <input type="date" name="birth" required>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="field">
+              <label for="email">이메일</label>
+              <input type="email" name="email" id="email" placeholder="example@email.com" required>
+              <p class="hint info" id="emailText"></p>
+            </div>
+            <div class="field">
+              <label>성별</label>
+              <div class="radio-group">
+                <label><input type="radio" name="gender" value="M" required> 남</label>
+                <label><input type="radio" name="gender" value="F"> 여</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 주소 -->
+          <div class="divider"></div>
+          <div class="sec-title">주소</div>
+
+          <div class="field">
+            <label>우편번호</label>
+            <div class="input-btn-row">
+              <input type="text" name="postal_code" id="postcode" readonly placeholder="우편번호" style="max-width:160px;" required>
+              <button type="button" class="bnk-btn" onclick="DaumPostcode()">우편번호 찾기</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>주소</label>
+            <input type="text" name="address" id="address" readonly placeholder="우편번호 검색 후 자동 입력" required>
+            <input type="hidden" id="extraAddress">
+          </div>
+
+          <div class="field">
+            <label>상세 주소</label>
+            <input type="text" name="address_detail" id="address_detail" placeholder="상세주소 입력" required>
+          </div>
+
+          <!-- 보안 -->
+          <div class="divider"></div>
+          <div class="sec-title">계좌</div>
+
+          <div class="field" style="max-width:260px;">
+            <label for="account_pw">계좌 비밀번호</label>
+            <input type="text" name="account_pw" id="account_pw" placeholder="숫자 4~6자리" required>
+            <p class="hint info" id="account_pw_text"></p>
+          </div>
+			
+          <div class="submit-wrap">
+            <button type="submit" class="submit-btn">가입하기</button>
+            <p class="submit-notice">입력하신 정보는 안전하게 보호됩니다.</p>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+<script
+		src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js">
+	</script>
+	<script>
+		function DaumPostcode() {
+			new kakao.Postcode(
+					{
+						oncomplete : function(data) {
+							// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+							// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+							// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+							var addr = ''; // 주소 변수
+							var extraAddr = ''; // 참고항목 변수
+
+							//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+							if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+								addr = data.roadAddress;
+							} else { // 사용자가 지번 주소를 선택했을 경우(J)
+								addr = data.jibunAddress;
+							}
+
+							// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+							if (data.userSelectedType === 'R') {
+								// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+								// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+								if (data.bname !== ''
+										&& /[동로가]$/.test(data.bname)) {
+									extraAddr += data.bname;
+								}
+								// 건물명이 있고, 공동주택일 경우 추가한다.
+								if (data.buildingName !== ''
+										&& data.apartment === 'Y') {
+									extraAddr += (extraAddr !== '' ? ', '
+											+ data.buildingName
+											: data.buildingName);
+								}
+								// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+								if (extraAddr !== '') {
+									extraAddr = ' (' + extraAddr + ')';
+								}
+								// 조합된 참고항목을 해당 필드에 넣는다.
+								document.getElementById("extraAddress").value = extraAddr;
+
+							} else {
+								document.getElementById("extraAddress").value = '';
+							}
+
+							// [수정된 부분] HTML의 id와 일치시킴
+							document.getElementById('postcode').value = data.zonecode;
+							document.getElementById("address").value = addr
+									+ extraAddr; // 주소 뒤에 참고항목 바로 붙이기
+
+							// 상세주소로 포커스 이동
+							document.getElementById("address_detail").focus();
+						}
+					}).open();
+		}
+		
+		/* 아이디 형식 검사*/ 
+		document.querySelector("#login_id").addEventListener('input', duplId); 
+
+		function duplId() {
+			
+		    const regexr = /^[A-Za-z0-9]{4,10}$/;
+		    
+		    const id = document.querySelector("#login_id").value; 
+		    const duplText = document.querySelector("#duplText");
+		    
+		    if (id === "") {
+		        duplText.innerText = "";
+		    } else if (!regexr.test(id)) { 
+		        duplText.innerText = "아이디는 영문/숫자 4~10자여야 합니다.";
+		        duplText.style.color = "red";
+		    } else {
+		        duplText.innerText = "올바른 아이디 형식입니다.";
+		        duplText.style.color = "green";
+		    }
+		}
+		
+		/* 아이디 중복검사 */
+		document.querySelector("#checkId").addEventListener('click', checkId);
+		
+		function checkId(e){
+			
+		    e.preventDefault();
+		    
+		const id = document.querySelector("#login_id").value;
+		    fetch('/checkId', {
+		    	method: 'POST',
+		    	headers: {
+		    		'Content-Type': 'application/json'
+		    	},
+		    	body: JSON.stringify({
+		    		'login_id': id
+		    	})
+		    })
+		     	.then(res => res.json())
+		     	.then(data => {
+		     		const resultText = document.querySelector("#checkIdText");
+		     		if(data.result == '사용가능한아이디'){
+		     			resultText.innerText = '사용가능한 아이디 입니다.'
+		     		}else{
+		     			resultText.innerText = '사용할수 없는 아이디 입니다.'
+		     			resultText.style.color = 'red';
+		     		}
+		     	});
+		}
+		
+		/*  비밀번호 8자리이상 특수문자 포함 */
+		document.querySelector("#password").addEventListener("input", checkPassword);
+		
+		function checkPassword(){
+			const passwordValue = document.querySelector("#password").value;
+			
+			// 정규표현식 설명:
+		    // ^ : 문자열의 시작
+		    // (?=.*[!@#$%^&*]) : 특수문자가 최소 하나 이상 포함되어야 함
+		    // .{8,} : 어떤 문자든 8자 이상이어야 함
+		    // $ : 문자열의 끝
+		    const passwordRegex = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+		    
+		    const passwordText = document.querySelector("#passwordText");
+		    if(passwordValue == ''){
+		    	passwordText.innerText = '비밀번호를 입력해주세요'
+		    }
+		    
+		    else if(!passwordRegex.test(passwordValue)){
+		    	passwordText.innerText = '비밀번호는 8자이상 특수문자를 포함해야합니다.'
+		    	passwordText.style.color = 'red';
+		    } else{
+		    	passwordText.innerText = '안전한 비밀번호 입니다.'
+		    	passwordText.style.color='green';
+		    }
+		    
+		}
+		
+		/* 이메일 형식 정규식 표현 */
+		document.querySelector("#email").addEventListener("input", checkEmail);
+		function checkEmail(){
+			const emailText = document.querySelector("#emailText");
+			const emailValue = document.querySelector("#email").value;
+			
+			const regexr= /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+			
+			if(emailValue == ''){
+				emailText.innerText = "이메일을 입력해 주세요"
+				emailText.style.color = "black"
+			}else if(!regexr.test(emailValue)){
+				emailText.innerText = "올바른 이메일 형식이 아닙니다."
+				emailText.style.color="red";
+			}else{
+				emailText.innerText = "올바른 이메일 입니다";
+				emailText.style.color="green";
+			}
+		}
+		document.querySelector("#account_pw").addEventListener("blur", check_account_pw);
+		
+		function check_account_pw(){
+			const account_pw_text = document.querySelector("#account_pw_text");
+			const account_pw = document.querySelector("#account_pw").value;
+			
+			if(isNaN(account_pw) || account_pw == ''){
+				account_pw_text.innerText = '숫자만 입력해주세요';
+				return;
+			}
+			let isInvalid = false;
+			for (let i = 0; i < account_pw.length - 2; i++) {
+			    
+			    if (account_pw[i] === account_pw[i + 1] && account_pw[i + 1] === account_pw[i + 2]) {
+			        isInvalid = true; 
+			        break;
+			    }
+			}
+			
+			if(isInvalid || account_pw.length != 4){
+				account_pw_text.innerText = '사용할수 없는 비밀번호입니다.'
+					account_pw_text.style.color='red';
+			}else if(!isInvalid && account_pw.length == 4){
+				account_pw_text.innerText = "사용가능한 비밀번호입니다."
+				account_pw_text.style.color='green';
+			}
+		}
+	</script>
+
+  <div th:replace="~{footer :: footer}"></div>
+</body>
+</html>

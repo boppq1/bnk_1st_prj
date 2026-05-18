@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<!-- CSS 파일 연결 -->
+<link rel="stylesheet" type="text/css" th:href="@{/css/personal/personalRegisterPage.css}">
+<title>로그인페이지</title>
+</head>
+<body>
+	<div th:replace="~{header :: header}"></div>
+	
+	<div class="register-page">
+    <div class="register-card">
+      <div class="register-card-header">
+        <h2>회원가입</h2>
+      </div>
+
+      <div class="register-card-body">
+
+          <!-- 계정 정보 -->
+          <div class="sec-title">계정 정보</div>
+
+          <div class="field">
+            <label for="login_id">아이디</label>
+            <div class="input-btn-row">
+              <input type="text" name="login_id" id="login_id" placeholder="영문/숫자 4~10자" required>
+            </div>
+            <p class="hint info" id="duplText"></p>
+            <p class="hint info" id="checkIdText"></p>
+          </div>
+			
+          <div class="field">
+            <label for="password">비밀번호</label>
+            <input type="password" name="secu_pw" id="password" placeholder="8자 이상, 특수문자 포함" required>
+            <p class="hint info" id="passwordText"></p>
+          </div>
+           <div class="submit-wrap">
+            <button type="button" class="submit-btn" id="login_btn">로그인</button>
+            <p class="submit-notice">기업회원가입 | 개인회원가입</p>
+          </div>
+      </div>
+    </div>
+  </div>
+	<div th:replace="~{footer :: footer}"></div>
+	
+	<script>
+		localStorage.clear(); 
+		document.querySelector("#login_btn").addEventListener('click', login);
+		
+		function login(){
+			const id = document.querySelector("#login_id").value;
+			const pw = document.querySelector("#password").value;
+			
+			
+			fetch('/loginProc', {
+				method: 'post',
+				headers:{
+					'Content-Type' : 'application/json'
+				},
+				body: JSON.stringify({
+					'login_id' : id,
+					'secu_pw' : pw
+				})
+			})
+			.then(response => response.json())
+			.then(data => {
+				if(data.result === 'sucess'){
+					if(data.role === 'user'){
+						
+						localStorage.setItem('role', data.role)
+						localStorage.setItem('name', data.name)
+						window.location.href="/index"						
+						
+					}else if(data.role === 'company'){
+						
+						localStorage.setItem('role', data.role)
+						localStorage.setItem('name', data.name)
+						window.location.href="/company/companyMain"						
+					}
+				}else{
+					window.location.href="/loginPage"
+				}
+			})
+		}
+	</script>
+</body>
+</html>

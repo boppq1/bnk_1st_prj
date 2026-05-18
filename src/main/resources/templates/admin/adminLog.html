@@ -10,64 +10,70 @@
     <style>
         :root {
             --primary-color: #ED1C24;    /* BNK Red */
-            --bg-color: #F8F9FA;
+            --navy-color: #0A2540;       /* BNK Navy */
+            --bg-color: #F8FAFC;
             --card-bg: #FFFFFF;
-            --border-color: #E0E4E8;
-            --text-main: #212529;
-            --text-label: #6C757D;
+            --border-color: #E2E8F0;
+            --text-main: #0F172A;
+            --text-label: #64748B;
             --sidebar-width: 260px;
             --header-height: 70px;
             
-            /* 메서드별 컬러 */
-            --color-get: #28a745;
-            --color-post: #007bff;
-            --color-put: #fd7e14;
-            --color-delete: #dc3545;
+            /* 메서드별 선명한 컴포넌트 컬러 */
+            --color-get-bg: #E0F2FE;    --color-get-text: #0369A1;
+            --color-post-bg: #DCFCE7;   --color-post-text: #15803D;
+            --color-put-bg: #FEF3C7;    --color-put-text: #B45309;
+            --color-delete-bg: #FEE2E2; --color-delete-text: #B91C1C;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); display: flex; min-height: 100vh; }
 
-        /* 사이드바 & 헤더 (일관성 유지) */
+        /* 사이드바 & 헤더 */
         .sidebar { width: var(--sidebar-width); height: 100vh; background-color: #FFFFFF; border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0; z-index: 100; }
-        .sidebar-logo { padding: 20px 30px; margin-bottom: 20px; }
-        .sidebar-logo img { width: 130px; }
-        .menu-item { display: flex; align-items: center; padding: 15px 30px; color: var(--text-main); text-decoration: none; font-size: 15px; }
-        .menu-item i { margin-right: 15px; width: 20px; text-align: center; color: #ADB5BD; }
+        .sidebar-logo { padding: 24px 30px; margin-bottom: 20px; border-bottom: 1px solid #F1F5F9; }
+        .sidebar-logo img { width: 140px; }
+        .sidebar-menu { list-style: none; }
+        .menu-item { display: flex; align-items: center; padding: 14px 30px; color: #475569; text-decoration: none; font-size: 15px; font-weight: 500; transition: all 0.2s ease; }
+        .menu-item i { margin-right: 15px; width: 20px; text-align: center; color: #94A3B8; font-size: 16px; }
+        .menu-item:hover { background-color: #F8FAFC; color: var(--text-main); }
         .menu-item.active { background-color: #FFF2F2; color: var(--primary-color); font-weight: 700; border-left: 4px solid var(--primary-color); }
         .menu-item.active i { color: var(--primary-color); }
 
-        .header { position: fixed; top: 0; left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); height: var(--header-height); background-color: #FFFFFF; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 40px; z-index: 90; }
+        .header { position: fixed; top: 0; left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); height: var(--header-height); background-color: #FFFFFF; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 40px; z-index: 90; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+        .header-title { font-size: 16px; font-weight: 700; color: var(--navy-color); }
 
         /* 메인 컨텐츠 */
         .main-content { margin-left: var(--sidebar-width); margin-top: var(--header-height); width: calc(100% - var(--sidebar-width)); padding: 40px; }
-        
-        .content-header { margin-bottom: 30px; }
-        .content-title { font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .content-header { margin-bottom: 32px; }
+        .content-title { font-size: 26px; font-weight: 800; display: flex; align-items: center; gap: 10px; color: var(--navy-color); }
 
         /* 섹션 카드 */
-        .log-section { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); padding: 25px; margin-bottom: 40px; }
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-left: 4px solid var(--primary-color); padding-left: 15px; }
-        .section-header h2 { font-size: 18px; font-weight: 700; color: #333; }
+        .log-section { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); padding: 28px; margin-bottom: 35px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-left: 4px solid var(--primary-color); padding-left: 14px; }
+        .section-header h2 { font-size: 18px; font-weight: 700; color: var(--navy-color); display: flex; align-items: center; gap: 8px; }
 
         /* 테이블 디자인 */
-        .table-wrapper { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 900px; }
-        th { padding: 12px 15px; font-size: 13px; font-weight: 600; color: var(--text-label); background-color: #FBFBFC; border-bottom: 2px solid var(--border-color); }
-        td { padding: 15px; font-size: 14px; border-bottom: 1px solid #F1F3F5; color: var(--text-main); word-break: break-all; }
-        tr:hover { background-color: #F8F9FA; }
+        .table-wrapper { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border-color); }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 900px; background-color: #ffffff; }
+        th { padding: 14px 16px; font-size: 13px; font-weight: 600; color: var(--text-label); background-color: #F8FAFC; border-bottom: 2px solid var(--border-color); }
+        td { padding: 14px 16px; font-size: 14px; border-bottom: 1px solid #F1F5F9; color: #334155; vertical-align: middle; }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background-color: #F8FAFC; }
 
-        /* 메서드 태그 */
-        .method-badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 800; color: white; text-transform: uppercase; }
-        .method-get { background-color: var(--color-get); }
-        .method-post { background-color: var(--color-post); }
-        .method-put { background-color: var(--color-put); }
-        .method-delete { background-color: var(--color-delete); }
+        /* 배지 양식 */
+        .method-badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; text-align: center; min-width: 65px; }
+        .method-get { background-color: var(--color-get-bg); color: var(--color-get-text); }
+        .method-post { background-color: var(--color-post-bg); color: var(--color-post-text); }
+        .method-put { background-color: var(--color-put-bg); color: var(--color-put-text); }
+        .method-delete { background-color: var(--color-delete-bg); color: var(--color-delete-text); }
 
-        /* 코드 및 본문 스타일 */
-        .code-text { font-family: 'Courier New', monospace; font-size: 12px; color: #555; background: #f4f4f4; padding: 4px 8px; border-radius: 4px; max-width: 200px; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .status-success { color: #28a745; font-weight: 700; }
-        .status-error { color: #dc3545; font-weight: 700; }
+        .status-badge { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 13px; font-weight: 600; }
+        .status-success { background-color: #ECFDF5; color: #047857; }
+        .status-error { background-color: #FFF5F5; color: var(--primary-color); font-weight: 700; }
+
+        .code-text { font-family: 'Courier New', monospace; font-size: 12px; color: #475569; background: #F1F5F9; padding: 5px 10px; border-radius: 4px; max-width: 250px; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border: 1px solid #E2E8F0; }
+        .empty-row { text-align: center; color: var(--text-label); padding: 40px 0 !important; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -84,81 +90,92 @@
     </div>
 
     <div class="header">
-        <div class="header-title">시스템 통합 로그 모니터링</div>
+        <div class="header-title">업무지원 시스템 > 통합 보안 센터 > 실시간 감사 로그 조회</div>
     </div>
 
     <div class="main-content">
         <div class="content-header">
             <h1 class="content-title"><i class="fa-solid fa-terminal" style="color: var(--primary-color);"></i> 관리자 로그 관리 센터</h1>
-            <p style="color: var(--text-label); font-size: 14px; margin-top: 5px;">사용자 API 호출 기록 및 관리자 주요 활동 로그를 실시간으로 확인합니다.</p>
+            <p style="color: var(--text-label); font-size: 14px; margin-top: 6px;">인터셉터 기반 사용자 API 호출 기록 및 관리자 오디트 내역을 모니터링합니다.</p>
         </div>
 
-        <!-- API 로그 섹션 -->
+        <!-- 1️⃣ API 로그 섹션 -->
         <div class="log-section">
             <div class="section-header">
-                <h2><i class="fa-solid fa-network-wired"></i> 사용자 API 로그</h2>
+                <h2><i class="fa-solid fa-network-wired"></i> 사용자 API 실시간 트래픽 로그</h2>
             </div>
             <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
-                            <th>로그 ID</th>
-                            <th>요청 URL</th>
-                            <th>메서드</th>
-                            <th>소요 시간</th>
-                            <th>요청 본문</th>
-                            <th>상태 코드</th>
-                            <th>IP 주소</th>
+                            <th style="width: 100px;">로그 ID</th>
+                            <th>요청 엔드포인트 URL</th>
+                            <th style="width: 100px;">HTTP 메서드</th>
+                            <th style="width: 110px;">소요 시간</th>
+                            <th>페이로드 (요청 본문)</th>
+                            <th style="width: 110px;">상태 코드</th>
+                            <th style="width: 150px;">접속 IP 주소</th>
+                            <th style="width: 150px;">요청 시간</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="users : ${user}">
-                            <td th:text="${users.log_id}" style="font-weight: 600;"></td>
-                            <td th:text="${users.url}" style="color: #444;"></td>
+                        <tr th:each="log : ${userLogList}">
+                            <!-- ⭕ 실제 DTO 구조인 스네이크 표기법(_ id)으로 롤백 복구 -->
+                            <td th:text="${log.log_id}" style="font-weight: 700; color: var(--navy-color);"></td>
+                            <td th:text="${log.url}" style="color: #334155; font-weight: 500; font-family: monospace;"></td>
                             <td>
-                                <!-- 메서드별 배지 처리 -->
-                                <span th:text="${users.method}" 
-                                      th:classappend="'method-badge ' + (${users.method == 'GET' ? 'method-get' : (users.method == 'POST' ? 'method-post' : (users.method == 'PUT' ? 'method-put' : 'method-delete'))})">
+                                <span th:text="${log.method}" 
+                                      th:class="'method-badge ' + (${log.method == 'GET'} ? 'method-get' : (${log.method == 'POST'} ? 'method-post' : (${log.method == 'PUT'} ? 'method-put' : 'method-delete')))">
                                 </span>
                             </td>
-                            <td><span th:text="${users.elapsed_ms} + ' ms'" style="color: #666;"></span></td>
-                            <td><span class="code-text" th:text="${users.request_body ?: '-'}"></span></td>
+                            <!-- ⭕ 실제 DTO 구조 매핑 복구 -->
+                            <td><span th:text="${log.elapsed_ms} + ' ms'" style="color: #0f172a; font-weight: 600;"></span></td>
+                            <td><span class="code-text" th:text="${log.request_body ?: '-'}"></span></td>
                             <td>
-                                <span th:text="${users.response_code}" 
-                                      th:classappend="${users.response_code >= 400 ? 'status-error' : 'status-success'}">
+                                <span th:text="${log.response_code}" 
+                                      th:class="'status-badge ' + (${log.response_code >= 400} ? 'status-error' : 'status-success')">
                                 </span>
                             </td>
-                            <td th:text="${users.ip_address}" style="font-size: 13px; color: #888;"></td>
+                            <td><span th:text="${log.ip_address}" style="font-size: 13px; color: var(--text-label); font-family: monospace;"></span></td>
+                            <td><span th:text="${log.reg_dt}" style="font-size: 13px; color: var(--text-label); font-family: monospace;"></span></td>
+                        </tr>
+                        <tr th:if="${userLogList == null or userLogList.empty}">
+                            <td colspan="7" class="empty-row">현재 적재된 사용자 API 통신 로그가 비어 있습니다.</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- 관리자 로그 섹션 -->
+        <!-- 2️⃣ 관리자 감사 로그 섹션 -->
         <div class="log-section">
             <div class="section-header">
-                <h2><i class="fa-solid fa-user-shield"></i> 관리자 활동 로그</h2>
+                <h2><i class="fa-solid fa-user-shield"></i> 관리자 주요 감사(Audit) 기록</h2>
             </div>
             <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
-                            <th>로그 ID</th>
-                            <th>수행 작업</th>
-                            <th>작업 대상</th>
-                            <th>생성 일시</th>
+                            <th style="width: 120px;">로그 고유 ID</th>
+                            <th>수행 액션 및 행위</th>
+                            <th>감사 변경 대상 (Target)</th>
+                            <th style="width: 200px;">이벤트 생성 일시</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="admins : ${admin}">
-                            <td th:text="${admins.log_id}" style="font-weight: 600;"></td>
+                        <tr th:each="log : ${adminLogList}">
+                            <!-- ⭕ 실제 DTO 구조인 스네이크 표기법(_ id)으로 롤백 복구 -->
+                            <td th:text="${log.log_id}" style="font-weight: 700; color: var(--navy-color);"></td>
                             <td>
-                                <i class="fa-solid fa-caret-right" style="color: var(--primary-color); margin-right: 5px;"></i>
-                                <span th:text="${admins.action}" style="font-weight: 500;"></span>
+                                <i class="fa-solid fa-angle-right" style="color: var(--primary-color); margin-right: 6px; font-size: 12px;"></i>
+                                <span th:text="${log.action}" style="font-weight: 600; color: var(--text-main);"></span>
                             </td>
-                            <td th:text="${admins.target}"></td>
-                            <td th:text="${admins.created_at}" style="color: #666;"></td>
+                            <td><span class="code-text" style="max-width: 400px;" th:text="${log.target}"></span></td>
+                            <!-- ⭕ 실제 DTO 구조 매핑 복구 및 날짜 유틸 적용 -->
+                            <td th:text="${log.created_at}" style="color: #475569; font-weight: 500;"></td>
+                        </tr>
+                        <tr th:if="${adminLogList == null or adminLogList.empty}">
+                            <td colspan="4" class="empty-row">수행된 관리자 감사 기록 내역이 존재하지 않습니다.</td>
                         </tr>
                     </tbody>
                 </table>

@@ -28,16 +28,16 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 
       <!-- 로고 -->
       <div class="header-logo">
-        <a th:href="@{/index}"><img th:src="@{/images/BNKlogo.png}" alt="BNK 로고"></a>
+        <a th:href="@{/}"><img th:src="@{/images/BNKlogo.png}" alt="BNK 로고"></a>
       </div>
 
       <!-- 개인 / 기업 -->
       <div class="bank-type">
 
         <!-- 메인 -->
-        <th:block th:if="${mode == 'main'}">
+      <!--   <th:block th:if="${mode == 'main'}"> -->
 
-          <a th:href="@{/personal/personalMain}">
+          <a th:href="@{/index}">
             개인뱅킹
           </a>
 
@@ -48,16 +48,16 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         </th:block>
 
         <!-- 개인 -->
-        <th:block th:if="${mode == 'personal'}">
+ <!--        <th:block th:if="${mode == 'personal'}">
 
-          <a th:href="@{/personal/personalMain}"
+          <a th:href="@{/}"
              class="active-bank">
             개인뱅킹
           </a>
 
         </th:block>
 
-        <!-- 기업 -->
+        기업
         <th:block th:if="${mode == 'company'}">
 
           <a th:href="@{/company/companyMain}"
@@ -65,7 +65,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
             기업뱅킹
           </a>
 
-        </th:block>
+        </th:block> -->
 
       </div>
 
@@ -136,33 +136,49 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
       </div>
 
     </div>
-
+	
     <!-- 오른쪽 -->
     <div class="header-right">
-
+	 <div id="user-info">
       <!-- 로그인 드롭다운 -->
       <div class="login-area">
-
         <span class="login-text">로그인</span>
-
         <!-- 드롭다운 -->
         <div class="login-dropdown">
-          <a th:href="@{/registerPage}">개인뱅킹</a>
-          <a th:href="@{/companyRegisterPage}">기업뱅킹</a>
+          <a th:href="@{/loginPage}">개인뱅킹</a>
+          <a th:href="@{/loginPage}">기업뱅킹</a>
         </div>
-
       </div>
-
+	</div>
       <div class="header-icons">
         <i class="fa-solid fa-magnifying-glass"></i>
         <i class="fa-solid fa-bars"></i>
       </div>
-
     </div>
-
   </div>
+<script>
+	const userinfo = document.querySelector("#user-info")
+	const username = localStorage.getItem("name");
+	const role = localStorage.getItem("role");
+	if(username){
+	    // 로그인 상태: 로그인 영역을 이름으로 교체
+	    userinfo.innerHTML = `
+	        <div class="login-area">
+	            <span class="login-text">${username}님</span> &nbsp
+	            <button id="logout-btn">로그아웃</button>
+	        </div>
+	    `;
 
+	    // 로그아웃 처리
+	    document.querySelector("#logout-btn").addEventListener("click", function(e){
+	        e.preventDefault();
+	        localStorage.removeItem("name");
+	        localStorage.removeItem("role");
+	        location.href = "/logout";
+	    });
+	}
+	
+</script>
 </header>
-
 </body>
 </html>
