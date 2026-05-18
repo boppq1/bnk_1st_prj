@@ -1,16 +1,40 @@
 package com.example.demo.foreign.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.demo.product.dto.request.ProductListRequestDto;
+import com.example.demo.product.service.ProductService;
+
+import lombok.RequiredArgsConstructor;
+
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/foreign")
 public class ForeignViewController {
+
+    private final ProductService productService;
 
     // =========================
     // 외화예금
     // =========================
+
+    @GetMapping("/deposit/foreignDepositProduct")
+    public String foreignDepositProduct(
+            ProductListRequestDto dto,
+            Model model
+    ) {
+        dto.setProductType("FOREIGN_DEP");
+
+        model.addAttribute(
+                "products",
+                productService.getProductList(dto)
+        );
+
+        return "foreign/deposit/foreignDepositProduct";
+    }
 
     @GetMapping("/deposit/foreignDepositGuide")
     public String foreignDepositGuide() {
@@ -20,6 +44,16 @@ public class ForeignViewController {
     @GetMapping("/deposit/foreignDepositBenefit")
     public String foreignDepositBenefit() {
         return "foreign/deposit/foreignDepositBenefit";
+    }
+
+    @GetMapping("/deposit/foreignTransfer")
+    public String foreignTransfer() {
+        return "foreign/deposit/foreignTransfer";
+    }
+
+    @GetMapping("/deposit/foreignAccountOpen")
+    public String foreignAccountOpen() {
+        return "foreign/deposit/foreignAccountOpen";
     }
 
     // =========================
@@ -55,4 +89,42 @@ public class ForeignViewController {
         return "foreign/exchange/exchangeCalculator";
     }
 
+    // =========================
+    // 유학 / 이주 / 여행
+    // =========================
+
+    @GetMapping("/studyMigrationTravel/studyGuide")
+    public String studyGuide() {
+        return "foreign/studyMigrationTravel/studyGuide";
+    }
+
+    @GetMapping("/studyMigrationTravel/studyExchange")
+    public String studyExchange() {
+        return "foreign/studyMigrationTravel/studyExchange";
+    }
+
+    @GetMapping("/studyMigrationTravel/studySupport")
+    public String studySupport() {
+        return "foreign/studyMigrationTravel/studySupport";
+    }
+
+    @GetMapping("/studyMigrationTravel/migrationGuide")
+    public String migrationGuide() {
+        return "foreign/studyMigrationTravel/migrationGuide";
+    }
+
+    @GetMapping("/studyMigrationTravel/migrationExchange")
+    public String migrationExchange() {
+        return "foreign/studyMigrationTravel/migrationExchange";
+    }
+
+    @GetMapping("/studyMigrationTravel/travelNotice")
+    public String travelNotice() {
+        return "foreign/studyMigrationTravel/travelNotice";
+    }
+
+    @GetMapping("/studyMigrationTravel/travelExchange")
+    public String travelExchange() {
+        return "foreign/studyMigrationTravel/travelExchange";
+    }
 }

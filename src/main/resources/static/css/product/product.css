@@ -43,6 +43,8 @@ a { text-decoration: none; color: inherit; }
     display: grid;
     grid-template-columns: 220px 1fr;
     gap: 32px;
+    overflow: visible; /* sticky 동작 보장 */
+    align-items: start;
 }
 
 /* ─── SIDEBAR ────────────────────────────────── */
@@ -129,7 +131,7 @@ a { text-decoration: none; color: inherit; }
     padding: 10px;
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--gray-100);
-    max-height: 520px;
+    max-height: calc(100vh - 200px);
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--gray-200) transparent;
@@ -1056,6 +1058,18 @@ a { text-decoration: none; color: inherit; }
    외환 카테고리 사이드바
 ========================= */
 
+/* ── 현재 페이지 링크 활성화 ── */
+.foreign-sub-menu a.active {
+    color: var(--red);
+    font-weight: 700;
+    background: var(--red-soft);
+    border-radius: 4px;
+}
+
+.foreign-single-link.active {
+    color: var(--red);
+}
+
 /* ── 드롭다운 컨테이너 ── */
 .foreign-dropdown {
     border-bottom: 1px solid var(--gray-100);
@@ -1236,4 +1250,16 @@ a { text-decoration: none; color: inherit; }
 .foreign-dropdown-menu .foreign-single-link:hover {
     color: var(--red);
     background: transparent;
+}
+
+/* ── 현재 페이지 활성화 스타일 ── */
+.foreign-sub-menu a.active {
+    color: var(--red);
+    font-weight: 700;
+    background: var(--red-soft);
+}
+
+.foreign-dropdown-menu .foreign-single-link.active {
+    color: var(--red);
+    font-weight: 700;
 }

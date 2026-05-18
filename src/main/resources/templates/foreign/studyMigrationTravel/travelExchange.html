@@ -3,8 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <title>BNK 부산은행 외환</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
 <body>
+<div th:replace="~{header :: header}"></div>
+<div class="product-layout">
 
+    <!-- 사이드바 -->
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <!-- 본문 -->
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">여행경비환전</h1>
+
+				<section class="service-section">
+				
+				    <h2 class="section-title">외화현찰</h2>
+				
+				    <ul class="service-list">
+				
+				        <li>
+				            <strong>환전한도</strong>
+				            <p>- 제한없음</p>
+				        </li>
+				
+				        <li>
+				            <strong>제출서류</strong>
+				            <p>- 주민등록증, 여권 등 실명확인증표</p>
+				        </li>
+				
+				        <li>
+				            <strong>유의사항</strong>
+				            <p>- 국민인 거주자가 미화 1만불 상당액을 초과하여 휴대 출국 시에는 관할 세관에 신고하셔야 합니다.</p>
+				            <p>- 동일자, 동일인 기준 미화 1만불을 초과하는 경우 국세청 및 관세청에 통보됩니다.</p>
+				        </li>
+				
+				    </ul>
+				
+				    <h2 class="section-title">신용카드</h2>
+				
+				    <ul class="service-list">
+				
+				        <li>
+				            <strong>사용한도</strong>
+				            <p>- 제한없음</p>
+				        </li>
+				
+				        <li>
+				            <strong>국세청 및 관세청 통보</strong>
+				            <p>- 대외지급 실적 또는 외국에서의 외국통화 인출 실적이 연간 미화 1만불을 초과하는 경우 통보됩니다.</p>
+				        </li>
+				
+				    </ul>
+				
+				    <h2 class="section-title">환전요령</h2>
+				
+				    <ul class="service-list">
+				
+				        <li>
+				            <strong>여행가는 나라의 현지 화폐로 준비합니다.</strong>
+				
+				            <p>
+				                - 일반적으로 해외여행 시 미국 달러를 준비하는 경우가 많지만,
+				                여행 국가의 현지 화폐로 교환하여 가는 것이 재환전에 따른 비용과 불편함을 줄일 수 있습니다.
+				            </p>
+				
+				            <p>
+				                - 여행경비 환전 시에는 꼭 필요한 약 30% 정도만 외화현찰로 준비하는 것이 좋으며,
+				                고액권과 소액권을 함께 준비하는 것이 좋습니다.
+				            </p>
+				        </li>
+				
+				        <li>
+				            <strong>비상시 대비하여 신용카드를 휴대합니다.</strong>
+				
+				            <p>
+				                - 외화신용카드는 세계 대부분의 국가에서 사용할 수 있습니다.
+				            </p>
+				
+				            <p>
+				                - 신용카드는 비밀번호와 서명이 필요하므로 안전성이 높고,
+				                외화 현찰이나 여행자수표보다 편리하게 사용할 수 있습니다.
+				            </p>
+				        </li>
+				
+				    </ul>
+				
+				</section>
+
+        </div>
+
+    </main>
+
+</div>
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 </body>
 </html>
