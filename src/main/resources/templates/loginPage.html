@@ -30,7 +30,7 @@
             <p class="hint info" id="duplText"></p>
             <p class="hint info" id="checkIdText"></p>
           </div>
-
+			
           <div class="field">
             <label for="password">비밀번호</label>
             <input type="password" name="secu_pw" id="password" placeholder="8자 이상, 특수문자 포함" required>
@@ -67,7 +67,18 @@
 			.then(response => response.json())
 			.then(data => {
 				if(data.result === 'sucess'){
-					window.location.href="/index"
+					if(data.role === 'user'){
+						
+						localStorage.setItem('role', data.role)
+						localStorage.setItem('name', data.name)
+						window.location.href="/index"						
+						
+					}else if(data.role === 'company'){
+						
+						localStorage.setItem('role', data.role)
+						localStorage.setItem('name', data.name)
+						window.location.href="/company/companyMain"						
+					}
 				}else{
 					window.location.href="/loginPage"
 				}
