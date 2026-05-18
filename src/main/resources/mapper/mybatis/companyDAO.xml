@@ -6,25 +6,31 @@
 
 	<!-- 사업자 번호 조희 -->
 	<select id="selectBno" resultType="int">
-		SELECT count(*) from companies WHERE business_no = #{business_no}  
+		SELECT count(*) from companies WHERE BIZ_NO = #{business_no}  
 	</select>
 	<!-- 기업 정보 조회 -->    
 	<select id="selectCompany" resultType="com.example.demo.company.dto.CompanyDto">
-		SELECT * from companies WHERE business_no = #{business_no}  
+	    SELECT com_no AS company_id,
+	           biz_no AS business_no,
+	           com_nm,
+	           status,
+	           reg_dt
+	    FROM companies
+	    WHERE biz_no = #{business_no}
 	</select>
 	<!-- 기업회원 등록 -->
 	<insert id="insertCompanyUser">
-		INSERT INTO company_users (company_user_id, company_id, login_id, password, 
-		name, phone, birth, email, status, gender, e_name, created_at) VALUES(
-			SEQ_COMPANIES.NEXTVAL, #{company_id},#{login_id},#{password},#{name},
+		INSERT INTO company_users (COM_USR_NO, COM_NO, LOGIN_ID, SECU_PW, 
+		USR_NM, phone, birth, email, STATUS, gender, ENG_NM, REG_DT) VALUES(
+			SEQ_COMPANY_USERS.NEXTVAL, #{company_id},#{login_id},#{password},#{name},
 			#{phone},#{birth},#{email},#{status},#{gender},#{e_name},SYSDATE
 		)
 	</insert>
 	<!-- 기업국내계좌 -->
 	<insert id="insertAC">
 		INSERT INTO accounts_company (
-			account_id, account_pw, bank_name, account_no, company_id, balance, 
-			currency, account_status, limit_one_time, limit_daily
+			ACNT_NO, ACNT_PWD, BANK_NM, ACNT_NUM, COM_NO, BALANCE, 
+			CURRENCY, ACNT_STAT_CD, LMT_ONCE, LMT_DAILY
 		)VALUES (
 			SEQ_ACCOUNTS_COMPANY.NEXTVAL, #{account_pw},#{bank_name},#{account_no},
 			#{company_id},#{balance},#{currency},#{account_status},#{limit_one_time},#{limit_daily}
@@ -32,8 +38,8 @@
 	</insert>
 	<insert id="insertFAC">
 		INSERT INTO foreign_accounts_company (
-			account_id, account_pw, bank_name, account_no, company_id, account_status, 
-			limit_one_time, limit_daily) 
+			ACNT_NO, ACNT_PWD, BANK_NM, ACNT_NUM, COM_NO, ACNT_STAT_CD, 
+			LMT_ONCE, LMT_DAILY) 
 		VALUES (
 			SEQ_FOREIGN_ACCOUNTS_COMPANY.NEXTVAL, #{account_pw}, #{bank_name}, #{account_no}, #{company_id}, 
 			#{account_status}, #{limit_one_time}, #{limit_daily}
@@ -48,15 +54,15 @@
 	<select id="selectDuplAcc" resultType="int">
 	    SELECT COUNT(*)
 	    FROM (
-	        SELECT ACCOUNT_NO FROM accounts_company
+	        SELECT ACNT_NUM FROM accounts_company
 	        UNION ALL
-	        SELECT ACCOUNT_NO FROM foreign_accounts_company
+	        SELECT ACNT_NUM FROM foreign_accounts_company
 	        UNION ALL
-	        SELECT ACCOUNT_NO FROM accounts_personal
+	        SELECT ACNT_NUM FROM accounts_personal
 	        UNION ALL
-	        SELECT ACCOUNT_NO FROM foreign_accounts_personal
+	        SELECT ACNT_NUM FROM foreign_accounts_personal
 	    ) combined_accounts
-	    WHERE TRIM(combined_accounts.ACCOUNT_NO) = #{account_no}
+	    WHERE TRIM(combined_accounts.ACNT_NUM) = #{account_no}
 	</select>
 	
 </mapper>

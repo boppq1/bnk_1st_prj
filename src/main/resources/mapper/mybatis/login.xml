@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.example.demo.commonLogin.dao.ILoginDAO">
+	<select id="selectUser" resultType="com.example.demo.commonLogin.dto.UserLoginDTO">
+			select * from users where login_id = #{login_id}
+	</select>
+	<select id="selectCompanyUser">
+		select * from company_users where login_id = #{login_id}
+	</select>
+</mapper>

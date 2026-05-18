@@ -2,70 +2,78 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.demo.personal.dao.LoginAndRegisterIDAO">
+<mapper
+	namespace="com.example.demo.personal.dao.LoginAndRegisterIDAO">
 	<!-- 회원정보 -->
-    <insert id="insertUser">
-        INSERT INTO users (
-            user_id, login_id, password, name, phone, birth, email, status, gender,
-            e_name, postal_code, address, address_detail, created_at
-        ) VALUES (
-            SEQ_USERS.NEXTVAL,
-            #{login_id},
-            #{password},
-            #{name},
-            #{phone},
-            #{birth},
-            #{email},
-            '정상',
-            #{gender},
-            #{e_name},
-            #{postal_code},
-            #{address},
-            #{address_detail},
-            SYSDATE
-        )
-    </insert>
+	<insert id="insertUser">
+		INSERT INTO users (
+		usr_no, login_id, secu_pw, usr_nm, tel_no, birth_dt, email, acnt_stat_cd,
+		gender,
+		eng_nm, zip_cd, addr , addr_dtl, reg_dt
+		) VALUES (
+		SEQ_USERS.NEXTVAL,
+		#{login_id},
+		#{password},
+		#{name},
+		#{phone},
+		#{birth},
+		#{email},
+		'정상',
+		#{gender},
+		#{e_name},
+		#{postal_code},
+		#{address},
+		#{address_detail},
+		SYSDATE
+		)
+	</insert>
 	<!-- 국내 계좌정보 -->
-    <insert id="insertAccount">
-       INSERT INTO accounts_personal (
-           account_id, account_pw, bank_name, account_no, user_id, balance, currency, account_status,
-           limit_one_time, limit_daily
-       ) VALUES (
-           SEQ_ACCOUNTS_PERSONAL.NEXTVAL,
-           #{account_pw},
-           #{bank_name},
-           #{account_no},
-           SEQ_USERS.CURRVAL,
-           #{balance},
-           #{currency},
-           #{account_status},
-           #{limit_one_time},
-           #{limit_daily}
-       )
-    </insert>
-    <!-- 해외 계좌정보 -->
-    <insert id="insertFxAccount">
-       INSERT INTO foreign_accounts_personal (
-           account_id, account_pw, bank_name, account_no, user_id,  account_status,
-           limit_one_time, limit_daily
-       ) VALUES (
-           SEQ_FOREIGN_ACCOUNTS_PERSONAL.NEXTVAL,
-           #{account_pw},
-           #{bank_name},
-           #{account_no},
-           SEQ_USERS.CURRVAL,
-           #{account_status},
-           #{limit_one_time},
-           #{limit_daily}
-       )
-    </insert>
+	<insert id="insertAccount">
+		INSERT INTO accounts_personal (
+		acnt_no, secu_acnt_pwd, bank_nm, acnt_num, usr_no, balance, currency,
+		acnt_stat_cd,
+		lmt_once, lmt_daily
+		) VALUES (
+		SEQ_ACCOUNTS_PERSONAL.NEXTVAL,
+		#{account_pw},
+		#{bank_name},
+		#{account_no},
+		SEQ_USERS.CURRVAL,
+		#{balance},
+		#{currency},
+		#{account_status},
+		#{limit_one_time},
+		#{limit_daily}
+		)
+	</insert>
+	<!-- 해외 계좌정보 -->
+	<insert id="insertFxAccount">
+		INSERT INTO foreign_accounts_personal (
+		acnt_no, acnt_pwd, bank_nm, acnt_num, usr_no, acnt_stat_cd,
+		lmt_once, lmt_daily
+		) VALUES (
+		SEQ_FOREIGN_ACCOUNTS_PERSONAL.NEXTVAL,
+		#{account_pw},
+		#{bank_name},
+		#{account_no},
+		SEQ_USERS.CURRVAL,
+		#{account_status},
+		#{limit_one_time},
+		#{limit_daily}
+		)
+	</insert>
 
-    <select id="checkAccount" resultType="int">
-        SELECT COUNT(*) FROM accounts_personal WHERE account_no = #{account_no}
-    </select>
-	
-    <select id="checkId" resultType="int">
-        SELECT COUNT(*) FROM users WHERE Login_id = #{Login_id}
-    </select>
-	
+	<select id="checkAccount" resultType="int">
+		SELECT COUNT(*) FROM accounts_personal WHERE acnt_no = #{account_no}
+	</select>
+
+	<select id="checkId" resultType="int">
+		SELECT SUM(TOTAL.cnt)
+		FROM (
+		SELECT COUNT(*) AS cnt FROM users WHERE login_id = #{Login_id}
+		UNION ALL
+		SELECT COUNT(*) AS cnt FROM company_users WHERE login_id = #{Login_id}
+		) TOTAL
+	</select>
+
 </mapper>

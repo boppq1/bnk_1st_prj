@@ -3,11 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>BNK Busan Bank - 환전 거래 내역 관리</title>
-    <!-- Font Awesome & Pretendard -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    <link rel="stylesheet" th:href="@{/css/admin/exchageList.css}">
+    
+    <style>
+        :root {
+            --primary-color: #ED1C24;    /* BNK Red */
+            --navy-color: #0A2540;       /* BNK Navy */
+            --bg-color: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --border-color: #E2E8F0;
+            --text-main: #0F172A;
+            --text-label: #64748B;
+            --sidebar-width: 260px;
+            --header-height: 70px;
+        }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); display: flex; min-height: 100vh; }
+
+        /* 사이드바 & 헤더 공통 뼈대 구조 */
+        .sidebar { width: var(--sidebar-width); height: 100vh; background-color: #FFFFFF; border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0; z-index: 100; }
+        .sidebar-logo { padding: 24px 30px; margin-bottom: 20px; border-bottom: 1px solid #F1F5F9; }
+        .sidebar-logo img { width: 140px; }
+        .sidebar-menu { list-style: none; }
+        .menu-item { display: flex; align-items: center; padding: 14px 30px; color: #475569; text-decoration: none; font-size: 15px; font-weight: 500; transition: all 0.2s ease; }
+        .menu-item i { margin-right: 15px; width: 20px; text-align: center; color: #94A3B8; font-size: 16px; }
+        .menu-item:hover { background-color: #F8FAFC; color: var(--text-main); }
+        .menu-item.active { background-color: #FFF2F2; color: var(--primary-color); font-weight: 700; border-left: 4px solid var(--primary-color); }
+        .menu-item.active i { color: var(--primary-color); }
+
+        .header { position: fixed; top: 0; left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); height: var(--header-height); background-color: #FFFFFF; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 40px; z-index: 90; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+        .header-title { font-size: 16px; font-weight: 700; color: var(--navy-color); }
+
+        /* 본문 스페이스 레이아웃 */
+        .main-content { margin-left: var(--sidebar-width); margin-top: var(--header-height); width: calc(100% - var(--sidebar-width)); padding: 40px; }
+        .content-header { margin-bottom: 32px; }
+        .content-title { font-size: 26px; font-weight: 800; display: flex; align-items: center; gap: 10px; color: var(--navy-color); }
+
+        /* 테이블 전용 박스 카드 디자인 */
+        .table-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); padding: 28px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 1000px; background-color: #ffffff; }
+        th { padding: 14px 16px; font-size: 13px; font-weight: 600; color: var(--text-label); background-color: #F8FAFC; border-bottom: 2px solid var(--border-color); }
+        td { padding: 14px 16px; font-size: 14px; border-bottom: 1px solid #F1F5F9; color: #334155; vertical-align: middle; }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background-color: #F8FAFC; }
+
+        /* 회원 유형 구별용 모던 알약 배지 */
+        .type-badge { display: inline-block; padding: 4px 10px; font-size: 12px; font-weight: 700; border-radius: 30px; text-align: center; }
+        .type-individual { background-color: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; }
+        .type-corporate { background-color: #FEE2E2; color: #B91C1C; border: 1px solid #FECACA; }
+
+        /* 국기/통화 전용 태그 텍스트 */
+        .currency-tag { background-color: #F1F5F9; color: #475569; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 13px; border: 1px solid #E2E8F0; }
+        .flow-icon { color: #94A3B8; margin: 0 6px; font-size: 11px; }
+
+        /* 금액 수치 시각 인지 보정 스타일 */
+        .amount-val { font-weight: 600; font-family: 'Courier New', monospace; font-size: 15px; }
+        .amount-val.withdrawal { color: #1E293B; }
+        .amount-val.deposit { color: #2563EB; }
+        
+        .empty-row { text-align: center; color: var(--text-label); padding: 50px 0 !important; font-size: 14px; }
+    </style>
 </head>
 <body>
     <div class="sidebar">
@@ -23,53 +80,68 @@
     </div>
 
     <div class="header">
-        <div class="header-title">외환 업무 지원 시스템</div>
+        <div class="header-title">업무지원 시스템 > 외환 관리 센터 > 대고객 환전 실시간 중계 모니터링</div>
     </div>
 
     <div class="main-content">
         <div class="content-header">
             <h1 class="content-title"><i class="fa-solid fa-money-bill-transfer" style="color: var(--primary-color);"></i> 환전 요청 내역 조회</h1>
-            <p style="color: var(--text-label); font-size: 14px; margin-top: 5px;">실시간으로 발생하는 모든 환전 거래 내역과 적용 환율을 모니터링합니다.</p>
+            <p style="color: var(--text-label); font-size: 14px; margin-top: 6px;">영업점 및 스마트뱅킹 창구에서 실시간으로 발생하는 외환 거래 펀딩과 세부 매매 이율을 모니터링합니다.</p>
         </div>
 
         <div class="table-card">
             <table>
                 <thead>
                     <tr>
-                        <th>요청 ID</th>
-                        <th>회원 유형</th>
-                        <th>출금 계좌</th>
-                        <th>입금 계좌</th>
-                        <th>거래 통화 흐름</th>
-                        <th>출금 금액</th>
-                        <th>입금 금액</th>
-                        <th>적용 환율</th>
+                        <th style="width: 110px;">환전 요청 ID</th>
+                        <th style="width: 100px;">회원 유형</th>
+                        <th>출금 계좌 번호</th>
+                        <th>입금 계좌 번호</th>
+                        <th style="width: 160px;">통화 전환 흐름</th>
+                        <th>출금 금액 (From)</th>
+                        <th>입금 금액 (To)</th>
+                        <th style="width: 130px;">적용 확정 환율</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr th:each="exchange : ${exchangeList}">
-                        <td th:text="${exchange.exchange_id}" style="font-weight: 700; color: #333;"></td>
-                        <td>
-                            <!-- 유형별 배지 분기 처리 -->
-                            <span th:text="${exchange.type}" 
-                                  th:classappend="${exchange.type == '개인' ? 'type-badge type-individual' : 'type-badge type-corporate'}">
-                            </span>
-                        </td>
-                        <td th:text="${exchange.from_account}" style="font-size: 13px; color: #666;"></td>
-                        <td th:text="${exchange.to_account}" style="font-size: 13px; color: #666;"></td>
-                        <td>
-                            <span class="currency-tag" th:text="${exchange.from_currency}"></span>
-                            <i class="fa-solid fa-chevron-right flow-icon"></i>
-                            <span class="currency-tag" th:text="${exchange.to_currency}"></span>
-                        </td>
-                        <td class="amount-val withdrawal" th:text="${exchange.from_amount}"></td>
-                        <td class="amount-val deposit" th:text="${exchange.to_amount}"></td>
-                        <td style="font-weight: 700; color: var(--primary-color);">
-                            <i class="fa-solid fa-chart-line" style="font-size: 12px; margin-right: 4px;"></i>
-                            <span th:text="${exchange.applied_rate}"></span>
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody th:if="${exchangeList != null and !exchangeList.empty}">
+    <tr th:each="exchange : ${exchangeList}">
+        <td th:text="${exchange?.exchange_id ?: exchange?.exchangeId ?: '-'}" style="font-weight: 700; color: var(--navy-color);"></td>
+        
+        <td>
+            <span th:text="${exchange?.type ?: '개인'}" 
+                  th:class="'type-badge ' + (${exchange?.type == '개인'} ? 'type-individual' : 'type-corporate')">
+            </span>
+        </td>
+        
+        <td th:text="${exchange?.from_account ?: exchange?.fromAccount ?: '-'}" style="font-size: 13px; color: #475569; font-family: monospace;"></td>
+        
+        <td th:text="${exchange?.to_account ?: exchange?.toAccount ?: '-'}" style="font-size: 13px; color: #475569; font-family: monospace;"></td>
+        
+        <td>
+            <span class="currency-tag" th:text="${exchange?.from_currency ?: exchange?.fromCurrency ?: '-'}"></span>
+            <i class="fa-solid fa-chevron-right flow-icon"></i>
+            <span class="currency-tag" th:text="${exchange?.to_currency ?: exchange?.toCurrency ?: '-'}"></span>
+        </td>
+        
+        <td class="amount-val withdrawal" 
+            th:text="${exchange?.from_amount != null ? #numbers.formatDecimal(exchange.from_amount, 0, 'COMMA', 0, 'POINT') : (exchange?.fromAmount != null ? #numbers.formatDecimal(exchange.fromAmount, 0, 'COMMA', 0, 'POINT') : '0')}">
+        </td>
+        
+        <td class="amount-val deposit" 
+            th:text="${exchange?.to_amount != null ? #numbers.formatDecimal(exchange.to_amount, 0, 'COMMA', 0, 'POINT') : (exchange?.toAmount != null ? #numbers.formatDecimal(exchange.to_amount, 0, 'COMMA', 0, 'POINT') : '0')}">
+        </td>
+        
+        <td style="font-weight: 700; color: var(--primary-color);">
+            <i class="fa-solid fa-chart-line" style="font-size: 12px; margin-right: 4px;"></i>
+            <span th:text="${exchange?.applied_rate ?: exchange?.appliedRate ?: '-'}"></span>
+        </td>
+    </tr>
+</tbody>
+<tbody th:if="${exchangeList == null or exchangeList.empty}">
+    <tr>
+        <td colspan="8" class="empty-row">현재 적재되거나 당일 트래픽으로 유입된 대고객 환전 처리 기록이 존재하지 않습니다.</td>
+    </tr>
+</tbody>
             </table>
         </div>
     </div>

@@ -4,160 +4,148 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
  <mapper namespace="com.example.demo.admin.dao.IListDao">
-	<resultMap id="approvalMap"
-           type="com.example.demo.admin.dto.ProductApprovalDto">
+ 
+<resultMap id="productApprovalMap" type="com.example.demo.admin.dto.ProductApprovalDto">
+    <!-- 1. PRODUCTS (상품 마스터 정보) -->
+    <id property="product_id" column="prod_no"/>
+    <result property="product_name" column="prod_nm"/>
+    <result property="product_type" column="prod_type"/>
+    <result property="is_active" column="active"/>
+    <result property="target_large" column="tgt_lrg"/>
+    <result property="target_detail" column="tgt_dtl"/>
+    <result property="product_desc" column="prod_desc" jdbcType="CLOB"/>
+    <result property="min_period_month" column="min_prd_mon"/>
+    <result property="max_period_month" column="max_prd_mon"/>
+    <result property="min_amount" column="min_amt"/>
+    <result property="max_amount" column="max_amt"/>
+    <result property="interest_payment_type" column="int_pay_type"/>
+    <result property="applied_exchange_rate_type" column="apld_exch_type"/>
+    <result property="rate_category" column="rate_cat"/>
+    <result property="approve_status" column="apv_stat_cd"/>
+    <result property="app_start_date" column="app_start_dt"/>
+    <result property="app_end_date" column="app_end_dt"/>
 
-    <!-- products -->
-    <id property="product_id" column="product_id"/>
+    <!-- 2. PRODUCT_CURRENCIES (통화 정보) -->
+    <result property="currency_code" column="cur_cd"/>
+    <result property="currency_name" column="cur_nm"/>
+    <result property="is_available" column="is_avail"/>
 
-    <result property="product_name" column="product_name"/>
-    <result property="product_type" column="product_type"/>
-    <result property="is_active" column="is_active"/>
-    <result property="target_large" column="target_large"/>
-    <result property="target_detail" column="target_detail"/>
-
-    <!-- CLOB -->
-    <result property="product_desc"
-            column="product_desc"
-            jdbcType="CLOB"/>
-
-    <result property="min_period_month" column="min_period_month"/>
-    <result property="max_period_month" column="max_period_month"/>
-
-    <!-- NUMBER(18,2) -->
-    <result property="min_amount" column="min_amount"/>
-    <result property="max_amount" column="max_amount"/>
-
-    <result property="interest_payment_type" column="interest_payment_type"/>
-    <result property="applied_exchange_rate_type" column="applied_exchange_rate_type"/>
-    <result property="rate_category" column="rate_category"/>
-    <result property="approve_status" column="approve_status"/>
-
-    <!-- DATE -->
-    <result property="app_start_date" column="app_start_date"/>
-    <result property="app_end_date" column="app_end_date"/>
-
-
-
-    <!-- product_currencies -->
-    <result property="currency_code" column="currency_code"/>
-    <result property="currency_name" column="currency_name"/>
-    <result property="is_available" column="is_available"/>
-
-
-
-    <!-- interest_rates -->
-    <result property="rate_id" column="rate_id"/>
-    <result property="customer_type" column="customer_type"/>
-    <result property="residency_type" column="residency_type"/>
-    <result property="period_month" column="period_month"/>
-
-    <!-- NUMBER(5,2) -->
+    <!-- 3. INTEREST_RATES (금리 스케줄 정보) -->
+    <result property="rate_id" column="rate_no"/>
+    <result property="customer_type" column="cust_type"/>
+    <result property="residency_type" column="res_type"/>
+    <result property="period_month" column="prd_mon"/>
     <result property="base_rate" column="base_rate"/>
-    <result property="maturity_rate" column="maturity_rate"/>
-    <result property="early_cancel_rate" column="early_cancel_rate"/>
-
+    <result property="maturity_rate" column="mtr_rate"/>
+    <result property="early_cancel_rate" column="early_cxl_rate"/>
     <result property="rate_type" column="rate_type"/>
+    <result property="preferential_rate" column="pref_rate"/> <!-- interest_rates 테이블의 pref_rate -->
+    <result property="rate_start_date" column="rate_start_dt"/>
+    <result property="rate_end_date" column="rate_end_dt"/>
 
-    <!-- NUMBER(5,2) -->
-    <result property="preferential_rate" column="preferential_rate"/>
-
-    <!-- DATE -->
-    <result property="rate_start_date" column="rate_start_date"/>
-    <result property="rate_end_date" column="rate_end_date"/>
-
-
-
-    <!-- preferential_rate_conditions -->
-    <result property="pref_rate_id" column="pref_rate_id"/>
-    <result property="condition_type" column="condition_type"/>
-
-    <!-- CLOB -->
-    <result property="condition_desc"
-            column="condition_desc"
-            jdbcType="CLOB"/>
-
-    <!-- NUMBER(5,2) -->
-    <result property="pref_rate" column="pref_rate"/>
-
+    <!-- 4. PREFERENTIAL_RATE_CONDITIONS (우대 조건 세부 정보) -->
+    <result property="pref_rate_id" column="pref_rate_no"/>
+    <result property="condition_type" column="cond_type"/>
+    <result property="condition_desc" column="cond_desc" jdbcType="CLOB"/>
+    <!-- ⚠️ 주의: SQL 쿼리문 최하단에서 prc.pref_rate AS PREF_RATE_DETAL 로 별칭을 주어야 매핑이 꼬이지 않습니다 -->
+    <result property="pref_rate" column="PREF_RATE_DETAL"/> 
 </resultMap>
 
+<resultMap id="approvalMap" type="com.example.demo.admin.dto.ApprovalDto">
+    <id property="request_id" column="req_no"/>
+    <result property="product_id" column="prod_no"/>
+    <result property="product_name" column="prod_nm"/>
+    <result property="requester_name" column="req_name"/>
+    <result property="approver_name" column="apv_name"/>
+    <result property="request_status" column="req_stat_cd"/>
+    <result property="request_type" column="req_type"/>
+    <result property="rejection_reason" column="rej_reason"/>
+    <result property="requested_at" column="req_dt"/>
+    <result property="processed_at" column="proc_dt"/>
+</resultMap>
 
-
-<select id="getApproval"
-        parameterType="long"
-        resultMap="approvalMap">
-
-    SELECT
-        p.product_id,
-        p.product_name,
-        p.product_type,
-        p.is_active,
-        p.target_large,
-        p.target_detail,
-        p.product_desc,
-        p.min_period_month,
-        p.max_period_month,
-        p.min_amount,
-        p.max_amount,
-        p.interest_payment_type,
-        p.applied_exchange_rate_type,
-        p.rate_category,
-        p.approve_status,
-        p.app_start_date,
-        p.app_end_date,
-
-        pc.currency_code,
-        pc.currency_name,
-        pc.is_available,
-
-        ir.rate_id,
-        ir.customer_type,
-        ir.residency_type,
-        ir.period_month,
+<select id="getApproval" resultMap="productApprovalMap">
+    SELECT 
+        p.prod_no,
+        p.prod_nm,
+        p.prod_type,
+        p.active,
+        p.tgt_lrg,
+        p.tgt_dtl,
+        p.prod_desc,
+        p.min_prd_mon,
+        p.max_prd_mon,
+        p.min_amt,
+        p.max_amt,
+        p.int_pay_type,
+        p.apld_exch_type,
+        p.rate_cat,
+        p.apv_stat_cd,
+        p.app_start_dt,
+        p.app_end_dt,
+        
+        pc.cur_cd,
+        pc.cur_nm,
+        pc.is_avail,
+        
+        ir.rate_no,
+        ir.cust_type,
+        ir.res_type,
+        ir.prd_mon,
         ir.base_rate,
-        ir.maturity_rate,
-        ir.early_cancel_rate,
+        ir.mtr_rate,
+        ir.early_cxl_rate,
         ir.rate_type,
-        ir.preferential_rate,
-        ir.rate_start_date,
-        ir.rate_end_date,
-
-        prc.pref_rate_id,
-        prc.condition_type,
-        prc.condition_desc,
-        prc.pref_rate
-
+        ir.pref_rate,
+        ir.rate_start_dt,
+        ir.rate_end_dt,
+        
+        prc.pref_rate_no,
+        prc.cond_type,
+        prc.cond_desc,
+        prc.pref_rate AS PREF_RATE_DETAL
     FROM products p
-
-    LEFT JOIN product_currencies pc
-        ON p.product_id = pc.product_id
-
-    LEFT JOIN interest_rates ir
-        ON p.product_id = ir.product_id
-        AND pc.currency_code = ir.currency_code
-
-    LEFT JOIN preferential_rate_conditions prc
-        ON ir.rate_id = prc.rate_id
-
-    WHERE p.product_id = #{product_id}
-
-    ORDER BY ir.period_month, prc.pref_rate_id
-
+    LEFT JOIN product_currencies pc ON p.prod_no = pc.prod_no
+    LEFT JOIN interest_rates ir ON p.prod_no = ir.prod_no AND pc.cur_cd = ir.cur_cd
+    LEFT JOIN preferential_rate_conditions prc ON ir.rate_no = prc.rate_no
+    WHERE p.prod_no = #{product_id}
+    ORDER BY ir.prd_mon, prc.pref_rate_no
 </select>
 	
-	<select id="getApprovals" resultType="com.example.demo.admin.dto.ApprovalDto">
-		select * from PRODUCT_REQUESTS where request_status not in 'APPROVED'
-	</select>
+	<select id="getApprovals" resultMap="approvalMap">
+    SELECT 
+        r.req_no,
+        p.prod_nm,
+        p.prod_no,           
+        u1.name AS req_name, 
+        u2.name AS apv_name, 
+        r.req_stat_cd,
+        r.req_type,
+        r.rej_reason,
+        r.req_dt,
+        r.proc_dt
+    FROM PRODUCT_REQUESTS r
+    LEFT JOIN PRODUCTS p ON r.prod_no = p.prod_no
+    LEFT JOIN ADMIN_USERS u1 ON r.req_usr_no = u1.lgn_id
+    LEFT JOIN ADMIN_USERS u2 ON r.apv_usr_no = u2.lgn_id
+    WHERE r.req_stat_cd != '승인' order by req_no desc
+</select>
 	
 	<update id="updateApproval">
-		update PRODUCT_REQUESTS set request_status = #{status}, approver_id = #{admin_id} where product_id = #{product_id}
-	</update>
-	
-	<update id="updateProduct">
-		update products set approve_status = #{status}, approver = #{admin_id} where product_id = #{product_id}
-	</update>
-	
+        UPDATE PRODUCT_REQUESTS 
+        SET 
+            REQ_STAT_CD = #{status},    
+            APV_USR_NO  = #{admin_id}   
+        WHERE PROD_NO   = #{product_id}
+    </update>
+    
+    <update id="updateProduct">
+        UPDATE PRODUCTS 
+        SET 
+            APV_STAT_CD = #{status},   
+            APPROVER    = #{admin_id}  
+        WHERE PROD_NO   = #{product_id}
+    </update>
 	
 </mapper>
 

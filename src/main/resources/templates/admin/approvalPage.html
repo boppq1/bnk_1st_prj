@@ -32,33 +32,28 @@
         </div>
 
         <div class="table-card">
-            <table>
+            <table style="border: 1px solid #ddd;">
                 <thead>
                     <tr>
                         <th>요청 번호</th>
                         <th>대상 상품 ID</th>
+                        <th>대상 상품 이름</th>
                         <th>신청 관리자</th>
                         <th>신청 상태</th>
                         <th>신청 구분</th>
+                        <th>신청 일자</th>
                         <th style="text-align: center;">액션</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="approval : ${approvalList}">
                         <td th:text="${approval.request_id}" style="font-weight: 700;"></td>
-                        <td>
-                            <span th:if="${approval.product_id != null}" th:text="'#' + ${approval.product_id}" style="color: var(--primary-color); font-weight: 600;"></span>
-                            <span th:if="${approval.product_id == null}" style="color: #ADB5BD;">(신규 등록)</span>
-                        </td>
-                        <td th:text="${approval.requester_id}"></td>
-                        <td>
-                            <span th:if="${approval.request_status == 'PENDING'}" class="badge badge-pending">대기 중</span>
-                            <span th:if="${approval.request_status == 'APPROVED'}" class="badge badge-approved">승인 완료</span>
-                            <span th:if="${approval.request_status == 'REJECTED'}" class="badge badge-rejected">반려됨</span>
-                        </td>
-                        <td>
-                            <span class="type-tag" th:text="${approval.request_type}"></span>
-                        </td>
+                        <td th:text="${approval.product_id}" ></td>
+                        <td th:text="${approval.product_name}" ></td>
+                        <td th:text="${approval.requester_name}"></td>
+                        <td th:text="${approval.request_status}"></td>
+                        <td th:text="${approval.request_type}"></td>
+                        <td th:text="${approval.requested_at}"></td>
                         <td style="text-align: center;">
                             <a class="btn-detail" th:href="@{/admin/approvalDetailPage(product_id=${approval.product_id})}">
                                 <i class="fa-solid fa-magnifying-glass"></i> 상세검토

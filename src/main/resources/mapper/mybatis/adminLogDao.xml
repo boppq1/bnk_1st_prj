@@ -5,30 +5,53 @@
 
 <mapper namespace="com.example.demo.admin.dao.IAdminLogDao">
 
+
+	<resultMap id="apiLogDtoMap" type="com.example.demo.admin.dto.ApiLogDto">
+		<id column="log_no" property="log_id" />
+		<result column="url" property="url" />
+		<result column="method" property="method" />
+		<result column="elap_ms" property="elapsed_ms" />
+		<result column="req_body" property="request_body" />
+		<result column="resp_cd" property="response_code" />
+		<result column="ip_addr" property="ip_address" />
+		<result column="reg_dt" property="reg_dt" />
+	</resultMap>
+	
+	<resultMap id="adminActionLogDtoMap" type="com.example.demo.admin.dto.AdminActionLogDto">
+		<id column="log_no" property="log_id" />
+		<result column="action" property="action" />
+		<result column="target" property="target" />
+		<result column="reg_dt" property="created_at" />
+	</resultMap>
+	
+
     <insert id="insertLog">
         insert into API_LOGS
         (
          log_id,
          url,
          method,
-         elapsed_ms,
+         elap_ms,
          request_body,
-         response_code
+         response_code,
+         reg_dt
         ) values (
         SEQ_API_LOGS.NEXTVAL,
         #{url},
         #{method},
         #{elapsed_ms},
         #{request_body},
-        #{response_code}
+        #{response_code},
+        SYSDATE
         )
     </insert>
     
-    <select id="adminLog">
+    <select id="userLog" resultMap="apiLogDtoMap">
+    	select * from api_logs
+    </select>
+    
+    <select id="adminLog" resultMap="adminActionLogDtoMap">
     	select * from admin_action_logs
     </select>
     
-    <select id="userLog">
-    	select * from api_logs
-    </select>
 </mapper>

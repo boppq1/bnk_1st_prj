@@ -4,7 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.admin.dao.IAdminExchangeDao">
     
-    <select id="exchangeList">
+    <resultMap id="exchangeRequestDtoMap" type="com.example.demo.admin.dto.ExchangeRequestDto">
+		<id column="exch_no" property="exchange_id" />
+		<result column="usr_type" property="type" />
+		<result column="from_acnt" property="from_account" />
+		<result column="to_acnt" property="to_account" />
+		<result column="from_cur" property="from_currency" />
+		<result column="to_cur" property="to_currency" />
+		<result column="from_amt" property="from_amount" />
+		<result column="to_amt" property="to_amount" />
+		<result column="apld_rate" property="applied_rate" />
+	</resultMap>
+	
+    
+    <select id="exchangeList" resultMap="exchangeRequestDtoMap">
     	select * from exchange_requests
     </select>
     

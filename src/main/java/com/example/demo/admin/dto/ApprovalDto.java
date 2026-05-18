@@ -15,9 +15,10 @@ import lombok.ToString;
 @ToString
 public class ApprovalDto {
 	private Long request_id;
-	private Long product_id;
-	private String requester_id;
-	private String approver_id;
+	private String product_id;
+	private String product_name;
+	private String requester_name;
+	private String approver_name;
 	private String request_status;
 	private String request_type;
 	private String rejection_reason;
