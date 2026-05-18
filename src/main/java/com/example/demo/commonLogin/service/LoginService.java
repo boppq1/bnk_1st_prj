@@ -1,5 +1,6 @@
 package com.example.demo.commonLogin.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -35,9 +36,14 @@ public class LoginService {
 			if (service.matchesPassword(dto.getSecu_pw(), getUserDTO.getSecu_pw())) {
 
 				getUserDTO.setRole("user");
-				String token = jwt.generateToken(getUserDTO.getUsr_nm(), getUserDTO.getRole());
+				Map<String, Object> info = new HashMap<>();
+				info.put("usr_nm", getUserDTO.getUsr_nm());
+				info.put("role", "user");
+				
+				String token = jwt.generateToken(getUserDTO.getUsr_nm(), info);
 				log.info("개인 회원 로그인 서비스 성공");
-				return Map.of("name", getUserDTO.getUsr_nm(), "token", token, "role", getUserDTO.getRole());
+				log.info("유저 정보 {}", jwt.getUsername(token));
+				return Map.of("token", token);
 			}
 
 			log.error("로그인 실패: 개인회원 비밀번호 불일치  ID: {}", dto.getLogin_id());

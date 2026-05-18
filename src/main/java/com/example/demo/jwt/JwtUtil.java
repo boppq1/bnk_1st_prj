@@ -2,6 +2,7 @@ package com.example.demo.jwt;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.Map;
 
 import javax.crypto.SecretKey;
 
@@ -26,10 +27,10 @@ public class JwtUtil {
 	}
 	
 	// 토큰 생성
-	public String generateToken(String username, String role) {
+	public String generateToken(String username, Map<String, Object> info) {
 		return Jwts.builder()
 				   .subject(username)
-				   .claim("role",role)
+				   .claims(info)
 				   .issuedAt(new Date())
 				   .expiration(new Date(System.currentTimeMillis() + expiration))
 				   .signWith(secretKey)
@@ -58,7 +59,6 @@ public class JwtUtil {
 	
 	//Claims에서 role 꺼내기 
 	public String getRole(String token) {
-		return parseToken(token).get("role",String.class);
-				
+		return parseToken(token).get("role",String.class);			
 	}
 }

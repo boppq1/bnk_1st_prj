@@ -15,10 +15,13 @@ import lombok.ToString;
 @NoArgsConstructor
 public class CompanyUserDTO {
 	//외래키
+	
 	private Long company_user_id;
 	private int company_id;
 	private String login_id;
 	private String password;
+	private String business_no;
+	private String account_pw;
 	private String name;
 	private String phone;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
