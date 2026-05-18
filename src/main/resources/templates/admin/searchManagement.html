@@ -6,6 +6,33 @@
 </head>
 <body>
 	<h1>검색어 관리</h1>
+	<hr>
+	<h2>검색어 벤</h2>
+	<form th:action="@{/admin/keywordBan}" method="get">
+		<input type="text" name="keyword">
+		<input type="submit" value="벤">
+	</form>
+	<hr>
+	<h2>추천 검색어 테이블 업데이트</h2>
+	<form th:action="@{/admin/updateSuggestKeyword}" method="get">
+		<input type="submit" value="업데이트">
+	</form>	
+	<hr>
+	<h2>개인 추천 검색어 추가</h2>
+	<form th:action="@{/admin/setSuggestPersonalKeyword}" method="get">
+		<input type="text" name="keyword">
+		<input type="submit" value="업데이트">
+	</form>
+	
+	<h2>기업 추천 검색어 추가</h2>
+	<form th:action="@{/admin/setSuggestCompanyKeyword}" method="get">
+		<input type="text" name="keyword">
+		<input type="submit" value="업데이트">
+	</form>		
+	
+	<hr>
+	
+	<h2>개인 검색어</h2>
 	<table>
 		<thead>
 			<tr>
@@ -29,6 +56,7 @@
 			</tr>
 		</tbody>
 	</table>
+	<h2>개인 추천 검색어</h2>
 	<table>
 		<thead>
 			<tr>
@@ -48,7 +76,9 @@
 			</tr>
 		</tbody>
 	</table>
-	
+	<hr>
+	<br>
+	<h2>기업 검색어</h2>
 	<table>
 		<thead>
 			<tr>
@@ -72,6 +102,7 @@
 			</tr>
 		</tbody>
 	</table>
+	<h2>기업 추천 검색어</h2>
 	<table>
 		<thead>
 			<tr>
@@ -88,6 +119,27 @@
 				<td th:text="${suggestt.role_type}"></td>
 				<td th:text="${suggestt.keyword}"></td>
 				<td th:text="${suggestt.search_volume}"></td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>벤 키워드</th>
+				<th>벤 날짜</th>
+				<th>벤 한 관리자 번호</th>
+				<th>삭제</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each = "bann : ${ban}">
+				<td th:text="${bann.key_no}"></td>
+				<td th:text="${bann.keyword}"></td>
+				<td th:text="${bann.ban_dt}"></td>
+				<td th:text="${bann.adm_no}"></td>
+				<td><a th:href="@{/admin/deleteBanKeyword(keyword=${bann.keyword})}">삭제</a></td>
 			</tr>
 		</tbody>
 	</table>

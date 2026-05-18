@@ -47,6 +47,10 @@
                             <th>성별</th>
                             <th>영문명</th>
                             <th>주소</th>
+                            <th>상세주소</th>
+                            <th>생성일</th>
+                            <th>수정일</th>
+                            <th>마지막 로그인</th>
                             <th style="text-align: center;">관리</th>
                         </tr>
                     </thead>
@@ -62,6 +66,10 @@
                             <td th:text="${user.gender}"></td>
                             <td th:text="${user.e_name}"></td>
                             <td th:text="${user.address}"></td>
+                            <td th:text="${user.address_detail}"></td>
+                            <td th:text="${user.reg_dt}"></td>
+                            <td th:text="${user.upd_at}"></td>
+                            <td th:text="${user.last_lgn_at}"></td>
                             <td style="text-align: center;">
                                 <a class="btn-update" th:href="@{/admin/updateMemberPage(user_id=${user.user_id})}">
                                     <i class="fa-solid fa-user-pen"></i> 수정

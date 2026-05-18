@@ -5,9 +5,277 @@
     <title>BNK Busan Bank - 상품 승인 상세 검토</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    <link rel="stylesheet" th:href="@{/css/admin/approvalDetailPage.css}">
+    
+    <!-- 🎨 외부 디자인 의존성을 없애고 직관성을 높인 인라인 프리미엄 스타일 시트 -->
+    <style>
+        :root {
+            --bnk-red: #E30613;
+            --bnk-navy: #0A2540;
+            --bg-neutral: #F8FAFC;
+            --border-color: #E2E8F0;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --sidebar-width: 260px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard', -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-neutral);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 사이드바 스타일 */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bnk-navy);
+            color: #ffffff;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-logo {
+            padding: 12px 0 32px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 24px;
+        }
+
+        .sidebar-logo img {
+            height: 35px;
+            filter: brightness(0) invert(1);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #94A3B8;
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .menu-item.active {
+            border-left: 4px solid var(--bnk-red);
+            font-weight: 600;
+        }
+
+        /* 우측 본문 구조 */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: #ffffff;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--bnk-navy);
+        }
+
+        .main-content {
+            padding: 40px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            margin-bottom: 100px; /* 액션바 공간 */
+        }
+
+        /* 페이지 상단 헤더 */
+        .content-header {
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .content-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .meta-info {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* 🏷️ 상태 표시 알약 배지 */
+        .status-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 30px;
+            background-color: #FEF3C7;
+            color: #D97706;
+            margin-left: 8px;
+            border: 1px solid #FCD34D;
+        }
+
+        /* 💳 카드 컴포넌트 디자인 */
+        .detail-card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 28px;
+            margin-bottom: 28px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .detail-card.accent-card {
+            border-top: 4px solid var(--bnk-red);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--bnk-navy);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #F1F5F9;
+            padding-bottom: 12px;
+        }
+
+        .section-title i {
+            color: var(--bnk-red);
+        }
+
+        /* 🎚️ 격자 레이아웃 정밀 수정 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 100%);
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 20px 24px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .info-item.full-width {
+            grid-column: span 4;
+        }
+
+        .info-item.half-width {
+            grid-column: span 2;
+        }
+
+        .info-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-main);
+            padding: 10px 14px;
+            background-color: #F8FAFC;
+            border-radius: 6px;
+            border: 1px solid #E2E8F0;
+            min-height: 42px;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-value.highlight {
+            background-color: #FFF5F5;
+            color: var(--bnk-red);
+            font-weight: 700;
+            border-color: #FEB2B2;
+        }
+
+        /* 🔒 하단 최종 결재 처리 바 */
+        .bottom-action-bar {
+            position: fixed;
+            bottom: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            height: 80px;
+            background-color: #ffffff;
+            border-top: 1px solid var(--border-color);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.03);
+            z-index: 100;
+        }
+
+        .btn-decision {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-approve { background-color: #10B981; color: #ffffff; }
+        .btn-approve:hover { background-color: #059669; }
+
+        .btn-pending { background-color: #64748B; color: #ffffff; }
+        .btn-pending:hover { background-color: #475569; }
+
+        .btn-reject { background-color: #EF4444; color: #ffffff; }
+        .btn-reject:hover { background-color: #DC2626; }
+    </style>
 </head>
 <body>
+    <!-- 사이드바 내비게이션 -->
     <div class="sidebar">
         <div class="sidebar-logo">
             <img src="https://sites.bnk.co.kr/main/resource/img/common/logo_busan.png" alt="BNK">
@@ -19,92 +287,111 @@
         </ul>
     </div>
 
-    <div class="header">
-        <div class="header-title">상품 상세 검토 및 최종 결재</div>
-    </div>
+    <!-- 우측 메인 공간 영역 -->
+    <div class="main-wrapper">
+        <div class="header">
+            <div class="header-title">업무지원 시스템 > 상품 관리 > 결재 세부 심사</div>
+        </div>
 
-    <th:block th:each="approval : ${approvalList}">
-        <div class="main-content">
+        <div class="main-content" th:if="${approvalList != null and !approvalList.empty}">
+            
+            <!-- 상단 정보 헤더 -->
             <div class="content-header">
                 <div>
-                    <h1 class="content-title">상품 심사 정보: <span th:text="${approval.product_name}">상품명</span></h1>
-                    <p style="color: var(--text-label); font-size: 14px;">
-                        상품 ID: <span th:text="${approval.product_id}">#001</span> | 
-                        현재 상태: <span th:text="${approval.approve_status}" style="font-weight: 700; color: var(--primary-color);">PENDING</span>
-                    </p>
+                    <h1 class="content-title" th:text="${approvalList[0].product_name}">상품 명칭</h1>
+                    <div class="meta-info">
+                        상품 고유 ID : <strong th:text="${approvalList[0].product_id}" style="color:#0f172a;">#001</strong>
+                        <span class="status-badge" th:text="${approvalList[0].approve_status}">PENDING</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- 섹션 1: 기본 정보 및 가입 조건 -->
+            <!-- 섹션 1: 마스터 기본 정보 구성 -->
             <div class="detail-card">
-                <div class="section-title"><i class="fa-solid fa-circle-info"></i> 기본 정보 및 가입 조건</div>
+                <div class="section-title"><i class="fa-solid fa-circle-info"></i> 상품 기본 마스터 내역</div>
                 <div class="info-grid">
-                    <div class="info-item"><span class="info-label">상품명</span><div class="info-value highlight" th:text="${approval.product_name}"></div></div>
-                    <div class="info-item"><span class="info-label">상품 유형</span><div class="info-value" th:text="${approval.product_type}"></div></div>
-                    <div class="info-item"><span class="info-label">판매 여부</span><div class="info-value" th:text="${approval.is_active}"></div></div>
-                    <div class="info-item"><span class="info-label">가입 대상(대)</span><div class="info-value" th:text="${approval.target_large}"></div></div>
-                    <div class="info-item"><span class="info-label">가입 대상(소)</span><div class="info-value" th:text="${approval.target_detail}"></div></div>
-                    <div class="info-item"><span class="info-label">금리 분류</span><div class="info-value" th:text="${approval.rate_category}"></div></div>
-                    <div class="info-item"><span class="info-label">최소 가입기간</span><div class="info-value" th:text="${approval.min_period_month} + '개월'"></div></div>
-                    <div class="info-item"><span class="info-label">최대 가입기간</span><div class="info-value" th:text="${approval.max_period_month} + '개월'"></div></div>
-                    <div class="info-item"><span class="info-label">가입 가능 여부</span><div class="info-value" th:text="${approval.is_available}"></div></div>
-                    <div class="info-item"><span class="info-label">최소 가입금액</span><div class="info-value" th:text="${approval.min_amount}"></div></div>
-                    <div class="info-item"><span class="info-label">최대 가입금액</span><div class="info-value" th:text="${approval.max_amount}"></div></div>
-                    <div class="info-item"><span class="info-label">이자 지급 방식</span><div class="info-value" th:text="${approval.interest_payment_type}"></div></div>
+                    <div class="info-item half-width"><span class="info-label">상품 정식 명칭</span><div class="info-value" style="font-weight:700;" th:text="${approvalList[0].product_name}"></div></div>
+                    <div class="info-item"><span class="info-label">상품 유형</span><div class="info-value" th:text="${approvalList[0].product_type}"></div></div>
+                    <div class="info-item"><span class="info-label">기본 운영 상태</span><div class="info-value" th:text="${approvalList[0].is_active}"></div></div>
+                    
+                    <div class="info-item"><span class="info-label">가입 대상 (대분류)</span><div class="info-value" th:text="${approvalList[0].target_large}"></div></div>
+                    <div class="info-item"><span class="info-label">가입 대상 (소분류)</span><div class="info-value" th:text="${approvalList[0].target_detail}"></div></div>
+                    <div class="info-item"><span class="info-label">금리 종류 분류</span><div class="info-value" th:text="${approvalList[0].rate_category}"></div></div>
+                    <div class="info-item"><span class="info-label">가입 프로세스 여부</span><div class="info-value" th:text="${approvalList[0].is_available}"></div></div>
+                    
+                    <div class="info-item"><span class="info-label">마스터 한도 가입 최소기간</span><div class="info-value" th:text="${approvalList[0].min_period_month} + '개월'"></div></div>
+                    <div class="info-item"><span class="info-label">마스터 한도 가입 최대기간</span><div class="info-value" th:text="${approvalList[0].max_period_month} + '개월'"></div></div>
+                    <div class="info-item"><span class="info-label">최소 예치/가입 금액</span><div class="info-value" th:text="${approvalList[0].min_amount != null ? #numbers.formatDecimal(approvalList[0].min_amount, 0, 'COMMA', 0, 'POINT') + '원' : '-'}"></div></div>
+                    <div class="info-item"><span class="info-label">최대 제한 가입 금액</span><div class="info-value" th:text="${approvalList[0].max_amount != null ? #numbers.formatDecimal(approvalList[0].max_amount, 0, 'COMMA', 0, 'POINT') + '원' : '-'}"></div></div>
+                    
+                    <div class="info-item full-width"><span class="info-label">약관 주기별 이자 지급 방식</span><div class="info-value" th:text="${approvalList[0].interest_payment_type}"></div></div>
                 </div>
             </div>
 
-            <!-- 섹션 2: 통화 및 환율 정보 -->
+            <!-- 섹션 2: 조인 조건 스케줄 팩 (여러 옵션 데이터 리스트 동적 루프 출력) -->
+            <div class="detail-card accent-card" th:each="item, stat : ${approvalList}">
+                <div class="section-title">
+                    <i class="fa-solid fa-sliders"></i> 
+                    <span th:text="'통화 세부 조건 및 이율 스케줄 설정 내역 (세부옵션 #' + ${stat.count} + ')'">금리 스케줄 설정</span>
+                </div>
+                
+                <div class="info-grid">
+                    <!-- 시스템 식별 연계 인덱스 값 -->
+                    <div class="info-item"><span class="info-label">금리 마스터 스펙 ID</span><div class="info-value" th:text="${item.rate_id}"></div></div>
+                    <div class="info-item"><span class="info-label">우대금리 조건 스펙 ID</span><div class="info-value" th:text="${item.pref_rate_id}"></div></div>
+                    <div class="info-item"><span class="info-label">통화구분 (통화코드)</span><div class="info-value" th:text="${item.currency_name} + ' (' + ${item.currency_code} + ')'"></div></div>
+                    <div class="info-item"><span class="info-label">대고객 고시 환율 종류</span><div class="info-value" th:text="${item.applied_exchange_rate_type}"></div></div>
+                    
+                    <!-- 정산 기준 항목 -->
+                    <div class="info-item"><span class="info-label">대상 고객 분류</span><div class="info-value" th:text="${item.customer_type}"></div></div>
+                    <div class="info-item"><span class="info-label">비거주 여부 구분</span><div class="info-value" th:text="${item.residency_type}"></div></div>
+                    <div class="info-item"><span class="info-label">적용 고정 개월 수</span><div class="info-value highlight" th:text="${item.period_month} + '개월'"></div></div>
+                    <div class="info-item"><span class="info-label">금리 유형 코드</span><div class="info-value" th:text="${item.rate_type}"></div></div>
+                    
+                    <!-- 핵심 금리 값 출력 정보 -->
+                    <div class="info-item"><span class="info-label">표준 약정 기본 금리</span><div class="info-value" th:text="${item.base_rate} + '%'"></div></div>
+                    <div class="info-item"><span class="info-label">만기 시정 확정 금리</span><div class="info-value" th:text="${item.maturity_rate} + '%'"></div></div>
+                    <div class="info-item"><span class="info-label">중도 보전 해지율</span><div class="info-value" th:text="${item.early_cancel_rate} + '%'"></div></div>
+                    <div class="info-item"><span class="info-label">스케줄 총 가산우대금리</span><div class="info-value highlight" th:text="${item.preferential_rate} + '%'"></div></div>
+                    
+                    <!-- 조건 상세 결재 내역 -->
+                    <div class="info-item full-width"><span class="info-label">우대 조건 식별 코드 / 설명</span>
+                        <div class="info-value" style="background:#FFFDF5; border-color:#FEF3C7; font-weight:600; color:#B45309;" 
+                             th:text="'[' + ${item.condition_type} + '] ' + ${item.condition_desc}"></div>
+                    </div>
+                    
+                    <!-- 각 항목 유효 시점 정보 데이터 -->
+                    <div class="info-item"><span class="info-label">고객 신청 가능일</span><div class="info-value" th:text="${#temporals.format(item.app_start_date, 'yyyy-MM-dd')}"></div></div>
+                    <div class="info-item"><span class="info-label">고객 신청 종료일</span><div class="info-value" th:text="${#temporals.format(item.app_end_date, 'yyyy-MM-dd')}"></div></div>
+                    <div class="info-item"><span class="info-label">이율 효력 발효일</span><div class="info-value" th:text="${#temporals.format(item.rate_start_date, 'yyyy-MM-dd')}"></div></div>
+                    <div class="info-item"><span class="info-label">이율 효력 소멸일</span><div class="info-value" th:text="${#temporals.format(item.rate_end_date, 'yyyy-MM-dd')}"></div></div>
+                </div>
+            </div>
+
+            <!-- 섹션 3: 마케팅 공시 텍스트 -->
             <div class="detail-card">
-                <div class="section-title"><i class="fa-solid fa-money-bill-transfer"></i> 통화 및 환율 설정</div>
+                <div class="section-title"><i class="fa-solid fa-bullhorn"></i> 마케팅 채널 노출용 상품 공시 정보</div>
                 <div class="info-grid">
-                    <div class="info-item"><span class="info-label">통화 코드</span><div class="info-value" th:text="${approval.currency_code}"></div></div>
-                    <div class="info-item"><span class="info-label">통화명</span><div class="info-value" th:text="${approval.currency_name}"></div></div>
-                    <div class="info-item"><span class="info-label">적용 환율 기준</span><div class="info-value" th:text="${approval.applied_exchange_rate_type}"></div></div>
-                    <div class="info-item"><span class="info-label">신청 시작일</span><div class="info-value" th:text="${approval.app_start_date}"></div></div>
-                    <div class="info-item"><span class="info-label">신청 종료일</span><div class="info-value" th:text="${approval.app_end_date}"></div></div>
+                    <div class="info-item full-width">
+                        <span class="info-label">상품 대고객 상세 설명 (CLOB 원문)</span>
+                        <div class="info-value" style="min-height:100px; align-items:flex-start; padding:16px; line-height:1.6;" th:text="${approvalList[0].product_desc}"></div>
+                    </div>
                 </div>
             </div>
 
-            <!-- 섹션 3: 금리 상세 정보 (추가된 DTO 필드 반영) -->
-            <div class="detail-card">
-                <div class="section-title"><i class="fa-solid fa-percent"></i> 금리 및 우대 조건</div>
-                <div class="info-grid">
-                    <div class="info-item"><span class="info-label">기본 금리</span><div class="info-value" th:text="${approval.base_rate} + '%'"></div></div>
-                    <div class="info-item"><span class="info-label">만기 금리</span><div class="info-value" th:text="${approval.maturity_rate} + '%'"></div></div>
-                    <div class="info-item"><span class="info-label">중도해지 금리</span><div class="info-value" th:text="${approval.early_cancel_rate} + '%'"></div></div>
-                    <div class="info-item"><span class="info-label">우대 금리</span><div class="info-value highlight" th:text="${approval.preferential_rate} + '%'"></div></div>
-                    <div class="info-item"><span class="info-label">금리 유형</span><div class="info-value" th:text="${approval.rate_type}"></div></div>
-                    <div class="info-item"><span class="info-label">거주자 유형</span><div class="info-value" th:text="${approval.residency_type}"></div></div>
-                    <div class="info-item full-width"><span class="info-label">우대 조건 설명</span><div class="info-value" th:text="${approval.condition_desc}"></div></div>
-                    <div class="info-item"><span class="info-label">금리 적용 시작일</span><div class="info-value" th:text="${approval.rate_start_date}"></div></div>
-                    <div class="info-item"><span class="info-label">금리 적용 종료일</span><div class="info-value" th:text="${approval.rate_end_date}"></div></div>
-                </div>
-            </div>
-
-            <!-- 섹션 4: 마케팅 및 상세 설명 -->
-            <div class="detail-card">
-                <div class="section-title"><i class="fa-solid fa-bullhorn"></i> 마케팅 및 상세 설명</div>
-                <div class="info-grid">
-                    <div class="info-item full-width"><span class="info-label">상품 상세 설명</span><div class="info-value" th:text="${approval.product_desc}"></div></div>
-                </div>
-            </div>
-
+            <!-- 고정 하단 결재 최종 의사 결정 바 -->
             <div class="bottom-action-bar">
-                <form th:action="@{/admin/approved}" method="get">
-                    <input type="hidden" name="product_id" th:value="${approval.product_id}">
-                    <button type="submit" class="btn-decision btn-approve"><i class="fa-solid fa-check"></i> 최종 승인</button>
+                <form th:action="@{/admin/approved}" method="get" style="display:inline;">
+                    <input type="hidden" name="product_id" th:value="${approvalList[0].product_id}">
+                    <button type="submit" class="btn-decision btn-approve"><i class="fa-solid fa-check"></i> 심사 최종 승인</button>
                 </form>
-                <form th:action="@{/admin/pending}" method="get">
-                    <input type="hidden" name="product_id" th:value="${approval.product_id}">
-                    <button type="submit" class="btn-decision btn-pending"><i class="fa-solid fa-pause"></i> 결재 보류</button>
-                </form>
-                <form th:action="@{/admin/rejected}" method="get">
-                    <input type="hidden" name="product_id" th:value="${approval.product_id}">
-                    <button type="submit" class="btn-decision btn-reject"><i class="fa-solid fa-ban"></i> 승인 거부</button>
+                <form th:action="@{/admin/rejected}" method="get" style="display:inline;">
+                    <input type="hidden" name="product_id" th:value="${approvalList[0].product_id}">
+                    <button type="submit" class="btn-decision btn-reject"><i class="fa-solid fa-ban"></i> 불승인 거부</button>
                 </form>
             </div>
+            
         </div>
-    </th:block>
+    </div>
 </body>
 </html>

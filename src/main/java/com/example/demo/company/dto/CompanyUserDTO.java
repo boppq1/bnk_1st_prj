@@ -17,7 +17,6 @@ public class CompanyUserDTO {
 	//외래키
 	private Long company_user_id;
 	private int company_id;
-	private String business_no;
 	private String login_id;
 	private String password;
 	private String name;
@@ -28,7 +27,8 @@ public class CompanyUserDTO {
 	private String status;
 	private String gender;
 	private String e_name;
-	private String account_pw;
 	private String created_at;
+	private String updated_at;
+	private String last_lgn_dt;
 	         
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.admin.dto.AdminDto;
+import com.example.demo.admin.dto.SearchLogDto;
 import com.example.demo.admin.service.AdminService;
 import com.example.demo.company.dto.CompanyUserDTO;
 import com.example.demo.personal.dto.UserDTO;
@@ -26,12 +27,63 @@ public class AdminController {
 		return "admin/adminMain";
 	}
 	
+	// ========== 멤버 ==========
+	
 	@GetMapping("/memberList")
 	public String memberListPage(Model m) {
 		m.addAttribute("userList", as.getUserList());
 		m.addAttribute("companyList", as.getCompanyUserList());
 		return "admin/memberList";
 	}
+	
+	@GetMapping("/updateMemberPage")
+	public String updateMemberPage(@RequestParam("user_id") Long user_id, Model m, @RequestParam(required=false, name="result") String result) {
+		m.addAttribute("user", as.getUser(user_id));
+		if(result != null) {
+			m.addAttribute("result", result);
+			System.out.println("있다");
+		}
+		return "admin/updateMember";
+	}
+	
+	@PostMapping("/updateMember")
+	public String updateMember(UserDTO dto, Model m) {
+		
+		UserDTO existingUser = as.getUser(dto.getUser_id());
+		
+		if(dto.getPassword() == null || dto.getPassword().trim().isEmpty()) {
+			dto.setPassword(existingUser.getPassword());
+		} else {
+			// 나중에 여기서 비번 암호화 해야함
+		}
+		
+		as.updateUser(dto);
+		return "redirect:/admin/updateMemberPage?user_id=" + dto.getUser_id() + "&result=true";
+	}
+	
+	@GetMapping("/updateCompanyMemberPage")
+	public String updateCompanyMemberPage(@RequestParam("company_user_id") Long company_user_id, Model m, @RequestParam(required=false, name="result") String result) {
+		m.addAttribute("company", as.getCompanyUser(company_user_id));
+		if(result != null) {
+			m.addAttribute("result", result);
+			System.out.println("있다");
+		}
+		return "admin/updateCompanyMember";
+	}
+	
+	@PostMapping("/updateCompanyMember")
+	public String updateCompanyMember(CompanyUserDTO dto, Model m) {
+		CompanyUserDTO existingUser = as.getCompanyUser(dto.getCompany_user_id());
+		if(dto.getPassword() == null || dto.getPassword().trim().isEmpty()) {
+			dto.setPassword(existingUser.getPassword());
+		} else {
+			// 나중에 여기서 비번 암호화 해야함
+		}
+		as.updateCompanyUser(dto);
+		return "redirect:/admin/updateCompanyMemberPage?company_user_id=" + dto.getCompany_user_id() + "&result=true";
+	}
+	
+	// ========== 관리자 승인 ==========
 	
 	@GetMapping("/adminList")
 	public String adminListPage(Model m) {
@@ -51,43 +103,27 @@ public class AdminController {
 	
 	@PostMapping("/updateAdmin")
 	public String updateAdmin(AdminDto dto, Model m) {
+		
+		AdminDto existingUser = as.getAdmin(dto.getAdmin_id());
+		if(dto.getPassword() == null || dto.getPassword().trim().isEmpty()) {
+			dto.setPassword(existingUser.getPassword());
+		} else {
+			// 나중에 여기서 비번 암호화 해야함
+		}
+		
+		if(dto.getAdmin_pw() == null || dto.getAdmin_pw().trim().isEmpty()) {
+			dto.setAdmin_pw(existingUser.getAdmin_pw());
+		} else {
+			// 나중에 여기서 비번 암호화 해야함
+		}
+		
 		as.updateAdmin(dto);
 		return "redirect:/admin/updateAdminPage?admin_id=" + dto.getAdmin_id() + "&result=true";
 	}
 	
-	@GetMapping("/updateMemberPage")
-	public String updateMemberPage(@RequestParam("user_id") Long user_id, Model m, @RequestParam(required=false, name="result") String result) {
-		m.addAttribute("user", as.getUser(user_id));
-		if(result != null) {
-			m.addAttribute("result", result);
-			System.out.println("있다");
-		}
-		return "admin/updateMember";
-	}
 	
-	@PostMapping("/updateMember")
-	public String updateMember(UserDTO dto, Model m) {
-		as.updateUser(dto);
-		return "redirect:/admin/updateMemberPage?user_id=" + dto.getUser_id() + "&result=true";
-	}
 	
-	@GetMapping("/updateCompanyMemberPage")
-	public String updateCompanyMemberPage(@RequestParam("company_user_id") Long company_user_id, Model m, @RequestParam(required=false, name="result") String result) {
-		m.addAttribute("company", as.getCompanyUser(company_user_id));
-		if(result != null) {
-			m.addAttribute("result", result);
-			System.out.println("있다");
-		}
-		return "admin/updateCompanyMember";
-	}
-	
-	@PostMapping("/updateCompanyMember")
-	public String updateCompanyMember(CompanyUserDTO dto, Model m) {
-		as.updateCompanyUser(dto);
-		return "redirect:/admin/updateCompanyMemberPage?company_user_id=" + dto.getCompany_user_id() + "&result=true";
-	}
-	
-	// ========== 상품 승인 관련 ========== 
+	// ========== 상품 승인 ========== 
 	
 	@GetMapping("/approvalPage")
 	public String approvalPage(Model m) {
@@ -103,27 +139,21 @@ public class AdminController {
 	
 	@GetMapping("/approved")
 	public String approved(Model m, @RequestParam("product_id") Long product_id) {
-		as.approvedStatus(product_id, "APPROVED");
-		return "redirect:/admin/approvalPage";
-	}
-	
-	@GetMapping("/pending")
-	public String pending(Model m, @RequestParam("product_id") Long product_id) {
-		as.approvedStatus(product_id, "PENDING");
+		as.approvedStatus(product_id, "승인");
 		return "redirect:/admin/approvalPage";
 	}
 	
 	@GetMapping("/rejected")
 	public String rejected(Model m, @RequestParam("product_id") Long product_id) {
-		as.approvedStatus(product_id, "REJECTED");
+		as.approvedStatus(product_id, "반려");
 		return "redirect:/admin/approvalPage";
 	}
 	
 	// ========== 로그 관련 ==========
 	@GetMapping("/adminLogPage")
 	public String adminLogPage(Model m) {
-		m.addAttribute("admin", as.adminLog());
-		m.addAttribute("user", as.userLog());
+		m.addAttribute("adminLogList", as.adminLog());
+		m.addAttribute("userLogList", as.userLog());
 		return "/admin/adminLog";
 	}
 	
@@ -131,6 +161,7 @@ public class AdminController {
 	@GetMapping("/exchangeListPage")
 	public String exchangeListPage(Model m) {
 		m.addAttribute("exchangeList", as.exchangeList());
+		System.out.println(as.exchangeList().getFirst());
 		return "/admin/exchangeList";
 	}
 	
@@ -163,7 +194,80 @@ public class AdminController {
 		m.addAttribute("suggest_per", as.getSuggestPersonal());
 		m.addAttribute("search_com", as.getSearchCompany());
 		m.addAttribute("suggest_com", as.getSuggestCompany());
+		m.addAttribute("ban", as.getKeywordBanList());
 		return "/admin/searchManagement";
+	}
+	
+	@GetMapping("/keywordBan")
+	public String keywordBan(@RequestParam("keyword") String keyword) {
+		if(as.checkKeywordExist(keyword)) {
+			as.keywordBan(keyword, (long) 1); // adm_no 으로 세션에서 받아서 바꿔야함
+			return "redirect:/admin/searchManagementPage";
+		} else {
+			return "redirect:/admin/searchManagementPage";
+		}
+	}
+	
+	@GetMapping("/updateSuggestKeyword")
+	public String updateSuggestKeyword() {
+		as.updateSuggestKeyword();
+		return "redirect:/admin/searchManagementPage";
+	}
+	
+	@GetMapping("/deleteBanKeyword")
+	public String deleteBanKeyword(@RequestParam("keyword") String keyword) {
+		as.deleteBanKeyword(keyword);
+		return "redirect:/admin/searchManagementPage";
+	}
+	
+	@GetMapping("/setSuggestPersonalKeyword")
+	public String setSuggestPersonalKeyword(@RequestParam("keyword") String keyword) {
+		
+		// 동일한 키워드가 이미 있는지 확인
+		if(as.getPersonalSuggestKeyword(keyword) == null) {
+			
+			// 추천 검색어 개수가 5개보다 크면 하나 제거
+			if(as.getPersonalSuggestKeyword() >= 5) {
+				as.deletePersonalSuggestKeyword();
+			}
+			
+			SearchLogDto dto = as.getPersonalSearchLog(keyword);
+			Long search_volume;
+			if(dto == null) {
+				search_volume = 0l;
+			} else {
+				search_volume = (long)Integer.parseInt(dto.getSearch_volume());
+			}
+			as.setSuggestKeyword(keyword, "ROLE_PERSONAL", search_volume);
+			return "redirect:/admin/searchManagementPage";
+		} else {
+			return "redirect:/admin/searchManagementPage";
+		}
+		
+	}
+	
+	@GetMapping("/setSuggestCompanyKeyword")
+	public String setSuggestCompanyKeyword(@RequestParam("keyword") String keyword) {
+		
+		if(as.getCompanySuggestKeyword(keyword) == null) {
+			
+			// 추천 검색어 개수가 5개보다 크면 하나 제거
+			if(as.getCompanySuggestKeyword() >= 5) {
+				as.deleteCompanySuggestKeyword();
+			}
+			
+			SearchLogDto dto = as.getCompanySearchLog(keyword);
+			Long search_volume;
+			if(dto == null) {
+				search_volume = 0l;
+			} else {
+				search_volume = (long)Integer.parseInt(dto.getSearch_volume());
+			}
+			as.setSuggestKeyword(keyword, "ROLE_COMPANY", search_volume);
+			return "redirect:/admin/searchManagementPage";
+		} else {
+			return "redirect:/admin/searchManagementPage";
+		}
 	}
 	
 }

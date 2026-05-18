@@ -29,4 +29,7 @@ public class UserDTO {
 	private String postal_code;
 	private String address;
 	private String address_detail;
+	private String reg_dt;
+	private String upd_at;
+	private String last_lgn_at;
 }
