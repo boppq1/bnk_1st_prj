@@ -1,10 +1,415 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>BNK 부산은행 외환</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container fee-page">
+
+            <h1 class="main-title">환전/송금관련수수료</h1>
+
+            <div class="fee-tab-menu">
+                <button type="button" class="fee-tab active" data-tab="exchange">환전 수수료</button>
+                <button type="button" class="fee-tab" data-tab="overseas">해외송금</button>
+                <button type="button" class="fee-tab" data-tab="internet">인터넷송금</button>
+                <button type="button" class="fee-tab" data-tab="domestic">국내외화송금</button>
+                <button type="button" class="fee-tab" data-tab="bnk">BNK 국가간송금</button>
+            </div>
+
+            <!-- 환전 수수료 -->
+            <section class="deposit-section fee-tab-content active" id="exchange">
+
+                <div class="title-row">
+                    <h2 class="deposit-section-title">환전 관련 수수료</h2>
+                    <span class="standard-date">(2026년05월18일 기준)</span>
+                </div>
+
+                <div class="fee-table-wrap">
+                    <table class="fee-table">
+                        <thead>
+                        <tr>
+                            <th colspan="2">구분</th>
+                            <th>수수료</th>
+                            <th>비고</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <td rowspan="2">외화현찰수수료</td>
+                            <td>지폐</td>
+                            <td class="table-left">
+                                · 중국위안화(CNY), 인도네시아루피화(IDR), 말레이시아링깃화(MYR),
+                                필리핀페소화(PHP), 태국바트화(THB), 대만달러화(TWD) : 6.0%<br>
+                                · 상기이외 통화 : 1.75%
+                            </td>
+                            <td>-</td>
+                        </tr>
+
+                        <tr>
+                            <td>주화</td>
+                            <td>50%</td>
+                            <td>고객님이 파실때만 50% 적용</td>
+                        </tr>
+
+                        <tr>
+                            <td rowspan="2">
+                                외화수표매입(추심)<br>
+                                관련수수료<br>
+                                (여행자수표 포함)
+                            </td>
+                            <td>외화수표매입(추심)수수료</td>
+                            <td class="table-left">
+                                · 미화 1백불 상당액 이하 : 3,000원<br>
+                                · 미화 1천불 상당액 이하 : 7,000원<br>
+                                · 미화 1천불 상당액 초과 : 10,000원
+                            </td>
+                            <td class="table-left">
+                                · 동일한 통화이거나 동일한 지급지인 경우에는 신청액 총액을 1건으로 취급함
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>우편료</td>
+                            <td class="table-left">· 특사배달료 : 지역별 10,000원 ~ 23,000원</td>
+                            <td class="table-left">· 매입 및 추심시 지역별 특사배달료 받음</td>
+                        </tr>
+
+                        <tr>
+                            <td>기타</td>
+                            <td>외화대체료</td>
+                            <td>0.1%</td>
+                            <td>-</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+
+            <!-- 해외송금 -->
+            <section class="deposit-section fee-tab-content" id="overseas">
+
+                <h2 class="deposit-section-title">해외 외화송금 관련 수수료</h2>
+
+                <p class="fee-note">· 해외로 외화송금(당발송금 : 국내 → 해외)</p>
+                <p class="fee-note"><strong>창구에서 해외로 송금할 경우</strong></p>
+
+                <div class="fee-table-wrap">
+                    <table class="fee-table">
+                        <thead>
+                        <tr>
+                            <th rowspan="2">송금수수료부담 구분</th>
+                            <th colspan="2">당발송금수수료</th>
+                            <th rowspan="2">전신료</th>
+                            <th rowspan="2">비고</th>
+                        </tr>
+                        <tr>
+                            <th>송금액</th>
+                            <th>수수료</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <td rowspan="5">각자 부담<br>(Share)</td>
+                            <td>미화 5백불 상당액 이하</td>
+                            <td>5,000원</td>
+                            <td rowspan="5">8,000원</td>
+                            <td rowspan="5" class="table-left">
+                                · 당행 수수료 신청인 부담<br>
+                                · 결제은행 수수료, 수취은행 수수료 수취인 부담
+                            </td>
+                        </tr>
+                        <tr><td>미화 2천불 상당액 이하</td><td>10,000원</td></tr>
+                        <tr><td>미화 5천불 상당액 이하</td><td>15,000원</td></tr>
+                        <tr><td>미화 1만불 상당액 이하</td><td>20,000원</td></tr>
+                        <tr><td>미화 1만불 상당액 초과</td><td>25,000원</td></tr>
+
+                        <tr>
+                            <td rowspan="5">수취인 부담<br>(Beneficiary)</td>
+                            <td>미화 5백불 상당액 이하</td>
+                            <td>미국달러화(USD)15 상당액</td>
+                            <td rowspan="5">없음</td>
+                            <td rowspan="5" class="table-left">
+                                · 당행 수수료, 결제은행 수수료, 수취은행 수수료 모두 수취인 부담<br>
+                                · 송금 원금에서 수수료 해당 금액을 차감 후 송금 처리함
+                            </td>
+                        </tr>
+                        <tr><td>미화 2천불 상당액 이하</td><td>미국달러화(USD)20 상당액</td></tr>
+                        <tr><td>미화 5천불 상당액 이하</td><td>미국달러화(USD)25 상당액</td></tr>
+                        <tr><td>미화 1만불 상당액 이하</td><td>미국달러화(USD)30 상당액</td></tr>
+                        <tr><td>미화 1만불 상당액 초과</td><td>미국달러화(USD)35 상당액</td></tr>
+
+                        <tr>
+                            <td rowspan="5">신청인 부담<br>(Applicant)</td>
+                            <td>미화 5백불 상당액 이하</td>
+                            <td>5,000원<br>+ 미국달러화(USD)20 상당액</td>
+                            <td rowspan="5">8,000원</td>
+                            <td rowspan="5" class="table-left">
+                                · 당행 수수료, 결제은행 수수료 신청인 부담<br>
+                                · 수취은행 수수료 수취인 부담
+                            </td>
+                        </tr>
+                        <tr><td>미화 2천불 상당액 이하</td><td>10,000원<br>+ 미국달러화(USD)20 상당액</td></tr>
+                        <tr><td>미화 5천불 상당액 이하</td><td>15,000원<br>+ 미국달러화(USD)20 상당액</td></tr>
+                        <tr><td>미화 1만불 상당액 이하</td><td>20,000원<br>+ 미국달러화(USD)20 상당액</td></tr>
+                        <tr><td>미화 1만불 상당액 초과</td><td>25,000원<br>+ 미국달러화(USD)20 상당액</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="fee-note">
+                    * 송금수수료를 신청인 부담으로 할 경우 미화 USD20 상당액을 추가 부담해야 합니다.<br>
+                    * 수취인 부담의 경우 당발송금수수료 우대 혜택은 없습니다.
+                </p>
+
+            </section>
+
+            <!-- 인터넷송금 -->
+            <section class="deposit-section fee-tab-content" id="internet">
+
+                <h2 class="deposit-section-title">인터넷뱅킹 해외송금 수수료</h2>
+
+                <div class="fee-table-wrap">
+                    <table class="fee-table">
+                        <thead>
+                        <tr>
+                            <th rowspan="2">송금수수료부담 구분</th>
+                            <th colspan="2">당발송금수수료</th>
+                            <th rowspan="2">전신료</th>
+                            <th rowspan="2">비고</th>
+                        </tr>
+                        <tr>
+                            <th>송금액</th>
+                            <th>수수료</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <td rowspan="5">각자 부담<br>(Share)</td>
+                            <td>미화 5백불 상당액 이하</td>
+                            <td>5,000원</td>
+                            <td rowspan="5">3,000원</td>
+                            <td rowspan="5" class="table-left">
+                                · 당행 수수료 신청인 부담<br>
+                                · 결제은행 수수료, 수취은행 수수료 수취인 부담
+                            </td>
+                        </tr>
+                        <tr><td>미화 2천불 상당액 이하</td><td>10,000원</td></tr>
+                        <tr><td>미화 5천불 상당액 이하</td><td>15,000원</td></tr>
+                        <tr><td>미화 1만불 상당액 이하</td><td>20,000원</td></tr>
+                        <tr><td>미화 1만불 상당액 초과</td><td>25,000원</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="fee-sub-title">해외즉시당발송금(웨스턴유니온 송금)</h3>
+
+                <div class="fee-table-wrap">
+                    <table class="fee-table">
+                        <thead>
+                        <tr>
+                            <th>송금금액</th>
+                            <th>수수료</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr><td>USD 500 이하</td><td>USD 10</td></tr>
+                        <tr><td>USD 500 초과 ~ USD 2,000 이하</td><td>USD 14</td></tr>
+                        <tr><td>USD 2,000 초과 ~ USD 3,000 이하</td><td>USD 18</td></tr>
+                        <tr><td>USD 3,000 초과 ~ USD 7,000 이하</td><td>USD 20</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="fee-note">
+                    * 미국달러화(USD)만 송금 가능하며, 송금한도는 건당 및 당일 USD 7,000 이하입니다.
+                </p>
+
+            </section>
+
+            <!-- 국내외화송금 -->
+            <section class="deposit-section fee-tab-content" id="domestic">
+
+                <h2 class="deposit-section-title">국내 외화송금 관련 수수료</h2>
+
+                <p class="fee-note">
+                    <strong>당발송금 국내 → 국내 : 창구와 인터넷뱅킹 모두 수수료 동일</strong>
+                </p>
+
+                <div class="fee-table-wrap">
+                    <table class="fee-table">
+                        <thead>
+                        <tr>
+                            <th rowspan="2">송금수수료 부담 구분</th>
+                            <th colspan="2">당발송금수수료</th>
+                            <th rowspan="2">전신료</th>
+                            <th rowspan="2">비고</th>
+                        </tr>
+                        <tr>
+                            <th>송금액</th>
+                            <th>수수료</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <td rowspan="2">각자 부담<br>(Share)</td>
+                            <td>미국달러화(USD) 10,000상당액 이하</td>
+                            <td>5,000원</td>
+                            <td rowspan="2">없음</td>
+                            <td rowspan="2" class="table-left">
+                                · 당행 수수료 신청인 부담<br>
+                                · 수취은행 수수료 수취인 부담
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>미국달러화(USD) 10,000상당액 초과</td>
+                            <td>10,000원</td>
+                        </tr>
+
+                        <tr>
+                            <td rowspan="2">수취인 부담<br>(Beneficiary)</td>
+                            <td>미국달러화(USD) 10,000상당액 이하</td>
+                            <td>미국달러화(USD) 5 상당액</td>
+                            <td rowspan="2">없음</td>
+                            <td rowspan="2" class="table-left">
+                                · 당행 수수료, 수취은행 수수료 모두 수취인 부담<br>
+                                · 송금 원금에서 수수료를 차감 후 송금 처리함
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>미국달러화(USD) 10,000상당액 초과</td>
+                            <td>미국달러화(USD) 10 상당액</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="fee-sub-title">타발송금 국내 → 국내</h3>
+
+                <div class="fee-table-wrap">
+                    <table class="fee-table">
+                        <thead>
+                        <tr>
+                            <th>수수료 구간</th>
+                            <th>타발송금수수료</th>
+                            <th>비고</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>미국달러화(USD) 100상당액 미만</td>
+                            <td>면제</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>미국달러화(USD) 100상당액 이상</td>
+                            <td>건당 10,000원</td>
+                            <td>-</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+
+            <!-- BNK 국가간송금 -->
+            <section class="deposit-section fee-tab-content" id="bnk">
+
+                <h2 class="deposit-section-title">BNK 국가간송금 수수료</h2>
+
+                <div class="fee-table-wrap">
+                    <table class="fee-table">
+                        <thead>
+                        <tr>
+                            <th>구분</th>
+                            <th>송금금액</th>
+                            <th>수수료</th>
+                            <th>비고</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <td rowspan="3">당발송금<br>수수료</td>
+                            <td>미화 5백불 상당액 이하</td>
+                            <td>15,000원</td>
+                            <td rowspan="3" class="table-left">
+                                1. 당발송금수수료와 별도로 타기관지급비용을 청구<br>
+                                2. 타기관지급비용은 금융결제원에서 청구되는 금액으로 지급은행별로 상이함<br>
+                                ※ 타기관지급비용 : 결제은행비용, 중계기관비용, 지급은행비용
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>미화 2천불 상당액 이하</td>
+                            <td>20,000원</td>
+                        </tr>
+                        <tr>
+                            <td>미화 5천불 상당액 이하</td>
+                            <td>30,000원</td>
+                        </tr>
+                        <tr>
+                            <td>타발송금<br>수수료</td>
+                            <td colspan="2">건당 : 미화 10불<br>(송금의뢰인 부담)</td>
+                            <td>해외송금의뢰은행으로부터 외화로 수취</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const feeTabs = document.querySelectorAll(".fee-tab");
+    const feeContents = document.querySelectorAll(".fee-tab-content");
+
+    feeTabs.forEach(function (tab) {
+        tab.addEventListener("click", function () {
+            const targetId = tab.dataset.tab;
+
+            feeTabs.forEach(function (item) {
+                item.classList.remove("active");
+            });
+
+            feeContents.forEach(function (content) {
+                content.classList.remove("active");
+            });
+
+            tab.classList.add("active");
+            document.getElementById(targetId).classList.add("active");
+        });
+    });
+});
+</script>
 
 </body>
 </html>

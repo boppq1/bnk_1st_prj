@@ -82,11 +82,11 @@
             <div class="ps-badges">
         <span class="badge badge-green">
           <i class="fa-solid fa-at"></i>
-          <span th:text="${admin.loginId}">login_id</span>
+          <span th:text="${admin.login_id}">login_id</span>
         </span>
                 <span class="badge badge-red">
           <i class="fa-solid fa-shield-halved"></i>
-          <span th:text="${admin.adminRole}">chief</span>
+          <span th:text="${admin.admin_role}">chief</span>
         </span>
                 <span class="badge badge-slate">
           <i class="fa-solid fa-building"></i>
@@ -131,7 +131,7 @@
                     <label>로그인 ID</label>
                     <div class="input-wrap">
                         <i class="fa-solid fa-at"></i>
-                        <input type="text" th:value="${admin.loginId}" readonly>
+                        <input type="text" th:value="${admin.login_id}" readonly>
                     </div>
                 </div>
 
@@ -151,11 +151,7 @@
                     <label>권한 (Admin Role)</label>
                     <div class="input-wrap">
                         <i class="fa-solid fa-user-shield"></i>
-                        <select name="admin_role">
-                            <option value="chief"     th:selected="${admin.admin_role == 'chief'}">Chief (최고 관리자)</option>
-                            <option value="head"      th:selected="${admin.admin_role == 'head'}">Head (부서장)</option>
-                            <option value="executive" th:selected="${admin.admin_role == 'executive'}">Executive (실무)</option>
-                        </select>
+                        <input type="text" th:value="${admin.admin_role}" readonly>
                     </div>
                 </div>
 

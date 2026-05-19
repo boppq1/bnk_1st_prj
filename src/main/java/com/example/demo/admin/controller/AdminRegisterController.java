@@ -94,6 +94,7 @@
             session.setAttribute("adminId", admin.getAdmin_id());
             session.setAttribute("loginId", admin.getLogin_id());
             session.setAttribute("name", admin.getName());
+            session.setAttribute("role", admin.getAdmin_role());
 
             System.out.println("Session ID: " + session.getId());
 
@@ -111,7 +112,7 @@
 
             Long adminId = (Long) session.getAttribute("adminId");
             String loginId = (String) session.getAttribute("loginId");
-
+            String role = (String) session.getAttribute("role");
             System.out.println(adminId);
 
             // 로그인 안 됨
@@ -120,8 +121,10 @@
             AdminDto dto = new AdminDto();
             dto.setAdmin_id(adminId);
             AdminDto admin = serv.selectMyPage(dto);
+            session.setAttribute("admin", admin);
             model.addAttribute("admin", admin);
             System.out.println("Admin Name: " + admin.getName());
+            System.out.println("Admin role: " + admin.getAdminRole());
             return "admin/adminMyPage";
         }
 

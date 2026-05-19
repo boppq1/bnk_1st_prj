@@ -59,7 +59,7 @@
     <!-- 내 정보 조회 -->
     <select id="selectMyPage"
             parameterType="com.example.demo.admin.dto.AdminDto"
-            resultType="com.example.demo.admin.dto.AdminDto">
+            resultMap="adminMap">
 
         SELECT *
         FROM ADMIN_USERS
@@ -74,8 +74,7 @@
         UPDATE ADMIN_USERS
         SET
             department = #{department},
-            name = #{name},
-            adm_role = #{admin_role}
+            name = #{name}
         WHERE adm_no = #{admin_id}
 
     </update>
