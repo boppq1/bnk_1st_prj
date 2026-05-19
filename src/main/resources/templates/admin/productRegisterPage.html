@@ -90,8 +90,12 @@
           <div class="input-wrap">
             <i class="fa-solid fa-layer-group"></i>
             <select name="product_type">
-              <option value="deposit">예금</option>
-              <option value="saving">적금</option>
+              <option value="DEPOSIT">예금</option>
+              <option value="SAVING">적금</option>
+              <option value="FOREIGN_DEP">외화 예금</option>
+              <option value="FOREIGN_SAV">외화 적금</option>
+              <option value="CORP_DEP">기업 예금</option>
+              <option value="CORP_SAV">기업 적금</option>
             </select>
           </div>
         </div>
@@ -154,10 +158,11 @@
           <div class="input-wrap">
             <i class="fa-solid fa-calendar-plus"></i>
             <select name="max_period_month">
-              <option value="1">1개월</option>
+              <option value="">예금 전용(0)</option>
               <option value="3">3개월</option>
               <option value="6">6개월</option>
               <option value="12">12개월</option>
+              <option value="24">24개월</option>
             </select>
           </div>
         </div>
@@ -176,8 +181,9 @@
           <div class="input-wrap">
             <i class="fa-solid fa-arrow-right-arrow-left"></i>
             <select name="applied_exchange_rate_type">
+              <option value="">제외</option>
               <option value="CLOSING_RATE">전일 종가</option>
-              <option value="REALTIME_RATE">실시간 환율</option>
+              <option value="REALTIME_RATE">실시간 환율</option>ㄴ
             </select>
           </div>
         </div>
@@ -206,10 +212,14 @@
           <label>대상 고객 세분류 <span style="color:var(--primary)">*</span></label>
           <div class="input-wrap">
             <i class="fa-solid fa-user-tag"></i>
-            <select name="target_detail" required>
+            <select name="target_detail">
               <option value="">선택안함</option>
+              <option value="ALL">전체</option>
               <option value="YOUTH">청년</option>
               <option value="SENIOR">시니어</option>
+              <option value="STARTUP">스타트업</option>
+              <option value="SME">소상공인 및 자영업자</option>
+              <option value="PUBLIC">공공기관 및 지자체</option>
             </select>
           </div>
         </div>

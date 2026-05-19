@@ -1,5 +1,6 @@
 package com.example.demo.admin.controller;
 
+import com.example.demo.admin.config.FileProperties;
 import com.example.demo.admin.dto.AdminDto;
 import com.example.demo.admin.dto.ProductDto;
 import com.example.demo.admin.service.AdminMergeService;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class ProductCRUDController {
 
     private final AdminProductService serv;
     private final AdminMergeService adminServ;
+    private final FileProperties fileProperties;
 
     // 상품 등록 페이지
     @GetMapping("/admin/productRegisterPage")
@@ -44,8 +47,14 @@ public class ProductCRUDController {
 
     // 상품 등록
     @PostMapping("/admin/productRegister")
-    public String registerProduct(ProductDto dto,
-                                  HttpSession session) {
+    public String registerProduct(
+            ProductDto dto,
+            @RequestParam("basicTermsFile") MultipartFile basicTermsFile,
+            @RequestParam("categoryTermsFile") MultipartFile categoryTermsFile,
+            @RequestParam("specialTermsFile") MultipartFile specialTermsFile,
+            @RequestParam("productGuideFile") MultipartFile productGuideFile,
+            HttpSession session
+    ){
 
         // 등록자 세팅
         Long adminId = (Long) session.getAttribute("adminId");
@@ -56,12 +65,47 @@ public class ProductCRUDController {
         dto.setCreated_by(name);
         dto.setRequester_id(name);
 
+        dto.setBasic_terms_path(saveFile(basicTermsFile));
+        dto.setCategory_terms_path(saveFile(categoryTermsFile));
+        dto.setSpecial_terms_path(saveFile(specialTermsFile));
+        dto.setProduct_guide_path(saveFile(productGuideFile));
+
+        System.out.println(dto.getBasic_terms_path());
+        System.out.println(dto.getCategory_terms_path());
+        System.out.println(dto.getSpecial_terms_path());
+        System.out.println(dto.getProduct_guide_path());
+
         if(name == null || name.equals("")) {
             return "redirect:/adminLogin";
         }
 
         serv.registerProduct(dto);
         return "redirect:/admin/productListPage";
+    }
+
+    private String saveFile(MultipartFile file) {
+
+        if (file == null || file.isEmpty()) return null;
+
+        try {
+            String uploadDir = fileProperties.getUploadDir();
+
+            String fileName =
+                    System.currentTimeMillis()
+                            + "_" + file.getOriginalFilename();
+
+            java.nio.file.Path path =
+                    java.nio.file.Paths.get(uploadDir + fileName);
+
+            java.nio.file.Files.createDirectories(path.getParent());
+
+            file.transferTo(path.toFile());
+
+            return fileName;
+
+        } catch (Exception e) {
+            throw new RuntimeException("파일 저장 실패", e);
+        }
     }
 
     // 상품 목록 조회
