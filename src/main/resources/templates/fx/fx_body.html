@@ -8,8 +8,8 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<script src="/js/fx/fxHome.js"></script>
 <body>
+
 	<div class="container">
 		<div class="main-content">
 
@@ -19,9 +19,8 @@
 			<div class="banner-quick-wrap">
 				<div class="banner-wrap">
 					<div class="banner-slider">
-						<a href="/" class="slide">배너 1</a> 
-						<a href="/" class="slide">배너 2</a> 
-						<a href="/" class="slide">배너 3</a>
+						<a href="/" class="slide">배너 1</a> <a href="/" class="slide">배너
+							2</a> <a href="/" class="slide">배너 3</a>
 					</div>
 				</div>
 				<div class="quick-menu-wrap">
@@ -91,15 +90,15 @@
 
 			<!-- 환율 조회 폼 -->
 			<div class="sidebar-form">
-				<select class="sidebar-select" name="currency">
+				<select class="sidebar-select" id="currency" name="currency">
 					<option value="USD">USD (미국 달러)</option>
-					<option value="JPY">JPY (일본 엔)</option>
+					<option value="JPY(100)">JPY (일본 엔)</option>
 					<option value="EUR">EUR (유로)</option>
-					<option value="CNY">CNY (중국 위안)</option>
-				</select> <select class="sidebar-select" name="rateType">
-					<option value="standard">매매기준율</option>
-					<option value="buy">전신환 매입</option>
-					<option value="sell">전신환 매도</option>
+					<option value="CNH">CNH (중국 위안)</option>
+				</select> <select class="sidebar-select" id="rateType" name="rateType">
+					<option value="deal_bas_r">매매기준율</option>
+					<option value="ttb">전신환 매입</option>
+					<option value="tts">전신환 매도</option>
 				</select>
 
 				<div class="sidebar-form-bottom">
@@ -109,8 +108,8 @@
 
 			<!-- 환율 결과 -->
 			<div class="sidebar-rate">
-				<span class="rate-value">환율 란</span> <span
-					class="rate-change up">증가율 란</span>
+				<span class="rate-value">환율 란</span> <span class="rate-change up">증가율
+					란</span>
 			</div>
 
 			<!-- 기간 탭 -->
@@ -126,5 +125,8 @@
 			</div>
 		</div>
 	</div>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="/js/fx/exchange.js"></script>
+	<script src="/js/fx/fxHome.js"></script>
 </body>
 </html>
