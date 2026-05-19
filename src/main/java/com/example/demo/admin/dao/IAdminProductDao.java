@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.demo.admin.dto.ProductDto;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface IAdminProductDao {
@@ -22,7 +23,10 @@ public interface IAdminProductDao {
 	int insertProRequest(ProductDto dto);
 
 	// 상품 목록
-	List<ProductDto> listPro();
+	List<ProductDto> listPro(@Param("offset") int offset, @Param("pageSize") int pageSize
+	);
+
+	int getTotalCount();
 
 	// 상품 상세
 	ProductDto listDetail(Long product_no);

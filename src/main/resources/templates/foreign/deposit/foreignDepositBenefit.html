@@ -1,10 +1,126 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>BNK 부산은행 외환</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">외화예금우대서비스</h1>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">이자율 우대</h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        외화정기예금ㆍ통지예금의 경우 예수 금액이 건당 미화 5만불 상당액 이상,
+                        법인인 경우 건당 미화 10만불 상당액 이상인 경우 고시 이자율의
+                        10%까지 우대 적용하여 드립니다.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">종합통장대출(원화마이너스대출)시 거래 실적 인정</h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        저희 은행 종합통장대출시 외화예금 거래 실적을 대출 한도 산정시
+                        반영하여 대출 한도를 우대해 드립니다.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">국내외 외환시장 및 금융시장 정보 제공</h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        고객님이 요청하실 경우 SMS 또는 e-mail로 국내외 외환 및 금융시장의
+                        금리, 환율 동향 분석자료를 제공하여 드립니다.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">금융기법 제공</h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        고객님이 요청하실 경우 선물환, 스왑, 옵션 등 고객의 외화금융자산 및
+                        부채의 조달 운용에 따른 금리ㆍ환율 변동 위험 제거를 위한 금융기법을
+                        제공해 드립니다.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">인터넷 외화예금 신규시 환율우대 혜택 제공</h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        고객님의 예수 통화별, 금액에 따라 차등 적용하여 우대합니다.
+                    </li>
+                </ul>
+
+                <table class="info-table foreign-transfer-table">
+                    <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>미국(USD)</th>
+                        <th>
+                            일본(JPY), 유럽연합(EUR), 영국(GBP),<br>
+                            스위스(CHF), 호주(AUD), 캐나다(CAD)
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>5만불 이하</td>
+                        <td>전신환매매수수료율의 50%</td>
+                        <td>전신환매매수수료율의 30%</td>
+                    </tr>
+
+                    <tr>
+                        <td>5만불 초과 ~ 10만불 이하</td>
+                        <td>전신환매매수수료율의 60%</td>
+                        <td>전신환매매수수료율의 40%</td>
+                    </tr>
+
+                    <tr>
+                        <td>10만불 초과</td>
+                        <td>전신환매매수수료율의 70%</td>
+                        <td>전신환매매수수료율의 50%</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

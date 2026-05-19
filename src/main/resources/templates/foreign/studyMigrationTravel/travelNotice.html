@@ -3,8 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <title>BNK 부산은행 외환</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
 <body>
+<div th:replace="~{header :: header}"></div>
+<div class="product-layout">
 
+    <!-- 사이드바 -->
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <!-- 본문 -->
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">여행시유의사항</h1>
+
+<section class="service-section">
+
+    <h2 class="section-title">여행전 체크리스트</h2>
+
+    <ul class="service-list">
+
+        <li>
+            <strong>여행 목적 국가 정보 파악</strong>
+            <p>- 여행하고자 하는 국가의 정보와 안전 공지 내용을 확인합니다. (www.0404.go.kr)</p>
+        </li>
+
+        <li>
+            <strong>여행 경보 단계 확인</strong>
+            <p>- 국가별 안전 수준을 고려하여 1단계 여행유의, 2단계 여행자제, 3단계 여행제한, 4단계 여행금지로 나누고 있습니다.</p>
+            <p>- 4단계 여행금지 국가는 이라크, 아프가니스탄, 소말리아이며, 해당 국가 여행 시 여권법 제26조에 따라 처벌될 수 있습니다.</p>
+        </li>
+
+        <li>
+            <strong>해외여행자 인터넷 등록제 “동행” 등록</strong>
+            <p>- 여행경보 1단계 이상 국가 방문자는 해외여행자 인터넷 등록제 “동행”에 등록하면 안전정보 이메일 서비스를 받을 수 있습니다.</p>
+            <p>- 사건·사고 발생 시 신속한 연락이 가능합니다.</p>
+            <p>- 등록요령 : 해외안전여행 홈페이지(www.0404.go.kr) &gt; 안전여행정보 &gt; 해외여행자 인터넷 등록</p>
+        </li>
+
+        <li>
+            <strong>공관 연락처와 영사콜센터 확인</strong>
+            <p>- 국내 상담 : 02-3210-0404</p>
+            <p>- 해외 상담 유료 : +822-3210-0404</p>
+            <p>- 해외 상담 무료 : +800-2100-0404</p>
+        </li>
+
+        <li>
+            <strong>여권과 비자 확인</strong>
+            <p>- 여권 잔여 유효기간이 6개월 이상 남아 있는지 확인하고 서명란에 반드시 서명합니다.</p>
+            <p>- 입국 목적에 맞는 유효한 비자를 발급받아야 합니다.</p>
+        </li>
+
+        <li>
+            <strong>여행자보험 가입, 신분증, 사진 및 각종 사본 준비</strong>
+            <p>- 해외에서 질병, 분실 등 사건·사고가 발생할 경우를 대비하여 관련 준비물을 챙겨두는 것이 좋습니다.</p>
+        </li>
+
+        <li>
+            <strong>잘 모르는 사람의 친절과 수화물 보관 주의</strong>
+            <p>- 낯선 사람이 건네준 음식이나 과도한 친절에 주의해야 합니다.</p>
+            <p>- 모르는 사람이 보관 요청한 가방에서 마약이 발견될 경우 처벌받을 수 있으므로 주의해야 합니다.</p>
+        </li>
+
+        <li>
+            <strong>여행지 연락처 제공</strong>
+            <p>- 가족 및 친지에게 본인과 동반 여행자의 여행지 연락처를 알려둡니다.</p>
+        </li>
+
+        <li>
+            <strong>여권 분실 시 처리방법</strong>
+            <p>- 분실 발견 즉시 가까운 현지 경찰서를 방문하여 여권분실 증명서를 발급받습니다.</p>
+            <p>- 재외공관에 분실 증명서, 여권용 컬러사진 2장, 여권번호, 여권발행일 등을 기재한 서류를 제출합니다.</p>
+            <p>- 급히 귀국해야 할 경우 여행증명서 발급을 신청합니다.</p>
+            <p>- 여행 전 여권 사본, 여권번호, 발행일, 현지 공관 주소 및 연락처를 따로 메모해두는 것이 좋습니다.</p>
+            <p>- 분실 여권은 위·변조되어 범죄에 악용될 수 있으므로 유의해야 합니다.</p>
+        </li>
+
+        <li>
+            <strong>중국에서 여권 분실 시 재발급 절차</strong>
+            <p>- 관할 파출소에 신고하여 분실증명서를 발급받습니다.</p>
+            <p>- 중국 내 우리 관할 공관에 본인이 직접 방문하여 분실신고를 합니다. 사진 3매를 지참해야 합니다.</p>
+            <p>- 공관에서 발급하는 분실여권 말소증명, 파출소 분실증명서, 숙박증명 등을 준비합니다.</p>
+            <p>- 분실지역 관할 공안국 외국인출입경 관리처에서 분실증명서를 발급받습니다.</p>
+            <p>- 공안국에서 발급받은 분실증명서를 가지고 공관을 방문해 단수여권을 발급받습니다.</p>
+            <p>- 공안국 외국인출입경관리처에서 단수여권에 출국 비자를 발급받습니다.</p>
+        </li>
+
+    </ul>
+
+</section>
+
+            
+
+        </div>
+
+    </main>
+
+</div>
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 </body>
 </html>

@@ -20,7 +20,7 @@ public class ProductDto {
 
 	Long product_id;
 
-	String ia_active;
+	String active;
 	String product_name;
 	String product_type;
 

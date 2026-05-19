@@ -10,4 +10,8 @@
 	<select id="selectCompanyUser">
 		select * from company_users where login_id = #{login_id}
 	</select>
+	<!-- 기업 이름만 추출 -->
+	<select id="selectCompany">
+		select  com_nm from companies where com_no = #{com_no}
+	</select>
 </mapper>

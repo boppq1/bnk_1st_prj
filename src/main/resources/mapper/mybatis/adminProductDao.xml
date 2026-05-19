@@ -10,21 +10,22 @@
     <insert id="insertPro">
 
         INSERT INTO PRODUCTS (
-            product_id,
-            product_name,
-            product_type,
-            min_period_month,
-            max_period_month,
-            min_amount,
-            max_amount,
-            target_large,
-            target_detail,
-            product_desc,
-            interest_payment_type,
-            applied_exchange_rate_type,
-            created_at,
-            created_by,
-            rate_category
+            prod_no,
+            prod_nm,
+            prod_type,
+            min_prd_mon,
+            max_prd_mon,
+            min_amt,
+            max_amt,
+            tgt_lrg,
+            tgt_dtl,
+            prod_desc,
+            int_pay_type,
+            apld_exch_type,
+            reg_dt,
+            reg_by,
+            rate_cat,
+            apv_stat_cd
         )
         VALUES (
                    SEQ_PRODUCTS.NEXTVAL,
@@ -32,8 +33,8 @@
                    #{product_type},
                    #{min_period_month},
                    #{max_period_month},
-                   #{min_amount},
-                   #{max_amount},
+                   #{min_amount, jdbcType=NUMERIC},
+                   #{max_amount, jdbcType=NUMERIC},
                    #{target_large},
                    #{target_detail},
                    #{product_desc},
@@ -41,62 +42,60 @@
                    #{applied_exchange_rate_type},
                    SYSDATE,
                    #{created_by},
-                   #{rate_category}
+                   #{rate_category},
+                   #{approve_status}
                )
 
     </insert>
 
-
-    <!-- 현재 상품 번호 -->
-    <select id="selectCurrentProductNo"
-            resultType="long">
-
-        SELECT SEQ_PRODUCTS.CURRVAL
-        FROM DUAL
-
-    </select>
-
-
-    <!-- PDF 등록 -->
     <insert id="insertProPdf">
 
         INSERT INTO PRODUCT_PDFS (
-            pdf_id,
-            product_id,
+            pdf_no,
+            prod_no,
             basic_terms_path,
-            category_terms_path,
-            special_terms_path,
-            product_guide_path,
-            created_at
-        )
-        VALUES (
-                   SEQ_PRODUCT_PDFS.NEXTVAL,
-                   #{product_id},
-                   #{basic_terms_path, jdbcType=VARCHAR},
-                   #{category_terms_path, jdbcType=VARCHAR},
-                   #{special_terms_path, jdbcType=VARCHAR},
-                   #{product_guide_path, jdbcType=VARCHAR},
-                   SYSDATE
-               )
+            cat_terms_path,
+            spec_terms_path,
+            prod_guide_path,
+            reg_dt
+        ) VALUES (
+                     SEQ_PRODUCT_PDFS.NEXTVAL,
+                     #{product_id},
+                     #{basic_terms_path, jdbcType=VARCHAR},
+                     #{category_terms_path, jdbcType=VARCHAR},
+                     #{special_terms_path, jdbcType=VARCHAR},
+                     #{product_guide_path, jdbcType=VARCHAR},
+                     SYSDATE
+                 )
 
     </insert>
+
+
 
 
     <!-- 상품 신청 등록 -->
     <insert id="insertProRequest">
 
         INSERT INTO PRODUCT_REQUESTS (
-            request_id,
-            product_id,
-            requester_id,
-            request_status,
-            request_type,
-            requeste_date
+            req_no,
+            prod_no,
+            req_usr_no,
+            req_stat_cd,
+            req_type,
+            req_dt
         )
         VALUES (
                    SEQ_PRODUCT_REQUESTS.NEXTVAL,
-                   #{requester_id},
                    #{product_id},
+
+                   (
+                       SELECT A.adm_no
+                       FROM ADMIN_USERS A
+                                JOIN PRODUCTS P
+                                     ON A.name = P.reg_by
+                       WHERE P.prod_no = #{product_id}
+                   ),
+
                    'WAITING',
                    'CREATE',
                    SYSDATE
@@ -105,24 +104,48 @@
     </insert>
 
 
+
     <!-- 상품 목록 조회 -->
-    <select id="listPro"
-            resultType="com.example.demo.admin.dto.ProductDto">
+    <select id="listPro" resultType="com.example.demo.admin.dto.ProductDto">
 
         SELECT
-            product_no,
-            product_name,
-            product_type,
-            min_amount,
-            max_amount,
-            approve_status,
-            create_date,
-            created_by,
-            active
+            prod_no       AS product_id,
+            prod_nm       AS product_name,
+            active,
+            prod_type     AS product_type,
+            min_amt       AS min_amount,
+            max_amt       AS max_amount,
+            min_prd_mon   AS min_period_month,
+            max_prd_mon   AS max_period_month,
+            apv_stat_cd   AS approve_status,
+            reg_dt        AS create_date,
+            reg_by        AS created_by,
+            active        AS is_active,
+            tgt_lrg     AS target_large,
+            tgt_dtl     AS target_detail,
+            rate_cat    AS rate_category
 
         FROM PRODUCTS
+        ORDER BY prod_no DESC
+        OFFSET #{offset} ROWS
+            FETCH NEXT #{pageSize} ROWS ONLY
 
-        ORDER BY product_no DESC
+    </select>
+
+    <select id="getTotalCount"
+            resultType="int">
+
+        SELECT COUNT(*)
+        FROM products
+
+    </select>
+
+    <!-- 가장 최근 상품번호 조회 -->
+    <select id="selectCurrentProductNo"
+            resultType="long">
+
+        SELECT MAX(prod_no)
+        FROM PRODUCTS
 
     </select>
 
@@ -133,40 +156,49 @@
             resultType="com.example.demo.admin.dto.ProductDto">
 
         SELECT
-            P.product_no,
-            P.product_name,
-            P.product_type,
-            P.min_period_month,
-            P.max_period_month,
-            P.min_amount,
-            P.max_amount,
-            P.target_large,
-            P.target_detail,
-            P.product_desc,
-            P.interest_payment_type,
-            P.applied_exchange_rate_type,
-            P.create_date,
-            P.update_date,
-            P.created_by,
-            P.approver,
-            P.approve_status,
-            P.updated_by,
-            P.app_start_date,
-            P.app_end_date,
-            P.rate_category,
-            P.active,
+            P.prod_no                      AS product_id,
+            P.active                       AS active,
+            P.prod_nm                      AS product_name,
+            P.prod_type                    AS product_type,
 
-            PDF.basic_terms_path,
-            PDF.category_terms_path,
-            PDF.special_terms_path,
-            PDF.product_guide_path
+            P.min_prd_mon                  AS min_period_month,
+            P.max_prd_mon                  AS max_period_month,
+
+            P.min_amt                      AS min_amount,
+            P.max_amt                      AS max_amount,
+
+            P.tgt_lrg                      AS target_large,
+            P.tgt_dtl                      AS target_detail,
+
+            P.prod_desc                    AS product_desc,
+
+            P.int_pay_type                 AS interest_payment_type,
+            P.apld_exch_type               AS applied_exchange_rate_type,
+
+            P.reg_dt                       AS create_date,
+            P.update_dt                    AS update_date,
+
+            P.reg_by                       AS created_by,
+            P.approver                     AS approver,
+            P.apv_stat_cd                  AS approve_status,
+            P.upd_by                       AS updated_by,
+
+            P.app_start_dt                 AS app_start_date,
+            P.app_end_dt                   AS app_end_date,
+
+            P.rate_cat                     AS rate_category,
+
+            PDF.basic_terms_path           AS basic_terms_path,
+            PDF.cat_terms_path        AS category_terms_path,
+            PDF.spec_terms_path         AS special_terms_path,
+            PDF.prod_guide_path         AS product_guide_path
 
         FROM PRODUCTS P
 
                  LEFT JOIN PRODUCT_PDFS PDF
-                           ON P.product_no = PDF.product_no
+                           ON P.prod_no = PDF.prod_no
 
-        WHERE P.product_no = #{product_no}
+        WHERE P.prod_no = #{product_id}
 
     </select>
 
@@ -177,19 +209,19 @@
             resultType="com.example.demo.admin.dto.ProductDto">
 
         SELECT
-            product_no,
-            product_name,
-            product_type,
-            approve_status,
-            create_date,
-            created_by,
-            active
+            prod_no             AS product_id,
+            prod_nm             AS product_name,
+            prod_type           AS product_type,
+            apv_stat_cd         AS approve_status,
+            reg_dt              AS create_date,
+            reg_by              AS created_by,
+            active              AS active
 
         FROM PRODUCTS
 
-        WHERE approve_status = #{approve_status}
+        WHERE apv_stat_cd = #{approve_status}
 
-        ORDER BY product_no DESC
+        ORDER BY prod_no DESC
 
     </select>
 
@@ -203,70 +235,70 @@
         <set>
 
             <if test="product_name != null">
-                product_name = #{product_name},
+                prod_nm = #{product_name},
             </if>
 
             <if test="product_type != null">
-                product_type = #{product_type},
+                prod_type = #{product_type},
             </if>
 
             <if test="min_period_month != null">
-                min_period_month = #{min_period_month},
+                min_prd_mon = #{min_period_month},
             </if>
 
             <if test="max_period_month != null">
-                max_period_month = #{max_period_month},
+                max_prd_mon = #{max_period_month},
             </if>
 
             <if test="min_amount != null">
-                min_amount = #{min_amount},
+                min_amt = #{min_amount},
             </if>
 
             <if test="max_amount != null">
-                max_amount = #{max_amount},
+                max_amt = #{max_amount},
             </if>
 
             <if test="target_large != null">
-                target_large = #{target_large},
+                tgt_lrg = #{target_large},
             </if>
 
             <if test="target_detail != null">
-                target_detail = #{target_detail},
+                tgt_dtl = #{target_detail},
             </if>
 
             <if test="product_desc != null">
-                product_desc = #{product_desc},
+                prod_desc = #{product_desc},
             </if>
 
             <if test="interest_payment_type != null">
-                interest_payment_type = #{interest_payment_type},
+                int_pay_type = #{interest_payment_type},
             </if>
 
             <if test="applied_exchange_rate_type != null">
-                applied_exchange_rate_type = #{applied_exchange_rate_type},
+                apld_exch_type = #{applied_exchange_rate_type},
             </if>
 
             <if test="app_start_date != null">
-                app_start_date = #{app_start_date},
+                app_start_dt = #{app_start_date},
             </if>
 
             <if test="app_end_date != null">
-                app_end_date = #{app_end_date},
+                app_end_dt = #{app_end_date},
             </if>
 
             <if test="rate_category != null">
-                rate_category = #{rate_category},
+                rate_cat = #{rate_category},
             </if>
 
-            approve_status = 'SAVE',
+            apv_stat_cd = 'SAVE',
 
-            update_date = SYSDATE,
-            updated_by = #{updated_by}
+            update_dt = SYSDATE,
+            upd_by = #{updated_by}
 
         </set>
 
-        WHERE product_no = #{product_no}
-        AND approve_status = 'SAVE'
+        WHERE prod_no = #{product_id}
+        AND apv_stat_cd = 'SAVE'
 
     </update>
 
@@ -279,70 +311,70 @@
         <set>
 
             <if test="product_name != null">
-                product_name = #{product_name},
+                prod_nm = #{product_name},
             </if>
 
             <if test="product_type != null">
-                product_type = #{product_type},
+                prod_type = #{product_type},
             </if>
 
             <if test="min_period_month != null">
-                min_period_month = #{min_period_month},
+                min_prd_mon = #{min_period_month},
             </if>
 
             <if test="max_period_month != null">
-                max_period_month = #{max_period_month},
+                max_prd_mon = #{max_period_month},
             </if>
 
             <if test="min_amount != null">
-                min_amount = #{min_amount},
+                min_amt = #{min_amount},
             </if>
 
             <if test="max_amount != null">
-                max_amount = #{max_amount},
+                max_amt = #{max_amount},
             </if>
 
             <if test="target_large != null">
-                target_large = #{target_large},
+                tgt_lrg = #{target_large},
             </if>
 
             <if test="target_detail != null">
-                target_detail = #{target_detail},
+                tgt_dtl = #{target_detail},
             </if>
 
             <if test="product_desc != null">
-                product_desc = #{product_desc},
+                prod_desc = #{product_desc},
             </if>
 
             <if test="interest_payment_type != null">
-                interest_payment_type = #{interest_payment_type},
+                int_pay_type = #{interest_payment_type},
             </if>
 
             <if test="applied_exchange_rate_type != null">
-                applied_exchange_rate_type = #{applied_exchange_rate_type},
+                apld_exch_type = #{applied_exchange_rate_type},
             </if>
 
             <if test="app_start_date != null">
-                app_start_date = #{app_start_date},
+                app_start_dt = #{app_start_date},
             </if>
 
             <if test="app_end_date != null">
-                app_end_date = #{app_end_date},
+                app_end_dt = #{app_end_date},
             </if>
 
             <if test="rate_category != null">
-                rate_category = #{rate_category},
+                rate_cat = #{rate_category},
             </if>
 
-            approve_status = 'SUBMIT',
+            apv_stat_cd = 'SUBMIT',
 
-            update_date = SYSDATE,
-            updated_by = #{updated_by}
+            update_dt = SYSDATE,
+            upd_by = #{updated_by}
 
         </set>
 
-        WHERE product_no = #{product_no}
-        AND approve_status = 'SAVE'
+        WHERE prod_no = #{product_id}
+        AND apv_stat_cd = 'SAVE'
 
     </update>
 
@@ -360,37 +392,22 @@
             </if>
 
             <if test="category_terms_path != null">
-                category_terms_path = #{category_terms_path},
+                cat_terms_path = #{category_terms_path},
             </if>
 
             <if test="special_terms_path != null">
-                special_terms_path = #{special_terms_path},
+                spec_terms_path = #{special_terms_path},
             </if>
 
             <if test="product_guide_path != null">
-                product_guide_path = #{product_guide_path},
+                prod_guide_path = #{product_guide_path},
             </if>
 
-            update_date = SYSDATE
+            upd_dt = SYSDATE
 
         </set>
 
-        WHERE product_no = #{product_no}
-
-    </update>
-
-
-    <!-- 판매 상태 변경 -->
-    <update id="updateProductStatus"
-            parameterType="com.example.demo.admin.dto.ProductDto">
-
-        UPDATE PRODUCTS
-        SET
-            active = #{active},
-            update_date = SYSDATE,
-            updated_by = #{updated_by}
-
-        WHERE product_no = #{product_no}
+        WHERE prod_no = #{product_id}
 
     </update>
 
@@ -400,7 +417,7 @@
             parameterType="long">
 
         DELETE FROM PRODUCT_PDFS
-        WHERE product_no = #{product_no}
+        WHERE prod_no = #{product_id}
 
     </delete>
 
@@ -410,7 +427,7 @@
             parameterType="long">
 
         DELETE FROM PRODUCT_REQUESTS
-        WHERE product_no = #{product_no}
+        WHERE prod_no = #{product_id}
 
     </delete>
 
@@ -420,7 +437,7 @@
             parameterType="long">
 
         DELETE FROM PRODUCTS
-        WHERE product_no = #{product_no}
+        WHERE prod_no = #{product_id}
 
     </delete>
 

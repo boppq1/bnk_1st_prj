@@ -41,16 +41,19 @@ public class AdminProductService {
 
 
     // 상품 목록
-    public List<ProductDto> getProductList() {
+    public List<ProductDto> getProductList(int offset, int pageSize) {
+        return productDao.listPro(offset, pageSize);
+    }
 
-        return productDao.listPro();
+    public int getTotalCount() {
+        return productDao.getTotalCount();
     }
 
 
     // 상품 상세
-    public ProductDto getProductDetail(Long product_no) {
+    public ProductDto getProductDetail(Long product_id) {
 
-        return productDao.listDetail(product_no);
+        return productDao.listDetail(product_id);
     }
 
 

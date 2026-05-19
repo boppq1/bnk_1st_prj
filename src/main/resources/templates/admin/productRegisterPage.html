@@ -4,106 +4,87 @@
   <meta charset="UTF-8">
   <title>BNK Busan Bank - 상품 등록</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-  <link rel="stylesheet" th:href="@{/css/admin/productRegisterPage.css}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
+  <link rel="stylesheet" th:href="@{/css/admin/product/productRegisterPage.css}">
+
 </head>
 <body>
 
-<!-- ═══════════════ 사이드바 ═══════════════ -->
+<!-- SIDEBAR -->
 <div class="sidebar">
   <div class="sidebar-logo">
-    <img src="/images/BNKlogo.png" alt="BNK 부산은행 로고">
+    <img th:src="@{/images/BNKlogo.png}" alt="BNK 부산은행">
   </div>
-
+  <div class="sidebar-profile">
+    <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
+    <div class="sp-info">
+      <div class="sp-name" th:text="${admin.name} + ' 관리자'">홍길동 관리자</div>
+      <span class="sp-role" th:text="${admin.adminRole}">chief</span>
+    </div>
+  </div>
   <ul class="sidebar-menu">
-
-    <!-- 메인 -->
-    <div class="nav-group">
-      <div class="nav-group-label">메인</div>
-      <li><a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> 대시보드</a></li>
-    </div>
-
-    <!-- 상품관리 -->
-    <div class="nav-group">
-      <div class="nav-group-label">상품관리</div>
-      <li><a href="/admin/productRegisterPage" class="menu-item active"><i class="fa-solid fa-box-open"></i> 상품 등록</a></li>
-      <li><a href="/admin/productListPage" class="menu-item"><i class="fa-solid fa-list-check"></i> 상품 목록</a></li>
-    </div>
-
-    <!-- 결재 -->
-    <div class="nav-group">
-      <div class="nav-group-label">결재</div>
-      <li><a href="#" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재승인 관리</a></li>
-    </div>
-
-    <!-- 외환 -->
-    <div class="nav-group">
-      <div class="nav-group-label">외환</div>
-      <li><a href="#" class="menu-item"><i class="fa-solid fa-coins"></i> 외환 및 환전 관리</a></li>
-    </div>
-
-    <!-- 회원 -->
-    <div class="nav-group">
-      <div class="nav-group-label">회원</div>
-      <li><a href="#" class="menu-item"><i class="fa-solid fa-users-gear"></i> 회원 및 보안 관리</a></li>
-    </div>
-
-    <!-- 시스템 -->
-    <div class="nav-group">
-      <div class="nav-group-label">시스템</div>
-      <li><a href="#" class="menu-item"><i class="fa-solid fa-magnifying-glass"></i> 검색어 관리</a></li>
-      <li><a href="#" class="menu-item"><i class="fa-solid fa-receipt"></i> 시스템 운영 로그</a></li>
-      <li><a href="admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
-    </div>
-
+    <li class="menu-section-title">메인</li>
+    <li><a href="/admin/dashboard" class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+    <li><a href="/admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
+    <li class="menu-section-title">상품 관리</li>
+    <li><a href="/admin/productRegisterPage" class="menu-item active"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
+    <li><a href="/admin/productListPage" class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
+    <li class="menu-section-title">업무</li>
+    <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
+    <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
+    <li><a href="/admin/account" class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
+    <li class="menu-section-title">관리</li>
+    <li><a href="/admin/members" class="menu-item"><i class="fa-solid fa-users-gear"></i> 회원/관리자 관리</a></li>
+    <li><a href="/admin/logs" class="menu-item"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
+    <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
   </ul>
-
   <div class="sidebar-footer">
-    <p>&copy; 2024 BNK Busan Bank</p>
+    <p>2024 BNK Busan Bank</p>
     <p>IT Strategy Team</p>
   </div>
 </div>
 
-<!-- ═══════════════ 헤더 ═══════════════ -->
+<!-- HEADER -->
 <div class="header">
-  <div class="header-title">상품 등록</div>
+  <div class="header-title">상품 관리</div>
+  <div class="header-breadcrumb">
+    <i class="fa-solid fa-chevron-right"></i>
+    <span>상품 등록</span>
+  </div>
   <div class="header-right">
-    <div class="user-profile">
-      <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
-      <span th:text="${session.name + ' 관리자'}">관리자</span>
-      <i class="fa-solid fa-chevron-down" style="font-size:12px;"></i>
+    <div class="header-user">
+      <div class="hu-avatar"><i class="fa-solid fa-user-tie"></i></div>
+      <span th:text="'관리자 ' + ${admin.name} + ' 님'">홍길동 관리자</span>
+      <i class="fa-solid fa-chevron-down hu-chevron"></i>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════ 메인 콘텐츠 ═══════════════ -->
+<!-- MAIN -->
 <div class="main-content">
 
-  <div class="content-header">
-    <h1 class="content-title">상품 등록</h1>
-    <p class="content-subtitle">새로운 금융 상품의 정보를 입력하고 등록하세요.</p>
+  <div class="page-header">
+    <h1 class="page-title">상품 등록</h1>
+    <p class="page-subtitle">새로운 금융 상품의 정보를 입력하고 등록하세요.</p>
   </div>
 
   <form th:action="@{/admin/productRegister}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="approve_status" id="approve_status" th:value="${approve_status}">
 
-    <!-- ── 기본 정보 카드 ── -->
-    <div class="edit-card">
-      <div class="card-section-title">
+    <!-- 기본 정보 -->
+    <div class="card">
+      <div class="card-header">
         <i class="fa-solid fa-circle-info"></i>
         기본 정보
       </div>
-
       <div class="form-grid">
-
         <div class="form-group">
-          <label>상품명</label>
+          <label>상품명 <span style="color:var(--primary)">*</span></label>
           <div class="input-wrap">
             <i class="fa-solid fa-tag"></i>
             <input type="text" name="product_name" placeholder="상품명을 입력하세요" required>
           </div>
         </div>
-
         <div class="form-group">
           <label>상품 타입</label>
           <div class="input-wrap">
@@ -114,7 +95,6 @@
             </select>
           </div>
         </div>
-
         <div class="form-group">
           <label>등록자</label>
           <div class="input-wrap">
@@ -122,37 +102,43 @@
             <input type="text" th:value="${session.name}" readonly placeholder="등록자">
           </div>
         </div>
-
       </div>
     </div>
 
-    <!-- ── 금액 / 기간 카드 ── -->
-    <div class="edit-card">
-      <div class="card-section-title">
-        <i class="fa-solid fa-wallet"></i>
+    <!-- 금액 / 기간 -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fa-solid fa-won-sign"></i>
         금액 / 기간
       </div>
-
-      <div class="form-grid">
-
+      <div class="form-grid col3">
         <div class="form-group">
-          <label>최소 가입 금액</label>
+          <label>최소 가입 금액 <span style="color:var(--primary)">*</span></label>
           <div class="input-wrap">
-            <i class="fa-solid fa-won-sign"></i>
-            <input type="number" name="min_amount" placeholder="0">
+            <i class="fa-solid fa-circle-arrow-down"></i>
+            <input type="number" name="min_amount" placeholder="0" required>
           </div>
         </div>
-
         <div class="form-group">
-          <label>최대 가입 금액</label>
+          <label>최대 가입 금액 <span style="color:var(--primary)">*</span></label>
           <div class="input-wrap">
-            <i class="fa-solid fa-won-sign"></i>
-            <input type="number" name="max_amount" placeholder="0">
+            <i class="fa-solid fa-circle-arrow-up"></i>
+            <input type="number" name="max_amount" placeholder="0" required>
           </div>
         </div>
-
         <div class="form-group">
-          <label>최소 가입 기간</label>
+          <label>금리 분류 <span style="color:var(--primary)">*</span></label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-percent"></i>
+            <select name="rate_category">
+              <option value="PREFERENTIAL">우대</option>
+              <option value="FIXED">고정</option>
+              <option value="CORP">변동</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>최소 가입 기간 <span style="color:var(--primary)">*</span></label>
           <div class="input-wrap">
             <i class="fa-solid fa-calendar-minus"></i>
             <select name="min_period_month">
@@ -163,9 +149,8 @@
             </select>
           </div>
         </div>
-
         <div class="form-group">
-          <label>최대 가입 기간</label>
+          <label>최대 가입 기간 <span style="color:var(--primary)">*</span></label>
           <div class="input-wrap">
             <i class="fa-solid fa-calendar-plus"></i>
             <select name="max_period_month">
@@ -176,7 +161,6 @@
             </select>
           </div>
         </div>
-
         <div class="form-group">
           <label>이자 지급 방식</label>
           <div class="input-wrap">
@@ -187,7 +171,6 @@
             </select>
           </div>
         </div>
-
         <div class="form-group">
           <label>환율 적용 기준</label>
           <div class="input-wrap">
@@ -198,36 +181,20 @@
             </select>
           </div>
         </div>
-
-        <div class="form-group">
-          <label>금리 분류</label>
-          <div class="input-wrap">
-            <i class="fa-solid fa-percent"></i>
-            <select name="rate_category">
-              <option value="">선택안함</option>
-              <option value="PREFERENTIAL">우대</option>
-              <option value="FIXED">고정</option>
-              <option value="CORP">변동</option>
-            </select>
-          </div>
-        </div>
-
       </div>
     </div>
 
-    <!-- ── 대상 고객 카드 ── -->
-    <div class="edit-card">
-      <div class="card-section-title">
+    <!-- 대상 고객 -->
+    <div class="card">
+      <div class="card-header">
         <i class="fa-solid fa-users"></i>
         대상 고객
       </div>
-
       <div class="form-grid">
-
         <div class="form-group">
-          <label>대상 고객 대분류</label>
+          <label> 대상 고객 대분류<span style="color:var(--primary)">*</span></label>
           <div class="input-wrap">
-            <i class="fa-solid fa-people-group"></i>
+            <i class="fa-solid fa-sitemap"></i>
             <select name="target_large">
               <option value="ALL">전체</option>
               <option value="PERSONAL">개인</option>
@@ -235,136 +202,132 @@
             </select>
           </div>
         </div>
-
         <div class="form-group">
-          <label>대상 고객</label>
+          <label>대상 고객 세분류 <span style="color:var(--primary)">*</span></label>
           <div class="input-wrap">
-            <i class="fa-solid fa-person-circle-check"></i>
-            <select name="target_detail">
+            <i class="fa-solid fa-user-tag"></i>
+            <select name="target_detail" required>
               <option value="">선택안함</option>
               <option value="YOUTH">청년</option>
               <option value="SENIOR">시니어</option>
             </select>
           </div>
         </div>
-
       </div>
     </div>
 
-    <!-- ── 상품 설명 카드 ── -->
-    <div class="edit-card">
-      <div class="card-section-title">
-        <i class="fa-solid fa-file-lines"></i>
+    <!-- 상품 설명 -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fa-solid fa-align-left"></i>
         상품 설명
       </div>
-
       <div class="form-group">
         <label>상품 설명</label>
-        <div class="textarea-wrap">
-          <i class="fa-solid fa-align-left"></i>
+        <div class="input-wrap textarea-wrap">
+          <i class="fa-solid fa-pen-clip"></i>
           <textarea name="product_desc" placeholder="상품에 대한 상세 설명을 입력하세요."></textarea>
         </div>
       </div>
     </div>
 
-    <!-- ── PDF 업로드 카드 ── -->
-    <div class="edit-card">
-      <div class="card-section-title">
+    <!-- PDF 업로드 -->
+    <div class="card">
+      <div class="card-header">
         <i class="fa-solid fa-file-pdf"></i>
         PDF 업로드
       </div>
-
       <div class="file-upload-grid">
-
-        <div class="file-group">
-          <div class="file-label-text">기본 약관 PDF</div>
-          <div class="file-upload-box">
-            <i class="fa-solid fa-file-arrow-up"></i>
-            <div class="file-text">
-              클릭하여 파일 선택
-              <span>.pdf 파일만 업로드 가능합니다</span>
+        <div>
+          <div class="file-upload-area">
+            <input type="file" name="basicTermsFile" accept=".pdf" onchange="showFileName(this,'basic')">
+            <i class="fa-solid fa-file-arrow-up file-upload-icon"></i>
+            <div>
+              <div class="file-upload-label">기본 약관 PDF</div>
+              <div class="file-upload-hint">클릭하여 PDF 선택</div>
+              <div class="file-name-display" id="fname-basic">미선택</div>
             </div>
-            <input type="file" name="basicTermsFile" accept=".pdf">
           </div>
         </div>
-
-        <div class="file-group">
-          <div class="file-label-text">카테고리 약관 PDF</div>
-          <div class="file-upload-box">
-            <i class="fa-solid fa-file-arrow-up"></i>
-            <div class="file-text">
-              클릭하여 파일 선택
-              <span>.pdf 파일만 업로드 가능합니다</span>
+        <div>
+          <div class="file-upload-area">
+            <input type="file" name="categoryTermsFile" accept=".pdf" onchange="showFileName(this,'category')">
+            <i class="fa-solid fa-file-arrow-up file-upload-icon"></i>
+            <div>
+              <div class="file-upload-label">카테고리 약관 PDF</div>
+              <div class="file-upload-hint">클릭하여 PDF 선택</div>
+              <div class="file-name-display" id="fname-category">미선택</div>
             </div>
-            <input type="file" name="categoryTermsFile" accept=".pdf">
           </div>
         </div>
-
-        <div class="file-group">
-          <div class="file-label-text">특별 약관 PDF</div>
-          <div class="file-upload-box">
-            <i class="fa-solid fa-file-arrow-up"></i>
-            <div class="file-text">
-              클릭하여 파일 선택
-              <span>.pdf 파일만 업로드 가능합니다</span>
+        <div>
+          <div class="file-upload-area">
+            <input type="file" name="specialTermsFile" accept=".pdf" onchange="showFileName(this,'special')">
+            <i class="fa-solid fa-file-arrow-up file-upload-icon"></i>
+            <div>
+              <div class="file-upload-label">특별 약관 PDF</div>
+              <div class="file-upload-hint">클릭하여 PDF 선택</div>
+              <div class="file-name-display" id="fname-special">미선택</div>
             </div>
-            <input type="file" name="specialTermsFile" accept=".pdf">
           </div>
         </div>
-
-        <div class="file-group">
-          <div class="file-label-text">상품 설명서 PDF</div>
-          <div class="file-upload-box">
-            <i class="fa-solid fa-file-arrow-up"></i>
-            <div class="file-text">
-              클릭하여 파일 선택
-              <span>.pdf 파일만 업로드 가능합니다</span>
+        <div>
+          <div class="file-upload-area">
+            <input type="file" name="productGuideFile" accept=".pdf" onchange="showFileName(this,'guide')">
+            <i class="fa-solid fa-file-arrow-up file-upload-icon"></i>
+            <div>
+              <div class="file-upload-label">상품 설명서 PDF</div>
+              <div class="file-upload-hint">클릭하여 PDF 선택</div>
+              <div class="file-name-display" id="fname-guide">미선택</div>
             </div>
-            <input type="file" name="productGuideFile" accept=".pdf">
           </div>
         </div>
-
       </div>
     </div>
 
-    <!-- ── 버튼 카드 ── -->
-    <div class="edit-card">
-      <div class="submit-area">
-        <a href="/admin/productList" class="btn btn-cancel">
-          <i class="fa-solid fa-xmark"></i>
-          취소
+    <!-- 하단 버튼 -->
+    <div class="form-actions">
+      <div class="left">
+        <a href="/admin/productListPage" class="btn btn-ghost">
+          <i class="fa-solid fa-arrow-left"></i> 취소
         </a>
-        <button type="submit" class="btn btn-outline"
-                onclick="document.getElementById('approve_status').value='SAVE'">
-          <i class="fa-solid fa-floppy-disk"></i>
-          임시 저장
-        </button>
-        <button type="submit" class="btn btn-primary"
-                onclick="document.getElementById('approve_status').value='SUBMIT'">
-          <i class="fa-solid fa-paper-plane"></i>
-          결재 제출
-        </button>
       </div>
+      <button type="submit" class="btn btn-outline btn-lg"
+              onclick="document.getElementById('approve_status').value='SAVE'">
+        <i class="fa-solid fa-floppy-disk"></i> 임시 저장
+      </button>
+      <button type="submit" class="btn btn-primary btn-lg"
+              onclick="document.getElementById('approve_status').value='SUBMIT'">
+        <i class="fa-solid fa-paper-plane"></i> 결재 제출
+      </button>
     </div>
 
   </form>
 </div>
 
 <script>
-  /* 파일 선택 시 파일명 표시 */
-  document.querySelectorAll('.file-upload-box input[type="file"]').forEach(function(input) {
-    input.addEventListener('change', function() {
-      var box = this.closest('.file-upload-box');
-      var textEl = box.querySelector('.file-text');
-      if (this.files.length > 0) {
-        textEl.innerHTML = '<strong>' + this.files[0].name + '</strong><span>파일이 선택되었습니다</span>';
-        box.style.borderColor = 'var(--primary-color)';
-        box.style.backgroundColor = '#FFF8F8';
-        box.querySelector('i').style.color = 'var(--primary-color)';
-      }
-    });
+  function showFileName(input, key) {
+    const display = document.getElementById('fname-' + key);
+    if (input.files && input.files.length > 0) {
+      display.textContent = input.files[0].name;
+      display.style.color = 'var(--primary)';
+    } else {
+      display.textContent = '미선택';
+      display.style.color = '';
+    }
+  }
+
+  document.querySelector("form").addEventListener("submit", function (e) {
+
+    const form = e.target;
+
+    if (!form.checkValidity()) {
+      e.preventDefault();
+      alert("필수 항목을 모두 입력해 주세요.");
+      form.reportValidity(); // 브라우저 기본 빨간 메시지 표시
+    }
+
   });
 </script>
-
 </body>
 </html>

@@ -12,4 +12,6 @@ public interface ILoginDAO {
 	UserLoginDTO selectUser(@Param("login_id")String id);
 	// 기업회원테이블에서 검색
 	UserLoginDTO selectCompanyUser(@Param("login_id")String id);
+	// 기업 검색
+	String selectCompany(@Param("com_no")int com_no);
 }
