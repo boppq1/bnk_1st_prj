@@ -1,10 +1,140 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>해외즉시자동송금서비스</title>
+
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">
+                해외즉시자동송금서비스(BNK-WESTERNUNION AUTO SEND)
+            </h1>
+
+            <div class="foreign-notice-box">
+                <p>
+                    WESTERN UNION 망을 이용하여 유학생 해외체재비, 외국인 급여소득 등
+                    주기적인 송금 및 장래에 발생할 거래의 예약송금을 처리하는 업무로서
+                    약정된 날짜에 지정계좌 잔액이 약정금액 이상일 경우 해당 약정금액
+                    또는 날짜 상관없이 최소지정금액 이상 입금시 잔액 전체를 자동 출금하여
+                    송금하는 해외송금서비스입니다.
+                </p>
+            </div>
+
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">특징</h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        <span class="label">신속성</span>
+                        수취인은 은행계좌없이 전세계 200여개국, 50만개 웨스턴유니언 가맹점
+                        등을 통하여 실시간(30분 이내)으로 송금 대전을 찾을 수 있습니다.
+                    </li>
+
+                    <li>
+                        <span class="label">편리성</span>
+                        송금신청인은 최초 한번만 은행을 방문해 사전정보를 등록한 후
+                        지정한 통장에 입금만 하면 해외송금이 자동으로 이루어집니다.
+                    </li>
+                </ul>
+
+            </section>
+
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">서비스 주요내용</h2>
+
+                <div class="foreign-sub-title2">▪ 송금한도</div>
+
+                <table class="info-table">
+                    <thead>
+                    <tr>
+                        <th rowspan="2">구분</th>
+                        <th colspan="2">수취국가</th>
+                    </tr>
+                    <tr>
+                        <th>일반 국가</th>
+                        <th>영국, 말레이시아, 나이지리아</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>건별 한도</td>
+                        <td rowspan="2">미화 7천불 이내</td>
+                        <td rowspan="2">미화 1천불 이내</td>
+                    </tr>
+
+                    <tr>
+                        <td>일별 한도</td>
+                    </tr>
+
+                    <tr>
+                        <td>연간 한도</td>
+                        <td colspan="2">송금 가능 지정거래 항목별 연간한도 적용</td>
+                    </tr>
+
+                    <tr>
+                        <td>송금가능항목</td>
+                        <td colspan="2" class="table-left">
+                            - 거주자(외국인거주자 제외)의 무증빙해외송금<br>
+                            - 해외유학생(해외체재자)경비 지급 (지정항목:02)<br>
+                            - 외국인 또는 비거주자의 국내보수 또는 소득금액 지급 (지정항목:08)
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="foreign-sub-title2 mt40">▪ 수수료표</div>
+
+                <table class="info-table">
+                    <thead>
+                    <tr>
+                        <th>송금액</th>
+                        <th>수수료</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>USD 3,000 이하</td>
+                        <td>USD 6</td>
+                    </tr>
+
+                    <tr>
+                        <td>USD 3,000 초과 ~ USD 7,000 이하</td>
+                        <td>USD 12</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

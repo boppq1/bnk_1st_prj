@@ -1,10 +1,129 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>원화(KRW)해외송금서비스</title>
+
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">
+                원화(KRW)해외송금서비스
+            </h1>
+
+            <div class="foreign-notice-box">
+                <p>
+                    경상거래 대금을 대한민국 원화(KRW)로 송금하고
+                    해외수취인이 원화로 수취하는 송금서비스입니다.
+                </p>
+            </div>
+
+            <!-- 서비스 주요내용 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    서비스 주요내용
+                </h2>
+
+                <table class="info-table">
+
+                    <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>내용</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr>
+                        <td>해외 수취인</td>
+                        <td>해외은행에 원화(KRW)계좌를 보유한 개인 및 법인</td>
+                    </tr>
+
+                    <tr>
+                        <td>송금통화</td>
+                        <td>대한민국 원화(KRW)</td>
+                    </tr>
+
+                    <tr>
+                        <td>송금 가능 시간</td>
+                        <td>09:00 ~ 16:00</td>
+                    </tr>
+
+                    <tr>
+                        <td>송금한도</td>
+                        <td>제한 없음</td>
+                    </tr>
+
+                    <tr>
+                        <td>수취 가능국가</td>
+                        <td>중국</td>
+                    </tr>
+
+                    <tr>
+                        <td>송금 가능 항목</td>
+                        <td>경상거래 대가(무역 및 서비스 대금)</td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </section>
+
+            <!-- 유의사항 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    유의사항
+                </h2>
+
+                <ul class="deposit-list">
+
+                    <li>
+                        송금 수수료는 기존 해외 당발송금 수수료와 동일합니다.
+                        (대미환산금액 기준)
+                    </li>
+
+                    <li>
+                        반드시 수취계좌가 KRW계좌이어야 합니다.
+                    </li>
+
+                    <li>
+                        원화표시 경상거래 대금만 송금이 가능하므로
+                        송금 증빙서류인 매매계약서, INVOICE 등에
+                        원화(KRW)로 금액이 기재되어 있어야 합니다.
+                    </li>
+
+                </ul>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

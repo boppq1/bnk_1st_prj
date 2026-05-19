@@ -56,24 +56,105 @@ public class ForeignViewController {
         return "foreign/deposit/foreignAccountOpen";
     }
 
-    // =========================
-    // 외화송금
-    // =========================
-
-    @GetMapping("/remittance/remittanceService")
-    public String remittanceService() {
-        return "foreign/remittance/remittanceService";
-    }
-
-    @GetMapping("/remittance/remittanceSend")
-    public String remittanceSend() {
-        return "foreign/remittance/remittanceSend";
-    }
-
-    @GetMapping("/remittance/remittanceReceive")
-    public String remittanceReceive() {
-        return "foreign/remittance/remittanceReceive";
-    }
+	 // =========================
+	 // 외화송금
+	 // =========================
+	
+	 // 인터넷외화송금서비스
+	 @GetMapping("/remittance/remittanceInternet")
+	 public String remittanceInternet() {
+	     return "foreign/remittance/remittanceInternet";
+	 }
+	
+	 // BNK공동해외송금서비스
+	 @GetMapping("/remittance/remittanceBNKGlobal")
+	 public String remittanceBNKGlobal() {
+	     return "foreign/remittance/remittanceBNKGlobal";
+	 }
+	
+	 // 해외즉시송금서비스
+	 @GetMapping("/remittance/remittanceFast")
+	 public String remittanceFast() {
+	     return "foreign/remittance/remittanceFast";
+	 }
+	
+	 // 해외즉시자동송금서비스
+	 @GetMapping("/remittance/remittanceAuto")
+	 public String remittanceAuto() {
+	     return "foreign/remittance/remittanceAuto";
+	 }
+	
+	 // 중국지역스피드송금서비스
+	 @GetMapping("/remittance/remittanceChina")
+	 public String remittanceChina() {
+	     return "foreign/remittance/remittanceChina";
+	 }
+	
+	 @GetMapping("/remittance/remittanceForeignAuto")
+	 public String remittanceForeignAuto() {
+	     return "foreign/remittance/remittanceForeignAuto";
+	 }
+	 
+	 // 이종통화송금서비스
+	 @GetMapping("/remittance/remittanceCurrency")
+	 public String remittanceCurrency() {
+	     return "foreign/remittance/remittanceCurrency";
+	 }
+	
+	 // 지정환율자동송금서비스
+	 @GetMapping("/remittance/remittanceRateAuto")
+	 public String remittanceRateAuto() {
+	     return "foreign/remittance/remittanceRateAuto";
+	 }
+	
+	 // 모바일송금서비스
+	 @GetMapping("/remittance/remittanceMobile")
+	 public String remittanceMobile() {
+	     return "foreign/remittance/remittanceMobile";
+	 }
+	
+	 // 해외송금 E-mail 서비스
+	 @GetMapping("/remittance/remittanceEmail")
+	 public String remittanceEmail() {
+	     return "foreign/remittance/remittanceEmail";
+	 }
+	
+	 // 원화(KRW) 해외송금서비스
+	 @GetMapping("/remittance/remittanceKRW")
+	 public String remittanceKRW() {
+	     return "foreign/remittance/remittanceKRW";
+	 }
+	
+	 // =========================
+	 // 외화송금보내기
+	 // =========================
+	
+	 // 송금안내
+	 @GetMapping("/remittance/remittanceGuide")
+	 public String remittanceGuide() {
+	     return "foreign/remittance/remittanceGuide";
+	 }
+	
+	 // 송금방법
+	 @GetMapping("/remittance/remittanceMethod")
+	 public String remittanceMethod() {
+	     return "foreign/remittance/remittanceMethod";
+	 }
+	
+	 // 국가별송금시필요정보
+	 @GetMapping("/remittance/remittanceCountryInfo")
+	 public String remittanceCountryInfo() {
+	     return "foreign/remittance/remittanceCountryInfo";
+	 }
+	
+	 // =========================
+	 // 외화송금받기
+	 // =========================
+	
+	 @GetMapping("/remittance/remittanceReceive")
+	 public String remittanceReceive() {
+	     return "foreign/remittance/remittanceReceive";
+	 }
 
     // =========================
     // 환전

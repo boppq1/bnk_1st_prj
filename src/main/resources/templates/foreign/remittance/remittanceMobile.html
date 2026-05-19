@@ -1,10 +1,135 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>모바일송금서비스</title>
+
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">모바일송금서비스</h1>
+
+            <div class="foreign-notice-box">
+                <p>
+                    고객님의 모바일폰을 이용하여 사전에 영업점 방문하여 등록하신
+                    수취인 정보에 따라 해외 외화 송금하는 서비스입니다.
+                </p>
+            </div>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">서비스 이용방법</h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        모바일해외송금서비스를 이용하시고자 하는 고객님은
+                        사전에 거래하시는 영업점 방문하여
+                        “외화송금신청서”(당행 소정 양식)를 작성하여
+                        서비스 이용 신청한 후 가능합니다.
+                    </li>
+                    <li>
+                        모바일 해외송금 신청시 송금인 및 수취인의 정보
+                        (수취은행, 성명, 계좌번호 등)를 제공하여야 합니다.
+                    </li>
+                    <li>
+                        거래 외국환은행 지정 사전 확인·신고(수리)가 필요한 경우
+                        동 절차 완료 후 송금 처리하여야 합니다.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">이용가능 고객</h2>
+
+                <p class="deposit-desc">
+                    부산은행 인터넷뱅킹 가입 고객으로서 개인(국민인 거주자)만 가능
+                </p>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">이용가능 통화</h2>
+
+                <p class="deposit-desc">
+                    노르웨이 크로네(NOK), 뉴질랜드 달러(NZD), 덴마크 크로네(DKK),
+                    미국달러(USD), 스위스프랑(CHF), 스웨덴 크로나(SEK),
+                    싱가포르 달러(SGD), 아랍에미레이트 디르함(AED),
+                    영국 파운드(GBP), 유럽연합 유로(EUR),
+                    인도네시아 루피아(IDR), 일본 엔(JPY),
+                    캐나다 달러(CAD), 태국 바트(THB),
+                    호주달러(AUD), 홍콩 달러(HKD)
+                </p>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">송금대상 및 송금한도</h2>
+
+                <table class="info-table">
+                    <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>송금한도</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>소액 송금</td>
+                        <td>1회 미화 5천불 상당액 이하</td>
+                    </tr>
+
+                    <tr>
+                        <td>증빙서류미제출 송금(증여성 송금)</td>
+                        <td>1회 미화 1만불 상당액 이하, 연간 송금 누계액 미화 10만불 상당액 이하</td>
+                    </tr>
+
+                    <tr>
+                        <td>해외유학생 및 체재자 송금</td>
+                        <td>1회 미화 10만불 상당액 이하</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">이용가능 시간</h2>
+
+                <p class="deposit-desc">
+                    은행 영업일 영업 시간 중 (09:00 ~ 16:00)
+                </p>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">환율 및 수수료 우대</h2>
+
+                <ul class="deposit-list">
+                    <li>환율 30% 우대 적용</li>
+                    <li>전신료 3,000원 일괄 우대 적용</li>
+                </ul>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>
