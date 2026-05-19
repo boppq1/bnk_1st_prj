@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>회사 정보 전체 업데이트</title>
+</head>
+<body>
+
+<h1>사업자등록번호 업데이트</h1>
+<hr>
+
+<!-- 버튼 딱 하나만 배치 -->
+<div>
+  <button type="button" id="btnSyncAll">🔄 국세청 데이터 전체 업데이트</button>
+
+  <!-- 진행 상황 및 결과 메세지 -->
+  <div id="syncResult"></div>
+</div>
+
+<script th:inline="javascript">
+  document.getElementById('btnSyncAll').addEventListener('click', function() {
+    const resultMessage = document.getElementById('syncResult');
+    const btn = this;
+
+    // 중복 클릭 방지 및 상태 표시
+    btn.disabled = true;
+    btn.innerText = '업데이트 중... (창을 닫지 마세요)';
+    resultMessage.style.color = '#4e5968';
+    resultMessage.innerText = 'DB의 회사 목록을 기반으로 국세청 최신 정보를 가져와 저장하는 중입니다...';
+
+    // 백엔드 컨트롤러 호출
+    fetch('/api/company/sync-all', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+            .then(response => {
+              if (!response.ok) {
+                return response.text().then(text => { throw new Error(text) });
+              }
+              return response.text();
+            })
+            .then(message => {
+              // 성공 메시지 출력
+              resultMessage.style.color = '#2da44e';
+              resultMessage.innerHTML = `✅ <b>성공!</b> ${message}`;
+            })
+            .catch(error => {
+              // 실패 메시지 출력
+              resultMessage.style.color = '#f04452';
+              resultMessage.innerText = '❌ 실패: ' + error.message;
+            })
+            .finally(() => {
+              // 버튼 복구
+              btn.disabled = false;
+              btn.innerText = '🔄 국세청 데이터 전체 업데이트';
+            });
+  });
+</script>
+
+</body>
+</html>

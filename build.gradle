@@ -25,6 +25,9 @@ dependencies {
 	
 	// cache
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
+
+	// API
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	
 	// JWT 관련 의존성
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.5'     // JWT 인터페이스 및 API	
