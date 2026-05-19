@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.search.SearchDao">
+
+	<resultMap id="searchMap"
+		type="com.example.demo.search.SearchDto">
+		<id column="SUGGESTED_NO" property="suggestedNo" />
+		<result column="ROLE_TYPE" property="roleType" />
+		<result column="KEYWORD" property="keyword" />
+		<result column="SEARCH_VOLUME" property="searchVolume" />
+	</resultMap>
+
+	<select id="selectAll" resultMap="searchMap">
+		SELECT SUGGESTED_NO
+		, ROLE_TYPE
+		, KEYWORD
+		, SEARCH_VOLUME
+		FROM SUGGESTED_SEARCH
+		ORDER BY SEARCH_VOLUME DESC
+	</select>
+
+	<select id="selectByKeyword" resultMap="searchMap">
+		SELECT SUGGESTED_NO
+		, ROLE_TYPE
+		, KEYWORD
+		, SEARCH_VOLUME
+		FROM SUGGESTED_SEARCH
+		WHERE KEYWORD LIKE '%' || #{query} || '%'
+		ORDER BY SEARCH_VOLUME DESC
+	</select>
+
+</mapper>
