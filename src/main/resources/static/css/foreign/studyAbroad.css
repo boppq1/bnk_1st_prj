@@ -1,5 +1,5 @@
 /* ===================================
-   해외유학서비스 공통
+   공통
 =================================== */
 
 .service-container {
@@ -8,17 +8,17 @@
     padding-top: 8px;
 }
 
-/* ── 메인 제목 ── */
+/* 메인 제목 */
 .main-title {
     font-size: 22px;
     font-weight: 700;
     color: #111;
-    margin-bottom: 28px;
-    padding-bottom: 14px;
+    margin: 0 0 32px;
+    padding-bottom: 16px;
     border-bottom: 2px solid #e31b23;
 }
 
-/* ── 섹션 제목 ── */
+/* 섹션 제목 — studyGuide / studySupport */
 .section-title {
     font-size: 15px;
     font-weight: 700;
@@ -30,6 +30,33 @@
     border-radius: 0 6px 6px 0;
 }
 
+/* 강조 텍스트 */
+.highlight-red {
+    color: #e31b23;
+    font-weight: 700;
+}
+
+/* 링크 버튼 */
+.foreign-link-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 22px;
+    background: #fff;
+    border: 1.5px solid #e31b23;
+    border-radius: 6px;
+    color: #e31b23;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.18s, color 0.18s;
+}
+
+.foreign-link-btn:hover {
+    background: #e31b23;
+    color: #fff;
+}
+
 /* ===================================
    해외유학서비스안내 (studyGuide)
 =================================== */
@@ -39,7 +66,6 @@
     margin-bottom: 44px;
 }
 
-/* 서비스 리스트 */
 .service-list {
     padding-left: 0;
     list-style: none;
@@ -81,6 +107,14 @@
     color: #555;
     margin: 2px 0;
     padding-left: 12px;
+}
+
+.service-section .service-small-text {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #888;
+    line-height: 1.6;
 }
 
 /* 유학원 카드 */
@@ -173,7 +207,6 @@
     padding-bottom: 0;
 }
 
-/* 소개 텍스트 */
 .intro-text {
     font-size: 13px;
     color: #555;
@@ -181,7 +214,6 @@
     margin-bottom: 18px;
 }
 
-/* 로고 박스 */
 .support-logo-box {
     display: inline-flex;
     align-items: center;
@@ -215,7 +247,6 @@
     object-fit: contain;
 }
 
-/* 주요서비스 소제목 */
 .sub-title {
     font-size: 13px;
     font-weight: 700;
@@ -226,15 +257,13 @@
     line-height: 1.4;
 }
 
-/* 서비스 항목 묶음 */
 .service-detail {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-/* 항목 카드 — h4+p를 하나로 묶기 위해 wrapper처럼 활용 */
-.service-detail h4 {
+.support-section .service-detail h4 {
     display: flex;
     align-items: center;
     gap: 7px;
@@ -242,14 +271,14 @@
     font-weight: 700;
     color: #111;
     margin: 0;
-    padding: 10px 14px 6px 14px;
+    padding: 10px 14px 6px;
     background: #fff;
     border: 1px solid #ebebeb;
     border-radius: 8px 8px 0 0;
     border-bottom: none;
 }
 
-.service-detail h4::before {
+.support-section .service-detail h4::before {
     content: '';
     width: 3px;
     height: 12px;
@@ -258,14 +287,220 @@
     flex-shrink: 0;
 }
 
-.service-detail p {
+.support-section .service-detail p {
     font-size: 12px;
     color: #666;
     line-height: 1.75;
     margin: 0;
-    padding: 8px 14px 10px 14px;
+    padding: 8px 14px 10px;
     background: #f9fafb;
     border: 1px solid #ebebeb;
     border-radius: 0 0 8px 8px;
     border-top: 1px dashed #e8e8e8;
+}
+
+/* ===================================
+   외화예금안내 / 당행외화이체 공통
+   (foreignDeposit / foreignTransfer)
+=================================== */
+
+/* 섹션 묶음 */
+.deposit-section {
+    margin-bottom: 36px;
+}
+
+/* 섹션 제목 — 빨간 좌측 bar + 흰 배경 */
+.deposit-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 20px;
+    padding: 0 0 0 12px;
+    border-left: 3px solid #e31b23;
+    line-height: 1.4;
+    background: none;
+}
+
+/* bullet 리스트 */
+.deposit-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.deposit-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: #444;
+    line-height: 1.8;
+    padding: 14px 18px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+}
+
+.deposit-list li::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    margin-top: 10px;
+    background: #e31b23;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* 개인/법인 라벨 */
+.deposit-list .label {
+    font-weight: 700;
+    color: #111;
+    margin-right: 2px;
+}
+
+/* 소주석 */
+.deposit-sub-note {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.65;
+}
+
+/* 안내 박스 */
+.deposit-notice-box {
+    margin-top: 28px;
+    padding: 16px 20px;
+    background: #fff9f9;
+    border: 1px solid #fad4d4;
+    border-left: 3px solid #e31b23;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    line-height: 1.85;
+    color: #555;
+}
+
+/* 설명 텍스트 */
+.deposit-desc {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.85;
+    margin: 0 0 20px;
+    padding: 14px 18px;
+    background: #fff;
+    border: 1px solid #efefef;
+    border-radius: 8px;
+}
+
+/* ===================================
+   당행외화이체 표
+=================================== */
+
+.foreign-transfer-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 4px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e9e9e9;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+}
+
+/* 헤더 */
+.foreign-transfer-table thead th {
+    padding: 14px 16px;
+    background: #fff5f5;
+    font-size: 13px;
+    font-weight: 700;
+    color: #111;
+    text-align: center;
+    border-bottom: 2px solid #e31b23;
+    border-right: 1px solid #e9e9e9;
+    vertical-align: middle;
+}
+
+.foreign-transfer-table thead th:last-child {
+    border-right: none;
+}
+
+/* tbody 셀 */
+.foreign-transfer-table tbody td {
+    padding: 13px 16px;
+    font-size: 13px;
+    color: #444;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+    background: #fff;
+}
+
+.foreign-transfer-table tbody td:last-child {
+    border-right: none;
+}
+
+.foreign-transfer-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* 출금/본인·타인 구분 열 */
+.foreign-transfer-table tbody td:nth-child(1),
+.foreign-transfer-table tbody td:nth-child(2) {
+    background: #fafafa;
+    font-weight: 600;
+    color: #333;
+}
+
+/* 가능 */
+.foreign-transfer-table tbody td.possible {
+    color: #1a7c3e;
+    font-weight: 700;
+}
+
+/* 불가 */
+.foreign-transfer-table tbody td.impossible {
+    color: #e31b23;
+    font-weight: 700;
+}
+
+/* 버튼 wrap */
+.foreign-btn-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+/* 공통 테이블 */
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    background: #fff;
+}
+
+.info-table th {
+    width: 180px;
+    background: #f7f7f8;
+    border: 1px solid #e9e9e9;
+    padding: 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #111;
+    text-align: left;
+}
+
+.info-table td {
+    border: 1px solid #e9e9e9;
+    padding: 14px;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.7;
 }

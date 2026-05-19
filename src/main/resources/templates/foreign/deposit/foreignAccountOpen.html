@@ -1,10 +1,150 @@
 <!DOCTYPE html>
-<html>
-<html xmlns:th="http://www.thymeleaf.org">
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BNK 부산은행 외환</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <!-- 사이드바 -->
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <!-- 본문 -->
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <!-- 상단 제목 -->
+            <h1 class="main-title">해외외화예금개설</h1>
+
+            <!-- 거래 절차 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    거주자의 해외예금 거래 절차
+                </h2>
+
+                <ul class="deposit-list">
+
+                    <li>
+                        <div>
+                            <span class="label">
+                                거래 외국환은행 지정 및 신고
+                            </span>
+
+                            <p>
+                                거주자가 해외은행과 외화예금 거래를 하고자 하는 경우에는
+                                당행을 거래 외국환 은행으로 지정하시고
+                                해외예금 거래 신고를 하시면 됩니다.
+                            </p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div>
+                            <span class="label">
+                                해외 금융기관 계좌 개설
+                            </span>
+
+                            <p>
+                                계좌를 개설하고자 하는 해당 국가의 규정에 따라
+                                개설하시면 됩니다.
+                            </p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div>
+                            <span class="label">
+                                해외예금 거래 자금 송금
+                            </span>
+
+                            <p>
+                                국내에서 자금을 해외예금 계좌에 송금하고자 하는 경우
+                                당행을 통하여 송금하시면 됩니다.
+                            </p>
+
+                            <p class="deposit-sub-note">
+                                - 건당(동일자, 동일인 기준) 미화 5만불 상당액을 초과하여
+                                송금하고자 하는 경우에는 한국은행에 신고하여야 합니다.
+                            </p>
+
+                            <p class="deposit-sub-note">
+                                - 다만, 기관투자자, 전년도 수출입실적이 미화 5백만불 이상인 자,
+                                해외건설업자, 항공ㆍ선박회사, 원양어업자는 제외합니다.
+                            </p>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </section>
+
+            <!-- 사후관리 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    사후관리
+                </h2>
+
+                <ul class="deposit-list">
+
+                    <li>
+                        <div>
+
+                            <span class="label">
+                                해외 예금 거래자는 다음 서류를 지정거래 외국환은행 앞으로 제출하여야 합니다.
+                            </span>
+
+                            <p class="deposit-sub-note">
+                                - 해외입금보고서 (입금일로부터 30일 이내)
+                            </p>
+
+                            <p class="deposit-sub-note">
+                                ▸ 해외에서 건당 미화 1만불을 초과하여 입금한 경우
+                                또는 국내회수 대상 채권을 해외에서 입금한 경우
+                            </p>
+
+                            <p class="deposit-sub-note">
+                                - 해외예금 및 신탁잔액 보고서
+                                (다음년도 첫째달 말일까지 제출)
+                            </p>
+
+                            <p class="deposit-sub-note">
+                                ▸ 법인 : 연간 입금액 또는 연말 잔액이
+                                미화 50만불을 초과하는 경우
+                            </p>
+
+                            <p class="deposit-sub-note">
+                                ▸ 법인 이외의 자 : 연간 입금액 또는 연말 잔액이
+                                미화 10만불을 초과하는 경우
+                            </p>
+
+                        </div>
+                    </li>
+
+                </ul>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>
