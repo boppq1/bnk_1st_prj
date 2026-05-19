@@ -1,10 +1,106 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>판매대금추심의뢰서매입</title>
+
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">판매대금추심의뢰서매입</h1>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">내국신용장 매입추심 의뢰 개요</h2>
+
+                <p class="deposit-desc">
+                    내국신용장의 수혜자가 내국신용장 조건에 맞도록 물품공급을 완료하고
+                    인수증을 발급 받은 경우 거래은행에 물품대금의 회수를 위해
+                    매입 또는 추심을 의뢰하는 절차를 말합니다.
+                </p>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">판매대금추심의뢰서 결제 시의 전송 전자문서</h2>
+
+                <ul class="deposit-list">
+                    <li>판매대금추심의뢰서</li>
+
+                    <li>
+                        <span class="label">물품수령증명서</span>
+                        물품수령증명서는 공급자개설 세금계산서 건별로 대응하여 발급되어야 합니다.
+                        다만 내국신용장에 명시된 조건에 따라 수출용 원자재 또는 완제품을
+                        분할 공급받는 경우에는 매 반월 또는 동일 역월을 단위로 하는 경우에 한하여
+                        해당 기간 중 분할공급 시마다 교부된 세금계산서상의 공급가액을 일괄하여
+                        하나의 물품수령증명서를 발급할 수 있습니다.
+                    </li>
+
+                    <li>부가가치세법상 전송 가능한 공급자발행 세금계산서</li>
+
+                    <li>전자적으로 발급받은 내국신용장</li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">
+                    선박 또는 대외무역법에서 정하는 산업설비의 수출을 위하여 개설된 완제품 내국신용장인 경우
+                </h2>
+
+                <table class="deposit-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 35%;">구분</th>
+                        <th>전송 전자문서</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>기본 문서</td>
+                        <td>판매대금추심의뢰서</td>
+                    </tr>
+
+                    <tr>
+                        <td>대금 입금 확인</td>
+                        <td>개설은행이 발급한 원수출신용장 등의 대금입금증명서</td>
+                    </tr>
+
+                    <tr>
+                        <td>제조 확인</td>
+                        <td>개설의뢰인이 발급한 공정 또는 제조확인서</td>
+                    </tr>
+
+                    <tr>
+                        <td>세금계산서</td>
+                        <td>공급자발행 세금계산서 사본</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>
