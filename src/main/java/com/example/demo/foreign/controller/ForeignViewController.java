@@ -56,25 +56,250 @@ public class ForeignViewController {
         return "foreign/deposit/foreignAccountOpen";
     }
 
-    // =========================
-    // 외화송금
-    // =========================
+	 // =========================
+	 // 외화송금
+	 // =========================
+	
+	 // 인터넷외화송금서비스
+	 @GetMapping("/remittance/remittanceInternet")
+	 public String remittanceInternet() {
+	     return "foreign/remittance/remittanceInternet";
+	 }
+	
+	 // BNK공동해외송금서비스
+	 @GetMapping("/remittance/remittanceBNKGlobal")
+	 public String remittanceBNKGlobal() {
+	     return "foreign/remittance/remittanceBNKGlobal";
+	 }
+	
+	 // 해외즉시송금서비스
+	 @GetMapping("/remittance/remittanceFast")
+	 public String remittanceFast() {
+	     return "foreign/remittance/remittanceFast";
+	 }
+	
+	 // 해외즉시자동송금서비스
+	 @GetMapping("/remittance/remittanceAuto")
+	 public String remittanceAuto() {
+	     return "foreign/remittance/remittanceAuto";
+	 }
+	
+	 // 중국지역스피드송금서비스
+	 @GetMapping("/remittance/remittanceChina")
+	 public String remittanceChina() {
+	     return "foreign/remittance/remittanceChina";
+	 }
+	
+	 @GetMapping("/remittance/remittanceForeignAuto")
+	 public String remittanceForeignAuto() {
+	     return "foreign/remittance/remittanceForeignAuto";
+	 }
+	 
+	 // 이종통화송금서비스
+	 @GetMapping("/remittance/remittanceCurrency")
+	 public String remittanceCurrency() {
+	     return "foreign/remittance/remittanceCurrency";
+	 }
+	
+	 // 지정환율자동송금서비스
+	 @GetMapping("/remittance/remittanceRateAuto")
+	 public String remittanceRateAuto() {
+	     return "foreign/remittance/remittanceRateAuto";
+	 }
+	
+	 // 모바일송금서비스
+	 @GetMapping("/remittance/remittanceMobile")
+	 public String remittanceMobile() {
+	     return "foreign/remittance/remittanceMobile";
+	 }
+	
+	 // 해외송금 E-mail 서비스
+	 @GetMapping("/remittance/remittanceEmail")
+	 public String remittanceEmail() {
+	     return "foreign/remittance/remittanceEmail";
+	 }
+	
+	 // 원화(KRW) 해외송금서비스
+	 @GetMapping("/remittance/remittanceKRW")
+	 public String remittanceKRW() {
+	     return "foreign/remittance/remittanceKRW";
+	 }
+	
+	 // =========================
+	 // 외화송금보내기
+	 // =========================
+	
+	 // 송금안내
+	 @GetMapping("/remittance/remittanceGuide")
+	 public String remittanceGuide() {
+	     return "foreign/remittance/remittanceGuide";
+	 }
+	
+	 // 송금방법
+	 @GetMapping("/remittance/remittanceMethod")
+	 public String remittanceMethod() {
+	     return "foreign/remittance/remittanceMethod";
+	 }
+	
+	 // 국가별송금시필요정보
+	 @GetMapping("/remittance/remittanceCountryInfo")
+	 public String remittanceCountryInfo() {
+	     return "foreign/remittance/remittanceCountryInfo";
+	 }
+	
+	 // =========================
+	 // 외화송금받기
+	 // =========================
+	
+	 @GetMapping("/remittance/remittanceReceive")
+	 public String remittanceReceive() {
+	     return "foreign/remittance/remittanceReceive";
+	 }
+	 
+	// =========================
+	// 수출업무
+	// =========================
 
-    @GetMapping("/remittance/remittanceService")
-    public String remittanceService() {
-        return "foreign/remittance/remittanceService";
-    }
+	@GetMapping("/tradeFinance/export/exportAgreement")
+	public String exportAgreement() {
+	    return "foreign/tradeFinance/export/exportAgreement";
+	}
 
-    @GetMapping("/remittance/remittanceSend")
-    public String remittanceSend() {
-        return "foreign/remittance/remittanceSend";
-    }
+	@GetMapping("/tradeFinance/export/exportLCNotice")
+	public String exportLCNotice() {
+	    return "foreign/tradeFinance/export/exportLCNotice";
+	}
 
-    @GetMapping("/remittance/remittanceReceive")
-    public String remittanceReceive() {
-        return "foreign/remittance/remittanceReceive";
-    }
+	@GetMapping("/tradeFinance/export/exportLCTransfer")
+	public String exportLCTransfer() {
+	    return "foreign/tradeFinance/export/exportLCTransfer";
+	}
 
+	@GetMapping("/tradeFinance/export/exportBillPurchase")
+	public String exportBillPurchase() {
+	    return "foreign/tradeFinance/export/exportBillPurchase";
+	}
+
+	@GetMapping("/tradeFinance/export/exportCollection")
+	public String exportCollection() {
+	    return "foreign/tradeFinance/export/exportCollection";
+	}
+
+	@GetMapping("/tradeFinance/export/exportTracking")
+	public String exportTracking() {
+	    return "foreign/tradeFinance/export/exportTracking";
+	}
+
+	@GetMapping("/tradeFinance/export/exportDebtService")
+	public String exportDebtService() {
+	    return "foreign/tradeFinance/export/exportDebtService";
+	}
+
+	@GetMapping("/tradeFinance/export/exportForgaiting")
+	public String exportForgaiting() {
+	    return "foreign/tradeFinance/export/exportForgaiting";
+	}
+
+
+	// =========================
+	// 수입업무
+	// =========================
+
+	@GetMapping("/tradeFinance/import/importAgreement")
+	public String importAgreement() {
+	    return "foreign/tradeFinance/import/importAgreement";
+	}
+
+	@GetMapping("/tradeFinance/import/importLCOpen")
+	public String importLCOpen() {
+	    return "foreign/tradeFinance/import/importLCOpen";
+	}
+
+	@GetMapping("/tradeFinance/import/importGuarantee")
+	public String importGuarantee() {
+	    return "foreign/tradeFinance/import/importGuarantee";
+	}
+
+	@GetMapping("/tradeFinance/import/importDocumentRelease")
+	public String importDocumentRelease() {
+	    return "foreign/tradeFinance/import/importDocumentRelease";
+	}
+
+	@GetMapping("/tradeFinance/import/importInternetLC")
+	public String importInternetLC() {
+	    return "foreign/tradeFinance/import/importInternetLC";
+	}
+
+	@GetMapping("/tradeFinance/import/importUsance")
+	public String importUsance() {
+	    return "foreign/tradeFinance/import/importUsance";
+	}
+
+	@GetMapping("/tradeFinance/import/importChinaTrade")
+	public String importChinaTrade() {
+	    return "foreign/tradeFinance/import/importChinaTrade";
+	}
+
+
+	// =========================
+	// 내국신용장 / 무역금융
+	// =========================
+
+	@GetMapping("/tradeFinance/domestic/domesticLC")
+	public String domesticLC() {
+	    return "foreign/tradeFinance/domestic/domesticLC";
+	}
+
+	@GetMapping("/tradeFinance/domestic/domesticCollection")
+	public String domesticCollection() {
+	    return "foreign/tradeFinance/domestic/domesticCollection";
+	}
+
+	@GetMapping("/tradeFinance/domestic/domesticSettlement")
+	public String domesticSettlement() {
+	    return "foreign/tradeFinance/domestic/domesticSettlement";
+	}
+
+	@GetMapping("/tradeFinance/domestic/purchaseConfirm")
+	public String purchaseConfirm() {
+	    return "foreign/tradeFinance/domestic/purchaseConfirm";
+	}
+
+	@GetMapping("/tradeFinance/domestic/tradeFinanceGuide")
+	public String tradeFinanceGuide() {
+	    return "foreign/tradeFinance/domestic/tradeFinanceGuide";
+	}
+
+
+	// =========================
+	// 전자무역
+	// =========================
+
+	@GetMapping("/tradeFinance/electronic/ediGuide")
+	public String ediGuide() {
+	    return "foreign/tradeFinance/electronic/ediGuide";
+	}
+
+	@GetMapping("/tradeFinance/electronic/ediApply")
+	public String ediApply() {
+	    return "foreign/tradeFinance/electronic/ediApply";
+	}
+
+	@GetMapping("/tradeFinance/electronic/ediSupport")
+	public String ediSupport() {
+	    return "foreign/tradeFinance/electronic/ediSupport";
+	}
+
+
+	// =========================
+	// 수출입통관 상담
+	// =========================
+
+	@GetMapping("/tradeFinance/customsConsulting")
+	public String customsConsulting() {
+	    return "foreign/tradeFinance/customsConsulting";
+	}
+	 
     // =========================
     // 환전
     // =========================
@@ -133,4 +358,32 @@ public class ForeignViewController {
     public String 해외직접투자() {
     	return "foreign/investment/overseasInvestment";
     }
+	 // =========================
+	 // 외환이용가이드
+	 // =========================
+	
+	 @GetMapping("/guide/foreignConsulting")
+	 public String foreignConsulting() {
+	     return "foreign/guide/foreignConsulting";
+	 }
+	
+	 @GetMapping("/guide/foreignLaw")
+	 public String foreignLaw() {
+	     return "foreign/guide/foreignLaw";
+	 }
+	
+	 @GetMapping("/guide/exportImportFee")
+	 public String exportImportFee() {
+	     return "foreign/guide/exportImportFee";
+	 }
+	
+	 @GetMapping("/guide/exchangeRemittanceFee")
+	 public String exchangeRemittanceFee() {
+	     return "foreign/guide/exchangeRemittanceFee";
+	 }
+	
+	 @GetMapping("/guide/foreignFAQ")
+	 public String foreignFAQ() {
+	     return "foreign/guide/foreignFAQ";
+	 }
 }

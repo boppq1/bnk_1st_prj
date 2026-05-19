@@ -7,19 +7,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.example.demo.product.dao.ProductPdfDao">
 
     <select id="findByProductId"
-            parameterType="long"
-            resultType="com.example.demo.product.dto.ProductPdfDto">
-
-        SELECT
-            pdf_no AS pdfId,
-            prod_no AS productId,
-            basic_terms_path AS basicTermsPath,
-            cat_terms_path AS categoryTermsPath,
-            special_terms_path AS specialTermsPath,
-            product_guide_path AS productGuidePath
-        FROM product_pdfs
-        WHERE prod_no = #{productId}
-
-    </select>
+        parameterType="long"
+        resultType="com.example.demo.product.dto.ProductPdfDto">
+	
+	    SELECT
+	        pdf_no AS pdfId,
+	        prod_no AS productId,
+	        basic_terms_path AS basicTermsPath,
+	        cat_terms_path AS categoryTermsPath,
+	        spec_terms_path AS specialTermsPath
+	    FROM product_pdfs
+	    WHERE prod_no = #{productId}
+	
+	</select>
 
 </mapper>

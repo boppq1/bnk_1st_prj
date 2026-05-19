@@ -1,10 +1,299 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>송금방법</title>
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+        <div class="service-container">
+
+            <h1 class="main-title">송금방법</h1>
+
+            <!-- 탭 메뉴 -->
+            <div class="fee-tab-menu">
+                <button class="fee-tab active" data-tab="tab1">연간5만불이하<br>증빙서류 미제출송금</button>
+                <button class="fee-tab" data-tab="tab2">유학생 및 체재자송금</button>
+                <button class="fee-tab" data-tab="tab3">외국인과 비거주자의<br>해외송금</button>
+                <button class="fee-tab" data-tab="tab4">무역 및 용역거래대금송금</button>
+            </div>
+
+            <!-- tab1: 연간5만불이하 증빙서류 미제출송금 -->
+            <div class="fee-tab-content active" id="tab1">
+
+                <section class="deposit-section">
+                    <h2 class="deposit-section-title">의의</h2>
+                    <ul class="deposit-list">
+                        <li>
+                            연간 지급누계액 미화 10만불 이내에서 지급증빙서류 없이
+                            생활비, 기부금, 회비 납부 등의 증여성 지급과
+                            해외예금, 비거주자에 대한 대출 등의 자본 거래에 대한
+                            지급을 의미합니다.
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="deposit-section">
+                    <h2 class="deposit-section-title">송금한도</h2>
+                    <ul class="deposit-list">
+                        <li>
+                            연간 지급 누계액 미화 10만불 상당액 이하
+                            <span class="deposit-sub-note">
+                                ※ 연간 합산 금액은 매년 1월 1일부터 12월 31일까지의 누계액을 의미합니다.
+                            </span>
+                        </li>
+                        <li>
+                            연간 누계금액 미화 10만불 상당액을 초과하여
+                            비거주자에게 무상으로 송금하고자 하는 경우에는
+                            한국은행 앞으로 신고한 후 해외송금 하실 수 있습니다.
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="deposit-section">
+                    <h2 class="deposit-section-title">송금요령</h2>
+                    <ul class="deposit-list">
+                        <li>
+                            당행 영업점에 비치된 해외송금신청서상에 지급 사유를 기재하고
+                            거래 내용을 설명하시면 지급증빙서류 제출 없이 해외송금 하실 수 있습니다.
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="deposit-section">
+                    <h2 class="deposit-section-title">국세청 통보</h2>
+                    <ul class="deposit-list">
+                        <li>
+                            지급증빙서류를 제출하지 아니하는 지급 금액이 건당 미화 5천불 상당액을 초과하는 경우로서
+                            연간 누계액 미화 1만불 상당액을 초과 시 국세청에 통보됩니다.
+                        </li>
+                    </ul>
+                </section>
+
+            </div>
+
+            <!-- tab2: 유학생 및 체재자송금 -->
+            <div class="fee-tab-content" id="tab2">
+
+                <section class="deposit-section">
+                    <h2 class="deposit-section-title">해외유학생과 체재자의 구분</h2>
+                    <ul class="deposit-list">
+                        <li>
+                            <span class="label">해외유학생</span>
+                            외국의 교육기관·연구기관 또는 연수기관에서 6월 이상의 기간에 걸쳐
+                            수학하거나 학문·기술을 연구 또는 연수할 목적으로 외국에 체재하는 자
+                        </li>
+                        <li>
+                            <span class="label">해외체재자</span>
+                            상용, 문화, 공무, 국외 연수(6개월 미만)를 목적으로 30일을 초과하여 체재하는 자
+                            <span class="deposit-sub-note">※ 해외기업체에 취업이 된 경우는 제외</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="deposit-section">
+                    <h2 class="deposit-section-title">해외외화송금</h2>
+                    <ul class="deposit-list">
+                        <li>
+                            <span class="label">송금 한도</span>
+                            제한 없음
+                        </li>
+                        <li>
+                            <span class="label">국세청 통보</span>
+                            연간 해외여행경비 지급액(송금액과 외국환신고(확인)필증 발행금액의 합계)이
+                            미화 10만불을 초과 시 국세청에 통보됩니다.
+                        </li>
+                        <li>
+                            미화 1만불 상당액을 휴대하여 출국하는 경우에는
+                            지정거래 외국환 은행이 발급한 외국환신고(확인)필증을 지참하여
+                            세관에 신고하여야 합니다.
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="deposit-section">
+                    <h2 class="deposit-section-title">제출서류</h2>
+                    <ul class="deposit-list">
+                        <li>
+                            <span class="label">유학생</span>
+                            여권, 당해 수학기관의 입학허가서 등 (최초 지정 시)
+                        </li>
+                        <li>
+                            <span class="label">체재자</span>
+                            여권, 소속 단체장의 출장 파견 증명서
+                        </li>
+                        <li>
+                            유학생의 경우 매년 재학 사실을 입증할 수 있는
+                            재학증명서 또는 직전 학기 성적증명서 등을 제출해야 합니다.
+                        </li>
+                    </ul>
+                </section>
+
+            </div>
+
+            <!-- tab3: 외국인과 비거주자의 해외송금 -->
+            <div class="fee-tab-content" id="tab3">
+
+                <section class="deposit-section">
+                    <h2 class="deposit-section-title">송금하시는 자금의 취득 경위 입증 서류가 없는 경우</h2>
+                    <ul class="deposit-list">
+                        <li>
+                            연간 지급 누계액 미화 5만불 상당액 범위 내에서
+                            지정거래외국환은행을 통하여 해외로 송금하실 수 있습니다.
+                        </li>
+                        <li>
+                            <span class="label">제출 서류</span>
+                            여권
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="deposit-section">
+                    <h2 class="deposit-section-title">송금하시는 자금의 취득 경위 입증 서류가 있는 경우</h2>
+                    <table class="info-table">
+                        <thead>
+                            <tr>
+                                <th>송금한도</th>
+                                <th>제출서류</th>
+                                <th>공통 제출서류</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    국내에서의 고용·근무에 따라 취득한 국내 보수,
+                                    자유업 영위에 따른 소득,
+                                    국내로부터 지급받은 사회보험·보장 급부 또는
+                                    연금 기타 이와 유사한 소득 범위 내
+                                </td>
+                                <td>
+                                    고용주가 확인한 급여명세표 등 급여임을 입증할 수 있는 서류,
+                                    소득금액 증명 및 납세증명서,
+                                    보험금·연금 수령증 등 취득경위 입증서류
+                                </td>
+                                <td rowspan="4" style="text-align:center; vertical-align:middle;">여권</td>
+                            </tr>
+                            <tr>
+                                <td>외국으로부터 영수 또는 휴대수입한 대외지급수단 범위 내</td>
+                                <td>외국환 매각사실 입증 서류 (외국환매입증명서, 영수증, 계산서, 외국환신고(확인)필증 등)</td>
+                            </tr>
+                            <tr>
+                                <td>한국은행 총재에게 신고한 범위 내</td>
+                                <td>대외지급수단매매 신고 필증</td>
+                            </tr>
+                            <tr>
+                                <td>기타 인정된 거래에 따른 대외 지급을 위한 경우</td>
+                                <td>인정된 거래임을 입증하는 서류</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="deposit-section">
+                    <h2 class="deposit-section-title">해외여행 경비의 지급</h2>
+                    <ul class="deposit-list">
+                        <li>
+                            최근 입국일 이후 미화 1만불 상당액 범위 내에서
+                            비거주자 또는 외국인 거주자의 여행경비를 송금할 수 있습니다.
+                        </li>
+                        <li>
+                            <span class="label">제출 서류</span>
+                            여권
+                        </li>
+                    </ul>
+                </section>
+
+            </div>
+
+            <!-- tab4: 무역 및 용역거래대금송금 -->
+            <div class="fee-tab-content" id="tab4">
+
+                <section class="deposit-section">
+                    <h2 class="deposit-section-title">무역거래대금 송금</h2>
+                    <ul class="service-list">
+                        <li>
+                            <strong>사전송금방식 무역대금 송금</strong>
+                            <p>
+                                국내의 수입상이 해외 수출상에게 물품이나 선적서류를 수령하기 전에
+                                물품수입대금을 미리 송금하는 것을 말합니다.
+                            </p>
+                            <p>
+                                <span class="highlight-red">제출 서류</span> —
+                                수입 계약서, OFFER SHEET 등
+                            </p>
+                        </li>
+                        <li>
+                            <strong>사후송금방식 무역대금 송금</strong>
+                            <p>
+                                국내의 수입상이 해외 수출상에게 물품이나 선적서류를 영수한 후
+                                물품수입대금을 송금하는 것을 말합니다.
+                            </p>
+                            <p>
+                                <span class="highlight-red">제출 서류</span> —
+                                수입계약서, 수입신고필증 등
+                            </p>
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="deposit-section">
+                    <h2 class="deposit-section-title">용역거래대금 송금</h2>
+                    <ul class="service-list">
+                        <li>
+                            <strong>의의</strong>
+                            <p>
+                                해외의 기업이나 개인으로부터 제공받은 무역, 해외 건설,
+                                특허권·상표권 등의 매입이나 사용료, 컴퓨터 정보통신 사용료,
+                                문화·오락 서비스 등의 대금을 송금하는 경우를 말합니다.
+                            </p>
+                        </li>
+                        <li>
+                            <strong>제출서류</strong>
+                            <p>해당 계약서 등</p>
+                        </li>
+                        <li>
+                            <strong>유의사항</strong>
+                            <p>
+                                외국환거래법령에 의거 지급 등의 원인이나 행위가
+                                신고 등을 필요로 하는 경우 신고서나 허가서를 제출하여야 합니다.
+                            </p>
+                        </li>
+                    </ul>
+                </section>
+
+            </div>
+
+        </div>
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
+
+<script>
+    document.querySelectorAll(".fee-tab").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".fee-tab").forEach(b => b.classList.remove("active"));
+            document.querySelectorAll(".fee-tab-content").forEach(c => c.classList.remove("active"));
+            btn.classList.add("active");
+            document.getElementById(btn.dataset.tab).classList.add("active");
+        });
+    });
+</script>
 
 </body>
 </html>
