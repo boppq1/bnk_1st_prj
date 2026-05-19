@@ -1,10 +1,284 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>인터넷수입신용장개설</title>
+
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">인터넷수입신용장개설</h1>
+
+            <!-- 개요 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    개요
+                </h2>
+
+                <div class="deposit-notice-box">
+
+                    <p class="deposit-desc">
+                        영업점을 직접 방문하지 않고 인터넷 상에서
+                        수입신용장 개설(조건변경 포함) 신청 및
+                        수입신용장 개설 전문을 출력할 수 있는 제도입니다.
+                    </p>
+
+                    <div class="foreign-btn-wrap">
+
+                        <a href="#"
+                           class="foreign-link-btn">
+                            인터넷수입신용장 개설 바로가기
+                        </a>
+
+                        <a href="#"
+                           class="foreign-link-btn outline">
+                            인터넷수입신용장 조건변경 바로가기
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- 특징 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    특징
+                </h2>
+
+                <div class="feature-grid">
+
+                    <div class="feature-card">
+                        <div class="feature-title">
+                            당일 전문 발신
+                        </div>
+
+                        <div class="feature-desc">
+                            영업시간 내 접수 건은
+                            신청 당일 해외로 전문 발신 완료
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-title">
+                            전문 및 영수증 조회
+                        </div>
+
+                        <div class="feature-desc">
+                            신용장 전문과 영수증 직접 조회 가능
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-title">
+                            자동 저장
+                        </div>
+
+                        <div class="feature-desc">
+                            거래처별 저장으로
+                            다음 신청 시 일부 수정만 진행
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-title">
+                            조건변경 간소화
+                        </div>
+
+                        <div class="feature-desc">
+                            수익자 정보 자동 표시 후
+                            변경 항목만 입력
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- 제공서비스 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    제공서비스
+                </h2>
+
+                <table class="deposit-table">
+
+                    <thead>
+                    <tr>
+                        <th style="width:35%">
+                            구분
+                        </th>
+                        <th>
+                            내용
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr>
+                        <td>
+                            수입신용장 업무
+                        </td>
+
+                        <td>
+                            수입신용장 개설 및 조건 변경
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            전문 출력
+                        </td>
+
+                        <td>
+                            수입신용장 개설
+                            (조건변경 포함) 전문 출력
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            부가 기능
+                        </td>
+
+                        <td>
+                            영수증 출력 등
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </section>
+
+            <!-- 이용방법 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    이용방법
+                </h2>
+
+                <div class="step-grid">
+
+                    <div class="step-card">
+
+                        <div class="step-header">
+                            STEP 1
+                        </div>
+
+                        <div class="step-body">
+
+                            <div class="step-title">
+                                인터넷뱅킹 가입
+                            </div>
+
+                            <div class="step-desc">
+                                가까운 영업점 방문 후
+                                부산은행 인터넷뱅킹 가입
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="step-card">
+
+                        <div class="step-header">
+                            STEP 2
+                        </div>
+
+                        <div class="step-body">
+
+                            <div class="step-title">
+                                추가 약정
+                            </div>
+
+                            <div class="step-desc">
+                                인터넷 수입을 위한
+                                추가 약정 진행
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="step-card">
+
+                        <div class="step-header">
+                            STEP 3
+                        </div>
+
+                        <div class="step-body">
+
+                            <div class="step-title">
+                                온라인 신청
+                            </div>
+
+                            <div class="step-desc">
+                                인터넷에서
+                                수입신용장 개설 신청
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="step-card">
+
+                        <div class="step-header">
+                            STEP 4
+                        </div>
+
+                        <div class="step-body">
+
+                            <div class="step-title">
+                                전문 출력
+                            </div>
+
+                            <div class="step-desc">
+                                개설 전문 및
+                                영수증 출력 가능
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

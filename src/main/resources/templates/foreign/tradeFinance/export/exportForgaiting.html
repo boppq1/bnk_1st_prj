@@ -1,10 +1,99 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>포페이팅(Forfaiting)서비스</title>
+
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">포페이팅(Forfaiting)서비스</h1>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">개요</h2>
+
+                <p class="deposit-desc">
+                    신용장에 근거하여 발행된 수출환어음을 할인 매입하는 방식의 수출 금융으로
+                    수출자(수출환어음 발행인)는 수출환어음을 당행을 통하여
+                    포페이터(Forfaiter)인 한국수출입은행에게 매각하고,
+                    한국수출입은행은 당행 및 수출자에게 소구 조건없이
+                    현금으로 할인∙매입하는 거래를 말합니다.
+                    무소구조건이란 수입국 은행 또는 수입자가 환어음의 만기일에
+                    수출대금을 상환하지 못할 경우에도 수출자에게 대금을 청구하지 않는 조건을 말합니다.
+                </p>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">수출환어음 포페이팅 대상 거래</h2>
+
+                <table class="info-table">
+                    <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>내용</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>대상어음</td>
+                        <td>
+                            국내에서 생산, 가공, 집하된 상품의 수출거래
+                            (중계무역 제외)로서 기한부 자유매입신용장에 의해
+                            발행한 하자없는 수출환어음
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>결제기간</td>
+                        <td>일람 후 또는 선적 후 30일 이상 2년 미만</td>
+                    </tr>
+
+                    <tr>
+                        <td>대상금액</td>
+                        <td>건당 금액이 미화 1만불 상당액 이상 2천만불 상당액 이하</td>
+                    </tr>
+
+                    <tr>
+                        <td>대상통화</td>
+                        <td>제한 없음</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">수출환어음 포페이팅에 대한 문의</h2>
+
+                <ul class="deposit-list">
+                    <li>부산은행 외환사업부(051-661-4665)</li>
+                </ul>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

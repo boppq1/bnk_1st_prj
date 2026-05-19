@@ -1,10 +1,114 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>중국위안화무역결제서비스</title>
+
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">중국위안화무역결제서비스</h1>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">개요</h2>
+
+                <p class="deposit-desc">
+                    한국의 무역업체가 중국과 무역 거래시 위안화를 결제 통화로 하여
+                    수출입 업무를 할 수 있도록 지원하는 서비스입니다.
+                </p>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">제공가능 서비스</h2>
+
+                <ul class="deposit-list">
+                    <li>위안화 예금 서비스(무역결제용으로만 사용 가능함)</li>
+                    <li>위안화 해외송금 서비스(무역, 해외직접투자, 일부 용역 거래에 한함)</li>
+                    <li>위안화 수출환어음 매입 및 추심</li>
+                    <li>위안화 수입신용장 개설(Sight 및 Shipper’s Usance에 한함)</li>
+                    <li>위안화 수출신용장 통지</li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">이용대상</h2>
+
+                <p class="deposit-desc">
+                    중국 지역 기업과 거래하는 모든 기업
+                </p>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">이용시간</h2>
+
+                <table class="deposit-table">
+                    <thead>
+                    <tr>
+                        <th style="width:35%">구분</th>
+                        <th>이용시간</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>일반 거래</td>
+                        <td>영업시간 내 09:00 ~ 16:00</td>
+                    </tr>
+
+                    <tr>
+                        <td>위안화 예금 또는 당일 결제일 요청 해외송금</td>
+                        <td>09:00 ~ 14:30</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">이용시 장점</h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        <span class="label">한국 수출기업(중국으로)</span>
+                        중국 기업의 비용절감 부문만큼 가격 협상 가능,
+                        위안화 보유에 따른 환율 상승 기대 효과
+                    </li>
+
+                    <li>
+                        <span class="label">한국 수입기업(중국에서)</span>
+                        중국 기업과 가격 협상력 제고
+                    </li>
+
+                    <li>
+                        <span class="label">한국 수입 모기업(중국 자회사)</span>
+                        현지 자회사의 비용절감 효과 및 재무효과 기대
+                    </li>
+                </ul>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>
