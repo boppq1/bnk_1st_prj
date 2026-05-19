@@ -306,6 +306,84 @@
 }
 
 /* ===================================
+   안내 박스 (service-info-box)
+=================================== */
+
+.service-info-box {
+    margin-bottom: 28px;
+    padding: 14px 18px;
+    background: #fff9f9;
+    border: 1px solid #fad4d4;
+    border-left: 3px solid #e31b23;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    line-height: 1.85;
+    color: #555;
+}
+
+.service-info-box p {
+    margin: 0;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.85;
+}
+
+/* ===================================
+   특징 카드 그리드 (feature-grid / feature-card)
+   — importInternetLC 등
+=================================== */
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.feature-card {
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ebebeb;
+    border-radius: 10px;
+    transition: border-color 0.18s, box-shadow 0.18s;
+}
+
+.feature-card:hover {
+    border-color: #e31b23;
+    box-shadow: 0 4px 16px rgba(227, 27, 35, 0.06);
+}
+
+.feature-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #e31b23;
+    margin-bottom: 8px;
+}
+
+.feature-title::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #e31b23;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.feature-desc {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.78;
+}
+
+@media (max-width: 768px) {
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===================================
    외화예금안내 / 당행외화이체 공통
    (foreignDeposit / foreignTransfer)
 =================================== */
@@ -510,7 +588,8 @@
 
 .foreign-transfer-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     margin-top: 4px;
     background: #fff;
     border-radius: 8px;
@@ -592,7 +671,8 @@
 
 .info-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     margin-top: 10px;
     background: #fff;
     border-radius: 8px;
@@ -617,7 +697,8 @@
 
 .info-table th {
     background: #f7f7f8;
-    border: 1px solid #e9e9e9;
+    border-right: 1px solid #e9e9e9;
+    border-bottom: 1px solid #e9e9e9;
     padding: 12px 14px;
     font-size: 13px;
     font-weight: 700;
@@ -627,12 +708,23 @@
 }
 
 .info-table td {
-    border: 1px solid #e9e9e9;
+    border-right: 1px solid #e9e9e9;
+    border-bottom: 1px solid #e9e9e9;
     padding: 12px 14px;
     font-size: 13px;
     color: #555;
     line-height: 1.75;
     vertical-align: middle;
+}
+
+.info-table tbody tr:last-child td,
+.info-table tbody tr:last-child th {
+    border-bottom: none;
+}
+
+.info-table tbody td:last-child,
+.info-table tbody th:last-child {
+    border-right: none;
 }
 
 .info-table tbody tr:hover td {
@@ -821,7 +913,8 @@
 .fee-table {
     width: 100%;
     min-width: 1100px;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     background: #fff;
     border-top: 2px solid #e31b23;
     border-bottom: 1px solid #ddd;
@@ -830,7 +923,8 @@
 .fee-table th {
     background: #fafafa;
     padding: 14px 13px;
-    border: 1px solid #e5e5e5;
+    border-right: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
     font-size: 13px;
     font-weight: 700;
     color: #222;
@@ -839,15 +933,28 @@
     line-height: 1.6;
 }
 
+.fee-table th:last-child {
+    border-right: none;
+}
+
 .fee-table td {
     padding: 13px 13px;
-    border: 1px solid #ededed;
+    border-right: 1px solid #ededed;
+    border-bottom: 1px solid #ededed;
     font-size: 13px;
     color: #444;
     line-height: 1.9;
     vertical-align: middle;
     word-break: keep-all;
     transition: background 0.12s;
+}
+
+.fee-table td:last-child {
+    border-right: none;
+}
+
+.fee-table tbody tr:last-child td {
+    border-bottom: none;
 }
 
 .fee-table tbody tr:hover td {
@@ -1306,6 +1413,7 @@
         font-size: 12px;
     }
 }
+
 /* ===================================
    국가별송금시필요정보
 =================================== */
@@ -1364,6 +1472,7 @@
         width: 110px;
     }
 }
+
 /* 외화송금받기 */
 .receive-input {
     width: 200px;
@@ -1404,4 +1513,286 @@
 .receive-search-btn:hover {
     border-color: #e31b23;
     color: #e31b23;
+}
+
+/* ===================================
+   수출입금융 페이지 추가 디자인
+=================================== */
+
+/* 수출환어음매입 STEP 카드 */
+.step-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.step-card {
+    border: 1px solid #d8d8d8;
+    border-radius: 10px;
+    background: #fff;
+    overflow: hidden;
+    transition: all 0.18s ease;
+}
+
+.step-card:hover {
+    border-color: #e31b23;
+    box-shadow: 0 6px 18px rgba(227, 27, 35, 0.07);
+}
+
+.step-header {
+    padding: 12px 18px;
+    background: #f3f3f4;
+    font-size: 14px;
+    font-weight: 800;
+    color: #e31b23;
+}
+
+.step-body {
+    padding: 18px;
+}
+
+.step-title {
+    margin: 0 0 14px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #111;
+}
+
+.step-desc {
+    margin: 0;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.8;
+}
+
+.step-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.step-list li {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 6px;
+}
+
+/* ===================================
+   deposit-table (수출거래약정 등 표)
+   — border-collapse: separate 로 수정하여
+     border-radius + 이중선 문제 해결
+=================================== */
+
+.deposit-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 10px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e9e9e9;
+}
+
+.deposit-table thead th {
+    padding: 12px 14px;
+    background: #fff5f5;
+    border-right: 1px solid #e9e9e9;
+    border-bottom: 2px solid #e31b23;
+    font-size: 13px;
+    font-weight: 700;
+    color: #111;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.deposit-table thead th:last-child {
+    border-right: none;
+}
+
+.deposit-table tbody td {
+    padding: 13px 14px;
+    border-right: 1px solid #e9e9e9;
+    border-bottom: 1px solid #e9e9e9;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.75;
+    vertical-align: middle;
+}
+
+.deposit-table tbody td:last-child {
+    border-right: none;
+}
+
+.deposit-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.deposit-table tbody tr:hover td {
+    background: #fdf9f9;
+}
+
+/* 수출서류 TRACKING */
+.tracking-top-box {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 18px 20px;
+    background: #fff;
+    border: 1px solid #ebebeb;
+    border-radius: 10px;
+}
+
+.tracking-logo {
+    width: 130px;
+    height: 72px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background: #fafafa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.tracking-logo img {
+    max-width: 90%;
+    max-height: 80%;
+    object-fit: contain;
+}
+
+.tracking-content {
+    flex: 1;
+}
+
+.tracking-content .deposit-section-title {
+    margin-bottom: 10px;
+}
+
+.tracking-content .deposit-desc {
+    margin-bottom: 0;
+}
+
+/* 해외채권추심 flow */
+.collection-flow-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 24px 0;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+.collection-flow-box {
+    min-width: 120px;
+    height: 78px;
+    border: 1px solid #d8d8d8;
+    border-radius: 10px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #333;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.5;
+    flex-shrink: 0;
+}
+
+.collection-flow-box.pink {
+    border-color: #f3a7c9;
+    color: #d93682;
+    background: #fff8fb;
+}
+
+.collection-flow-arrow {
+    color: #9db8d8;
+    font-size: 24px;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+/* 송금안내 카드 */
+.foreign-info-box {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.foreign-small-title {
+    margin: 0 0 12px;
+    font-size: 15px;
+    font-weight: 800;
+    color: #111;
+}
+
+.foreign-product-title {
+    margin-top: 12px;
+    font-size: 13px;
+    font-weight: 800;
+    color: #111;
+}
+
+.foreign-product-list,
+.currency-text {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.85;
+}
+
+/* 송금방법 탭 */
+.foreign-tab-menu {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 0 28px;
+    border: 1px solid #ddd;
+    border-top: 2px solid #e31b23;
+    background: #fff;
+}
+
+.foreign-tab-btn {
+    height: 44px;
+    padding: 0 18px;
+    border: none;
+    border-right: 1px solid #e5e5e5;
+    background: #fff;
+    color: #333;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.foreign-tab-btn.active {
+    background: #e31b23;
+    color: #fff;
+}
+
+.foreign-tab-btn:hover:not(.active) {
+    background: #fff5f5;
+    color: #e31b23;
+}
+
+.foreign-tab-content {
+    display: none;
+}
+
+.foreign-tab-content.active {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .step-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tracking-top-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .tracking-logo {
+        width: 100%;
+    }
 }

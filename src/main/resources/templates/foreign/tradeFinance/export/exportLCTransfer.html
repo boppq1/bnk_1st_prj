@@ -1,10 +1,167 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>BNK 부산은행 외환</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+        <div class="service-container">
+
+            <h1 class="main-title">수출신용장양도</h1>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">개요</h2>
+                <p class="deposit-desc">
+                    신용장상의 권리의 전부 또는 일부를 수익자(제1수익자)가 지시하는 자
+                    (제2수익자)에게 양도하는 것을 말합니다.
+                </p>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">양도의 조건</h2>
+
+                <ul class="deposit-list">
+                    <li>신용장상에 “Transferable”이라고 명시되어 있어야 합니다.</li>
+                    <li>양도의 취급은 양도은행으로 수권받은 은행에서만 취급이 가능합니다.</li>
+                    <li>신용장의 양도는 1회에 한합니다. 다만, 분할 선적을 허용하고 있는 경우에는 분할양도가 가능합니다.</li>
+                    <li>
+                        신용장의 양도는 원 신용장의 조건과 동일하여야 합니다.
+                        다만, 신용장의 금액, 단가, 선적일, 신용장의 유효기일 및 서류제시기간을
+                        축소·인하 또는 단축시킬 수 있고 각 양도분의 부보금액을 증액할 수 있습니다.
+                    </li>
+                    <li>신용장에 별도로 명시가 없는 한 동일 국내 또는 타국의 제2수익자에게 양도할 수 있습니다.</li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">양도의 종류</h2>
+
+                <h3 class="sub-title">양도금액에 따른 구분</h3>
+                <table class="info-table">
+                    <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>내용</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>전액양도</td>
+                        <td>
+                            신용장의 금액뿐만 아니라 신용장상의 모든 권리와 의무가
+                            제2수익자에게 양도되는 것을 말하며,
+                            분할선적이 금지되어 있는 경우에는 전액 양도만 가능합니다.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>분할양도</td>
+                        <td>
+                            신용장 금액이 분할되어 양도되는 것을 말하며,
+                            분할 선적이 허용된 경우에 한하여 분할양도가 가능합니다.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <h3 class="sub-title">양도지역에 따른 구분</h3>
+                <table class="info-table">
+                    <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>내용</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>국내양도</td>
+                        <td>신용장이 원수익자가 소재하는 국가의 제2수익자에게 양도되는 경우</td>
+                    </tr>
+                    <tr>
+                        <td>국외양도</td>
+                        <td>신용장이 타국에 소재하는 제2수익자에게 양도되는 경우</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">양도의 방법 및 절차</h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        원수익자가 신용장을 양도하려면
+                        “신용장양도신청서(Application for Advice of Total/Partial Transfer)”
+                        당행 소정 양식을 양수자(제2수익자)와 함께 서명한 후
+                        원신용장과 함께 양도취급은행에 제출합니다.
+                    </li>
+                    <li>
+                        양도취급은행은 의뢰서 내용에 따라 원 신용장 원본에 양도사실을 기재한 다음
+                        양도통지서(Transfer Advice) 원본을 제2수익자에게 교부합니다.
+                    </li>
+                </ul>
+
+                <table class="info-table">
+                    <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>내용</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>전액양도의 경우</td>
+                        <td>전액 양도통지서 원본을 원신용장과 함께 양수인에게 교부합니다.</td>
+                    </tr>
+                    <tr>
+                        <td>분할양도의 경우</td>
+                        <td>
+                            분할양도통지서 원본을 “원본 대조필”한 원신용장 사본과 함께
+                            양수인에게 교부하고 원신용장은 양도인에게 교부합니다.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">양도 신청시 필요서류</h2>
+
+                <ul class="deposit-list">
+                    <li>양도신청서(당행양식)</li>
+                    <li>신용장 원본 및 동 조건변경서</li>
+                    <li>법인등기부등본(양도인, 양수인)</li>
+                    <li>
+                        양도인과 양수인의 인감(서명)신고서 :
+                        최초 거래시만 제출하며, 인감(서명) 신고서와
+                        인감증명서 또는 본인서명사실확인서 원본,
+                        사업자등록증을 첨부하여야 합니다.
+                    </li>
+                    <li>기타 필요한 서류</li>
+                </ul>
+            </section>
+
+        </div>
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>
