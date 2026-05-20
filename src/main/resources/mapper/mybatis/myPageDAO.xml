@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.example.demo.personal.dao.IMyPageDAO">
+	<select id="selectUSerInfo" resultType="com.example.demo.personal.dto.MyPageUserDTO">
+		select *FROM users where login_id = #{login_id}
+	</select>
+	<select id="selectAcntInfo">
+		select *FROM ACCOUNTS_PERSONAL where usr_no = #{usr_no}
+	</select>
+	<select id="selectFacntInfo">
+		select *FROM FOREIGN_ACCOUNTS_PERSONAL where usr_no = #{usr_no}
+	</select>
+	<select id="checkPhonUser" resultType="int">
+		select count(*) FROM users Where tel_no = #{tel_no}
+	</select>
+	<select id="checkPhonCompany" resultType="int">
+		select count(*) FROM company_users Where phone = #{tel_no}
+	</select>
+	
+</mapper>

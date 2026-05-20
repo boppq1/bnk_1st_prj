@@ -1,0 +1,57 @@
+@charset "UTF-8";
+  
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans KR', sans-serif; font-size: 14px; color: #222; background: #fff; }
+    .page-wrap { max-width: 960px; margin: 0 auto; padding: 30px 20px 60px; }
+
+    .section { margin-bottom: 36px; }
+    .section-title {
+      font-size: 18px; font-weight: 600;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #c0392b;
+      margin-bottom: 0;
+      display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .required-note { font-size: 12px; color: #c0392b; font-weight: 400; }
+    .req { color: #c0392b; margin-left: 2px; }
+
+    table { width: 100%; border-collapse: collapse; }
+    td { padding: 9px 14px; border: 1px solid #ddd; vertical-align: middle; font-size: 13px; }
+    td.lbl { background: #f5f5f5; width: 150px; color: #555; font-weight: 500; white-space: nowrap; }
+
+    input[type="text"], input[type="email"], input[type="date"], select {
+      height: 30px; padding: 0 8px; font-size: 13px;
+      border: 1px solid #ccc; border-radius: 3px;
+      font-family: inherit; background: #fff; color: #222;
+    }
+    input[type="text"]:focus, input[type="email"]:focus,
+    input[type="date"]:focus, select:focus { outline: none; border-color: #c0392b; }
+    input:disabled, input[readonly] { background: #f5f5f5; color: #999; }
+
+    .row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+
+    .addr-line { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+    .addr-line:last-child { margin-bottom: 0; }
+
+    .btn {
+      height: 30px; padding: 0 12px; font-size: 12px;
+      border: 1px solid #bbb; border-radius: 3px;
+      background: #f0f0f0; color: #333; cursor: pointer;
+      font-family: inherit; white-space: nowrap;
+    }
+    .btn:hover { background: #e0e0e0; }
+
+    .note { font-size: 11px; color: #c0392b; margin-top: 5px; }
+
+    .sub-label { font-size: 12px; color: #666; margin-bottom: 4px; }
+    .sub-block { margin-bottom: 10px; }
+    .sub-block:last-child { margin-bottom: 0; }
+
+    .submit-wrap { display: flex; justify-content: center; margin-top: 40px; }
+    .submit-btn {
+      height: 44px; padding: 0 70px; font-size: 15px; font-weight: 600;
+      background: #c0392b; color: #fff; border: none; border-radius: 4px;
+      cursor: pointer; font-family: inherit;
+    }
+    .submit-btn:hover { background: #a93226; }
+  
