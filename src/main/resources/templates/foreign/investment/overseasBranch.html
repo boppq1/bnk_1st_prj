@@ -1,15 +1,273 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
 <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
-    <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{/css/product/product.css}">
-    <link rel="stylesheet" th:href="@{/css/footer.css}">
-    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+<title>해외사무소(지사)설치</title>
+
+<link rel="stylesheet" th:href="@{/css/product/product.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
 <div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+<div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+<main class="product-main">
+
+<div class="service-container">
+
+<h1 class="main-title">해외사무소(지사)설치</h1>
+<section class="deposit-section">
+    <h2 class="deposit-section-title">해외사무소(지점) 구분</h2>
+
+    <table class="deposit-table">
+        <tbody>
+        <tr>
+            <th style="width:180px;">해외사무소</th>
+            <td>
+                외국에서 영업활동을 영위하지 아니하고 업무연락, 시장조사,
+                연구개발활동 등의 비영업적 기능만을 수행하거나
+                비영리단체가 국외에서 당해 단체의 설립목적에 부합하는
+                활동을 수행할 경우를 말합니다.
+            </td>
+        </tr>
+
+        <tr>
+            <th>해외지점</th>
+            <td>
+                독립채산제를 원칙으로 하여 외국에서 영업활동을
+                영위하고자 설치하는 경우를 말합니다.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="deposit-section">
+    <h2 class="deposit-section-title">설치자격</h2>
+
+    <table class="deposit-table">
+        <tbody>
+        <tr>
+            <th style="width: 180px;">해외사무소</th>
+            <td>
+                · 공공기관<br>
+                · 금융감독원<br>
+                · 과거 1년간 외화획득실적이 미화 30만불 이상인 자<br>
+                · 과거 1년간 유치한 관광객수가 8천명 이상인 국제여행 알선업자<br>
+                · 과거 1년간 외화획득실적 합산금액이 미화 30만불 이상인 자로서 2인 이상이 공동으로 하나의 해외사무소를 설치하고자 하는 자<br>
+                · 외화획득업자나 수출품 또는 군납품 생산업자로 구성된 협회 또는 조합 등의 법인<br>
+                · 중소기업협동조합<br>
+                · 국내의 신문사·통신사 및 방송국<br>
+                · 기술개발촉진법령에 의하여 국외 기업부설연구소 설치가 필요하다고 인정받은 자<br>
+                · 대외무역법에 따라 무역업을 영위하는 법인으로서 설립 후 1년을 경과한 자<br>
+                · 기타 주무부장관 또는 한국무역협회장이 해외사무소 설치가 불가피하다고 인정하는 자
+            </td>
+        </tr>
+
+        <tr>
+            <th>해외지점</th>
+            <td>
+                · 과거 1년간 외화획득실적이 미화 1백만불 이상인 자<br>
+                · 기타 주무부장관 또는 한국무역협회장이 외화획득의 전망 등을 고려하여 해외지점 설치가 필요하다고 인정한 자
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+<div class="foreign-tab-menu">
+    <button type="button" class="foreign-tab-btn active" data-tab="branchTab1">신고절차</button>
+    <button type="button" class="foreign-tab-btn" data-tab="branchTab2">경비지급</button>
+    <button type="button" class="foreign-tab-btn" data-tab="branchTab3">사후관리</button>
+</div>
+
+<div class="foreign-tab-content active" id="branchTab1">
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">거래외국환은행 지정등록</h2>
+
+        <ul class="deposit-list">
+            <li>
+                다음의 신고서 및 해외사무소(지점) 설치자격 요건 확인서류를 구비하여
+                지정거래 외국환은행에 신고하여야 합니다.
+            </li>
+            <li>해외사무소(지점) 설치(변경)신고서</li>
+            <li>사무소(지점) 설치자격 요건 확인서류</li>
+            <li>외국환은행의 장 또는 한국무역협회장이 발급한 외화획득실적증명서</li>
+            <li>주무부장관 또는 무역협회장의 추천서</li>
+            <li>기타 자격을 확인할 수 있는 서류</li>
+        </ul>
+    </section>
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">해외사무소(지점) 설치 신고내용 변경절차</h2>
+
+        <p class="deposit-desc">
+            해외사무소(지점)를 설치한 후 신고 수리 받은 내용 중 명칭 또는 위치를 변경하고자 하는 경우에는
+            당초 해외사무소(지점) 설치 신고 수리한 지정거래 외국환은행에 다음의 서류를 제출하여
+            내용 변경신고를 하여야 합니다.
+        </p>
+
+        <ul class="deposit-list">
+            <li>해외사무소(지점) 설치(변경) 신고서</li>
+            <li>해외사무소(지점) 설치신고서 사본</li>
+            <li>해외사무소(지점) 변경 사유서</li>
+        </ul>
+    </section>
+
+</div>
+
+<div class="foreign-tab-content" id="branchTab2">
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">해외사무소 설치비</h2>
+
+        <ul class="deposit-list">
+            <li>
+                <strong>설치비 지급항목</strong>
+                사무실 및 주재원의 주거용 부동산 등 해외 활동에 필요한 부동산 임차보증금 또는 구입비,
+                동산 집기류 구입비 및 임차보증금, 영선비, 통신관계 설치비,
+                기타 지정거래외국환은행의 장이 필요하다고 인정하는 자본적 지출비용
+            </li>
+            <li>
+                <strong>설치비 지급절차</strong>
+                지정거래 외국환은행에 해외사무소 설치신고와 관련 증빙서류를 제출하여 지급 신청합니다.
+            </li>
+        </ul>
+
+        <div class="service-info-box">
+            증빙서류에 의한 설치비 지급이 곤란한 경우에는 해외사무소 설치 계획서에 의거
+            사전 개산 지급할 수 있으며, 설치비 추가 지급의 경우에는 지급신고일로부터
+            1년 이내에 해당 지급을 증빙하는 서류 등을 제출하여 정산하여야 합니다.
+        </div>
+    </section>
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">해외사무소 유지활동비 지급</h2>
+
+        <ul class="deposit-list">
+            <li>
+                <strong>유지활동비 지급항목</strong>
+                해외사무소 및 해외지점의 활동 및 유지운영에 필요한 제 경비 지급
+            </li>
+            <li>
+                <strong>유지활동비 지급절차</strong>
+                지정거래 외국환은행에 서류를 제출하여 지급 신청합니다.
+            </li>
+            <li>외화송금신청서</li>
+        </ul>
+
+        <div class="service-info-box">
+            해외건설 및 용역사업자가 설치한 해외지점 유지활동비는 지정거래 외국환은행에
+            신고한 후 현지보유 외화자금으로 직접 지급할 수 있습니다.
+        </div>
+    </section>
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">해외지점의 영업기금</h2>
+
+        <ul class="deposit-list">
+            <li>
+                영업기금은 해외지점의 설치비, 유지운영비 및 영업활동 운영자금을 포함하며,
+                현지금융 차입에 의한 자금은 제외합니다.
+            </li>
+            <li>
+                지정거래 외국환은행에 해외지사 경비지급 신고서와 설치사실 입증서류를 제출하여 지급 신청합니다.
+            </li>
+        </ul>
+    </section>
+
+</div>
+
+<div class="foreign-tab-content" id="branchTab3">
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">해외지점의 결산 손익잉여금의 처분</h2>
+
+        <ul class="deposit-list">
+            <li>
+                독립채산제를 하는 해외지점을 설치한 경우 매 회계기간별로 해외지점의 결산 재무제표 및
+                그 부속서류와 결산결과 발생한 손익잉여금의 처분 내역을 결산일로부터 5월 이내
+                지정거래 외국환은행에 제출하여야 합니다.
+            </li>
+            <li>전기이월 결손액의 충당</li>
+            <li>국내에 회수한 후 외국환은행에 내국지급수단을 대가로 매각하거나 거주자 계정에 예치</li>
+            <li>당해 해외지점의 영업기금으로 운용</li>
+        </ul>
+    </section>
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">해외지사의 폐쇄</h2>
+
+        <p class="deposit-desc">
+            해외지사를 폐쇄할 때에는 잔여 재산을 국내로 즉시 회수하고,
+            해외지사의 재산목록, 대차대조표, 재산처분명세서,
+            외국환매각서류를 지정거래외국환은행에 제출하여야 합니다.
+        </p>
+    </section>
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">해외지사에 관한 사후관리</h2>
+
+        <ul class="deposit-list">
+            <li>
+                해외지사 설치 신고 후 6월 이내 현지법규에 의한 등록증 등
+                지사설치를 확인할 수 있는 서류를 첨부하여 설치행위 완료 내용을 보고하여야 합니다.
+            </li>
+            <li>
+                해외지사가 부동산을 취득 또는 처분하는 경우에는 취득 또는 처분일로부터
+                6월 이내 지정거래외국환은행으로 보고하여야 합니다.
+            </li>
+            <li>
+                해외지점의 연도별 영업활동상황은 해당 연도 종료일로부터
+                5월 이내 지정거래외국환은행에 제출하여야 합니다.
+            </li>
+        </ul>
+    </section>
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
 <div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const tabButtons = document.querySelectorAll(".foreign-tab-btn");
+    const tabContents = document.querySelectorAll(".foreign-tab-content");
+
+    tabButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            const targetId = button.getAttribute("data-tab");
+
+            tabButtons.forEach(function (btn) {
+                btn.classList.remove("active");
+            });
+
+            tabContents.forEach(function (content) {
+                content.classList.remove("active");
+            });
+
+            button.classList.add("active");
+            document.getElementById(targetId).classList.add("active");
+        });
+    });
+});
+</script>
+
 </body>
 </html>

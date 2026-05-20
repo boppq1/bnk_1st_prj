@@ -1,0 +1,49 @@
+@charset "UTF-8";
+/* ============================================================
+   deposit-list 라벨 깨짐 수정 패치
+   기존 studyAbroad.css 뒤에 이 파일을 link 하면 됩니다.
+
+   원인: .deposit-list li { display: flex } 상태에서
+         <strong> 다음에 오는 텍스트 노드가 flex 컨테이너 밖으로
+         밀려나 줄바꿈된 것.
+   해결: li를 block, strong을 inline + white-space:nowrap 처리
+============================================================ */
+
+.deposit-list li {
+  display: block;
+  position: relative;
+  padding: 13px 18px 13px 30px;
+  font-size: 13px;
+  color: #444;
+  line-height: 1.8;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  transition: border-color 0.15s;
+}
+
+.deposit-list li:hover {
+  border-color: #d0b0b1;
+}
+
+.deposit-list li::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 20px;
+  width: 4px;
+  height: 4px;
+  background: #e31b23;
+  border-radius: 50%;
+  margin-top: 0;
+}
+
+/* 핵심: strong 을 inline 으로, 중간에서 줄바꿈 안 되도록 */
+.deposit-list li strong {
+  display: inline;
+  font-weight: 700;
+  color: #111;
+  margin-right: 4px;
+  white-space: nowrap;
+}
