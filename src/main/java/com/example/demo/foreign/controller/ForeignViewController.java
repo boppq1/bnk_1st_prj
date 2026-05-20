@@ -314,6 +314,40 @@ public class ForeignViewController {
         return "foreign/exchange/exchangeCalculator";
     }
 
+	 // =========================
+	 // 국내외 투자
+	 // templates/foreign/investment
+	 // =========================
+	
+	 // 해외직접투자
+	 @GetMapping("/investment/overseasInvestment")
+	 public String overseasInvestment() {
+	     return "foreign/investment/overseasInvestment";
+	 }
+	
+	 // 해외사무소(지사)설치
+	 @GetMapping("/investment/overseasBranch")
+	 public String overseasBranch() {
+	     return "foreign/investment/overseasBranch";
+	 }
+	
+	 // 해외부동산투자
+	 @GetMapping("/investment/overseasRealEstate")
+	 public String overseasRealEstate() {
+	     return "foreign/investment/overseasRealEstate";
+	 }
+	
+	 // 외국인 국내 투자
+	 @GetMapping("/investment/foreignDomesticInvestment")
+	 public String foreignDomesticInvestment() {
+	     return "foreign/investment/foreignDomesticInvestment";
+	 }
+	
+	 // 외국인 국내 부동산 투자
+	 @GetMapping("/investment/foreignDomesticRealEstate")
+	 public String foreignDomesticRealEstate() {
+	     return "foreign/investment/foreignDomesticRealEstate";
+	 }
     // =========================
     // 유학 / 이주 / 여행
     // =========================
@@ -353,11 +387,14 @@ public class ForeignViewController {
         return "foreign/studyMigrationTravel/travelExchange";
     }
     
-    // 국내외 투자 해외직접투자
-    @GetMapping("/investment/overseasInvestment")
-    public String 해외직접투자() {
-    	return "foreign/investment/overseasInvestment";
-    }
+	 // =========================
+	 // 글로벌파워셀러 특화서비스
+	 // =========================
+	
+	 @GetMapping("/globalPowerSeller/globalPowerSellerGuide")
+	 public String globalPowerSellerGuide() {
+	     return "foreign/globalPowerSeller/globalPowerSellerGuide";
+	 }
 	 // =========================
 	 // 외환이용가이드
 	 // =========================
