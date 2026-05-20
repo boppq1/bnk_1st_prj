@@ -23,6 +23,7 @@
 //
 //        return Jwts.builder()
 //                .setSubject(String.valueOf(adminId))
+//                .claim("role", role)
 //                .setIssuedAt(new Date())
 //                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
 //                .signWith(key, SignatureAlgorithm.HS256)

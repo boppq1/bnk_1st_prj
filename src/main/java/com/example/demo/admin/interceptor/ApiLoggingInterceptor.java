@@ -11,9 +11,15 @@
 //public class ApiLoggingInterceptor implements HandlerInterceptor {
 //
 //    @Override
-//    public boolean preHandle(HttpServletRequest request,
-//                             HttpServletResponse response,
-//                             Object handler) {
+//    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+//
+//        // CORS preflisht 요청 처리 - 실제 요청 보내기 전에 서버에게 미리 물어보는 요청 보내기
+//        if("OPTIONS".equals(request.getMethod())) {
+//            return true;
+//        }
+//
+//        String authHeader = request.getHeader("Authorization");
+//
 //
 //        request.setAttribute("startTime", System.currentTimeMillis());
 //

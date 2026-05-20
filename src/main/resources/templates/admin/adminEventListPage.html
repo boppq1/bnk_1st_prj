@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BNK Busan Bank - 이벤트 목록</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
+    <link rel="stylesheet" th:href="@{/css/admin/adminEventListPage.css}">
+
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+    <div class="sidebar-logo">
+        <img th:src="@{/images/BNKlogo.png}" alt="BNK 부산은행">
+    </div>
+    <div class="sidebar-profile">
+        <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
+        <div class="sp-info">
+            <div class="sp-name" th:text="${admin.name} + ' 관리자'">홍길동 관리자</div>
+            <span class="sp-role" th:text="${admin.adminRole}">chief</span>
+        </div>
+    </div>
+    <ul class="sidebar-menu">
+        <li class="menu-section-title">메인</li>
+        <li><a href="/admin/dashboard" class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+        <li><a href="/admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
+        <li class="menu-section-title">상품 관리</li>
+        <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
+        <li><a href="/admin/productListPage" class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
+        <li class="menu-section-title">콘텐츠 관리</li>
+        <li><a href="/admin/noticeListPage" class="menu-item"><i class="fa-solid fa-bullhorn"></i> 공지사항 목록</a></li>
+        <li><a href="/admin/noticeRegisterPage" class="menu-item"><i class="fa-solid fa-pen-to-square"></i> 공지사항 등록</a></li>
+        <li><a href="/admin/eventListPage" class="menu-item"><i class="fa-solid fa-calendar-days"></i> 이벤트 목록</a></li>
+        <li><a href="/admin/adminEventPage" class="menu-item"><i class="fa-solid fa-circle-plus"></i> 이벤트 등록</a></li>
+        <li class="menu-section-title">업무</li>
+        <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
+        <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
+        <li><a href="/admin/account" class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
+        <li class="menu-section-title">관리</li>
+        <li><a href="/admin/members" class="menu-item"><i class="fa-solid fa-users-gear"></i> 회원/관리자 관리</a></li>
+        <li><a href="/admin/logs" class="menu-item"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
+        <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
+    </ul>
+    <div class="sidebar-footer">
+        <p>2024 BNK Busan Bank</p>
+        <p>IT Strategy Team</p>
+    </div>
+</div>
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+    <div class="header-title">콘텐츠 관리</div>
+    <div class="header-breadcrumb">
+        <i class="fa-solid fa-chevron-right"></i>
+        <span>이벤트 관리</span>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span>이벤트 목록</span>
+    </div>
+    <div class="header-right">
+        <div class="header-user">
+            <div class="hu-avatar"><i class="fa-solid fa-user-tie"></i></div>
+            <span th:text="'관리자 ' + ${admin.name} + ' 님'">홍길동 관리자</span>
+            <i class="fa-solid fa-chevron-down hu-chevron"></i>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MAIN ===== -->
+<div class="main-content">
+
+    <!-- 페이지 헤더 -->
+    <div class="page-header">
+        <div class="page-header-left">
+            <h1 class="page-title">이벤트 목록</h1>
+            <p class="page-subtitle">등록된 이벤트를 조회하고 관리합니다.</p>
+        </div>
+        <a href="/admin/adminEventPage" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> 새 이벤트 등록
+        </a>
+    </div>
+
+    <!-- 통계 카드 -->
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-icon red"><i class="fa-solid fa-calendar-days"></i></div>
+            <div class="stat-info">
+                <div class="stat-label">전체 이벤트</div>
+                <div class="stat-value" th:text="${totalCount != null ? totalCount : 0}">0</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="fa-solid fa-user-tie"></i></div>
+            <div class="stat-info">
+                <div class="stat-label">등록 관리자</div>
+                <div class="stat-value" th:text="${adminCount != null ? adminCount : 0}">0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 필터 바 -->
+    <div class="filter-bar">
+        <div class="filter-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="이벤트명으로 검색...">
+        </div>
+        <div class="filter-divider"></div>
+        <div class="filter-count">
+            총 <strong th:text="${events != null ? #lists.size(events) : 0}">0</strong>개 이벤트
+        </div>
+    </div>
+
+    <!-- 이벤트 테이블 -->
+    <div class="table-card">
+        <div class="table-wrap">
+            <table id="eventTable">
+                <thead>
+                <tr>
+                    <th>NO</th>
+                    <th>이벤트명</th>
+                    <th>내용</th>
+                    <th>등록일</th>
+                    <th>등록 관리자</th>
+                    <th>액션</th>
+                </tr>
+                </thead>
+
+                <tbody th:if="${events != null and !#lists.isEmpty(events)}">
+                <tr th:each="e : ${events}"
+                    th:attr="
+                data-no=${e.event_no},
+                data-name=${e.event_ttl},
+                data-content=${e.event_cont},
+                data-date=${e.event_dt},
+                data-admin=${e.admin_name}
+              ">
+                    <td>
+                        <span class="td-id" th:text="'#' + ${e.event_no}">#001</span>
+                    </td>
+                    <td>
+                        <div class="td-name" th:text="${e.event_ttl}">BNK 봄맞이 이벤트</div>
+                    </td>
+                    <td>
+                        <div class="td-content" th:text="${e.event_cont}">이벤트 내용 미리보기...</div>
+                    </td>
+                    <td th:text="${e.event_dt}">2025-01-01</td>
+                    <td th:text="${e.admin_name}">홍길동</td>
+                    <td>
+                        <div class="action-btns">
+                            <button type="button" class="act-btn act-view"
+                                    onclick="openModal(this.closest('tr'))"
+                                    title="상세 보기">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                            <button type="button" class="act-btn act-del"
+                                    th:attr="onclick='confirmDelete(' + ${e.event_no} + ')'"
+                                    title="삭제">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+
+                <!-- 데이터 없을 때 -->
+                <tbody th:if="${events == null or #lists.isEmpty(events)}">
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <div class="empty-icon"><i class="fa-solid fa-calendar-xmark"></i></div>
+                            <div class="empty-title">등록된 이벤트가 없습니다</div>
+                            <div class="empty-desc">새 이벤트 등록 버튼을 눌러 이벤트를 추가하세요.</div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div><!-- /main-content -->
+
+
+<!-- ═══════════════════════════════════════
+     EVENT DETAIL MODAL
+═══════════════════════════════════════ -->
+<div class="modal-backdrop" id="eventModal" onclick="handleBackdropClick(event)">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalEventName">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <div class="modal-header-icon">
+                <i class="fa-solid fa-calendar-star"></i>
+            </div>
+            <div class="modal-header-text">
+                <div class="modal-event-id" id="modalEventNo">#001</div>
+                <div class="modal-event-name" id="modalEventName">이벤트명</div>
+            </div>
+            <!-- 편집 모드 뱃지 -->
+            <div class="modal-edit-badge" id="modalEditBadge" style="display:none;">
+                <i class="fa-solid fa-pen-to-square"></i> 편집 중
+            </div>
+            <button class="modal-close" onclick="closeModal()" aria-label="닫기">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="modal-body">
+
+            <!-- 기본 정보 -->
+            <div class="modal-section">
+                <div class="modal-section-title"><i class="fa-solid fa-circle-info"></i> 기본 정보</div>
+                <div class="modal-info-grid">
+                    <div class="modal-info-item">
+                        <div class="modal-info-label"><i class="fa-solid fa-calendar"></i> 등록일</div>
+                        <div class="modal-info-value" id="modalDate">-</div>
+                    </div>
+                    <div class="modal-info-item">
+                        <div class="modal-info-label"><i class="fa-solid fa-user-tie"></i> 등록 관리자</div>
+                        <div class="modal-info-value" id="modalAdmin">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 이벤트명 편집 -->
+            <div class="modal-section" id="sectionTitle">
+                <div class="modal-section-title"><i class="fa-solid fa-heading"></i> 이벤트명</div>
+                <div class="modal-info-item full">
+                    <!-- 보기 모드 -->
+                    <div class="modal-info-value" id="viewTitle">-</div>
+                    <!-- 편집 모드 -->
+                    <input type="text" class="modal-edit-input" id="editTitle"
+                           style="display:none;" placeholder="이벤트명을 입력하세요">
+                </div>
+            </div>
+
+            <!-- 이벤트 내용 -->
+            <div class="modal-section">
+                <div class="modal-section-title"><i class="fa-solid fa-align-left"></i> 이벤트 내용</div>
+                <div class="modal-info-item full">
+                    <!-- 보기 모드 -->
+                    <div class="modal-info-value content-value" id="modalContent"></div>
+                    <!-- 편집 모드 -->
+                    <textarea class="modal-edit-textarea" id="editContent"
+                              style="display:none;" placeholder="이벤트 내용을 입력하세요" rows="7"></textarea>
+                </div>
+            </div>
+
+        </div><!-- /modal-body -->
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+            <!-- 보기 모드 버튼 -->
+            <div id="footerView">
+                <button type="button" class="modal-btn modal-btn-close" onclick="closeModal()">
+                    <i class="fa-solid fa-xmark"></i> 닫기
+                </button>
+                <button type="button" class="modal-btn modal-btn-edit" onclick="enterEditMode()">
+                    <i class="fa-solid fa-pen"></i> 수정하기
+                </button>
+            </div>
+            <!-- 편집 모드 버튼 -->
+            <div id="footerEdit" style="display:none; display:flex; gap:8px; align-items:center;">
+                <button type="button" class="modal-btn modal-btn-close" onclick="exitEditMode()">
+                    <i class="fa-solid fa-rotate-left"></i> 취소
+                </button>
+                <button type="button" class="modal-btn modal-btn-save" onclick="saveEdit()">
+                    <i class="fa-solid fa-floppy-disk"></i> 저장
+
+<script>
+    /* ── 검색 필터 ── */
+    document.getElementById('searchInput').addEventListener('input', function () {
+        const keyword = this.value.toLowerCase().trim();
+        document.querySelectorAll('#eventTable tbody tr[data-no]').forEach(function (row) {
+            const name = row.querySelector('.td-name')?.textContent.toLowerCase() || '';
+            row.style.display = (!keyword || name.includes(keyword)) ? '' : 'none';
+        });
+    });
+
+    /* ── 삭제 확인 ── */
+    function confirmDelete(no) {
+        if (confirm('이벤트 #' + no + ' 을(를) 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) {
+            window.location.href = '/admin/deleteEvent/' + no;
+        }
+    }
+
+    /* ── MODAL 상태 ── */
+    let currentNo = null;
+
+    function openModal(row) {
+        currentNo     = row.getAttribute('data-no')      || '-';
+        const name    = row.getAttribute('data-name')    || '-';
+        const content = row.getAttribute('data-content') || '-';
+        const date    = row.getAttribute('data-date')    || '-';
+        const admin   = row.getAttribute('data-admin')   || '-';
+
+        document.getElementById('modalEventNo').textContent = '#' + currentNo;
+        document.getElementById('modalEventName').textContent = name;
+        document.getElementById('modalDate').textContent      = date;
+        document.getElementById('modalAdmin').textContent     = admin;
+
+        // 보기 모드 값 세팅
+        document.getElementById('viewTitle').textContent   = name;
+        document.getElementById('modalContent').textContent = content;
+
+        // 편집 input에도 미리 값 세팅
+        document.getElementById('editTitle').value   = name;
+        document.getElementById('editContent').value = content;
+
+        exitEditMode(false); // 보기 모드로 초기화 (애니 없이)
+        document.getElementById('eventModal').classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('eventModal').classList.remove('is-open');
+        document.body.style.overflow = '';
+        exitEditMode(false);
+    }
+
+    function handleBackdropClick(e) {
+        if (e.target === document.getElementById('eventModal')) closeModal();
+    }
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    /* ── 편집 모드 진입 ── */
+    function enterEditMode() {
+        // 보기 → 숨김
+        document.getElementById('viewTitle').style.display    = 'none';
+        document.getElementById('modalContent').style.display = 'none';
+        document.getElementById('footerView').style.display   = 'none';
+
+        // 편집 → 표시
+        document.getElementById('editTitle').style.display    = '';
+        document.getElementById('editContent').style.display  = '';
+        document.getElementById('footerEdit').style.display   = 'flex';
+        document.getElementById('modalEditBadge').style.display = '';
+
+        // 헤더 제목 편집 불가 (그대로 유지)
+        document.getElementById('editTitle').focus();
+    }
+
+    /* ── 편집 모드 취소 ── */
+    function exitEditMode(reset = true) {
+        if (reset) {
+            // 입력값 원복
+            document.getElementById('editTitle').value   = document.getElementById('viewTitle').textContent;
+            document.getElementById('editContent').value = document.getElementById('modalContent').textContent;
+        }
+
+        // 편집 → 숨김
+        document.getElementById('editTitle').style.display    = 'none';
+        document.getElementById('editContent').style.display  = 'none';
+        document.getElementById('footerEdit').style.display   = 'none';
+        document.getElementById('modalEditBadge').style.display = 'none';
+
+        // 보기 → 표시
+        document.getElementById('viewTitle').style.display    = '';
+        document.getElementById('modalContent').style.display = '';
+        document.getElementById('footerView').style.display   = '';
+    }
+
+    /* ── 저장 ── */
+    function saveEdit() {
+        const newTitle   = document.getElementById('editTitle').value.trim();
+        const newContent = document.getElementById('editContent').value.trim();
+
+        if (!newTitle) {
+            alert('이벤트명을 입력해주세요.');
+            document.getElementById('editTitle').focus();
+            return;
+        }
+        if (!newContent) {
+            alert('이벤트 내용을 입력해주세요.');
+            document.getElementById('editContent').focus();
+            return;
+        }
+
+        // ① FORM POST 방식으로 서버에 전송
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/admin/updateEvent/' + currentNo;
+
+        const addField = (name, value) => {
+            const input = document.createElement('input');
+            input.type  = 'hidden';
+            input.name  = name;
+            input.value = value;
+            form.appendChild(input);
+        };
+
+        addField('event_ttl',  newTitle);
+        addField('event_cont', newContent);
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</body>
+</html>

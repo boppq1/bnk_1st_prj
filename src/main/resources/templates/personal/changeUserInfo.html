@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>사용자정보변경</title>
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href='@{/css/personal/changeUserInfo.css}'>
+</head>
+<body>
+	<div th:replace="~{header :: header}"></div>
+	<div class="page-wrap">
+
+		<!-- ════ 기본정보 ════ -->
+		<div class="section">
+			<div class="section-title">기본정보</div>
+			<table>
+				<tr>
+					<td class="lbl">성명(실명)</td>
+					<td th:text="*{userInfo.usr_nm}">홍길동</td>
+					<td class="lbl">회원아이디</td>
+					<td>A0840776</td>
+				</tr>
+				<tr>
+					<td class="lbl">고객상태</td>
+					<td th:text="*{userInfo.acnt_stat_cd}">정상</td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- ════ 개인정보 ════ -->
+		<div class="section">
+			<div class="section-title">
+				개인정보 <span class="required-note">* 필수입력항목</span>
+			</div>
+			<table>
+				<tr>
+					<td class="lbl" >휴대폰번호</td>
+					<td>
+						<div class="row">
+							<input type="text" name="tel_no" id="tel_no" style="width: 200px" th:placeholder="${userInfo.tel_no}">
+							<button class="btn" type="button" id="phonBtn">변경</button>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="lbl">주소<span class="req">*</span></td>
+					<td>
+						<div class="addr-line">
+							<input type="text"  id="zip_cd" name="zip_cd" readonly
+								th:placeholder="${userInfo.zip_cd}" style="width: 120px">
+							<button class="btn" type="button" onclick="DaumPostcode()">우편번호
+								찾기</button>
+						</div>
+						<div class="addr-line">
+							<input type="text" id="addr" name="addr" readonly
+								th:placeholder="${userInfo.addr}" style="width: 400px">
+						</div>
+						<div class="addr-line">
+							<input type="text"  id="addr_dtl" name="addr_dtl"
+								th:placeholder="userInfo.addr_dtl" style="width: 400px">
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="lbl">이메일<span class="req">*</span></td>
+					<td><input type="email" name="email" id="email"
+						th:placeholder="${userInfo.email}" style="width: 280px"></td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- ════ 부가정보 ════ -->
+		<div class="section">
+			<div class="section-title">부가정보</div>
+			<table>
+				<tr>
+					<td class="lbl">생년월일</td>
+					<td><input type="date" name="birth_dt" id="birth_dt"></td>
+					<td th:text="*{userInfo.birth_dt}"></td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- ════ 외환업무정보 ════ -->
+		<div class="section">
+			<div class="section-title">외환업무정보</div>
+			<table>
+				<tr>
+					<td class="lbl">영문성명</td>
+					<td>
+						<div class="row">
+							<input type="text" name="eng_nm" th:placeholder="${userInfo.eng_nm}" style="width: 300px">
+							<button class="btn" type="button">영문변환</button>
+						</div>
+						<div class="note">※ 영문 성명 입력 시 Full Name을 정확하게 입력해주세요.</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- ════ 변경 버튼 ════ -->
+		<div class="submit-wrap">
+			<button class="submit-btn" type="button" id="btn">변경</button>
+		</div>
+
+	</div>
+	<!-- /.page-wrap -->
+	<div th:replace="~{footer :: footer}"></div>
+	<script
+		src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js">
+		
+	</script>
+	<script>
+		function DaumPostcode() {
+		    new kakao.Postcode({
+		        oncomplete: function(data) {
+		            var addr = '';
+		            var extraAddr = '';
+	
+		            if (data.userSelectedType === 'R') {
+		                addr = data.roadAddress;
+		            } else {
+		                addr = data.jibunAddress;
+		            }
+	
+		            if (data.userSelectedType === 'R') {
+		                if (data.bname !== '' && /[동로가]$/.test(data.bname)) {
+		                    extraAddr += data.bname;
+		                }
+		                if (data.buildingName !== '' && data.apartment === 'Y') {
+		                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+		                }
+		                if (extraAddr !== '') {
+		                    extraAddr = ' (' + extraAddr + ')';
+		                }
+		            }
+	
+		            document.getElementById('zip_cd').value = data.zonecode;
+		            document.getElementById('addr').value = addr + extraAddr;
+		            document.getElementById('addr_dtl').focus();
+		        }
+		    }).open();
+		}
+		
+		// 전화번호 변경 가능한지?
+		document.querySelector("#phonBtn").addEventListener('click', phonBtn);
+		
+		function phonBtn(){
+			
+		const tel = document.querySelector("#tel_no").value;
+			if(!tel){
+				alert("전화번호를 입력해주세요");
+				return
+			}
+			fetch('/changeUserInfo?tel_no=' + tel)
+				.then(response => {
+					if(response.ok){
+						alert("변경가능합니다");
+					} else{
+						alert("변경불가능합니다");
+					}
+				})
+				.catch(error => console.error("에러발생", error));		
+		}
+		// 전체 정보 보내서 변경보내기
+	</script>
+</body>
+</html>
