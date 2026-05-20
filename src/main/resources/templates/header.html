@@ -13,6 +13,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 
   <!-- css -->
   <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/search/search.css}">
 </head>
 
 <body>
@@ -130,7 +131,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
             <a href="#">금융상품소개</a>
             <a href="#">외환</a>
           </div>
-
+		  <div>
+		  	<h4><a href="/myPage" style="color: black; text-decoration: none;"> 마이페이지</a></h4>
+		  </div>
         </div>
 
       </div>
@@ -151,7 +154,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
       </div>
 	</div>
       <div class="header-icons">
-        <i class="fa-solid fa-magnifying-glass"></i>
+        <button class="search-trigger" style="background:none; border:none; cursor:pointer;">
+   			<i class="fa-solid fa-magnifying-glass"></i>
+		</button>
         <i class="fa-solid fa-bars"></i>
       </div>
     </div>
@@ -179,6 +184,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 	}
 	
 </script>
+<script th:src="@{/js/search/search.js}"></script>
 </header>
 </body>
 </html>

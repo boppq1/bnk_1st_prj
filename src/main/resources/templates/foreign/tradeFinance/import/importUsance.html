@@ -1,10 +1,108 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>당행인수내국수입유산스서비스</title>
+
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">당행인수내국수입유산스서비스</h1>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">개요</h2>
+
+                <p class="deposit-desc">
+                    기한부 수입신용장에 의한 수입환어음을 당행이 인수하여
+                    일람출급으로 대외 지급하고, 개설신청인에 대하여
+                    유산스 기간 동안 당행의 외화자금을 지원하는 제도입니다.
+                </p>
+
+                <div class="foreign-btn-wrap">
+                    <a href="#" class="foreign-link-btn">
+                        내국수입유산스 이율 바로가기
+                    </a>
+                </div>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">취급대상</h2>
+
+                <ul class="deposit-list">
+                    <li>당행 개설한 기한부 수입신용장</li>
+                    <li>유산스 기간이 180일 이내</li>
+                    <li>당초기간 포함 364일까지 연장 가능</li>
+                    <li>어음지급인이 당행이어야 함</li>
+                    <li>미국달러(USD), 일본엔화(JPY), 유로화(EUR) 통화에 한하여 가능함</li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">융자금액 및 융자기간</h2>
+
+                <table class="deposit-table">
+                    <thead>
+                    <tr>
+                        <th style="width:35%">구분</th>
+                        <th>내용</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>융자금액</td>
+                        <td>수입환어음 금액 범위내</td>
+                    </tr>
+
+                    <tr>
+                        <td>융자기간</td>
+                        <td>취급일로부터 어음 만기일까지</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">기타 유의사항</h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        어음 만기일 전 중도 상환할 경우에는 중도상환수수료가 부과됩니다.
+                        <br>
+                        단, 어음 만기일로부터 15일 이내인 경우는 중도상환수수료를 면제합니다.
+                    </li>
+
+                    <li>
+                        융자 기간 동안 인수수수료는 면제하며,
+                        어음 만기일의 연장도 가능합니다.
+                    </li>
+                </ul>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

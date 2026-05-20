@@ -1,10 +1,166 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+<meta charset="UTF-8">
+<title>EDI지원서비스</title>
+
+<link rel="stylesheet" th:href="@{/css/product/product.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
 
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+<div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+<main class="product-main">
+
+<div class="service-container">
+
+<h1 class="main-title">EDI지원서비스</h1>
+
+<section class="deposit-section">
+
+<h2 class="deposit-section-title">
+서비스이용신청 업무별 대상업무 안내
+</h2>
+
+<div class="foreign-table-wrap">
+
+<table class="foreign-table">
+
+<thead>
+<tr>
+<th style="width:220px;">이용신청업무</th>
+<th>대상업무</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td class="table-title">수입</td>
+<td>
+<ul class="table-list">
+<li>수입신용장 개설 / 조건변경 신청</li>
+<li>수입화물선취보증(인도승낙) 신청</li>
+<li>선적서류 내도 통지</li>
+<li>수입어음 DISCOUNT 내역 통지</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td class="table-title">수출</td>
+<td>
+<ul class="table-list">
+<li>수출신용장 통지</li>
+<li>수출환어음 매입 / 추심 신청</li>
+<li>수출환어음 처리결과(수출환어음 인수) 통지</li>
+<li>수출 LESS CHARGE 출금 통지</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td class="table-title">내국신용장</td>
+<td>
+<ul class="table-list">
+<li>내국신용장 개설 / 조건변경 신청</li>
+<li>내국신용장 판매대금 추심의뢰서 도착통지</li>
+<li>내국신용장 통지</li>
+<li>내국신용장 매입 / 추심 신청</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td class="table-title">구매확인서</td>
+<td>
+<ul class="table-list">
+<li>외화획득용 원료구매확인서 발급 / 조건변경 신청</li>
+<li>외화획득용 원료구매확인서 오류 / 취소 신청</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td class="table-title">승인업무</td>
+<td>
+<ul class="table-list">
+<li>외환지급(변경) 확인 신청</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td class="table-title">송금</td>
+<td>
+<ul class="table-list">
+<li>해외 외화송금 신청</li>
+<li>외화자금 국내이체 신청</li>
+<li>타발송금 대전 입금 통지</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td class="table-title">계산서</td>
+<td>
+<ul class="table-list">
+<li>계산서 통지</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td class="table-title">상호대사 / 일반응답</td>
+<td>
+<ul class="table-list">
+<li>상호대사</li>
+<li>일반응답</li>
+</ul>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+<section class="deposit-section">
+
+<div class="service-info-box">
+
+<b>EDI 이용 특징</b><br><br>
+
+· 무역 업무 전자 처리 지원<br>
+· 은행 방문 없이 신청 및 조회 가능<br>
+· 업무 처리시간 단축 및 문서 자동화 지원
+
+</div>
+
+</section>
+
+</div>
+
+</main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
+
 </body>
+
 </html>

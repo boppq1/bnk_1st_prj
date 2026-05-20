@@ -1,10 +1,122 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>중국지역스피드송금서비스</title>
+
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">중국지역스피드송금서비스</h1>
+
+            <div class="foreign-notice-box">
+                <p>
+                    수취인의 계좌보유 은행이 중국 내 중국은행(Bank of China),
+                    중국공상은행(Industrial &amp; Commercial Bank of China)
+                    또는 중국건설은행(China Construction Bank)인 경우 해당 은행 국내 지점을 통하여
+                    송금 취결하므로 송금 실행 후 24시간 이내 받으실 수 있습니다.
+                </p>
+            </div>
+
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">특징</h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        <span class="label">신속성</span>
+                        해당 은행 국내 지점을 경유하여 송금 전문을 실시간 발송하므로
+                        수취인이 빠르게 받으실 수 있습니다.
+                    </li>
+
+                    <li>
+                        <span class="label">편리성</span>
+                        송금 전문을 국내 지점을 통하여 발송하므로
+                        처리상황 확인 및 사후 관리가 편리합니다.
+                    </li>
+                </ul>
+
+            </section>
+
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">서비스 주요내용</h2>
+
+                <table class="info-table">
+                    <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>내용</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>서비스 대상 고객</td>
+                        <td>실명의 개인, 개인사업자 및 법인</td>
+                    </tr>
+
+                    <tr>
+                        <td>송금통화</td>
+                        <td>미국달러화(USD)</td>
+                    </tr>
+
+                    <tr>
+                        <td>송금가능 시간</td>
+                        <td>09:00 ~ 16:00</td>
+                    </tr>
+
+                    <tr>
+                        <td>송금한도</td>
+                        <td>제한 없음</td>
+                    </tr>
+
+                    <tr>
+                        <td>송금 가능 항목</td>
+                        <td>개인 송금, 무역대금 및 용역 대금 등 모두 가능함.</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </section>
+
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">유의사항</h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        송금 보내실 때 수취은행의 정확한 지점명 또는
+                        SUB-BRANCH명을 정확하게 알려주셔야 합니다.
+                    </li>
+                </ul>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

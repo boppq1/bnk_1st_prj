@@ -1,0 +1,366 @@
+@charset "UTF-8";
+
+/* =============================================
+   BNK 부산은행 — 통합 검색 UI  |  search.css
+   ============================================= */
+
+:root {
+    --bnk-red:         #C8001E;
+    --bnk-red-light:   #fff0f2;
+    --bnk-red-hover:   #a60018;
+    --bnk-dark:        #1a1a1a;
+    --bnk-text:        #333333;
+    --bnk-gray-1:      #f7f7f7;
+    --bnk-gray-2:      #efefef;
+    --bnk-gray-3:      #d0d0d0;
+    --bnk-muted:       #9e9e9e;
+    --bnk-transition:  0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── 딤 오버레이 ──────────────────────────── */
+.bnk-search-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0);
+    z-index: 1200;
+    pointer-events: none;
+    transition: background var(--bnk-transition);
+}
+.bnk-search-overlay.is-open {
+    background: rgba(0,0,0,0.35);
+    pointer-events: auto;
+}
+
+/* ── 검색 패널 ────────────────────────────── */
+.bnk-search-panel {
+	margin-left : 300px;
+	margin-right : 300px;
+    position: fixed;
+    left: 0; right: 0;
+    background: #fff;
+    z-index: 1300;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    transform: translateY(-10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform var(--bnk-transition), opacity var(--bnk-transition);
+    max-height: calc(100vh - 80px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.bnk-search-panel.is-open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ── 입력 영역 ────────────────────────────── */
+.bnk-search-input-row {
+    display: flex;
+    align-items: center;
+    padding: 20px 40px 0;
+    gap: 14px;
+    flex-shrink: 0;
+}
+.bnk-search-input-box {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 2px solid var(--bnk-gray-3);
+    padding: 0 0 12px;
+    transition: border-color 0.2s;
+}
+.bnk-search-input-box:focus-within {
+    border-color: var(--bnk-red);
+}
+.bnk-search-input-box .fa-search {
+    color: var(--bnk-muted);
+    font-size: 16px;
+    flex-shrink: 0;
+    transition: color 0.2s;
+}
+.bnk-search-input-box:focus-within .fa-search {
+    color: var(--bnk-red);
+}
+#bnkSearchInput {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 17px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--bnk-dark);
+    background: transparent;
+    letter-spacing: -0.3px;
+    caret-color: var(--bnk-red);
+}
+#bnkSearchInput::placeholder {
+    color: var(--bnk-muted);
+    font-size: 15px;
+}
+
+/* X 지우기 버튼 */
+.bnk-search-clear {
+    background: var(--bnk-gray-3);
+    border: none;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    flex-shrink: 0;
+    transition: background 0.15s;
+}
+.bnk-search-clear.visible { display: flex; }
+.bnk-search-clear .fa-times { color: #fff; font-size: 10px; }
+.bnk-search-clear:hover { background: var(--bnk-muted); }
+
+/* 검색하기 버튼 */
+.bnk-search-submit {
+    background: var(--bnk-red);
+    border: none;
+    color: #fff;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    padding: 10px 22px;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    letter-spacing: -0.2px;
+    margin-bottom: 12px;
+    transition: background 0.18s;
+}
+.bnk-search-submit:hover { background: var(--bnk-red-hover); }
+
+/* 닫기 버튼 */
+.bnk-search-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--bnk-muted);
+    font-size: 20px;
+    padding: 0 0 12px;
+    transition: color 0.2s;
+    flex-shrink: 0;
+    line-height: 1;
+}
+.bnk-search-close:hover { color: var(--bnk-dark); }
+
+/* ── 탭 바 ────────────────────────────────── */
+.bnk-search-tabs {
+    display: flex;
+    padding: 16px 40px 0;
+    border-bottom: 1px solid var(--bnk-gray-2);
+    flex-shrink: 0;
+    gap: 4px;
+}
+.bnk-search-tab {
+    background: none;
+    border: none;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--bnk-muted);
+    cursor: pointer;
+    padding: 8px 14px;
+    position: relative;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+    transition: color 0.18s;
+}
+.bnk-search-tab::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 2px;
+    background: var(--bnk-red);
+    transform: scaleX(0);
+    transition: transform 0.2s;
+    border-radius: 2px 2px 0 0;
+}
+.bnk-search-tab.active { color: var(--bnk-red); font-weight: 700; }
+.bnk-search-tab.active::after { transform: scaleX(1); }
+.bnk-search-tab:hover:not(.active) { color: var(--bnk-text); }
+
+/* ── 스크롤 바디 ──────────────────────────── */
+.bnk-search-body {
+    overflow-y: auto;
+    flex: 1;
+    padding-bottom: 24px;
+    overscroll-behavior: contain;
+}
+.bnk-search-body::-webkit-scrollbar { width: 4px; }
+.bnk-search-body::-webkit-scrollbar-track { background: transparent; }
+.bnk-search-body::-webkit-scrollbar-thumb { background: var(--bnk-gray-2); border-radius: 4px; }
+
+/* ── 섹션 제목 ────────────────────────────── */
+.bnk-search-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--bnk-muted);
+    letter-spacing: 0.6px;
+    padding: 18px 40px 10px;
+    display: block;
+    text-transform: uppercase;
+}
+
+/* ── 인기검색어 칩 ───────────────────────── */
+.bnk-hot-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 40px 8px;
+}
+.bnk-hot-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    background: var(--bnk-gray-1);
+    border: 1px solid var(--bnk-gray-2);
+    border-radius: 100px;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--bnk-text);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+}
+.bnk-hot-chip:hover {
+    background: var(--bnk-red-light);
+    border-color: var(--bnk-red);
+    color: var(--bnk-red);
+}
+.bnk-hot-chip .fa-fire { font-size: 10px; color: var(--bnk-red); }
+
+/* 순위 뱃지 */
+.bnk-rank {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--bnk-muted);
+    min-width: 14px;
+}
+.bnk-rank.top { color: var(--bnk-red); }
+
+/* ── 검색 결과 목록 ──────────────────────── */
+.bnk-search-list {
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+}
+.bnk-search-list li {
+    display: block;
+}
+.bnk-search-list li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 40px;
+    text-decoration: none;
+    color: var(--bnk-text);
+    font-size: 14px;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: background 0.13s;
+    letter-spacing: -0.2px;
+}
+.bnk-search-list li a:hover { background: var(--bnk-gray-1); }
+.bnk-search-list li a:hover .bnk-item-icon { color: var(--bnk-red); }
+.bnk-search-list li a:hover .bnk-item-arrow { color: var(--bnk-muted); transform: translateX(2px); }
+
+/* 아이콘 */
+.bnk-item-icon {
+    color: var(--bnk-gray-3);
+    font-size: 13px;
+    flex-shrink: 0;
+    width: 16px;
+    text-align: center;
+    transition: color 0.15s;
+}
+
+/* 하이라이트 */
+.bnk-hl {
+    color: var(--bnk-red);
+    font-weight: 700;
+}
+
+/* 카테고리 뱃지 */
+.bnk-item-cat {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--bnk-muted);
+    background: var(--bnk-gray-1);
+    border: 1px solid var(--bnk-gray-2);
+    padding: 2px 8px;
+    border-radius: 100px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    letter-spacing: 0;
+}
+
+/* 화살표 */
+.bnk-item-arrow {
+    color: var(--bnk-gray-3);
+    font-size: 11px;
+    flex-shrink: 0;
+    transition: transform 0.15s, color 0.15s;
+}
+
+/* ── 구분선 ──────────────────────────────── */
+.bnk-search-divider {
+    height: 1px;
+    background: var(--bnk-gray-2);
+    margin: 10px 40px;
+}
+
+/* ── 결과 없음 ────────────────────────────── */
+.bnk-search-empty {
+    text-align: center;
+    padding: 48px 40px;
+    color: var(--bnk-muted);
+    display: none;
+}
+.bnk-search-empty.visible { display: block; }
+.bnk-search-empty i { font-size: 36px; display: block; margin-bottom: 14px; color: var(--bnk-gray-2); }
+.bnk-search-empty p { font-size: 14px; font-family: 'Noto Sans KR', sans-serif; margin: 0; line-height: 1.6; }
+.bnk-search-empty strong { color: var(--bnk-text); font-weight: 700; }
+
+/* ── 로딩 스피너 ─────────────────────────── */
+.bnk-search-loading {
+    display: none;
+    text-align: center;
+    padding: 32px;
+}
+.bnk-search-loading.visible { display: block; }
+.bnk-search-spinner {
+    width: 22px; height: 22px;
+    border: 2px solid var(--bnk-gray-2);
+    border-top-color: var(--bnk-red);
+    border-radius: 50%;
+    animation: bnkSpin 0.7s linear infinite;
+    margin: 0 auto;
+}
+@keyframes bnkSpin { to { transform: rotate(360deg); } }
+
+/* ── 키보드 포커스 아이템 ────────────────── */
+.bnk-search-list li a.is-focused {
+    background: var(--bnk-gray-1);
+    outline: none;
+}
+
+/* ── 반응형 ──────────────────────────────── */
+@media (max-width: 768px) {
+    .bnk-search-input-row,
+    .bnk-search-tabs,
+    .bnk-hot-chips { padding-left: 20px; padding-right: 20px; }
+    .bnk-search-section-label { padding-left: 20px; padding-right: 20px; }
+    .bnk-search-list li a { padding-left: 20px; padding-right: 20px; }
+    .bnk-search-divider { margin-left: 20px; margin-right: 20px; }
+    #bnkSearchInput { font-size: 15px; }
+    .bnk-search-submit { padding: 9px 14px; font-size: 12px; }
+}

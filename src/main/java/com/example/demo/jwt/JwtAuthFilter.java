@@ -29,13 +29,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		log.info("----------------| jwtFilter | ----------");
 		String uri = request.getRequestURI();
 		log.info("uri : {}", uri);
-
+		/*
 		if (uri.equals("/loginPage") || uri.equals("/loginProc") || uri.startsWith("/css/")
 				|| uri.startsWith("/images/")) {
 			filterChain.doFilter(request, response);
 			return;
 		}
-
+	*/
 		Cookie[] cookies = request.getCookies();
 		String token = null;
 
@@ -47,13 +47,24 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 				}
 			}
 		}
-
-//
-//		// 토큰 유효성 검사
-
-
-		// 토큰 유효성 검사
-
+		
+		if(!jwtUtil.isValid(token) && uri.equals("/myPage")) {
+			log.info("비로그인 사용자 마이페이지 이동");
+			response.sendRedirect("/loginPage");
+		}
+		
+		// 각각의 마이페이지로이동
+		if(jwtUtil.isValid(token) && uri.equals("/myPage")) {
+			if(jwtUtil.getRole(token).equals("user")) {
+				System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+				response.sendRedirect("/personal/myPage");
+				//filterChain.doFilter(request, response);
+			}else if(jwtUtil.getRole(token).equals("company")){
+				response.sendRedirect("/company/companyMyPage");
+			}
+		}
+		
+		
 //		if (!jwtUtil.isValid(token) || token == null) {
 //			log.info("토큰이 없거나 만료되었습니다. 로그인 페이지로 이동합니다.");
 //
@@ -65,7 +76,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 //			response.sendRedirect("/loginPage");
 //			return; 
 //		}
-
+//
 		filterChain.doFilter(request, response);
 	}
 

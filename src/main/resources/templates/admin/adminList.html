@@ -268,10 +268,6 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
           </tr>
         </thead>
         <tbody th:if="${adminList != null and !#lists.isEmpty(adminList)}">
-          <!-- 
-            Thymeleaf 반복문 내의 변수명을 'adminItem'으로 지정하여 
-            사이드바/헤더의 전역 관리자 프로필 정보 객체 '${admin}'과 중첩 및 오류가 나는 문제를 방지합니다. 
-          -->
           <tr th:each="adminItem : ${adminList}">
             <td><span class="td-id" th:text="'#' + ${adminItem.admin_id}">#001</span></td>
             <td th:text="${adminItem.login_id}"></td>

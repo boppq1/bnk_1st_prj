@@ -308,11 +308,6 @@ body {
   <div class="sidebar-logo">
     <img th:src="@{/images/BNKlogo.png}" src="/images/BNKlogo.png" alt="BNK 부산은행">
   </div>
-  <!-- 
-    로그인한 세션 관리자 프로필을 노출합니다. 
-    (form 바인딩 데이터인 ${admin}과 이름이 겹치지 않도록 주의가 필요하나, 
-    컨트롤러에서 보내는 admin 변수와 세션 세팅의 정합성이 맞을 경우 그대로 로드 가능)
-  -->
   <div class="sidebar-profile">
     <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
     <div class="sp-info">
@@ -439,7 +434,6 @@ body {
   }
 
   window.onload = function() {
-    // Thymeleaf 결과가 존재할 경우 커스텀 알림 모달 출력
     var resultMessage = [[${result}]];
     if (resultMessage != null) {
       document.getElementById('alertOverlay').classList.add('show');

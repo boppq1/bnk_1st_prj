@@ -1,10 +1,648 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>BNK 부산은행 외환</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <!-- 사이드바 -->
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <!-- 본문 -->
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">법규/규정</h1>
+
+            <div class="deposit-notice-box">
+                외환과 관련된 외국환거래법, 대외무역법, 외국인투자촉진법 등
+                다양한 법규 및 규정에 관한 자료를 확인하실 수 있습니다.
+            </div>
+
+            <section class="deposit-section">
+
+                <!-- 탭 -->
+                <div class="law-tab-menu">
+
+                    <button type="button"
+                            class="law-tab active"
+                            data-category="ALL">
+                        전체
+                    </button>
+
+                    <button type="button"
+                            class="law-tab"
+                            data-category="FOREIGN_EXCHANGE">
+                        외국환거래법
+                    </button>
+
+                    <button type="button"
+                            class="law-tab"
+                            data-category="TRADE">
+                        대외무역법
+                    </button>
+
+                    <button type="button"
+                            class="law-tab"
+                            data-category="INVEST">
+                        외국인투자촉진법
+                    </button>
+
+                    <button type="button"
+                            class="law-tab"
+                            data-category="ETC">
+                        기타
+                    </button>
+
+                </div>
+
+                <!-- 건수 -->
+                <div class="law-count">
+                    총 <span id="lawCount">0</span>건
+                    현재 :
+                    <span id="lawCurrentPage">1</span>
+                    /
+                    <span id="lawTotalPage">1</span> 페이지
+                </div>
+
+                <!-- 테이블 -->
+                <table class="info-table foreign-transfer-table law-table">
+
+                    <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>분류</th>
+                        <th>제목</th>
+                        <th>바로가기</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="lawTableBody">
+
+                    <tr data-category="TRADE" data-number="13">
+                        <td>13</td>
+                        <td>대외무역법</td>
+                        <td>대외무역관리규정</td>
+                        <td>
+                            <a href="https://www.law.go.kr/LSW//admRulLsInfoP.do?admRulSeq=2100000200040"
+                               target="_blank"
+                               class="law-link-btn">
+                                이동
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr data-category="TRADE" data-number="12">
+                        <td>12</td>
+                        <td>대외무역법</td>
+                        <td>대외무역법 시행령</td>
+                        <td>
+                            <a href="https://www.law.go.kr/LSW//lsInfoP.do?lsiSeq=228915"
+                               target="_blank"
+                               class="law-link-btn">
+                                이동
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr data-category="FOREIGN_EXCHANGE" data-number="11">
+                        <td>11</td>
+                        <td>외국환거래법</td>
+                        <td>외국환거래법</td>
+                        <td>
+                            <a href="https://www.law.go.kr/"
+                               target="_blank"
+                               class="law-link-btn">
+                                이동
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr data-category="ETC" data-number="10">
+                        <td>10</td>
+                        <td>기타</td>
+                        <td>
+                            한국은행 금융중개지원대출관련
+                            무역금융지원 프로그램 운용절차
+                        </td>
+                        <td>
+                            <a href="#"
+                               target="_blank"
+                               class="law-link-btn">
+                                이동
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr data-category="ETC" data-number="9">
+                        <td>9</td>
+                        <td>기타</td>
+                        <td>
+                            한국은행 금융중개지원대출관련
+                            무역금융지원 프로그램 운용세칙
+                        </td>
+                        <td>
+                            <a href="#"
+                               target="_blank"
+                               class="law-link-btn">
+                                이동
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr data-category="ETC" data-number="8">
+                        <td>8</td>
+                        <td>기타</td>
+                        <td>대북투자 등에 관한 외국환거래지침</td>
+                        <td>
+                            <a href="https://www.law.go.kr/LSW//admRulInfoP.do?admRulSeq=2100000176450"
+                               target="_blank"
+                               class="law-link-btn">
+                                이동
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr data-category="TRADE" data-number="7">
+                        <td>7</td>
+                        <td>대외무역법</td>
+                        <td>대외무역법</td>
+                        <td>
+                            <a href="https://www.law.go.kr/"
+                               target="_blank"
+                               class="law-link-btn">
+                                이동
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr data-category="INVEST" data-number="6">
+                        <td>6</td>
+                        <td>외국인투자촉진법</td>
+                        <td>외국인투자촉진법 시행규칙</td>
+                        <td>
+                            <a href="https://www.law.go.kr/"
+                               target="_blank"
+                               class="law-link-btn">
+                                이동
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr data-category="FOREIGN_EXCHANGE" data-number="5">
+                        <td>5</td>
+                        <td>외국환거래법</td>
+                        <td>외국환거래법 시행령</td>
+                        <td>
+                            <a href="https://www.law.go.kr/"
+                               target="_blank"
+                               class="law-link-btn">
+                                이동
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr data-category="INVEST" data-number="4">
+                        <td>4</td>
+                        <td>외국인투자촉진법</td>
+                        <td>외국인투자촉진법 시행령</td>
+                        <td>
+                            <a href="https://www.law.go.kr/"
+                               target="_blank"
+                               class="law-link-btn">
+                                이동
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr data-category="FOREIGN_EXCHANGE" data-number="3">
+                        <td>3</td>
+                        <td>외국환거래법</td>
+                        <td>외국환거래규정</td>
+                        <td>
+                            <a href="https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000194223"
+                               target="_blank"
+                               class="law-link-btn">
+                                이동
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr data-category="INVEST" data-number="2">
+                        <td>2</td>
+                        <td>외국인투자촉진법</td>
+                        <td>외국인투자촉진법</td>
+                        <td>
+                            <a href="https://www.law.go.kr/"
+                               target="_blank"
+                               class="law-link-btn">
+                                이동
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr data-category="ETC" data-number="1">
+                        <td>1</td>
+                        <td>기타</td>
+                        <td>신용장통일규칙(UCP600)</td>
+                        <td>
+                            <a th:href="@{/pdf/foreign/export_rule.pdf}"
+                               target="_blank"
+                               class="law-link-btn">
+                                PDF
+                            </a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+                <!-- 페이지네이션 -->
+				<div class="law-pagination">
+				
+				    <!-- 이전 -->
+				    <button type="button"
+				            class="law-page-btn"
+				            id="lawPrevBtn">
+				        ‹
+				    </button>
+				
+				    <!-- 페이지 번호 -->
+				    <div id="lawPageNumbers"
+				         class="law-page-numbers">
+				    </div>
+				
+				    <!-- 다음 -->
+				    <button type="button"
+				            class="law-page-btn"
+				            id="lawNextBtn">
+				        ›
+				    </button>
+				
+				</div>
+
+                <!-- 검색 -->
+                <div class="law-search-box">
+
+                    <select id="lawSearchType">
+                        <option value="title">제목</option>
+                        <option value="category">분류</option>
+                    </select>
+
+                    <input type="text"
+                           id="lawSearchInput"
+                           placeholder="검색어를 입력하세요.">
+
+                    <button type="button"
+                            id="lawSearchBtn">
+                        검색
+                    </button>
+
+                    <button type="button"
+                            id="lawResetBtn">
+                        초기화
+                    </button>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const tabs = document.querySelectorAll(".law-tab");
+    const rows = document.querySelectorAll("#lawTableBody tr");
+
+    const countBox =
+        document.getElementById("lawCount");
+
+    const currentPageBox =
+        document.getElementById("lawCurrentPage");
+
+    const totalPageBox =
+        document.getElementById("lawTotalPage");
+
+    const pageNumbers =
+        document.getElementById("lawPageNumbers");
+
+    const prevBtn =
+        document.getElementById("lawPrevBtn");
+
+    const nextBtn =
+        document.getElementById("lawNextBtn");
+
+    const searchBtn =
+        document.getElementById("lawSearchBtn");
+
+    const resetBtn =
+        document.getElementById("lawResetBtn");
+
+    const searchInput =
+        document.getElementById("lawSearchInput");
+
+    const searchType =
+        document.getElementById("lawSearchType");
+
+    let currentCategory = "ALL";
+    let currentKeyword = "";
+    let currentSearchType = "title";
+
+    let currentPage = 1;
+
+    const pageSize = 10;
+
+    // =========================
+    // 필터된 데이터 가져오기
+    // =========================
+
+    function getFilteredRows() {
+
+        return Array.from(rows).filter(function (row) {
+
+            const rowCategory = row.dataset.category;
+
+            const categoryMatched =
+                currentCategory === "ALL"
+                || rowCategory === currentCategory;
+
+            const categoryText =
+                row.children[1].textContent
+                    .trim()
+                    .toLowerCase();
+
+            const titleText =
+                row.children[2].textContent
+                    .trim()
+                    .toLowerCase();
+
+            const targetText =
+                currentSearchType === "category"
+                ? categoryText
+                : titleText;
+
+            const keywordMatched =
+                currentKeyword === ""
+                || targetText.includes(currentKeyword);
+
+            return categoryMatched && keywordMatched;
+
+        });
+
+    }
+
+    // =========================
+    // 테이블 렌더링
+    // =========================
+
+    function renderTable() {
+
+        const filteredRows = getFilteredRows();
+
+        const totalPage =
+            Math.ceil(filteredRows.length / pageSize) || 1;
+
+        if (currentPage > totalPage) {
+            currentPage = totalPage;
+        }
+
+        rows.forEach(function (row) {
+            row.style.display = "none";
+        });
+
+        const start = (currentPage - 1) * pageSize;
+        const end = start + pageSize;
+
+        filteredRows
+            .slice(start, end)
+            .forEach(function (row, index) {
+
+                row.style.display = "";
+
+                // 번호 자동 재정렬
+                row.children[0].textContent =
+                    start + index + 1;
+
+            });
+
+        countBox.textContent =
+            filteredRows.length;
+
+        currentPageBox.textContent =
+            currentPage;
+
+        totalPageBox.textContent =
+            totalPage;
+
+        renderPagination(totalPage);
+
+    }
+
+    // =========================
+    // 페이지 버튼 렌더링
+    // =========================
+
+    function renderPagination(totalPage) {
+
+        pageNumbers.innerHTML = "";
+
+        for (let i = 1; i <= totalPage; i++) {
+
+            const button =
+                document.createElement("button");
+
+            button.type = "button";
+
+            button.textContent = i;
+
+            if (i === currentPage) {
+                button.classList.add("active");
+            }
+
+            button.addEventListener("click", function () {
+
+                currentPage = i;
+
+                renderTable();
+
+            });
+
+            pageNumbers.appendChild(button);
+
+        }
+
+        prevBtn.disabled =
+            currentPage === 1;
+
+        nextBtn.disabled =
+            currentPage === totalPage;
+
+    }
+
+    // =========================
+    // 탭 클릭
+    // =========================
+
+    tabs.forEach(function (tab) {
+
+        tab.addEventListener("click", function () {
+
+            tabs.forEach(function (item) {
+                item.classList.remove("active");
+            });
+
+            tab.classList.add("active");
+
+            currentCategory =
+                tab.dataset.category;
+
+            currentKeyword = "";
+
+            searchInput.value = "";
+
+            currentPage = 1;
+
+            renderTable();
+
+        });
+
+    });
+
+    // =========================
+    // 검색
+    // =========================
+
+    searchBtn.addEventListener("click", function () {
+
+        currentKeyword =
+            searchInput.value
+                .trim()
+                .toLowerCase();
+
+        currentSearchType =
+            searchType.value;
+
+        currentCategory = "ALL";
+
+        currentPage = 1;
+
+        tabs.forEach(function (item) {
+            item.classList.remove("active");
+        });
+
+        document
+            .querySelector('.law-tab[data-category="ALL"]')
+            .classList.add("active");
+
+        renderTable();
+
+    });
+
+    // =========================
+    // 초기화
+    // =========================
+
+    resetBtn.addEventListener("click", function () {
+
+        currentCategory = "ALL";
+
+        currentKeyword = "";
+
+        currentSearchType = "title";
+
+        currentPage = 1;
+
+        searchInput.value = "";
+
+        searchType.value = "title";
+
+        tabs.forEach(function (item) {
+            item.classList.remove("active");
+        });
+
+        document
+            .querySelector('.law-tab[data-category="ALL"]')
+            .classList.add("active");
+
+        renderTable();
+
+    });
+
+    // =========================
+    // 엔터 검색
+    // =========================
+
+    searchInput.addEventListener("keydown", function (event) {
+
+        if (event.key === "Enter") {
+            searchBtn.click();
+        }
+
+    });
+
+    // =========================
+    // 이전 페이지
+    // =========================
+
+    prevBtn.addEventListener("click", function () {
+
+        if (currentPage > 1) {
+
+            currentPage--;
+
+            renderTable();
+
+        }
+
+    });
+
+    // =========================
+    // 다음 페이지
+    // =========================
+
+    nextBtn.addEventListener("click", function () {
+
+        const totalPage =
+            Math.ceil(getFilteredRows().length / pageSize)
+            || 1;
+
+        if (currentPage < totalPage) {
+
+            currentPage++;
+
+            renderTable();
+
+        }
+
+    });
+
+    // 최초 실행
+    renderTable();
+
+});
+
+</script>
 
 </body>
 </html>
