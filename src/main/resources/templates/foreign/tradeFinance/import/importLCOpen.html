@@ -1,10 +1,89 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>수입신용장개설</title>
+
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">수입신용장개설</h1>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">수입신용장개설 신청방법</h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        수출입업자간에 체결된 매매계약에 의거 수입상인
+                        수입신용장 개설의뢰인의 요청과 지시에 따라 부산은행이 개설합니다.
+                    </li>
+                    <li>
+                        개설의뢰인의 신용상태 및 담보 능력, 담보물의 환가성 및
+                        신용장상의 요구사항 등을 종합적으로 검토하여 개설합니다.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">제출서류</h2>
+
+                <ul class="deposit-list">
+                    <li>취소불능 화환신용장 개설 신청서</li>
+                    <li>물품매도확약서 또는 매매계약서</li>
+                    <li>수입대행 계약서(실수요자와 수입자가 다른 경우)</li>
+                    <li>보험서류(수입상 부보 조건인 경우)</li>
+                    <li>기타 수입승인서 또는 허가서(필요시)</li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">조건변경 및 취소</h2>
+
+                <p class="deposit-desc">
+                    수입신용장의 조건변경이란 이미 개설된 신용장을 당사자
+                    〔개설은행, 수익자, 확인은행(확인신용장인 경우)〕간의 합의에 의하여
+                    신용장 내용들을 일부 수정하거나 추가 또는 삭제하는 것을 말하며,
+                    수입신용장의 취소는 관계 당사자
+                    〔개설은행, 수익자, 확인은행(확인신용장인 경우)〕간의 합의에 의하여
+                    신용장을 취소하는 것을 말합니다.
+                </p>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">조건 변경시 제출 서류</h2>
+
+                <ul class="deposit-list">
+                    <li>취소불능화환신용장(외화지급보증) 조건변경 신청서</li>
+                    <li>변경된 매매계약서 또는 물품매도 확약서</li>
+                    <li>수입승인사항 변경 승인서(필요한 경우)</li>
+                    <li>변경된 보험서류(필요한 경우)</li>
+                </ul>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

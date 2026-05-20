@@ -1,95 +1,301 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
 <meta charset="UTF-8">
-<title>국내외투자(해외직접투자)</title>
-<link rel="stylesheet" th:href="@{/css/header.css}">
+<title>해외직접투자</title>
+
 <link rel="stylesheet" th:href="@{/css/product/product.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
 <link rel="stylesheet" th:href="@{/css/footer.css}">
 <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/deposit-list-fix.css}">
 </head>
+
 <body>
+
 <div th:replace="~{header :: header}"></div>
 
 <div class="product-layout">
 
-    <!-- 사이드바 -->
-    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+<div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
 
-    <!-- 본문 -->
-    <main class="product-main">
+<main class="product-main">
 
-        <div class="service-container">
+<div class="service-container">
 
-            <!-- 상단 제목 -->
-            <h1 class="main-title">해외직접투자</h1>
+<h1 class="main-title">해외직접투자</h1>
 
-            <!-- 서비스 안내 -->
-            <section class="service-section">
+<section class="deposit-section">
+    <h2 class="deposit-section-title">해외직접투자란</h2>
 
-                <ul class="service-list">
+    <p class="deposit-desc">
+        해외직접투자는 투자대상기업의 경영에 직접 참가함을 목적으로 하는
+        생산요소의 국제간 이동형태로 유형의 경영자원인 자본 및 인력뿐만 아니라
+        무형의 경영자원인 경영관리상의 경험과 지식, 노하우, 기술 등의 생산요소를
+        복합적으로 해외에 이전시키는 기업활동입니다.
+    </p>
 
-                    <li>
-                        <strong>해외직접투자란</strong>
+    <p class="deposit-desc">
+        외국에 기업을 설립하거나 기존의 기업을 매수하는 방법이 일반적이며,
+        밀접한 경제관계가 수립되어 있는 외국법인에 대하여 사업수행에 필요한
+        자금을 장기 대부하여 주는 경우도 포함됩니다.
+        단, 경영 참가 없이 이자, 배당 또는 시세차익을 목적으로 하는 간접투자는
+        원칙적으로 허용되지 않습니다.
+    </p>
+</section>
 
-                        <p>
-                          	해외직접투자는 투자대상기업의 경영에 직접 참가함을 목적으로 하는 생산요소의 국제간 이동형태로 유형의 경영자원인 자본 및 인력뿐만 
-                          	아니라 무형의 경영자원인 경영관리상의 경험과 지식, 노하우, 기술 등의 생산요소를 복합적으로 해외에 이전시키는 기업활동입니다.
-                        </p>
-                    </li>
+<!-- 탭바 -->
+<div class="foreign-tab-menu">
+    <button type="button" class="foreign-tab-btn active" data-tab="investTab1">
+        투자방법
+    </button>
+    <button type="button" class="foreign-tab-btn" data-tab="investTab2">
+        신고절차
+    </button>
+    <button type="button" class="foreign-tab-btn" data-tab="investTab3">
+        사후관리
+    </button>
+</div>
 
-                    <li>
-                        <strong>형태</strong>
-                        <p>
-                           외국에 기업을 설립하거나 기존의 기업을 매수하는 방법이 일반적이며, 밀접한 경제관계가 수립되어 있는 외국법인에 대하여 
-                           사업수행에 필요한 자금을 장기 대부하여 주는 경우도 포함되나, 경영 참가없이 이자, 배당 또는 시세차익을 목적으로 하는 간접투자는 원칙적으로 허용되지 않습니다.
-                        </p>
+<!-- 투자방법 -->
+<div class="foreign-tab-content active" id="investTab1">
 
-                     </li>
-                     <li>
-                     	<strong>환전∙송금신청 및 유효기간</strong>
-                     	<p>
-                     		- 외교통상부에서 해외이주신고 확인서를 발급 받은 날로부터 3년이내에 해외이주비를 환전하거나 송금하여야 합니다.
-                     	</p>
-                     	<p>
-                     		- 해외 이주신고 확인서를 발급 받은 날로부터 1년이내에 이주하지 않은 경우에는 해외이주신고확인서가 무효가 되므로 유의하셔야 합니다.
-                     	</p>
-                     	<p>
-                     		- 이주사실 확인은 여권상 출입국 사실 또는 출입국관리사무소에서 발행한 출입국사실 증명원으로 확인하게 됩니다.
-                     	</p>
-                     </li>
-                </ul>
-                <h2 class="section-title">
-                   외국의 영주권,시민권,비이민투자비자,은퇴비자를 취득하려고 하는 해외이주예정자의 해외이주비
-                </h2>
-                <ul class="service-list">
-                	<li>
-                		<strong>환전∙송금한도</strong>
-                		<p>
-                			- 제한없음
-                		</p>
-                	</li>
-                	<li>
-                		<strong>준비 서류</strong>
-                		<p>- 해외송금신청서 (은행서식)</p>
-                		<p>- 여권 또는 여권 사본(인적 사항 부분)</p>
-                		<p>- 현지기관 또는 영주권 등의 취득업무를 대행하는 자가 발급한 이주예정자임을 증명할 수 있는 서류</p>
-                		<p>- 관할 세무서장 발급 자금출처확인서(세대별 해외이주비 지급 총액이 미화 10만불 상당액을 초과하는 경우)</p>
-                		<p>- 주민등록등본</p>
-                	</li>
-                	<li>
-                		<strong>환전∙송금 신청 및 유효기간</strong>
-                		<p>- 해외이주예정자로 거래 외국환은행을 지정한 날로부터 3년이내에 해외이주비를 환전하거나 송금하여야 합니다.</p>
-                		<p>- 해외이주비의 지급 후 1년 이내에 당해 국가에서 발급된 영주권, 시민권, 비이민 투자 또는 은퇴비자를 취득하였음을 증명하는 서류를 제출하여야 합니다. </p>
-                	</li>
-                </ul>
-            </section>
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">외화증권취득</h2>
 
-        </div>
+        <ul class="deposit-list">
+            <li>
+                <strong>내용 :</strong>
+                외국에서 경영에 참여하기 위하여 현지법인의 설립,
+                이미 설립한 법인의 인수 또는 증자에 따른 외화증권취득에 의한 투자를 말하며,
+                해외직접투자의 주종을 이루고 있습니다.
+            </li>
 
-    </main>
+            <li>
+                <strong>요건 :</strong>
+                거주자가 취득하는 주식 또는 출자지분이 당해 외국법인의 발행주식 총수
+                또는 출자총액에서 차지하는 비율이 10% 이상인 경우,
+                또는 투자비율이 10% 미만인 경우로써 당해 외국법인과 일정한 관계를 수립하는 경우
+            </li>
+
+            <li>① 임원의 파견</li>
+            <li>② 계약기간이 1년 이상인 원자재 또는 제품의 매매계약 체결</li>
+            <li>③ 기술의 제공, 도입 또는 공동연구개발계약의 체결</li>
+            <li>④ 해외건설 및 산업설비공사를 수주하는 계약의 체결</li>
+        </ul>
+    </section>
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">외화대부채권취득</h2>
+
+        <ul class="deposit-list">
+            <li>
+                <strong>내용 :</strong>
+                비거주자 또는 외국에 있는 자에 대하여 상환기간 1년 이상으로
+                업무수행에 필요한 자금을 대부하는 경우로써
+                현지 법인에 대한 운영자금의 대부,
+                합작사업의 공동출자자에 대한 대부 등이 일반적인 예입니다.
+            </li>
+
+            <li>
+                <strong>요건 :</strong>
+                투자자가 투자비율 10% 이상 출자하는 외국법인이나
+                실질적인 경제관계를 수립하는 외국법인에 대한
+                1년 이상의 금전대여로서 채권의 회수가 가능하다고 인정되는 경우
+            </li>
+        </ul>
+    </section>
 
 </div>
+
+<!-- 신고절차 -->
+<div class="foreign-tab-content" id="investTab2">
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">거래외국환은행 지정</h2>
+
+        <ul class="deposit-list">
+            <li>
+                거주자가 금융·보험업 이외의 업종에 대하여 해외직접투자를 하고자 하는 경우에는
+                지정 은행을 신고기관으로 지정하여 신고하여야 합니다.
+            </li>
+
+            <li>
+                이미 투자한 외국법인이 자체이익유보금 또는 자본잉여금으로 증액투자하는 경우로써
+                거주자가 최대주주가 아닌 경우에는 사후에 보고할 수 있습니다.
+            </li>
+
+            <li>
+                주채무계열 소속 기업체인 경우에는 당해 기업의 주채권은행
+            </li>
+
+            <li>
+                거주자가 주채무계열 소속기업체가 아닌 경우에는 여신최다은행
+            </li>
+
+            <li>
+                위 조건에 해당하지 않는 거주자의 경우 거주자가 지정하는 은행
+            </li>
+        </ul>
+    </section>
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">신고절차</h2>
+
+        <ul class="deposit-list">
+            <li>
+                해외직접투자의 요건을 갖추고 사업을 시행하려는 자는
+                지정된 서류를 갖추어 신고기관에 허가, 신고 또는 수리 신청하여야 합니다.
+            </li>
+
+            <li>
+                동일한 투자사업에 대하여 투자자가 2명 이상인 경우에는
+                연명하여 또는 대표자를 정하여 신청할 수 있습니다.
+            </li>
+        </ul>
+    </section>
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">제출서류</h2>
+
+        <table class="deposit-table">
+            <thead>
+            <tr>
+                <th style="width: 28%;">구분</th>
+                <th>제출서류</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td class="table-title">공통제출서류</td>
+                <td>
+                    · 해외직접투자신고서(보고서)<br>
+                    · 사업계획서<br>
+                    · 사업자등록증 사본, 납세증명서(법인인 경우)<br>
+                    · 납세증명서, 주민등록등본(개인인 경우)<br>
+                    · 주민등록등본, 납세증명서, 사업자등록증사본(개인사업자인 경우)<br>
+                    · 외국환거래 사후관리 의무 확인서
+                </td>
+            </tr>
+
+            <tr>
+                <td class="table-title">기타서류</td>
+                <td>
+                    · 외국자본과 합작시 합작투자계약서<br>
+                    · 대부투자시 금전대차계약서<br>
+                    · 최근 결산 대차대조표 또는 신용조사서<br>
+                    · 관할 세무서장이 확인한 최근 결산손익계산서 또는 신용조사서<br>
+                    · 현물투자시 현물투자명세표 2부<br>
+                    · 증액투자인 경우 현지법인의 최근 결산대차대조표
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">신청서의 접수</h2>
+
+        <p class="deposit-desc">
+            신고기관은 신청인이 제출한 신청서류를 접수하고,
+            서류에 하자가 있는 경우에는 보완·보정요구 후 심사합니다.
+        </p>
+    </section>
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">해외직접투자 신고서류 심사</h2>
+
+        <p class="deposit-desc">
+            해외직접투자 신고에 대한 심사결과 외국환거래규정 등에 정한 제반 투자요건에 합당하고
+            사업계획의 타당성 및 자금조달계획의 적정성이 인정되면 해외직접투자로 신고 수리됩니다.
+            다른 법령에 의하여 허가 등을 받아야 하는 경우에는 해당 절차가 선행되어야 합니다.
+        </p>
+    </section>
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">신고서 발행 및 교부</h2>
+
+        <p class="deposit-desc">
+            해외직접투자가 수리되면 신고기관은 동 신고서를 신청인 앞으로 발행·교부합니다.
+        </p>
+    </section>
+
+</div>
+
+<!-- 사후관리 -->
+<div class="foreign-tab-content" id="investTab3">
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">해외직접투자의 내용변경</h2>
+
+        <p class="deposit-desc">
+            기 신고 수리된 투자사업의 내용을 변경하고자 하는 경우에는
+            당초 신고 기관의 장에게 변경신고를 하여야 합니다.
+        </p>
+
+        <ul class="deposit-list">
+            <li>
+                투자자의 상호, 대표자, 소재지, 현지법인명,
+                현지법인소재지를 변경한 경우
+            </li>
+
+            <li>
+                현지법인의 자회사 또는 손자회사의 지분율이 변경된 경우
+            </li>
+
+            <li>
+                현지의 예상치 못한 사정이나 경영상 급박한 사정 등으로
+                사전에 제출한 사업계획을 변경하는 것이 적절하지 않은 경우
+            </li>
+        </ul>
+    </section>
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">투자자금 송금</h2>
+
+        <p class="deposit-desc">
+            해외직접투자 신고수리 또는 허가를 받은 후
+            외국환은행에서 확인을 받아 투자자금을 해외에 송금해야 합니다.
+        </p>
+    </section>
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
 <div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tabButtons = document.querySelectorAll(".foreign-tab-btn");
+        const tabContents = document.querySelectorAll(".foreign-tab-content");
+
+        tabButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+                const targetId = button.getAttribute("data-tab");
+
+                tabButtons.forEach(function (btn) {
+                    btn.classList.remove("active");
+                });
+
+                tabContents.forEach(function (content) {
+                    content.classList.remove("active");
+                });
+
+                button.classList.add("active");
+                document.getElementById(targetId).classList.add("active");
+            });
+        });
+    });
+</script>
+
 </body>
 </html>

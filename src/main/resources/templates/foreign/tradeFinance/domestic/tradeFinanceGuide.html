@@ -1,10 +1,160 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+<meta charset="UTF-8">
+<title>무역금융업무안내</title>
+
+<link rel="stylesheet" th:href="@{/css/product/product.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+<div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+<main class="product-main">
+
+<div class="service-container">
+
+<h1 class="main-title">무역금융업무안내</h1>
+
+<section class="deposit-section">
+    <h2 class="deposit-section-title">무역금융의 개요</h2>
+
+    <p class="deposit-desc">
+        수출업체가 수출(내국신용장에 의한 국내 공급 포함)과 관련하여
+        소요되는 원자재의 해외 수입 및 국내 구매 또는 생산에 필요한
+        자금을 지원하는 제도입니다.
+    </p>
+</section>
+
+<section class="deposit-section">
+    <h2 class="deposit-section-title">융자대상</h2>
+
+    <ul class="deposit-list">
+        <li>
+            수출신용장 및 수출계약서, 외화표시물품공급계약서,
+            내국신용장 등에 의하여 물품이나 건설 및 용역을
+            수출(국내 공급 포함)하고자 하는 기업
+        </li>
+
+        <li>
+            과거 수출 실적이 있는 업체가 과거 수출실적으로
+            융자받고자 하는 기업
+            <br>
+            ※ 중계무역 방식에 의한 수출은 융자 대상에서 제외
+        </li>
+    </ul>
+</section>
+
+<section class="deposit-section">
+    <h2 class="deposit-section-title">융자금의 구분</h2>
+
+    <table class="deposit-table">
+        <thead>
+        <tr>
+            <th style="width: 30%;">구분</th>
+            <th>내용</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td>생산자금</td>
+            <td>
+                국내에서 수출용 완제품이나 원자재를 직접 제조ㆍ가공하거나
+                개발하는 데 소요되는 자금
+            </td>
+        </tr>
+
+        <tr>
+            <td>원자재 자금</td>
+            <td>
+                수출용 원자재를 해외로부터 수입하거나
+                내국신용장에 의하여 구매하는 데 소요되는 자금
+            </td>
+        </tr>
+
+        <tr>
+            <td>완제품구매자금</td>
+            <td>
+                국내에서 생산된 수출용 완제품을
+                내국신용장에 의하여 구매하는 데 소요되는 자금
+            </td>
+        </tr>
+
+        <tr>
+            <td>포괄 금융</td>
+            <td>
+                연간 수출실적이 미화 5천만불 미만인 업체에 대하여
+                수출 이행에 직접 소요되는 자금을
+                자금용도의 구분 없이 일괄하여 융자하는 자금
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="deposit-section">
+    <h2 class="deposit-section-title">융자 한도 및 융자 기간</h2>
+
+    <table class="deposit-table">
+        <thead>
+        <tr>
+            <th style="width: 24%;">구분</th>
+            <th>융자 한도</th>
+            <th>융자 기간</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td>신용장기준 금융</td>
+            <td>
+                수출업체가 보유한 수출 신용장 등의 금액 범위 내
+            </td>
+            <td>
+                신용장 유효기일 범위 내에서
+                선적 기일 또는 인도기일에
+                7일을 가산한 기간 이내
+            </td>
+        </tr>
+
+        <tr>
+            <td>실적 기준 금융</td>
+            <td>
+                수출업체의 과거 실적 기준으로 하여
+                일정비율 범위 내에서 융자 지급
+            </td>
+            <td>
+                180일 이내
+                <br>
+                완제품구매자금은 60일 이내
+                <br>
+                생산자금, 원자재자금, 포괄 금융은
+                1년까지 연장 가능
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+</main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

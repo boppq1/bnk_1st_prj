@@ -1,10 +1,214 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+<meta charset="UTF-8">
+<title>내국신용장개설</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
 
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <div class="service-container">
+
+        <h1 class="main-title">
+            내국신용장개설
+        </h1>
+
+
+        <!-- 개요 -->
+        <section class="deposit-section">
+
+            <h2 class="deposit-section-title">
+                내국신용장의 개요
+            </h2>
+
+            <div class="deposit-desc">
+                국내 수출업자가 수출 물품을 제조·가공하는데 소요되는 원자재 또는
+                수출용 완제품을 국내에서 원활하게 조달하기 위하여
+                해외수입업자로부터 받은 원수출신용장 등을 근거로
+                은행의 지급보증에 의해 개설된 국내 신용장을 말합니다.
+            </div>
+
+        </section>
+
+
+        <!-- 절차 이미지 -->
+        <section class="deposit-section">
+
+            <h2 class="deposit-section-title">
+                내국신용장 거래절차
+            </h2>
+
+            <div class="tracking-top-box">
+
+                <img
+                    th:src="@{/images/foreign/domestic-lc-process.png}"
+                    alt="내국신용장 거래절차"
+                    style="
+                    width:100%;
+                    border-radius:10px;
+                    object-fit:contain;
+                    ">
+
+            </div>
+
+        </section>
+
+
+        <!-- 개설대상 -->
+        <section class="deposit-section">
+
+            <h2 class="deposit-section-title">
+                개설대상
+            </h2>
+
+            <ul class="deposit-list">
+
+                <li>
+                    수출용 수입원자재와 국내 생산 수출용 원자재 또는 수출용 완제품 구매 업체
+                    (임가공 위탁 포함)
+                </li>
+
+                <li>
+                    내국신용장 수혜자는 당해 내국신용장을 근거로
+                    또 다른 내국신용장을 개설 가능
+                </li>
+
+                <li>
+                    국내업자간 매매계약에 따라
+                    국외 어획물을 수집하여 직접 수출하는 경우 개설 가능
+                    (완제품 내국신용장)
+                </li>
+
+                <li>
+                    수출입업자가 임가공 계약에 의해 위탁생산하는 경우
+                    수탁가공업자에게 지급하기 위한
+                    원자재·완제품 임가공 내국신용장 개설 가능
+                </li>
+
+            </ul>
+
+        </section>
+
+
+
+        <!-- 제출서류 -->
+        <section class="deposit-section">
+
+            <h2 class="deposit-section-title">
+                내국신용장 개설 시 필요서류
+            </h2>
+
+            <ul class="deposit-list">
+
+                <li>취소불능 내국신용장 개설 신청서 (당행 소정 양식)</li>
+
+                <li>공급자 개설 물품매도 확약서 (수탁가공 포함)</li>
+
+                <li>원수출신용장 등 개설 근거 서류</li>
+
+            </ul>
+
+        </section>
+
+
+
+        <!-- 조건 -->
+        <section class="deposit-section">
+
+            <h2 class="deposit-section-title">
+                내국신용장의 조건
+            </h2>
+
+            <table class="deposit-table">
+
+                <tbody>
+
+                <tr>
+                    <th>일반조건</th>
+                    <td>
+                        양도가 불가능한 취소불능 신용장
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>표시통화</th>
+                    <td>
+                        원화<br>
+                        외화<br>
+                        원화 기준 외화 환산 부기 가능
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>어음형식</th>
+                    <td>
+                        개설의뢰인을 지급인으로 하고
+                        개설은행을 지급장소로 하는
+                        일람출급식
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>개설금액</th>
+                    <td>
+                        물품대금 전액<br>
+                        환율 변동 시 부기외화 기준 적용<br>
+                        관세 등 부대비용 포함 가능
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>인도기일</th>
+                    <td>
+                        대응수출 및 물품공급 이행에
+                        지장이 없도록 책정
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>유효기일</th>
+                    <td>
+                        물품 인도기일 + 최대 10일
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>서류제시기간</th>
+                    <td>
+                        물품수령증명서 발급일 기준
+                        최대 5영업일 이내
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>어음결제조건</th>
+                    <td>
+                        수혜자에게 불리하지 않은 조건
+                    </td>
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </div>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 </body>
 </html>
