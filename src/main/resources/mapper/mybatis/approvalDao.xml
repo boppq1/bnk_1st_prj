@@ -128,7 +128,7 @@
     LEFT JOIN PRODUCTS p ON r.prod_no = p.prod_no
     LEFT JOIN ADMIN_USERS u1 ON r.req_usr_no = u1.lgn_id
     LEFT JOIN ADMIN_USERS u2 ON r.apv_usr_no = u2.lgn_id
-    WHERE r.req_stat_cd != '승인' AND r.req_stat_cd != '반려' order by req_no desc
+    
 </select>
 	
 	<update id="updateApproval">
@@ -136,6 +136,15 @@
         SET 
             REQ_STAT_CD = #{status},    
             APV_USR_NO  = #{admin_id}   
+        WHERE PROD_NO   = #{product_id}
+    </update>
+    
+    <update id="rejectApproval">
+        UPDATE PRODUCT_REQUESTS 
+        SET 
+            REQ_STAT_CD = #{status},    
+            APV_USR_NO  = #{admin_id},
+            rej_reason = #{rej_reason}  
         WHERE PROD_NO   = #{product_id}
     </update>
     

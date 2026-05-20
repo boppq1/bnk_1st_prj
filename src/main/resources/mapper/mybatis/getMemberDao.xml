@@ -63,7 +63,7 @@
 	</select>
 	
 	<select id="getAdmins" resultMap="adminDtoMap">
-		select * from admin_users
+		select * from admin_users order by adm_no desc
 	</select>
 	
 	<select id="getUser" resultMap="userDtoMap">
@@ -71,11 +71,11 @@
 	</select>
 	
 	<select id="getUsers" resultMap="userDtoMap">
-		select * from users
+		select * from users order by usr_no desc
 	</select>
 	
 	<select id="getCompanies" resultMap="companiesDtoMap">
-		select * from companies
+		select * from companies order by com_no desc
 	</select>
 	
 	<select id="getCompanyUser" resultMap="companyUserDtoMap">
@@ -83,7 +83,7 @@
 	</select>
 	
 	<select id="getCompanyUsers" resultMap="companyUserDtoMap">
-		select * from COMPANY_USERS
+		select * from COMPANY_USERS order by com_usr_no desc
 	</select>
 	
 	<update id="updateUser">
