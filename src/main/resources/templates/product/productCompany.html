@@ -21,6 +21,10 @@
 	        <div class="profile-bank">BNK 부산은행 기업</div>
 	        <div class="profile-name"><span th:text="${name}">기업</span> 고객님 반갑습니다</div>
 	    </div>
+	    
+	     <button type="button" class="zoom-toggle-btn" id="zoomToggleBtn">
+	        화면 크게 보기
+	    </button>
 <!-- 	    <button class="logout-btn" id="logout-btn">LOGOUT</button> -->
 	</div>
 
@@ -33,6 +37,7 @@
         <a href="#">펀드</a> 
     </nav>
 </aside>
+
 
     <main class="product-main">
 
@@ -270,7 +275,7 @@
 </div>
 
 <div th:replace="~{footer :: footer}"></div>
-
+<script th:src="@{/js/zoom.js}"></script>
 <script th:src="@{/js/product/productComparePopup.js}"></script>
 
 </body>

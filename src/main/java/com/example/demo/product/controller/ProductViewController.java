@@ -91,8 +91,21 @@ public class ProductViewController {
     
     // 외환 상품몰
     @GetMapping("/product/foreign")
-    public String foreignProductPage(ProductListRequestDto dto, Model model) {
-
+    public String foreignProductPage(ProductListRequestDto dto, Model model, HttpServletRequest request) {
+    	String name = "";
+    	Cookie[] cookies = request.getCookies();
+        model.addAttribute("name",null);
+        if(cookies != null) {
+			System.out.println("쿠키체크");
+        for(Cookie c : cookies) {
+        	if("accessToken".equals(c.getName())) {
+        		String token = c.getValue();
+        		name = jwt.getUsername(token);
+        		System.out.println("name " +name);
+        		model.addAttribute("name", name);		
+        		}
+        	}
+        }
         model.addAttribute("pageTitle", "외환 상품몰");
         model.addAttribute("customerType", "foreign");
 

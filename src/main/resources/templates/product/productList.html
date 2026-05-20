@@ -13,13 +13,16 @@
 <div th:replace="~{header :: header}"></div>
 
 <div class="product-layout">
+	
     <aside class="product-sidebar">
 	<div th:if="${name != null}">
         <div class="sidebar-profile">
             <div class="profile-bank">BNK 부산은행</div>
             <div class="profile-name" th:text="|*{name} 님 반갑습니다|"></div>
         </div>
-
+		<button type="button" class="zoom-toggle-btn" id="zoomToggleBtn">
+			    화면 크게 보기
+		</button>
 <!--         <button class="logout-btn" id="logout-btn">LOGOUT</button> -->
 	</div>
         <nav class="sidebar-category">
@@ -257,6 +260,7 @@
 
 <div th:replace="~{footer :: footer}"></div>
 
+<script th:src="@{/js/zoom.js}"></script>
 <script th:src="@{/js/product/productComparePopup.js}"></script>
 
 </body>
