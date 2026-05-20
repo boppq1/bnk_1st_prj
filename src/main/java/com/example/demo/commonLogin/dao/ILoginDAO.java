@@ -14,4 +14,8 @@ public interface ILoginDAO {
 	UserLoginDTO selectCompanyUser(@Param("login_id")String id);
 	// 기업 검색
 	String selectCompany(@Param("com_no")int com_no);
+	// 개인회원 로그인시 마지막 로그인 시간 
+	int updateLoginTime(@Param("last_lgn_dt") String date, @Param("usr_no") int no);
+	// 기업 회원 로그인 할때 로그인시간
+	int updateCompanyLoginTime(@Param("login_id")String login_id, @Param("last_lgn_dt")String date);
 }

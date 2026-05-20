@@ -5,10 +5,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.example.demo.jwt.JwtUtil;
 import com.example.demo.product.dto.request.ProductListRequestDto;
 import com.example.demo.product.service.ProductPdfService;
 import com.example.demo.product.service.ProductService;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -17,26 +20,52 @@ public class ProductViewController {
 
     private final ProductService productService;
     private final ProductPdfService productPdfService;
-
+    private final JwtUtil jwt;
     // 개인 상품몰
     @GetMapping("/product/personal")
-    public String personalProductPage(ProductListRequestDto dto, Model model) {
-
+    public String personalProductPage(ProductListRequestDto dto, Model model, HttpServletRequest request) {
+    	String name = "";
         dto.setTargetLarge("PERSONAL");
-
+        Cookie[] cookies = request.getCookies();
+        model.addAttribute("name",null);
+        
+        if(cookies != null) {
+			System.out.println("쿠키체크");
+        for(Cookie c : cookies) {
+        	if("accessToken".equals(c.getName())) {
+        		String token = c.getValue();
+        		name = jwt.getUsername(token);
+        		System.out.println("name " +name);
+        		model.addAttribute("name", name);		
+        		}
+        	}
+        }
+        System.out.println("마지막 name 값 "+ name);
         model.addAttribute("pageTitle", "개인 상품몰");
         model.addAttribute("customerType", "personal");
         model.addAttribute("products", productService.getProductList(dto));
-
         return "product/productList";
     }
 
     // 기업 상품몰
     @GetMapping("/product/company")
-    public String companyProductPage(ProductListRequestDto dto, Model model) {
-
+    public String companyProductPage(ProductListRequestDto dto, Model model, HttpServletRequest request) {
+    	String name = "";
         dto.setTargetLarge("COMPANY");
-
+        Cookie[] cookies = request.getCookies();
+        model.addAttribute("name",null);
+        
+        if(cookies != null) {
+			System.out.println("쿠키체크");
+        for(Cookie c : cookies) {
+        	if("accessToken".equals(c.getName())) {
+        		String token = c.getValue();
+        		name = jwt.getUsername(token);
+        		System.out.println("name " +name);
+        		model.addAttribute("name", name);		
+        		}
+        	}
+        }
         model.addAttribute("pageTitle", "기업 상품몰");
         model.addAttribute("customerType", "company");
         model.addAttribute("products", productService.getProductList(dto));

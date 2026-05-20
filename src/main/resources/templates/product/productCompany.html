@@ -14,24 +14,25 @@
 
 <div class="product-layout">
 
-    <aside class="product-sidebar">
-        <div class="sidebar-profile">
-            <div class="profile-bank">BNK 부산은행 기업</div>
-            <div class="profile-name">기업 고객님 반갑습니다</div>
-            <div class="profile-date">최근 접속일 2026.05.06</div>
-        </div>
+<aside class="product-sidebar">
 
-        <button class="logout-btn">LOGOUT</button>
+	<div th:if="${name != null}">
+	    <div class="sidebar-profile">
+	        <div class="profile-bank">BNK 부산은행 기업</div>
+	        <div class="profile-name"><span th:text="${name}">기업</span> 고객님 반갑습니다</div>
+	    </div>
+<!-- 	    <button class="logout-btn" id="logout-btn">LOGOUT</button> -->
+	</div>
 
-        <nav class="sidebar-category">
-            <a class="active" th:href="@{/product/company}">상품몰 홈</a>
-            <a th:href="@{/product/company(productType='CORP_DEP')}">기업예금</a>
-            <a th:href="@{/product/company(productType='CORP_SAV')}">기업적금</a>
-            <a th:href="@{/product/company(productType='FOREIGN_DEP')}">외환</a>
-            <a href="#">퇴직연금</a>
-            <a href="#">펀드</a>
-        </nav>
-    </aside>
+    <nav class="sidebar-category">
+        <a class="active" th:href="@{/product/company}">상품몰 홈</a>
+        <a th:href="@{/product/company(productType='CORP_DEP')}">기업예금</a>
+        <a th:href="@{/product/company(productType='CORP_SAV')}">기업적금</a>
+        <a th:href="@{/product/company(productType='FOREIGN_DEP')}">외환</a>
+        <a href="#">퇴직연금</a>
+        <a href="#">펀드</a> 
+    </nav>
+</aside>
 
     <main class="product-main">
 

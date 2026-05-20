@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     let chart = null;
-    let currentPeriod = '1w';
+    let currentriod = '1w';
 
     // 날짜 포맷 (yyyyMMdd)
     function formatDate(date) {
@@ -12,20 +12,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 기간별 날짜 배열 생성 (주말 제외)
-    function getDateRange(period) {
-        const dates = [];
-        const today = new Date();
-        const days = period === '1w' ? 7 : period === '1m' ? 30 : 90;
+	function getDateRange(period) {
+	    const dates = [];
+	    const today = new Date();
+	    const days = period === '1w' ? 7 : period === '1m' ? 30 : 90;  // ① 기간 → 숫자 변환
 
-        for (let i = days - 1; i >= 0; i--) {
-            const d = new Date(today);
-            d.setDate(today.getDate() - i);
-            if (d.getDay() !== 0 && d.getDay() !== 6) {
-                dates.push(formatDate(d));
-            }
-        }
-        return dates;
-    }
+	    for (let i = days - 1; i >= 0; i--) {   // ② 예: i = 6, 5, 4, 3, 2, 1, 0
+	        const d = new Date(today);
+	        d.setDate(today.getDate() - i);      // ③ 오늘 - i일 = 과거 날짜
+	        if (d.getDay() !== 0 && d.getDay() !== 6) {
+	            dates.push(formatDate(d));        // ④ "20250507" 형태로 배열에 추가
+	        }
+	    }
+	    return dates;   // ⑤ ["20250501", "20250502", ...] 반환
+	}
 
     // 날짜 하나 fetch
     async function fetchOneDay(dateStr, curUnit, rateType) {
