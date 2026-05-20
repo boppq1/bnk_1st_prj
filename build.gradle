@@ -22,6 +22,8 @@ dependencies {
 	implementation 'com.bucket4j:bucket4j-core:8.10.1'
 	implementation 'com.bucket4j:bucket4j-redis:8.10.1'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	
 	// cache
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
