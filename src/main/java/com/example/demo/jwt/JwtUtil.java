@@ -65,4 +65,7 @@ public class JwtUtil {
 	public String getCompanyName(String token) {
 		return parseToken(token).get("company_nm", String.class);
 	}
+	public String getLoginId(String token) {
+		return parseToken(token).get("login_id", String.class);
+	}
 }

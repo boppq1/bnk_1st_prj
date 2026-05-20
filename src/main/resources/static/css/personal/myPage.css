@@ -1,0 +1,360 @@
+@charset "UTF-8";
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    :root {
+      --red: #C8001E;
+      --red-light: #f5e6e9;
+      --gray-50: #f9f9f9;
+      --gray-100: #f2f2f2;
+      --gray-200: #e4e4e4;
+      --gray-400: #aaaaaa;
+      --gray-600: #666666;
+      --gray-800: #222222;
+      --white: #ffffff;
+      --radius: 4px;
+      --shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+ 
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--gray-100);
+      color: var(--gray-800);
+      min-height: 100vh;
+    }
+ 
+    /* ── BODY WRAPPER ── */
+    .mypage-body {
+      display: flex;
+      gap: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px;
+      align-items: flex-start;
+    }
+ 
+    /* ══════════════════════════════
+       LEFT: 프로필 카드
+    ══════════════════════════════ */
+    .profile-card {
+      flex: 0 0 220px;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 28px 20px 20px;
+    }
+ 
+    .profile-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+    }
+ 
+    .profile-avatar svg {
+      width: 36px;
+      height: 36px;
+      fill: var(--gray-400);
+    }
+ 
+    .profile-name {
+      text-align: center;
+      margin-bottom: 4px;
+    }
+ 
+    .profile-name .name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+ 
+    .profile-name .name .suffix {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--gray-600);
+      margin-left: 2px;
+    }
+ 
+    .profile-grade {
+      text-align: center;
+      font-size: 11px;
+      color: var(--gray-600);
+      margin-bottom: 20px;
+    }
+ 
+    .profile-divider {
+      border: none;
+      border-top: 1px solid var(--gray-200);
+      margin-bottom: 16px;
+    }
+ 
+    .profile-info-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+ 
+    .profile-info-list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--gray-600);
+    }
+ 
+    .profile-info-list li svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      stroke: var(--gray-400);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+ 
+    .profile-links {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      border-top: 1px solid var(--gray-200);
+      padding-top: 14px;
+    }
+ 
+    .profile-links a {
+      font-size: 12px;
+      color: var(--gray-600);
+      text-decoration: none;
+      padding: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+ 
+    .profile-links a::after {
+      content: '›';
+      font-size: 14px;
+      color: var(--gray-400);
+    }
+ 
+    .profile-links a:hover { color: var(--red); }
+ 
+    /* ══════════════════════════════
+       RIGHT: 뱅킹 정보 + 계좌 정보
+    ══════════════════════════════ */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+ 
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+ 
+    /* Panel 헤더 */
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--gray-200);
+      position: relative;
+    }
+ 
+    .panel-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+ 
+    .panel-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+ 
+    .logout-btn {
+      background: var(--red);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius);
+      padding: 6px 12px;
+      font-size: 11px;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+ 
+    .header-link {
+      font-size: 12px;
+      color: var(--gray-600);
+      text-decoration: none;
+    }
+ 
+    .header-link:hover { color: var(--red); }
+ 
+    /* ── 뱅킹정보 테이블 ── */
+    .banking-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+ 
+    .banking-table th,
+    .banking-table td {
+      padding: 12px 20px;
+      font-size: 13px;
+      text-align: center;
+      border-bottom: 1px solid var(--gray-100);
+    }
+ 
+    .banking-table thead th {
+      color: var(--gray-600);
+      font-weight: 500;
+      background: var(--gray-50);
+      font-size: 12px;
+    }
+ 
+    .banking-table tbody td {
+      color: var(--gray-800);
+    }
+ 
+    .banking-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+ 
+    /* ── 나의계좌정보 탭 ── */
+    .account-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+ 
+    .account-title {
+      font-size: 15px;
+      font-weight: 700;
+    }
+ 
+    .account-setting-link {
+      font-size: 12px;
+      color: var(--gray-600);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+ 
+    .account-setting-link::after {
+      content: '›';
+      font-size: 14px;
+      color: var(--gray-400);
+    }
+ 
+    .account-setting-link:hover { color: var(--red); }
+ 
+    .tab-bar {
+      display: flex;
+      gap: 0;
+      padding: 14px 20px 0;
+      border-bottom: 1px solid var(--gray-200);
+    }
+ 
+    .tab-btn {
+      padding: 8px 14px;
+      font-size: 13px;
+      font-family: inherit;
+      border: none;
+      background: none;
+      color: var(--gray-600);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      border-radius: 0;
+      transition: color 0.15s;
+    }
+ 
+    .tab-btn.active {
+      font-weight: 700;
+      color: var(--white);
+      background: var(--gray-800);
+      border-radius: 4px 4px 0 0;
+      border-bottom: 2px solid var(--gray-800);
+    }
+ 
+    .tab-btn:not(.active):hover { color: var(--red); }
+ 
+    /* ── 계좌 목록 ── */
+    .account-list {
+      list-style: none;
+    }
+ 
+    .account-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+ 
+    .account-item:last-child { border-bottom: none; }
+ 
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 7px;
+      border-radius: 2px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+ 
+    .badge-limit {
+      background: var(--red);
+      color: var(--white);
+      border: 1px solid var(--red);
+    }
+ 
+    .account-name {
+      flex: 1;
+      font-size: 13px;
+      color: var(--gray-800);
+    }
+ 
+    .account-number {
+      font-size: 13px;
+      color: var(--gray-600);
+      margin-left: auto;
+    }
+ 
+    .account-actions {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+ 
+    .act-btn {
+      padding: 5px 12px;
+      font-size: 12px;
+      font-family: inherit;
+      border: 1px solid var(--gray-200);
+      background: var(--white);
+      color: var(--gray-800);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+ 
+    .act-btn:hover { background: var(--gray-100); }

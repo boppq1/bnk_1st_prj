@@ -44,7 +44,7 @@ public class LoginController {
 
 			cookie.setHttpOnly(true);
 			cookie.setPath("/");
-			cookie.setMaxAge(60 * 1);
+			cookie.setMaxAge(60 * 30);
 			response.addCookie(cookie);
 
 			return Map.of("result", "sucess", "role", role, "name", name);
