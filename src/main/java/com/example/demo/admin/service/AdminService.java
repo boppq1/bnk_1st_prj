@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.admin.dao.IListDao;
 import com.example.demo.admin.dao.IAdminExchangeDao;
 import com.example.demo.admin.dao.IAdminLogDao;
+import com.example.demo.admin.dao.IAdminNewsDao;
 import com.example.demo.admin.dao.IAdminProductDao;
 import com.example.demo.admin.dto.AdminActionLogDto;
 import com.example.demo.admin.dto.AdminDto;
@@ -16,6 +17,7 @@ import com.example.demo.admin.dto.ApprovalDto;
 import com.example.demo.admin.dto.CompaniesDto;
 import com.example.demo.admin.dto.ExchangeRequestDto;
 import com.example.demo.admin.dto.KeywordBanDto;
+import com.example.demo.admin.dto.NewsDto;
 import com.example.demo.admin.dto.ProductApprovalDto;
 import com.example.demo.admin.dto.ProductDto;
 import com.example.demo.admin.dto.SearchLogDto;
@@ -37,6 +39,7 @@ public class AdminService {
 	final IListDao listDao;
 	final IAdminLogDao logDao;
 	final IAdminExchangeDao exchangeDao;
+	final IAdminNewsDao newsDao;
 	
 	public AdminDto getAdmin(Long admin_id) {
 		return listDao.getAdmin(admin_id);
@@ -85,6 +88,12 @@ public class AdminService {
 	// 세션에서 관리자 아이디 받아서 넣어야함
 	public boolean approvedStatus(Long product_id, String status) {
 		listDao.updateApproval(product_id, status, "admin_01");
+		listDao.updateProduct(product_id, status, "admin_01");
+		return true;
+	}
+	
+	public boolean rejectApprove(Long product_id, String status, String rej_reason) {
+		listDao.rejectApproval(product_id, status, "admin_01", rej_reason);
 		listDao.updateProduct(product_id, status, "admin_01");
 		return true;
 	}
@@ -199,6 +208,26 @@ public class AdminService {
 	public void updateSuggestKeyword() {
 		listDao.truncateSuggestSearch();
 		listDao.updateSuggestKeyword();
+	}
+	
+	public List<NewsDto> getNews() {
+		return newsDao.getNews();
+	}
+	
+	public NewsDto getOneNews(Long news_no) {
+		return newsDao.getOneNews(news_no);
+	}
+	
+	public void makeNews(NewsDto dto) {
+		newsDao.makeNews(dto.getNews_ttl(), dto.getNews_cont(), dto.getNews_wtr_no());
+	}
+	
+	public void updateNews(NewsDto dto) {
+		newsDao.updateNews(dto.getNews_ttl(), dto.getNews_cont());
+	}
+	
+	public void deleteNews(Long news_no) {
+		newsDao.deleteNews(news_no);
 	}
 	
 }

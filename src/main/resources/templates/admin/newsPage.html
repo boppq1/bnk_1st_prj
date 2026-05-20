@@ -2,11 +2,15 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>BNK Busan Bank - 결재 승인 관리</title>
+  <title>BNK Busan Bank - 공지사항 관리</title>
+  <!-- Font Awesome & Pretendard -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
   
   <style>
+/* ───────────────────────────────────────
+   ROOT & RESET (BNK 공통 디자인 시스템 규격 일치)
+─────────────────────────────────────── */
 :root {
   --primary:        #ED1C24;
   --primary-light:  #FFF2F2;
@@ -30,6 +34,7 @@ body {
   overflow: hidden;
 }
 
+/* ───── SIDEBAR ───── */
 .sidebar {
   width: var(--sidebar-w); height: 100vh;
   background: #FFFFFF; border-right: 1px solid var(--border);
@@ -79,6 +84,7 @@ body {
 .sidebar-footer { padding: 14px 24px; border-top: 1px solid var(--border); flex-shrink: 0; }
 .sidebar-footer p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
 
+/* ───── HEADER ───── */
 .header {
   position: fixed; top: 0; left: var(--sidebar-w);
   width: calc(100% - var(--sidebar-w)); height: var(--header-h);
@@ -99,6 +105,7 @@ body {
 .hu-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 13px; }
 .hu-chevron { color: var(--text-muted); font-size: 11px; }
 
+/* ───── MAIN CONTENT ───── */
 .main-content {
   margin-left: var(--sidebar-w); margin-top: var(--header-h);
   width: calc(100% - var(--sidebar-w)); height: calc(100vh - var(--header-h));
@@ -107,10 +114,12 @@ body {
 .main-content::-webkit-scrollbar { width: 6px; }
 .main-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
+/* ───── PAGE HEADER ───── */
 .page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; }
 .page-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
 .page-subtitle { font-size: 14px; color: var(--text-sub); }
 
+/* ───── STAT CARDS ───── */
 .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
 .stat-card {
   background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius);
@@ -122,10 +131,11 @@ body {
 .stat-icon.red    { background: var(--primary-light); color: var(--primary); }
 .stat-icon.blue   { background: #EFF6FF; color: #2563EB; }
 .stat-icon.purple { background: #FAF5FF; color: #7C3AED; }
-.stat-icon.amber  { background: #FFFBEB; color: #D97706; }
+.stat-icon.green  { background: #F0FDF4; color: #16A34A; }
 .stat-label { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
 .stat-value { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1; }
 
+/* ───── FILTER BAR ───── */
 .filter-bar {
   background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius);
   padding: 18px 24px; margin-bottom: 16px;
@@ -143,31 +153,17 @@ body {
 }
 .filter-search input:focus { outline: none; border-color: #94A3B8; box-shadow: 0 0 0 3px rgba(0,0,0,0.05); background: #FFFFFF; }
 .filter-search input::placeholder { color: var(--text-muted); }
-.filter-select { position: relative; }
-.filter-select select {
-  height: 40px; padding: 0 36px 0 14px;
-  border: 1px solid var(--border); border-radius: 8px;
-  font-size: 13px; font-family: 'Pretendard', sans-serif;
-  color: var(--text); background: var(--bg);
-  cursor: pointer; appearance: none; -webkit-appearance: none;
-  transition: border-color 0.15s;
-}
-.filter-select select:focus { outline: none; border-color: #94A3B8; background: #FFFFFF; }
-.filter-select::after {
-  content: '\f078'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
-  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-  color: var(--text-muted); font-size: 11px; pointer-events: none;
-}
 .filter-divider { width: 1px; height: 28px; background: var(--border); flex-shrink: 0; }
 .filter-count { font-size: 13px; color: var(--text-muted); white-space: nowrap; margin-left: auto; }
 .filter-count strong { color: var(--text); font-weight: 700; }
 
+/* ───── TABLE CARD ───── */
 .table-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
 .table-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
 thead tr { background: #F8FAFC; border-bottom: 2px solid var(--border); }
 thead th {
-  padding: 13px 16px; font-size: 12px; font-weight: 700;
+  padding: 14px 16px; font-size: 13px; font-weight: 700;
   color: var(--text-muted); text-align: left;
   white-space: nowrap; letter-spacing: 0.03em; text-transform: uppercase;
 }
@@ -181,30 +177,69 @@ tbody td:first-child { padding-left: 24px; }
 tbody td:last-child  { padding-right: 24px; text-align: center; }
 .td-id   { font-size: 12px; color: var(--text-muted); font-weight: 600; font-family: monospace; }
 .td-name { font-weight: 700; color: var(--text); }
+.td-time { font-size: 13px; color: var(--text-sub); font-family: monospace; }
 
-.badge {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 3px 10px; border-radius: 20px;
-  font-size: 11px; font-weight: 700; white-space: nowrap;
+/* ───── BUTTONS ───── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Pretendard', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
 }
-.badge-blue   { background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; }
-.badge-green  { background: #F0FDF4; color: #16A34A; border: 1px solid #BBF7D0; }
-.badge-red    { background: var(--primary-light); color: var(--primary); border: 1px solid var(--primary-border); }
-.badge-amber  { background: #FFFBEB; color: #D97706; border: 1px solid #FDE68A; }
-.badge-slate  { background: #F1F5F9; color: #475569; border: 1px solid #E2E8F0; }
-.badge-purple { background: #FAF5FF; color: #7C3AED; border: 1px solid #DDD6FE; }
+.btn-primary {
+  background: var(--primary);
+  color: #FFFFFF;
+  box-shadow: 0 4px 10px rgba(237, 28, 36, 0.15);
+}
+.btn-primary:hover {
+  background: #D1141B;
+  box-shadow: 0 4px 14px rgba(237, 28, 36, 0.25);
+  transform: translateY(-1px);
+}
+.btn-primary:active { transform: translateY(0); }
 
-.act-btn-primary {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 6px 14px; border-radius: 8px; border: 1px solid var(--primary-border);
-  background: var(--primary-light); color: var(--primary); font-size: 13px; font-weight: 700;
-  cursor: pointer; transition: all 0.15s; text-decoration: none;
+/* ───── TABLE ACTION BUTTONS ───── */
+.action-btns { display: flex; align-items: center; justify-content: center; gap: 6px; }
+.act-btn {
+  width: 32px; height: 32px; border-radius: 7px; border: 1px solid var(--border);
+  background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--text-muted); transition: all 0.15s; text-decoration: none;
 }
-.act-btn-primary:hover {
-  background: var(--primary); color: #FFFFFF; border-color: var(--primary);
-  box-shadow: 0 4px 12px rgba(237, 28, 36, 0.15);
-}
+.act-btn:hover          { background: var(--bg); color: var(--text); border-color: #CBD5E1; }
+.act-btn.act-view:hover { background: #EFF6FF; color: #2563EB; border-color: #BFDBFE; }
+.act-btn.act-edit:hover { background: #FEF3C7; color: #D97706; border-color: #FDE68A; }
+.act-btn.act-del:hover  { background: var(--primary-light); color: var(--primary); border-color: var(--primary-border); }
 
+/* ───── CONFIRM MODAL ───── */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px);
+  z-index: 1000; display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+}
+.modal-overlay.show { opacity: 1; pointer-events: auto; }
+.modal-card {
+  background: #FFFFFF; border-radius: var(--radius); padding: 28px; width: 90%; max-width: 420px;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  transform: scale(0.95); transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.modal-overlay.show .modal-card { transform: scale(1); }
+.modal-icon { width: 48px; height: 48px; background: var(--primary-light); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; border: 1px solid var(--primary-border); }
+.modal-title { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.modal-desc { font-size: 13px; color: var(--text-sub); margin-bottom: 24px; line-height: 1.5; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+/* ───── EMPTY STATE ───── */
 .empty-state { padding: 60px 24px; text-align: center; }
 .empty-icon  { font-size: 40px; color: var(--text-muted); margin-bottom: 16px; opacity: 0.5; }
 .empty-title { font-size: 16px; font-weight: 700; color: var(--text-sub); margin-bottom: 6px; }
@@ -213,6 +248,7 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
 </head>
 <body>
 
+<!-- ===== STREAMING_CHUNK:사이드바 및 글로벌 네비게이션 헤더 구현... ===== -->
 <!-- ===== SIDEBAR ===== -->
 <div class="sidebar">
   <div class="sidebar-logo">
@@ -233,13 +269,14 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
     <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
     <li><a href="/admin/productListPage"     class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
     <li class="menu-section-title">업무</li>
-    <li><a href="/admin/approval" class="menu-item active"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
+    <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
     <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
     <li><a href="/admin/account"  class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
     <li class="menu-section-title">관리</li>
     <li><a href="/admin/members"   class="menu-item"><i class="fa-solid fa-users-gear"></i> 회원/관리자 관리</a></li>
     <li><a href="/admin/logs"      class="menu-item"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
     <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
+    <li><a href="#"               class="menu-item active"><i class="fa-solid fa-bullhorn"></i> 공지사항 관리</a></li>
   </ul>
   <div class="sidebar-footer">
     <p>&copy; 2025 BNK Busan Bank</p>
@@ -249,10 +286,10 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
 
 <!-- ===== HEADER ===== -->
 <div class="header">
-  <div class="header-title">관리자 승인 센터</div>
+  <div class="header-title">업무지원 시스템 > 마케팅 및 대고객 공시 센터</div>
   <div class="header-breadcrumb">
-    <i class="fa-solid fa-chevron-right"></i><span>업무</span>
-    <i class="fa-solid fa-chevron-right"></i><span>결재 관리</span>
+    <i class="fa-solid fa-chevron-right"></i><span>관리</span>
+    <i class="fa-solid fa-chevron-right"></i><span>공지사항 관리</span>
   </div>
   <div class="header-right">
     <div class="header-user">
@@ -263,133 +300,116 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
   </div>
 </div>
 
+<!-- ===== STREAMING_CHUNK:통계 그리드 및 필터 툴바 구성... ===== -->
 <!-- ===== MAIN CONTENT ===== -->
 <div class="main-content">
 
   <!-- 페이지 헤더 -->
   <div class="page-header">
     <div>
-      <h1 class="page-title">결재 신청 목록</h1>
-      <p class="page-subtitle">하위 관리자가 상정한 신규 상품 등록 및 수정 건에 대한 결재 검토 리스트입니다.</p>
+      <h1 class="page-title">실시간 공지사항 관리 센터</h1>
+      <p class="page-subtitle">대고객 서비스 모바일 뱅킹 및 플랫폼 채널에 게재되는 중요 고시/공지사항을 편집하고 통제합니다.</p>
     </div>
   </div>
 
-  <!-- 통계 카드 -->
+  <!-- 통계 요약 카드 -->
   <div class="stat-grid">
     <div class="stat-card">
-      <div class="stat-icon red"><i class="fa-solid fa-folder-tree"></i></div>
+      <div class="stat-icon red"><i class="fa-solid fa-bullhorn"></i></div>
       <div>
-        <div class="stat-label">전체 결재 건수</div>
-        <div class="stat-value" th:text="${approvalList != null ? #lists.size(approvalList) : 0}">0</div>
+        <div class="stat-label">전체 공지사항</div>
+        <div class="stat-value" th:text="${news != null ? #lists.size(news) : 0}">0</div>
       </div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon amber"><i class="fa-solid fa-clock-rotate-left"></i></div>
+      <div class="stat-icon blue"><i class="fa-solid fa-square-rss"></i></div>
       <div>
-        <div class="stat-label">심사 대기</div>
+        <div class="stat-label">당월 신규 등록 건</div>
         <div class="stat-value">-</div>
       </div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon blue"><i class="fa-solid fa-square-check"></i></div>
+      <div class="stat-icon purple"><i class="fa-solid fa-chart-line"></i></div>
       <div>
-        <div class="stat-label">승인 완료</div>
-        <div class="stat-value">-</div>
+        <div class="stat-label">공시 누적 트래픽</div>
+        <div class="stat-value">정상</div>
       </div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon purple"><i class="fa-solid fa-circle-plus"></i></div>
+      <div class="stat-icon green"><i class="fa-solid fa-shield-halved"></i></div>
       <div>
-        <div class="stat-label">금월 신규 등록 건</div>
-        <div class="stat-value">-</div>
+        <div class="stat-label">서버 연동 상태</div>
+        <div class="stat-value">안전</div>
       </div>
     </div>
   </div>
 
-  <!-- 필터 바 -->
+  <!-- 필터 및 등록 컨트롤 바 -->
   <div class="filter-bar">
     <div class="filter-search">
       <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" id="approvalSearchInput" placeholder="상품 이름 또는 신청 관리자로 검색...">
-    </div>
-    <div class="filter-select">
-      <select id="approvalStatusFilter">
-        <option value="">전체 상태</option>
-        <option value="검토중">검토중</option>
-        <option value="승인">승인</option>
-        <option value="반려">반려</option>
-      </select>
-    </div>
-    <div class="filter-select">
-      <select id="approvalTypeFilter">
-        <option value="">전체 신청 구분</option>
-        <option value="REGISTER">등록</option>
-        <option value="UPDATE">수정</option>
-      </select>
+      <input type="text" id="newsSearchInput" placeholder="공지사항 제목 또는 작성자 실명 실시간 탐색...">
     </div>
     <div class="filter-divider"></div>
-    <div class="filter-count">
-      총 <strong th:text="${approvalList != null ? #lists.size(approvalList) : 0}">0</strong>건
+    <div class="filter-count" style="margin-right: 16px;">
+      공시 건수 : <strong th:text="${news != null ? #lists.size(news) : 0}">0</strong>건
     </div>
+    <!-- 오리지널 공지사항 등록 URL 완벽 동기화 -->
+    <a th:href="@{/admin/makeNewsPage}" class="btn btn-primary">
+      <i class="fa-solid fa-circle-plus"></i> 신규 공지사항 등록
+    </a>
   </div>
 
-  <!-- 테이블 카드 -->
+  <!-- ===== STREAMING_CHUNK:공지사항 목록 데이터 테이블 렌더링... ===== -->
+  <!-- 공지사항 목록 카드 테이블 -->
   <div class="table-card">
     <div class="table-wrap">
-      <table id="approvalTable">
+      <table id="newsTable">
         <thead>
           <tr>
-            <th>요청 번호</th>
-            <th>상품 ID</th>
-            <th>상품 이름</th>
-            <th>신청 관리자</th>
-            <th>신청 상태</th>
-            <th>신청 구분</th>
-            <th>신청 일자</th>
-            <th style="text-align: center;">액션</th>
+            <th style="width: 100px; padding-left: 24px;">번호</th>
+            <th>공지사항 고시 제목</th>
+            <th style="width: 140px;">등록 작성자</th>
+            <th style="width: 180px;">등록 고시 일자</th>
+            <th style="width: 110px;">실시간 조회수</th>
+            <th style="width: 150px; text-align: center; padding-right: 24px;">액션 제어</th>
           </tr>
         </thead>
-        <tbody th:if="${approvalList != null and !#lists.isEmpty(approvalList)}">
-          <!-- 
-            Thymeleaf 변수 중첩 및 세션 오염을 방지하기 위해 
-            반복 변수명을 'approvalItem'으로 안전하게 매핑합니다. 
-          -->
-          <tr th:each="approvalItem : ${approvalList}"
-              th:attr="data-pname=${approvalItem.product_name}, data-requester=${approvalItem.requester_name}, data-status=${approvalItem.request_status}, data-type=${approvalItem.request_type}">
-            <td><span class="td-id" th:text="'#' + ${approvalItem.request_id}">#001</span></td>
-            <td th:text="${approvalItem.product_id}"></td>
-            <td><span class="td-name" th:text="${approvalItem.product_name}">상품명</span></td>
-            <td th:text="${approvalItem.requester_name}"></td>
+        <tbody>
+          <!-- th:each를 이용해 원형 데이터 루프 완벽 바인딩 -->
+          <tr th:each="neww : ${news}" th:attr="data-title=${neww.news_ttl}, data-author=${neww.name}">
+            <td style="padding-left: 24px;"><span class="td-id" th:text="${neww.news_no}"></span></td>
+            <td><strong style="color: var(--text);" th:text="${neww.news_ttl}"></strong></td>
+            <td><span class="td-name" th:text="${neww.name}"></span></td>
+            <td><span class="td-time" th:text="${neww.news_dt}"></span></td>
             <td>
-              <span th:if="${approvalItem.request_status == '검토중'}" class="badge badge-amber"><i class="fa-solid fa-circle-notch fa-spin"></i>검토중</span>
-              <span th:if="${approvalItem.request_status == '승인'}" class="badge badge-green"><i class="fa-solid fa-circle-check"></i> 승인</span>
-              <span th:if="${approvalItem.request_status == '반려'}" class="badge badge-red"><i class="fa-solid fa-circle-xmark"></i> 반려</span>
-              <span th:if="${approvalItem.request_status != '검토중' and approvalItem.request_status != '승인' and approvalItem.request_status != '반려'}"
-                    class="badge badge-slate" th:text="${approvalItem.request_status}"></span>
+              <i class="fa-regular fa-eye" style="color: var(--text-muted); font-size: 12px; margin-right: 4px;"></i>
+              <span th:text="${neww.views}" style="font-weight: 600; color: var(--text-sub); font-family: monospace;"></span>
             </td>
-            <td>
-              <span th:if="${approvalItem.request_type == 'REGISTER'}" class="badge badge-blue">등록</span>
-              <span th:if="${approvalItem.request_type == 'UPDATE'}" class="badge badge-purple">수정</span>
-              <span th:if="${approvalItem.request_type != 'REGISTER' and approvalItem.request_type != 'UPDATE'}"
-                    class="badge badge-slate" th:text="${approvalItem.request_type}"></span>
-            </td>
-            <td th:text="${approvalItem.requested_at}"></td>
-            <td>
+            <td style="padding-right: 24px;">
               <div class="action-btns">
-                <a class="act-btn-primary" th:href="@{/admin/approvalDetailPage(product_id=${approvalItem.product_id})}">
-                  <i class="fa-solid fa-magnifying-glass"></i> 상세 검토
+                <!-- 상세보기 링크 -->
+                <a class="act-btn act-view" th:href="@{/admin/getOneNews(news_no=${neww.news_no})}" title="자세히 보기">
+                  <i class="fa-solid fa-magnifying-glass"></i>
                 </a>
+                <!-- 수정 링크 -->
+                <a class="act-btn act-edit" th:href="@{/admin/updateNewsPage(news_no=${neww.news_no})}" title="수정">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+                <!-- 삭제용 가드 연결 처리 -->
+                <button type="button" class="act-btn act-del" th:onclick="confirmDeleteNews([[${neww.news_no}]], [[${neww.news_ttl}]])" title="삭제">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
               </div>
             </td>
           </tr>
-        </tbody>
-        <tbody th:if="${approvalList == null or #lists.isEmpty(approvalList)}">
-          <tr>
-            <td colspan="8">
+          <!-- 데이터가 존재하지 않을 시 예외 레이아웃 바인딩 -->
+          <tr th:if="${news == null or news.empty}">
+            <td colspan="6">
               <div class="empty-state">
-                <div class="empty-icon"><i class="fa-solid fa-file-invoice"></i></div>
-                <div class="empty-title">결재 신청 목록이 비어있습니다</div>
-                <div class="empty-desc">검토 대기 중이거나 완료된 결재 건이 존재하지 않습니다.</div>
+                <div class="empty-icon"><i class="fa-solid fa-folder-open"></i></div>
+                <div class="empty-title">등록 고시된 공지사항 내역이 존재하지 않습니다</div>
+                <div class="empty-desc">새로운 고시 내용을 배포하려면 우측 상단의 등록 버튼을 사용해 주십시오.</div>
               </div>
             </td>
           </tr>
@@ -400,33 +420,51 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
 
 </div><!-- /main-content -->
 
-<script>
-  const approvalSearch = document.getElementById('approvalSearchInput');
-  const approvalStatus = document.getElementById('approvalStatusFilter');
-  const approvalType   = document.getElementById('approvalTypeFilter');
+<!-- ===== STREAMING_CHUNK:삭제 확인용 모달창 및 실시간 검색 제어 스크립트 작성... ===== -->
+<!-- ===== [삭제 확인용 커스텀 모달 가드] ===== -->
+<div id="deleteModal" class="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-icon">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+    </div>
+    <div class="modal-title">공지사항 삭제 확인</div>
+    <div class="modal-desc">
+      정말로 '<strong id="targetNewsTitle" style="color: var(--primary);"></strong>' 공지사항 게시글을 완전 삭제하시겠습니까? 
+      삭제 승인 시 복구는 불가능하며 대고객 채널 노출에서 즉각 제외됩니다.
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()" style="height: 40px; padding: 0 20px; border-radius: 8px; border: 1px solid var(--border); background: #F1F5F9; font-weight: 700; color: #475569; cursor: pointer;">취소</button>
+      <a id="modalConfirmBtn" href="" class="btn btn-primary" style="text-decoration: none;">삭제 승인</a>
+    </div>
+  </div>
+</div>
 
-  function filterApprovals() {
-    const kw = approvalSearch.value.toLowerCase().trim();
-    const st = approvalStatus.value;
-    const ty = approvalType.value;
-    
-    document.querySelectorAll('#approvalTable tbody tr[data-pname]').forEach(row => {
-      const pname     = (row.getAttribute('data-pname')     || '').toLowerCase();
-      const requester = (row.getAttribute('data-requester') || '').toLowerCase();
-      const status    = row.getAttribute('data-status')     || '';
-      const type      = row.getAttribute('data-type')       || '';
-      
-      const matchesSearch = !kw || pname.includes(kw) || requester.includes(kw);
-      const matchesStatus = !st || status === st;
-      const matchesType   = !ty || type === ty;
-      
-      row.style.display = (matchesSearch && matchesStatus && matchesType) ? '' : 'none';
+<script th:inline="javascript">
+  /* ───── 실시간 검색 탐색 필터 모듈 ───── */
+  const newsSearch = document.getElementById('newsSearchInput');
+  newsSearch.addEventListener('input', function() {
+    const kw = newsSearch.value.toLowerCase().trim();
+    document.querySelectorAll('#newsTable tbody tr[data-title]').forEach(row => {
+      const title  = (row.getAttribute('data-title')  || '').toLowerCase();
+      const author = (row.getAttribute('data-author') || '').toLowerCase();
+      row.style.display = (!kw || title.includes(kw) || author.includes(kw)) ? '' : 'none';
     });
+  });
+
+  /* ───── 게시글 삭제 확인 보드 제어 스크립트 ───── */
+  function confirmDeleteNews(newsNo, newsTitle) {
+    document.getElementById('targetNewsTitle').innerText = newsTitle;
+    
+    // 타임리프의 링크 매핑 스펙을 완벽하게 계승하는 동적 URL 연결 조합
+    const targetUrl = "/admin/deleteNews?news_no=" + encodeURIComponent(newsNo);
+    document.getElementById('modalConfirmBtn').setAttribute('href', targetUrl);
+    
+    document.getElementById('deleteModal').classList.add('show');
   }
 
-  approvalSearch.addEventListener('input',  filterApprovals);
-  approvalStatus.addEventListener('change', filterApprovals);
-  approvalType.addEventListener('change',   filterApprovals);
+  function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.remove('show');
+  }
 </script>
 </body>
 </html>

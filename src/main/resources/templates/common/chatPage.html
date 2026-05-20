@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>BNK부산은행 챗봇</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bnk-red:      #D7191F;
+    --bnk-dark-red: #8B0304;
+    --bnk-dark-gray:#655C4F;
+    --bnk-light-gray:#B7A997;
+    --bubble-user:  #D7191F;
+    --bubble-bot:   #ffffff;
+    --bg:           #faf5f5;
+    --text-main:    #1a1010;
+    --text-muted:   #9b8a84;
+    --border:       #ead9d9;
+    --shadow:       0 8px 32px rgba(215,25,31,0.10);
+  }
+
+  html, body { height: 100%; font-family: 'Noto Sans KR', sans-serif; background: var(--bg); }
+
+  .chat-wrapper {
+    display: flex; flex-direction: column;
+    height: 100vh; max-width: 480px;
+    margin: 0 auto; background: #fff;
+    box-shadow: var(--shadow); position: relative;
+  }
+
+  /* ── 헤더 ── */
+  .chat-header {
+    background: linear-gradient(135deg, var(--bnk-dark-red) 0%, var(--bnk-red) 100%);
+    padding: 18px 20px 16px;
+    display: flex; align-items: center; gap: 14px;
+    flex-shrink: 0; position: relative; overflow: hidden;
+  }
+  .chat-header::after {
+    content: ''; position: absolute; right: -30px; top: -30px;
+    width: 130px; height: 130px; border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .chat-header::before {
+    content: ''; position: absolute; right: 40px; bottom: -40px;
+    width: 90px; height: 90px; border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .header-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; border: 2px solid rgba(255,255,255,0.3);
+  }
+  .header-avatar svg { width: 24px; height: 24px; }
+
+  .header-info { flex: 1; }
+  .header-title { color: #fff; font-size: 15px; font-weight: 700; letter-spacing: -0.3px; }
+  .header-sub {
+    color: rgba(255,255,255,0.75); font-size: 11.5px; margin-top: 2px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .online-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #ffd0d0; animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+  .header-logo {
+    color: rgba(255,255,255,0.95); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.5px; background: rgba(255,255,255,0.18);
+    padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.25);
+  }
+
+  /* ── 날짜 구분 ── */
+  .date-divider {
+    display: flex; align-items: center; gap: 10px;
+    padding: 16px 20px 8px; flex-shrink: 0;
+  }
+  .date-divider span { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+  .date-divider::before, .date-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* ── 메시지 영역 ── */
+  .chat-messages {
+    flex: 1; overflow-y: auto;
+    padding: 8px 16px 16px;
+    display: flex; flex-direction: column; gap: 10px;
+    scroll-behavior: smooth;
+  }
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* ── 말풍선 행 ── */
+  .message-row {
+    display: flex; align-items: flex-end; gap: 8px;
+    animation: slideIn 0.3s ease;
+  }
+  .message-row.user { flex-direction: row-reverse; }
+
+  @keyframes slideIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+  .bubble-group { display: flex; flex-direction: column; gap: 4px; max-width: 72%; }
+  .message-row.user .bubble-group { align-items: flex-end; }
+
+  .bot-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--bnk-dark-red), var(--bnk-red));
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-bottom: 2px;
+  }
+  .bot-avatar svg { width: 17px; height: 17px; }
+
+  .bubble {
+    padding: 11px 14px; border-radius: 18px;
+    font-size: 13.5px; line-height: 1.6; word-break: break-word;
+  }
+  .bubble.bot {
+    background: var(--bubble-bot); color: var(--text-main);
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 8px rgba(215,25,31,0.08);
+    border: 1px solid var(--border);
+  }
+  .bubble.user {
+    background: var(--bubble-user); color: #fff;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 2px 8px rgba(139,3,4,0.25);
+  }
+
+  .message-time { font-size: 10.5px; color: var(--text-muted); padding: 0 4px; }
+
+  /* ── 타이핑 인디케이터 ── */
+  .typing-indicator { display: none; }
+  .typing-indicator.show { display: flex; }
+  .typing-indicator .bubble.bot { padding: 14px 18px; }
+  .typing-dots { display: flex; gap: 4px; align-items: center; }
+  .typing-dots span {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--bnk-light-gray); animation: bounce 1.2s infinite;
+  }
+  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+
+  /* ── 빠른 질문 칩 ── */
+  .quick-chips {
+    display: flex; gap: 7px; flex-wrap: wrap;
+    padding: 4px 16px 10px; flex-shrink: 0;
+  }
+  .chip {
+    padding: 6px 12px; border-radius: 20px;
+    border: 1.5px solid var(--bnk-red);
+    color: var(--bnk-red); font-size: 12px; font-weight: 500;
+    cursor: pointer; background: #fff;
+    transition: all 0.2s; font-family: 'Noto Sans KR', sans-serif;
+    white-space: nowrap;
+  }
+  .chip:hover { background: var(--bnk-red); color: #fff; }
+
+  /* ── 입력 영역 ── */
+  .chat-input-area {
+    padding: 12px 14px 16px; background: #fff;
+    border-top: 1px solid var(--border); flex-shrink: 0;
+  }
+  .input-row {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg); border-radius: 28px;
+    padding: 6px 6px 6px 16px;
+    border: 1.5px solid var(--border); transition: border-color 0.2s;
+  }
+  .input-row:focus-within { border-color: var(--bnk-red); }
+
+  #question {
+    flex: 1; border: none; background: transparent; outline: none;
+    font-size: 13.5px; color: var(--text-main);
+    font-family: 'Noto Sans KR', sans-serif; padding: 4px 0;
+  }
+  #question::placeholder { color: var(--text-muted); }
+
+  .send-btn {
+    width: 38px; height: 38px; border-radius: 50%;
+    border: none; background: var(--bnk-red); color: #fff;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.2s;
+  }
+  .send-btn:hover { background: var(--bnk-dark-red); transform: scale(1.05); }
+  .send-btn:active { transform: scale(0.95); }
+  .send-btn svg { width: 16px; height: 16px; }
+
+  .input-hint {
+    text-align: center; font-size: 11px;
+    color: var(--text-muted); margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="chat-wrapper">
+
+  <!-- 헤더 -->
+  <div class="chat-header">
+    <div class="header-avatar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 2.98.97 4.29L2 22l5.71-.97C9.02 21.64 10.46 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
+        <circle cx="8.5" cy="12" r="1.5" fill="white" stroke="none"/>
+        <circle cx="12" cy="12" r="1.5" fill="white" stroke="none"/>
+        <circle cx="15.5" cy="12" r="1.5" fill="white" stroke="none"/>
+      </svg>
+    </div>
+    <div class="header-info">
+      <div class="header-title">BNK 금융 도우미</div>
+      <div class="header-sub">
+        <span class="online-dot"></span>
+        지금 바로 답변 가능합니다
+      </div>
+    </div>
+    <div class="header-logo">부산은행</div>
+  </div>
+
+  <!-- 날짜 구분 -->
+  <div class="date-divider">
+    <span id="todayLabel"></span>
+  </div>
+
+  <!-- 메시지 목록 -->
+  <div class="chat-messages" id="div">
+
+    <div class="message-row">
+      <div class="bot-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+          <line x1="9" y1="9" x2="9.01" y2="9"/>
+          <line x1="15" y1="9" x2="15.01" y2="9"/>
+        </svg>
+      </div>
+      <div class="bubble-group">
+        <div class="bubble bot">
+          안녕하세요! 👋<br>BNK부산은행 AI 금융 도우미입니다.<br>궁금하신 사항을 편하게 물어보세요.
+        </div>
+        <div class="message-time" id="welcomeTime"></div>
+      </div>
+    </div>
+
+    <!-- 타이핑 인디케이터 -->
+    <div class="message-row typing-indicator" id="typingIndicator">
+      <div class="bot-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+          <line x1="9" y1="9" x2="9.01" y2="9"/>
+          <line x1="15" y1="9" x2="15.01" y2="9"/>
+        </svg>
+      </div>
+      <div class="bubble-group">
+        <div class="bubble bot">
+          <div class="typing-dots"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 빠른 질문 -->
+  <div class="quick-chips" id="quickChips">
+    <button class="chip" onclick="quickAsk('공인인증서 등록 방법')">공인인증서 등록</button>
+    <button class="chip" onclick="quickAsk('이체 한도 조회')">이체 한도 조회</button>
+    <button class="chip" onclick="quickAsk('예금 금리 안내')">예금 금리 안내</button>
+    <button class="chip" onclick="quickAsk('대출 상품 문의')">대출 상품 문의</button>
+  </div>
+
+  <!-- 입력창 -->
+  <div class="chat-input-area">
+    <div class="input-row">
+      <input type="text" id="question" placeholder="무엇이든 물어보세요..." autocomplete="off">
+      <button class="send-btn" onclick="questionChat()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+    <div class="input-hint">부산은행 AI 챗봇 · 개인정보 보호 정책 준수</div>
+  </div>
+
+</div>
+
+<script>
+  const pad = n => String(n).padStart(2,'0');
+  const now = new Date();
+  document.getElementById('todayLabel').textContent =
+    `${now.getFullYear()}년 ${pad(now.getMonth()+1)}월 ${pad(now.getDate())}일`;
+
+  function getTime() {
+    const t = new Date();
+    const h = t.getHours(), m = pad(t.getMinutes());
+    return `${h < 12 ? '오전' : '오후'} ${h % 12 || 12}:${m}`;
+  }
+  document.getElementById('welcomeTime').textContent = getTime();
+
+  const chatMessages = document.getElementById('div');
+  const typingIndicator = document.getElementById('typingIndicator');
+  const quickChips = document.getElementById('quickChips');
+
+  function scrollToBottom() { chatMessages.scrollTop = chatMessages.scrollHeight; }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function appendUserMessage(text) {
+    const row = document.createElement('div');
+    row.className = 'message-row user';
+    row.innerHTML = `
+      <div class="bubble-group">
+        <div class="bubble user">${escapeHtml(text)}</div>
+        <div class="message-time">${getTime()}</div>
+      </div>`;
+    chatMessages.insertBefore(row, typingIndicator);
+    scrollToBottom();
+  }
+
+  function appendBotMessage(text) {
+    const row = document.createElement('div');
+    row.className = 'message-row';
+    row.innerHTML = `
+      <div class="bot-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+          <line x1="9" y1="9" x2="9.01" y2="9"/>
+          <line x1="15" y1="9" x2="15.01" y2="9"/>
+        </svg>
+      </div>
+      <div class="bubble-group">
+        <div class="bubble bot">${escapeHtml(text)}</div>
+        <div class="message-time">${getTime()}</div>
+      </div>`;
+    chatMessages.insertBefore(row, typingIndicator);
+    scrollToBottom();
+  }
+
+  function showTyping() { typingIndicator.classList.add('show'); scrollToBottom(); }
+  function hideTyping() { typingIndicator.classList.remove('show'); }
+
+  function quickAsk(text) {
+    document.getElementById('question').value = text;
+    questionChat();
+  }
+
+  function questionChat() {
+    const input = document.querySelector("#question");
+    const qu = input.value.trim();
+    if (!qu) return;
+
+    appendUserMessage(qu);
+    input.value = '';
+    quickChips.style.display = 'none';
+    showTyping();
+
+    const requestData = { question: qu };
+
+    fetch("/api/chat/ask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(requestData)
+    })
+    .then(data => data.json())
+    .then(data => {
+      hideTyping();
+      appendBotMessage(data.answer);
+    })
+    .catch(() => {
+      hideTyping();
+      appendBotMessage("죄송합니다. 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+    });
+  }
+
+  document.getElementById('question').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); questionChat(); }
+  });
+</script>
+</body>
+</html>

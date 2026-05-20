@@ -1,186 +1,396 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>BNK Busan Bank - 로그 관리 센터</title>
-    <!-- Font Awesome & Pretendard -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    
-    <style>
-        :root {
-            --primary-color: #ED1C24;    /* BNK Red */
-            --navy-color: #0A2540;       /* BNK Navy */
-            --bg-color: #F8FAFC;
-            --card-bg: #FFFFFF;
-            --border-color: #E2E8F0;
-            --text-main: #0F172A;
-            --text-label: #64748B;
-            --sidebar-width: 260px;
-            --header-height: 70px;
-            
-            /* 메서드별 선명한 컴포넌트 컬러 */
-            --color-get-bg: #E0F2FE;    --color-get-text: #0369A1;
-            --color-post-bg: #DCFCE7;   --color-post-text: #15803D;
-            --color-put-bg: #FEF3C7;    --color-put-text: #B45309;
-            --color-delete-bg: #FEE2E2; --color-delete-text: #B91C1C;
-        }
+  <meta charset="UTF-8">
+  <title>BNK Busan Bank - 로그 관리 센터</title>
+  <!-- Font Awesome & Pretendard -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
+  
+  <style>
+/* ───────────────────────────────────────
+   ROOT & RESET
+─────────────────────────────────────── */
+:root {
+  --primary:        #ED1C24;
+  --primary-light:  #FFF2F2;
+  --primary-border: #FFCDD0;
+  --bg:             #F4F6F9;
+  --card:           #FFFFFF;
+  --border:         #E2E8F0;
+  --text:           #1E293B;
+  --text-sub:       #64748B;
+  --text-muted:     #94A3B8;
+  --sidebar-w:      260px;
+  --header-h:       68px;
+  --radius:         12px;
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); display: flex; min-height: 100vh; }
+  /* 메서드별 컴포넌트 컬러 (타 서비스들과 일관성 정렬) */
+  --color-get-bg:      #EFF6FF;    --color-get-text:      #2563EB;    --color-get-border:      #BFDBFE;
+  --color-post-bg:     #F0FDF4;    --color-post-text:     #16A34A;    --color-post-border:     #BBF7D0;
+  --color-put-bg:      #FFFBEB;    --color-put-text:      #D97706;    --color-put-border:      #FDE68A;
+  --color-delete-bg:   #FFF2F2;    --color-delete-text:   #ED1C24;    --color-delete-border:   #FFCDD0;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Pretendard', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  overflow: hidden;
+}
 
-        /* 사이드바 & 헤더 */
-        .sidebar { width: var(--sidebar-width); height: 100vh; background-color: #FFFFFF; border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0; z-index: 100; }
-        .sidebar-logo { padding: 24px 30px; margin-bottom: 20px; border-bottom: 1px solid #F1F5F9; }
-        .sidebar-logo img { width: 140px; }
-        .sidebar-menu { list-style: none; }
-        .menu-item { display: flex; align-items: center; padding: 14px 30px; color: #475569; text-decoration: none; font-size: 15px; font-weight: 500; transition: all 0.2s ease; }
-        .menu-item i { margin-right: 15px; width: 20px; text-align: center; color: #94A3B8; font-size: 16px; }
-        .menu-item:hover { background-color: #F8FAFC; color: var(--text-main); }
-        .menu-item.active { background-color: #FFF2F2; color: var(--primary-color); font-weight: 700; border-left: 4px solid var(--primary-color); }
-        .menu-item.active i { color: var(--primary-color); }
+/* ───── SIDEBAR ───── */
+.sidebar {
+  width: var(--sidebar-w); height: 100vh;
+  background: #FFFFFF; border-right: 1px solid var(--border);
+  position: fixed; left: 0; top: 0;
+  display: flex; flex-direction: column;
+  z-index: 100; overflow: hidden;
+}
+.sidebar-logo { padding: 22px 24px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.sidebar-logo img { height: 28px; width: auto; display: block; }
+.sidebar-profile {
+  padding: 18px 24px;
+  display: flex; align-items: center; gap: 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0; background: #FAFBFC;
+}
+.sp-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--primary-light); border: 2px solid var(--primary-border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--primary); font-size: 16px; flex-shrink: 0;
+}
+.sp-info { min-width: 0; }
+.sp-name { font-size: 14px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sp-role {
+  font-size: 11px; color: var(--primary); font-weight: 600;
+  background: var(--primary-light); border: 1px solid var(--primary-border);
+  border-radius: 20px; padding: 1px 8px; display: inline-block; margin-top: 3px;
+}
+.sidebar-menu { list-style: none; flex: 1; overflow-y: auto; padding: 8px 0; }
+.sidebar-menu::-webkit-scrollbar { width: 4px; }
+.sidebar-menu::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.menu-section-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-muted); padding: 16px 24px 6px;
+}
+.menu-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 24px; color: var(--text-sub); text-decoration: none;
+  font-size: 14px; font-weight: 500; transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.menu-item i { width: 18px; text-align: center; font-size: 14px; color: var(--text-muted); transition: color 0.15s; flex-shrink: 0; }
+.menu-item:hover { background: var(--primary-light); color: var(--primary); }
+.menu-item:hover i { color: var(--primary); }
+.menu-item.active { background: var(--primary-light); color: var(--primary); font-weight: 700; border-left-color: var(--primary); }
+.menu-item.active i { color: var(--primary); }
+.sidebar-footer { padding: 14px 24px; border-top: 1px solid var(--border); flex-shrink: 0; }
+.sidebar-footer p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
 
-        .header { position: fixed; top: 0; left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); height: var(--header-height); background-color: #FFFFFF; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 40px; z-index: 90; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
-        .header-title { font-size: 16px; font-weight: 700; color: var(--navy-color); }
+/* ───── HEADER ───── */
+.header {
+  position: fixed; top: 0; left: var(--sidebar-w);
+  width: calc(100% - var(--sidebar-w)); height: var(--header-h);
+  background: #FFFFFF; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 36px; z-index: 90; gap: 16px;
+}
+.header-title { font-size: 18px; font-weight: 800; color: var(--text); }
+.header-breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-muted); margin-left: 4px; }
+.header-breadcrumb i { font-size: 10px; }
+.header-breadcrumb span:last-child { color: var(--text-sub); font-weight: 500; }
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.header-user {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 14px 6px 8px; border-radius: 40px; border: 1px solid var(--border);
+  cursor: pointer; transition: all 0.15s; font-size: 13px; font-weight: 600; color: var(--text);
+}
+.header-user:hover { background: var(--bg); }
+.hu-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 13px; }
+.hu-chevron { color: var(--text-muted); font-size: 11px; }
 
-        /* 메인 컨텐츠 */
-        .main-content { margin-left: var(--sidebar-width); margin-top: var(--header-height); width: calc(100% - var(--sidebar-width)); padding: 40px; }
-        .content-header { margin-bottom: 32px; }
-        .content-title { font-size: 26px; font-weight: 800; display: flex; align-items: center; gap: 10px; color: var(--navy-color); }
+/* ───── MAIN CONTENT ───── */
+.main-content {
+  margin-left: var(--sidebar-w); margin-top: var(--header-h);
+  width: calc(100% - var(--sidebar-w)); height: calc(100vh - var(--header-h));
+  overflow-y: auto; padding: 36px 40px;
+}
+.main-content::-webkit-scrollbar { width: 6px; }
+.main-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-        /* 섹션 카드 */
-        .log-section { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); padding: 28px; margin-bottom: 35px; }
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-left: 4px solid var(--primary-color); padding-left: 14px; }
-        .section-header h2 { font-size: 18px; font-weight: 700; color: var(--navy-color); display: flex; align-items: center; gap: 8px; }
+/* ───── PAGE HEADER ───── */
+.page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; }
+.page-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.page-subtitle { font-size: 14px; color: var(--text-sub); }
 
-        /* 테이블 디자인 */
-        .table-wrapper { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border-color); }
-        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 900px; background-color: #ffffff; }
-        th { padding: 14px 16px; font-size: 13px; font-weight: 600; color: var(--text-label); background-color: #F8FAFC; border-bottom: 2px solid var(--border-color); }
-        td { padding: 14px 16px; font-size: 14px; border-bottom: 1px solid #F1F5F9; color: #334155; vertical-align: middle; }
-        tbody tr:last-child td { border-bottom: none; }
-        tbody tr:hover { background-color: #F8FAFC; }
+/* ───── STREAMING_CHUNK:스타일링하는 탭 컴포넌트 구조... ───── */
+/* ───── TAB ───── */
+.tab-wrapper {
+  background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04); overflow: hidden;
+}
+.tab-header {
+  display: flex; align-items: stretch;
+  border-bottom: 1px solid var(--border);
+  background: #F8FAFC;
+}
+.tab-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 28px; height: 54px;
+  font-size: 14px; font-weight: 600; color: var(--text-sub);
+  border: none; background: transparent; cursor: pointer;
+  border-bottom: 3px solid transparent; margin-bottom: -1px;
+  transition: all 0.15s; font-family: 'Pretendard', sans-serif;
+  position: relative;
+}
+.tab-btn i { font-size: 15px; }
+.tab-btn .tab-count {
+  font-size: 11px; font-weight: 700;
+  background: #E2E8F0; color: var(--text-sub);
+  border-radius: 20px; padding: 2px 8px;
+  transition: all 0.15s;
+}
+.tab-btn:hover { color: var(--text); background: rgba(0,0,0,0.02); }
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); background: #FFFFFF; font-weight: 700; }
+.tab-btn.active .tab-count { background: var(--primary-light); color: var(--primary); }
 
-        /* 배지 양식 */
-        .method-badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; text-align: center; min-width: 65px; }
-        .method-get { background-color: var(--color-get-bg); color: var(--color-get-text); }
-        .method-post { background-color: var(--color-post-bg); color: var(--color-post-text); }
-        .method-put { background-color: var(--color-put-bg); color: var(--color-put-text); }
-        .method-delete { background-color: var(--color-delete-bg); color: var(--color-delete-text); }
+.tab-panel { display: none; padding: 28px; }
+.tab-panel.active { display: block; }
 
-        .status-badge { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 13px; font-weight: 600; }
-        .status-success { background-color: #ECFDF5; color: #047857; }
-        .status-error { background-color: #FFF5F5; color: var(--primary-color); font-weight: 700; }
+/* ───── TABLE CARD ───── */
+.table-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+thead tr { background: #F8FAFC; border-bottom: 2px solid var(--border); }
+thead th {
+  padding: 13px 16px; font-size: 12px; font-weight: 700;
+  color: var(--text-muted); white-space: nowrap;
+  letter-spacing: 0.03em; text-transform: uppercase;
+}
+tbody tr { border-bottom: 1px solid #F1F5F9; transition: background 0.1s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #FAFBFC; }
+tbody td { padding: 14px 16px; font-size: 14px; color: var(--text); vertical-align: middle; white-space: nowrap; }
 
-        .code-text { font-family: 'Courier New', monospace; font-size: 12px; color: #475569; background: #F1F5F9; padding: 5px 10px; border-radius: 4px; max-width: 250px; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border: 1px solid #E2E8F0; }
-        .empty-row { text-align: center; color: var(--text-label); padding: 40px 0 !important; font-size: 14px; }
-    </style>
+.td-id { font-size: 12px; color: var(--text-muted); font-weight: 600; font-family: monospace; }
+.td-url { font-family: 'Courier New', monospace; font-size: 13px; font-weight: 600; color: #334155; }
+
+/* ───── METHOD & STATUS BADGES ───── */
+.method-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 3px 10px; border-radius: 6px;
+  font-size: 11px; font-weight: 700; min-width: 65px; text-align: center;
+}
+.method-badge.method-get    { background-color: var(--color-get-bg);    color: var(--color-get-text);    border: 1px solid var(--color-get-border); }
+.method-badge.method-post   { background-color: var(--color-post-bg);   color: var(--color-post-text);   border: 1px solid var(--color-post-border); }
+.method-badge.method-put    { background-color: var(--color-put-bg);    color: var(--color-put-text);    border: 1px solid var(--color-put-border); }
+.method-badge.method-delete { background-color: var(--color-delete-bg); color: var(--color-delete-text); border: 1px solid var(--color-delete-border); }
+
+.status-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 6px;
+  font-size: 12px; font-weight: 600;
+}
+.status-success { background-color: #F0FDF4; color: #16A34A; border: 1px solid #BBF7D0; }
+.status-error   { background-color: var(--primary-light); color: var(--primary); border: 1px solid var(--primary-border); font-weight: 700; }
+
+/* ───── PAYLOAD CODE BLOCK ───── */
+.code-text {
+  font-family: 'Courier New', monospace; font-size: 12px; color: #475569;
+  background: #F8FAFC; padding: 6px 12px; border-radius: 6px;
+  max-width: 250px; display: inline-block; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap; border: 1px solid var(--border);
+}
+
+.empty-row {
+  text-align: center; padding: 60px 24px !important;
+}
+.empty-icon { font-size: 40px; color: var(--text-muted); margin-bottom: 12px; opacity: 0.5; }
+.empty-title { font-size: 15px; font-weight: 700; color: var(--text-sub); }
+  </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="sidebar-logo">
-            <img src="https://sites.bnk.co.kr/main/resource/img/common/logo_busan.png" alt="BNK 부산은행">
-        </div>
-        <ul class="sidebar-menu">
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> 대시보드</a></li>
-            <li><a href="#" class="menu-item active"><i class="fa-solid fa-list-check"></i> 로그 관리</a></li>
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-users-gear"></i> 관리자 설정</a></li>
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-shield-halved"></i> 보안 현황</a></li>
-        </ul>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <img src="/images/BNKlogo.png" alt="BNK 부산은행">
+  </div>
+  <div class="sidebar-profile">
+    <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
+    <div class="sp-info">
+      <div class="sp-name" th:text="${admin.name} + ' 관리자'">홍길동 관리자</div>
+      <span class="sp-role" th:text="${admin.admin_role != null ? admin.admin_role : 'chief'}">chief</span>
+    </div>
+  </div>
+  <ul class="sidebar-menu">
+    <li class="menu-section-title">메인</li>
+    <li><a href="/admin/dashboard"   class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+    <li><a href="/admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
+    <li class="menu-section-title">상품 관리</li>
+    <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
+    <li><a href="/admin/productListPage"     class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
+    <li class="menu-section-title">업무</li>
+    <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
+    <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
+    <li><a href="/admin/account"  class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
+    <li class="menu-section-title">관리</li>
+    <li><a href="/admin/members"   class="menu-item"><i class="fa-solid fa-users-gear"></i> 회원/관리자 관리</a></li>
+    <li><a href="/admin/logs"      class="menu-item active"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
+    <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
+  </ul>
+  <div class="sidebar-footer">
+    <p>&copy; 2025 BNK Busan Bank</p>
+    <p>IT Strategy Team</p>
+  </div>
+</div>
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <div class="header-title">보안 및 시스템 감사</div>
+  <div class="header-breadcrumb">
+    <i class="fa-solid fa-chevron-right"></i><span>관리</span>
+    <i class="fa-solid fa-chevron-right"></i><span>로그 관리</span>
+  </div>
+  <div class="header-right">
+    <div class="header-user">
+      <div class="hu-avatar"><i class="fa-solid fa-user-tie"></i></div>
+      <span th:text="'관리자 ' + ${admin.name} + ' 님'">홍길동 관리자</span>
+      <i class="fa-solid fa-chevron-down hu-chevron"></i>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="main-content">
+
+  <!-- 페이지 헤더 -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">실시간 감사 로그 관리</h1>
+      <p class="page-subtitle">인터셉터 기반 사용자 API 호출 기록 및 보안 감사(Audit) 기록을 실시간 모니터링합니다.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       실시간 로그 구분 탭 구성
+  ══════════════════════════════ -->
+  <div class="tab-wrapper">
+    <div class="tab-header">
+      <button type="button" class="tab-btn active" onclick="switchTab(event, 'userApiTab')">
+        <i class="fa-solid fa-network-wired"></i> 사용자 API 실시간 로그
+        <span class="tab-count" th:text="${userLogList != null ? #lists.size(userLogList) : 0}">0</span>
+      </button>
+      <button type="button" class="tab-btn" onclick="switchTab(event, 'adminAuditTab')">
+        <i class="fa-solid fa-user-shield"></i> 관리자 감사(Audit) 기록
+        <span class="tab-count" th:text="${adminLogList != null ? #lists.size(adminLogList) : 0}">0</span>
+      </button>
     </div>
 
-    <div class="header">
-        <div class="header-title">업무지원 시스템 > 통합 보안 센터 > 실시간 감사 로그 조회</div>
+    <!-- [탭 패널 1] 사용자 API 로그 -->
+    <div id="userApiTab" class="tab-panel active">
+      <div class="table-card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 100px; padding-left: 20px;">로그 ID</th>
+                <th>요청 엔드포인트 URL</th>
+                <th style="width: 120px;">HTTP 메서드</th>
+                <th style="width: 120px;">소요 시간</th>
+                <th>페이로드 (요청 본문)</th>
+                <th style="width: 120px;">상태 코드</th>
+                <th style="width: 150px;">접속 IP 주소</th>
+                <th style="width: 180px; padding-right: 20px;">요청 시간</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="log : ${userLogList}">
+                <td class="td-id" style="padding-left: 20px;" th:text="${log.log_id}"></td>
+                <td class="td-url" th:text="${log.url}"></td>
+                <td>
+                  <span th:text="${log.method}" 
+                        th:class="'method-badge ' + (${log.method == 'GET'} ? 'method-get' : (${log.method == 'POST'} ? 'method-post' : (${log.method == 'PUT'} ? 'method-put' : 'method-delete')))">
+                  </span>
+                </td>
+                <td><span th:text="${log.elapsed_ms} + ' ms'" style="color: var(--text); font-weight: 700;"></span></td>
+                <td><span class="code-text" th:text="${log.request_body ?: '-'}"></span></td>
+                <td>
+                  <span th:text="${log.response_code}" 
+                        th:class="'status-badge ' + (${log.response_code >= 400} ? 'status-error' : 'status-success')">
+                  </span>
+                </td>
+                <td><span th:text="${log.ip_address}" style="font-size: 13px; color: var(--text-sub); font-family: monospace;"></span></td>
+                <td style="padding-right: 20px;"><span th:text="${log.reg_dt}" style="font-size: 13px; color: var(--text-sub); font-family: monospace;"></span></td>
+              </tr>
+              <tr th:if="${userLogList == null or userLogList.empty}">
+                <td colspan="8" class="empty-row">
+                  <div class="empty-icon"><i class="fa-solid fa-database"></i></div>
+                  <div class="empty-title">현재 적재된 사용자 API 통신 로그가 비어 있습니다.</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-    <div class="main-content">
-        <div class="content-header">
-            <h1 class="content-title"><i class="fa-solid fa-terminal" style="color: var(--primary-color);"></i> 관리자 로그 관리 센터</h1>
-            <p style="color: var(--text-label); font-size: 14px; margin-top: 6px;">인터셉터 기반 사용자 API 호출 기록 및 관리자 오디트 내역을 모니터링합니다.</p>
+    <!-- [탭 패널 2] 관리자 감사 로그 -->
+    <div id="adminAuditTab" class="tab-panel">
+      <div class="table-card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 120px; padding-left: 20px;">로그 고유 ID</th>
+                <th>수행 액션 및 행위</th>
+                <th>감사 변경 대상 (Target)</th>
+                <th style="width: 220px; padding-right: 20px;">이벤트 생성 일시</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="log : ${adminLogList}">
+                <td class="td-id" style="padding-left: 20px;" th:text="${log.log_id}"></td>
+                <td>
+                  <i class="fa-solid fa-angle-right" style="color: var(--primary); margin-right: 6px; font-size: 12px;"></i>
+                  <span th:text="${log.action}" style="font-weight: 700; color: var(--text);"></span>
+                </td>
+                <td><span class="code-text" style="max-width: 450px;" th:text="${log.target}"></span></td>
+                <td style="padding-right: 20px;"><span th:text="${log.created_at}" style="color: var(--text-sub); font-weight: 500; font-family: monospace;"></span></td>
+              </tr>
+              <tr th:if="${adminLogList == null or adminLogList.empty}">
+                <td colspan="4" class="empty-row">
+                  <div class="empty-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                  <div class="empty-title">수행된 관리자 감사 기록 내역이 존재하지 않습니다.</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-
-        <!-- 1️⃣ API 로그 섹션 -->
-        <div class="log-section">
-            <div class="section-header">
-                <h2><i class="fa-solid fa-network-wired"></i> 사용자 API 실시간 트래픽 로그</h2>
-            </div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 100px;">로그 ID</th>
-                            <th>요청 엔드포인트 URL</th>
-                            <th style="width: 100px;">HTTP 메서드</th>
-                            <th style="width: 110px;">소요 시간</th>
-                            <th>페이로드 (요청 본문)</th>
-                            <th style="width: 110px;">상태 코드</th>
-                            <th style="width: 150px;">접속 IP 주소</th>
-                            <th style="width: 150px;">요청 시간</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="log : ${userLogList}">
-                            <!-- ⭕ 실제 DTO 구조인 스네이크 표기법(_ id)으로 롤백 복구 -->
-                            <td th:text="${log.log_id}" style="font-weight: 700; color: var(--navy-color);"></td>
-                            <td th:text="${log.url}" style="color: #334155; font-weight: 500; font-family: monospace;"></td>
-                            <td>
-                                <span th:text="${log.method}" 
-                                      th:class="'method-badge ' + (${log.method == 'GET'} ? 'method-get' : (${log.method == 'POST'} ? 'method-post' : (${log.method == 'PUT'} ? 'method-put' : 'method-delete')))">
-                                </span>
-                            </td>
-                            <!-- ⭕ 실제 DTO 구조 매핑 복구 -->
-                            <td><span th:text="${log.elapsed_ms} + ' ms'" style="color: #0f172a; font-weight: 600;"></span></td>
-                            <td><span class="code-text" th:text="${log.request_body ?: '-'}"></span></td>
-                            <td>
-                                <span th:text="${log.response_code}" 
-                                      th:class="'status-badge ' + (${log.response_code >= 400} ? 'status-error' : 'status-success')">
-                                </span>
-                            </td>
-                            <td><span th:text="${log.ip_address}" style="font-size: 13px; color: var(--text-label); font-family: monospace;"></span></td>
-                            <td><span th:text="${log.reg_dt}" style="font-size: 13px; color: var(--text-label); font-family: monospace;"></span></td>
-                        </tr>
-                        <tr th:if="${userLogList == null or userLogList.empty}">
-                            <td colspan="7" class="empty-row">현재 적재된 사용자 API 통신 로그가 비어 있습니다.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- 2️⃣ 관리자 감사 로그 섹션 -->
-        <div class="log-section">
-            <div class="section-header">
-                <h2><i class="fa-solid fa-user-shield"></i> 관리자 주요 감사(Audit) 기록</h2>
-            </div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 120px;">로그 고유 ID</th>
-                            <th>수행 액션 및 행위</th>
-                            <th>감사 변경 대상 (Target)</th>
-                            <th style="width: 200px;">이벤트 생성 일시</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="log : ${adminLogList}">
-                            <!-- ⭕ 실제 DTO 구조인 스네이크 표기법(_ id)으로 롤백 복구 -->
-                            <td th:text="${log.log_id}" style="font-weight: 700; color: var(--navy-color);"></td>
-                            <td>
-                                <i class="fa-solid fa-angle-right" style="color: var(--primary-color); margin-right: 6px; font-size: 12px;"></i>
-                                <span th:text="${log.action}" style="font-weight: 600; color: var(--text-main);"></span>
-                            </td>
-                            <td><span class="code-text" style="max-width: 400px;" th:text="${log.target}"></span></td>
-                            <!-- ⭕ 실제 DTO 구조 매핑 복구 및 날짜 유틸 적용 -->
-                            <td th:text="${log.created_at}" style="color: #475569; font-weight: 500;"></td>
-                        </tr>
-                        <tr th:if="${adminLogList == null or adminLogList.empty}">
-                            <td colspan="4" class="empty-row">수행된 관리자 감사 기록 내역이 존재하지 않습니다.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
+
+</div><!-- /main-content -->
+
+<script>
+  /* ───── 탭 전환 제어 스크립트 ───── */
+  function switchTab(event, tabId) {
+    // 모든 탭 패널 비활성화
+    document.querySelectorAll('.tab-panel').forEach(panel => {
+      panel.classList.remove('active');
+    });
+    // 모든 탭 버튼 비활성화
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+
+    // 지정 패널 보이기 및 타겟 버튼 활성화
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+</script>
 </body>
 </html>

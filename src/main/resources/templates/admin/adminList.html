@@ -1,152 +1,310 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>BNK Busan Bank - 관리자 계정 관리</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    
-    <style>
-        :root {
-            --primary-color: #ED1C24;    /* BNK Red */
-            --bg-color: #F8F9FA;
-            --card-bg: #FFFFFF;
-            --border-color: #E0E4E8;
-            --text-main: #212529;
-            --text-label: #6C757D;
-            --sidebar-width: 260px;
-            --header-height: 70px;
-        }
+  <meta charset="UTF-8">
+  <title>BNK Busan Bank - 관리자 계정 관리</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
+  
+  <style>
+/* ───────────────────────────────────────
+   ROOT & RESET
+─────────────────────────────────────── */
+:root {
+  --primary:        #ED1C24;
+  --primary-light:  #FFF2F2;
+  --primary-border: #FFCDD0;
+  --bg:             #F4F6F9;
+  --card:           #FFFFFF;
+  --border:         #E2E8F0;
+  --text:           #1E293B;
+  --text-sub:       #64748B;
+  --text-muted:     #94A3B8;
+  --sidebar-w:      260px;
+  --header-h:       68px;
+  --radius:         12px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Pretendard', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  overflow: hidden;
+}
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); display: flex; }
+/* ───── SIDEBAR ───── */
+.sidebar {
+  width: var(--sidebar-w); height: 100vh;
+  background: #FFFFFF; border-right: 1px solid var(--border);
+  position: fixed; left: 0; top: 0;
+  display: flex; flex-direction: column;
+  z-index: 100; overflow: hidden;
+}
+.sidebar-logo { padding: 22px 24px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.sidebar-logo img { height: 28px; width: auto; display: block; }
+.sidebar-profile {
+  padding: 18px 24px;
+  display: flex; align-items: center; gap: 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0; background: #FAFBFC;
+}
+.sp-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--primary-light); border: 2px solid var(--primary-border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--primary); font-size: 16px; flex-shrink: 0;
+}
+.sp-info { min-width: 0; }
+.sp-name { font-size: 14px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sp-role {
+  font-size: 11px; color: var(--primary); font-weight: 600;
+  background: var(--primary-light); border: 1px solid var(--primary-border);
+  border-radius: 20px; padding: 1px 8px; display: inline-block; margin-top: 3px;
+}
+.sidebar-menu { list-style: none; flex: 1; overflow-y: auto; padding: 8px 0; }
+.sidebar-menu::-webkit-scrollbar { width: 4px; }
+.sidebar-menu::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.menu-section-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-muted); padding: 16px 24px 6px;
+}
+.menu-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 24px; color: var(--text-sub); text-decoration: none;
+  font-size: 14px; font-weight: 500; transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.menu-item i { width: 18px; text-align: center; font-size: 14px; color: var(--text-muted); transition: color 0.15s; flex-shrink: 0; }
+.menu-item:hover { background: var(--primary-light); color: var(--primary); }
+.menu-item:hover i { color: var(--primary); }
+.menu-item.active { background: var(--primary-light); color: var(--primary); font-weight: 700; border-left-color: var(--primary); }
+.menu-item.active i { color: var(--primary); }
+.sidebar-footer { padding: 14px 24px; border-top: 1px solid var(--border); flex-shrink: 0; }
+.sidebar-footer p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
 
-        /* 사이드바 스타일 */
-        .sidebar {
-            width: var(--sidebar-width); height: 100vh; background-color: #FFFFFF;
-            border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0;
-            display: flex; flex-direction: column; z-index: 100;
-        }
-        .sidebar-logo { padding: 10px 30px; margin-bottom: 40px; }
-        .sidebar-logo img { width: 130px; }
-        .sidebar-menu { list-style: none; flex-grow: 1; }
-        .menu-item {
-            display: flex; align-items: center; padding: 15px 30px; color: var(--text-main);
-            text-decoration: none; font-size: 15px; font-weight: 500; transition: all 0.2s;
-        }
-        .menu-item i { margin-right: 15px; width: 20px; text-align: center; color: #ADB5BD; }
-        .menu-item:hover, .menu-item.active {
-            background-color: #FFF2F2; color: var(--primary-color);
-        }
-        .menu-item:hover i, .menu-item.active i { color: var(--primary-color); }
-        .menu-item.active { font-weight: 700; border-left: 4px solid var(--primary-color); padding-left: 26px; }
+/* ───── HEADER ───── */
+.header {
+  position: fixed; top: 0; left: var(--sidebar-w);
+  width: calc(100% - var(--sidebar-w)); height: var(--header-h);
+  background: #FFFFFF; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 36px; z-index: 90; gap: 16px;
+}
+.header-title { font-size: 18px; font-weight: 800; color: var(--text); }
+.header-breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-muted); margin-left: 4px; }
+.header-breadcrumb i { font-size: 10px; }
+.header-breadcrumb span:last-child { color: var(--text-sub); font-weight: 500; }
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.header-user {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 14px 6px 8px; border-radius: 40px; border: 1px solid var(--border);
+  cursor: pointer; transition: all 0.15s; font-size: 13px; font-weight: 600; color: var(--text);
+}
+.header-user:hover { background: var(--bg); }
+.hu-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 13px; }
+.hu-chevron { color: var(--text-muted); font-size: 11px; }
 
-        /* 헤더 스타일 */
-        .header {
-            position: fixed; top: 0; left: var(--sidebar-width);
-            width: calc(100% - var(--sidebar-width)); height: var(--header-height);
-            background-color: #FFFFFF; border-bottom: 1px solid var(--border-color);
-            display: flex; align-items: center; padding: 0 40px; z-index: 90;
-        }
-        .header-right { margin-left: auto; display: flex; align-items: center; gap: 20px; }
-        .user-profile { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500; }
-        .user-avatar { width: 35px; height: 35px; border-radius: 50%; background-color: #E2E8F0; display: flex; align-items: center; justify-content: center; }
+/* ───── MAIN ───── */
+.main-content {
+  margin-left: var(--sidebar-w); margin-top: var(--header-h);
+  width: calc(100% - var(--sidebar-w)); height: calc(100vh - var(--header-h));
+  overflow-y: auto; padding: 36px 40px;
+}
+.main-content::-webkit-scrollbar { width: 6px; }
+.main-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-        /* 메인 컨텐츠 영역 */
-        .main-content {
-            margin-left: var(--sidebar-width); margin-top: var(--header-height);
-            width: calc(100% - var(--sidebar-width)); padding: 40px;
-        }
-        .content-header { margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; }
-        .content-title { font-size: 24px; font-weight: 800; }
+/* ───── PAGE HEADER ───── */
+.page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; }
+.page-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.page-subtitle { font-size: 14px; color: var(--text-sub); }
 
-        /* 테이블 카드 디자인 */
-        .table-card {
-            background-color: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); overflow: hidden;
-        }
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        thead { background-color: #FBFBFC; border-bottom: 1px solid var(--border-color); }
-        th { padding: 18px 20px; font-size: 14px; font-weight: 600; color: var(--text-label); }
-        td { padding: 18px 20px; font-size: 15px; border-bottom: 1px solid #F1F3F5; color: var(--text-main); }
-        tr:last-child td { border-bottom: none; }
-        tr:hover { background-color: #F8F9FA; }
+/* ───── STAT CARDS ───── */
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.stat-card {
+  background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 20px 24px; display: flex; align-items: center; gap: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: box-shadow 0.15s, transform 0.15s;
+}
+.stat-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); transform: translateY(-1px); }
+.stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.stat-icon.red    { background: var(--primary-light); color: var(--primary); }
+.stat-icon.blue   { background: #EFF6FF; color: #2563EB; }
+.stat-icon.purple { background: #FAF5FF; color: #7C3AED; }
+.stat-icon.green  { background: #F0FDF4; color: #16A34A; }
+.stat-label { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+.stat-value { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1; }
 
-        /* 수정 버튼 스타일 */
-        .btn-update {
-            padding: 6px 12px; border-radius: 6px; background-color: #F1F3F5;
-            color: var(--text-main); text-decoration: none; font-size: 13px; font-weight: 600;
-            transition: all 0.2s; border: 1px solid #DEE2E6;
-        }
-        .btn-update:hover { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
-        
-        /* 배지 스타일 (직위/역할용) */
-        .badge {
-            padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;
-            background-color: #E9ECEF; color: #495057;
-        }
-    </style>
+/* ───── TABLE CARD ───── */
+.table-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+thead tr { background: #F8FAFC; border-bottom: 2px solid var(--border); }
+thead th {
+  padding: 13px 16px; font-size: 12px; font-weight: 700;
+  color: var(--text-muted); text-align: left;
+  white-space: nowrap; letter-spacing: 0.03em; text-transform: uppercase;
+}
+thead th:first-child { padding-left: 24px; }
+thead th:last-child  { padding-right: 24px; text-align: center; }
+tbody tr { border-bottom: 1px solid #F1F5F9; transition: background 0.1s; }
+tbody tr:last-child  { border-bottom: none; }
+tbody tr:hover { background: #FAFBFC; }
+tbody td { padding: 14px 16px; font-size: 14px; color: var(--text); vertical-align: middle; white-space: nowrap; }
+tbody td:first-child { padding-left: 24px; }
+tbody td:last-child  { padding-right: 24px; text-align: center; }
+.td-id   { font-size: 12px; color: var(--text-muted); font-weight: 600; font-family: monospace; }
+.td-name { font-weight: 700; color: var(--text); }
+
+/* ───── BADGES ───── */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 700; white-space: nowrap;
+}
+.badge-red    { background: var(--primary-light); color: var(--primary); border: 1px solid var(--primary-border); }
+.badge-blue   { background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; }
+.badge-purple { background: #FAF5FF; color: #7C3AED; border: 1px solid #DDD6FE; }
+.badge-green  { background: #F0FDF4; color: #16A34A; border: 1px solid #BBF7D0; }
+.badge-slate  { background: #F1F5F9; color: #475569; border: 1px solid #E2E8F0; }
+
+/* ───── ACTION BUTTONS ───── */
+.action-btns { display: flex; align-items: center; justify-content: center; gap: 6px; }
+.act-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border);
+  background: #FFFFFF; cursor: pointer; font-size: 13px; font-weight: 600;
+  color: var(--text-sub); transition: all 0.15s; text-decoration: none;
+}
+.act-btn:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary-border); }
+  </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="sidebar-logo">
-            <img src="https://sites.bnk.co.kr/main/resource/img/common/logo_busan.png" alt="BNK 부산은행">
-        </div>
-        <ul class="sidebar-menu">
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> 대시보드</a></li>
-            <li><a href="#" class="menu-item active"><i class="fa-solid fa-users-gear"></i> 회원 및 보안 관리</a></li>
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-money-bill-transfer"></i> 거래 및 자산 관리</a></li>
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-coins"></i> 외환 및 환전 관리</a></li>
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-file-invoice-dollar"></i> 송금 및 결제 심사</a></li>
-        </ul>
-    </div>
 
-    <div class="header">
-        <div class="header-title">관리자 리스트</div>
-        <div class="header-right">
-            <div class="user-profile">
-                <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
-                <span>최고 관리자 OOO</span>
-            </div>
-        </div>
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <img th:src="@{/images/BNKlogo.png}" src="/images/BNKlogo.png" alt="BNK 부산은행">
+  </div>
+  <div class="sidebar-profile">
+    <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
+    <div class="sp-info">
+      <div class="sp-name" th:text="${admin.name} + ' 관리자'">홍길동 관리자</div>
+      <span class="sp-role" th:text="${admin.adminRole}">chief</span>
     </div>
+  </div>
+  <ul class="sidebar-menu">
+    <li class="menu-section-title">메인</li>
+    <li><a href="/admin/dashboard"   class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+    <li><a href="/admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
+    <li class="menu-section-title">상품 관리</li>
+    <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
+    <li><a href="/admin/productListPage"     class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
+    <li class="menu-section-title">업무</li>
+    <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
+    <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
+    <li><a href="/admin/account"  class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
+    <li class="menu-section-title">관리</li>
+    <li><a href="/admin/members"   class="menu-item active"><i class="fa-solid fa-users-gear"></i> 회원/관리자 관리</a></li>
+    <li><a href="/admin/logs"      class="menu-item"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
+    <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
+  </ul>
+  <div class="sidebar-footer">
+    <p>&copy; 2025 BNK Busan Bank</p>
+    <p>IT Strategy Team</p>
+  </div>
+</div>
 
-    <div class="main-content">
-        <div class="content-header">
-            <div>
-                <h1 class="content-title">시스템 관리자 현황</h1>
-                <p style="color: var(--text-label); font-size: 14px; margin-top: 5px;">등록된 관리자 계정 리스트를 조회하고 수정할 수 있습니다.</p>
-            </div>
-        </div>
-
-        <div class="table-card">
-            <table>
-                <thead>
-                    <tr>
-                        <th>번호</th>
-                        <th>아이디</th>
-                        <th>부서</th>
-                        <th>이름</th>
-                        <th>직위</th>
-                        <th style="text-align: center;">관리</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="admin : ${adminList}">
-                        <td th:text="${admin.admin_id}" style="font-weight: 600; color: var(--primary-color);"></td>
-                        <td th:text="${admin.login_id}"></td>
-                        <td th:text="${admin.department}"></td>
-                        <td th:text="${admin.name}" style="font-weight: 600;"></td>
-                        <td><span class="badge" th:text="${admin.admin_role}"></span></td>
-                        <td style="text-align: center;">
-                            <a class="btn-update" th:href="@{/admin/updateAdminPage(admin_id=${admin.admin_id})}">
-                                <i class="fa-solid fa-pen-to-square"></i> 수정
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <div class="header-title">고객 통합 관리</div>
+  <div class="header-breadcrumb">
+    <i class="fa-solid fa-chevron-right"></i><span>관리</span>
+    <i class="fa-solid fa-chevron-right"></i><span>회원/관리자 관리</span>
+    <i class="fa-solid fa-chevron-right"></i><span>관리자 계정 관리</span>
+  </div>
+  <div class="header-right">
+    <div class="header-user">
+      <div class="hu-avatar"><i class="fa-solid fa-user-tie"></i></div>
+      <span th:text="'관리자 ' + ${admin.name} + ' 님'">홍길동 관리자</span>
+      <i class="fa-solid fa-chevron-down hu-chevron"></i>
     </div>
+  </div>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="main-content">
+
+  <!-- 페이지 헤더 -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">시스템 관리자 현황</h1>
+      <p class="page-subtitle">플랫폼을 운영하고 심사하는 내부 관리자 계정 리스트를 안전하게 관리합니다.</p>
+    </div>
+  </div>
+
+  <!-- 통계 카드 -->
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-icon red"><i class="fa-solid fa-users-gear"></i></div>
+      <div>
+        <div class="stat-label">전체 관리자</div>
+        <div class="stat-value" th:text="${adminList != null ? #lists.size(adminList) : 0}">0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 테이블 섹션 -->
+  <div class="table-card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>아이디</th>
+            <th>부서</th>
+            <th>이름</th>
+            <th>직위/역할</th>
+            <th>관리</th>
+          </tr>
+        </thead>
+        <tbody th:if="${adminList != null and !#lists.isEmpty(adminList)}">
+          <!-- 
+            Thymeleaf 반복문 내의 변수명을 'adminItem'으로 지정하여 
+            사이드바/헤더의 전역 관리자 프로필 정보 객체 '${admin}'과 중첩 및 오류가 나는 문제를 방지합니다. 
+          -->
+          <tr th:each="adminItem : ${adminList}">
+            <td><span class="td-id" th:text="'#' + ${adminItem.admin_id}">#001</span></td>
+            <td th:text="${adminItem.login_id}"></td>
+            <td th:text="${adminItem.department}"></td>
+            <td><span class="td-name" th:text="${adminItem.name}">관리자명</span></td>
+            <td>
+              <span class="badge badge-purple" th:text="${adminItem.admin_role}">chief</span>
+            </td>
+            <td>
+              <div class="action-btns">
+                <a class="act-btn" th:href="@{/admin/updateAdminPage(admin_id=${adminItem.admin_id})}">
+                  <i class="fa-solid fa-pen-to-square"></i> 정보 수정
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tbody th:if="${adminList == null or #lists.isEmpty(adminList)}">
+          <tr>
+            <td colspan="6">
+              <div class="empty-state">
+                <div class="empty-icon"><i class="fa-solid fa-users-slash"></i></div>
+                <div class="empty-title">등록된 관리자가 존재하지 않습니다.</div>
+                <div class="empty-desc">시스템 관리 부서에서 관리자 계정을 확인하여 주십시오.</div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /main-content -->
+
 </body>
 </html>
