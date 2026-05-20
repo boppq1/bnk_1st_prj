@@ -1,12 +1,11 @@
 package com.example.demo.fx_personal;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import tools.jackson.databind.JavaType;
-import tools.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
 public class FxController {
 
 	private final FxService fxService;
-	private final ObjectMapper mapper;
 
 	@GetMapping("/fx_home")
 	public String fx_home() {
