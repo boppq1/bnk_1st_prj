@@ -1,10 +1,181 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+<meta charset="UTF-8">
+<title>외국인국내부동산투자</title>
+
+<link rel="stylesheet" th:href="@{/css/product/product.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+<div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+<main class="product-main">
+
+<div class="service-container">
+
+<h1 class="main-title">외국인국내부동산투자</h1>
+
+<section class="deposit-section">
+    <h2 class="deposit-section-title">외국인 국내부동산투자란?</h2>
+
+    <p class="deposit-desc">
+        외국인이 국내 부동산에 투자할 경우 거래하고자 하는 은행에 사전 신고가 필요하며,
+        향후 투자 부동산을 매각할 경우 사전 신고한 내용으로 본국에 자유롭게 반출할 수 있습니다.
+    </p>
+</section>
+
+<section class="deposit-section">
+    <h2 class="deposit-section-title">외국인 국내부동산 취득 범위</h2>
+
+    <ul class="deposit-list">
+        <li>외국인 개인 또는 법인의 구분 없이 취득이 허용됩니다.</li>
+        <li>업무용 또는 비업무용의 용도제한, 취득면적의 제한이 없습니다.</li>
+        <li>
+            부동산 관련업인 건물임대 및 분양공급업,
+            토지임대 및 개발공급업도 전면 개방되어 있습니다.
+        </li>
+        <li>
+            다만, 해당 부동산이 취득 제한구역
+            (군사시설보호지구, 문화재보호지구, 생태계보전지구 등)에 해당하는 경우
+            국내 거주자와 마찬가지로 취득 시 시장·군수·구청장 등
+            행정기관장의 사전 허가가 필요합니다.
+        </li>
+        <li>
+            그 외의 지역은 부동산 매매계약 체결 후 60일 이내
+            해당 행정기관장에게 토지취득신고를 해야 합니다.
+        </li>
+    </ul>
+</section>
+
+<div class="foreign-tab-menu">
+    <button type="button" class="foreign-tab-btn active" data-tab="foreignRealEstateTab1">
+        투자절차
+    </button>
+    <button type="button" class="foreign-tab-btn" data-tab="foreignRealEstateTab2">
+        매각대금송금
+    </button>
+</div>
+
+<div class="foreign-tab-content active" id="foreignRealEstateTab1">
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">외국인국내부동산투자 절차</h2>
+
+        <p class="deposit-desc">
+            외국인이 국내 부동산에 투자할 경우 다음 서류를 준비하여
+            거래하고자 하는 외국환은행에 신고하여야 합니다.
+        </p>
+
+        <ul class="deposit-list">
+            <li>부동산취득신고서(은행 비치 서류)</li>
+            <li>임대차계약신고서(은행 비치서류) : 임대차일 경우에만 제출</li>
+            <li>담보제공신고서(은행 비치 서류) : 거주자가 비거주자에게 담보제공시에만 제출</li>
+            <li>부동산매매계약서</li>
+        </ul>
+    </section>
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">외국인국내부동산투자 취득 가능 자금</h2>
+
+        <p class="deposit-desc">
+            비거주자의 국내 부동산 또는 이에 관한 권리의 취득자금은
+            외국으로부터의 휴대수입 또는 송금 자금에 한합니다.
+            다만, 아래의 경우에는 그러하지 않습니다.
+        </p>
+
+        <ul class="deposit-list">
+            <li>
+                거주자와의 인정된 거래에 따른 담보권을 취득하는 경우
+                <br>
+                ※ 국내 거주자가 비거주자에게 외화차입에 대한 담보로 제공하는 경우
+                비거주자가 국내 부동산에 대한 담보권을 취득하는 경우를 말합니다.
+            </li>
+
+            <li>
+                비거주자가 외국으로부터 휴대수입 또는 송금된 자금으로
+                국내부동산 등을 취득한 비거주자로부터 국내 부동산을 취득하는 경우
+                <br>
+                ※ 비거주자가 기 신고 등으로 취득한 부동산을
+                다른 비거주자가 다시 취득하는 경우를 말합니다.
+            </li>
+        </ul>
+    </section>
+
+</div>
+
+<div class="foreign-tab-content" id="foreignRealEstateTab2">
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">외국인국내부동산 매각대금 지급 절차</h2>
+
+        <p class="deposit-desc">
+            비거주자가 외국환은행에 사전신고 후 취득한 국내 부동산 또는
+            이에 관한 권리의 매각대금을 외국으로 지급하고자 하는 경우,
+            해당 부동산 또는 이에 관한 권리의 취득 및 매각을 입증할 수 있는 서류를
+            외국환은행에 제출 후 매각대금을 반출할 수 있습니다.
+        </p>
+    </section>
+
+    <section class="deposit-section">
+        <h2 class="deposit-section-title">제출서류</h2>
+
+        <ul class="deposit-list">
+            <li>외화송금 송금신청서(당행 비치 양식)</li>
+            <li>
+                부동산 등을 취득하였음을 입증하는 서류
+                <br>
+                ※ 자금이 국내로 유입될 때 신고를 필한 부동산취득신고서를 말합니다.
+            </li>
+            <li>매각사실을 입증하는 서류(매매계약서 등)</li>
+            <li>부동산매각자금확인서 또는 양도소득세신고납부확인서 : 관할 세무서장 발행</li>
+        </ul>
+    </section>
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const tabButtons = document.querySelectorAll(".foreign-tab-btn");
+    const tabContents = document.querySelectorAll(".foreign-tab-content");
+
+    tabButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            const targetId = button.getAttribute("data-tab");
+
+            tabButtons.forEach(function (btn) {
+                btn.classList.remove("active");
+            });
+
+            tabContents.forEach(function (content) {
+                content.classList.remove("active");
+            });
+
+            button.classList.add("active");
+            document.getElementById(targetId).classList.add("active");
+        });
+    });
+});
+</script>
 
 </body>
 </html>

@@ -1,10 +1,244 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>해외즉시송금서비스</title>
+
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+
 </head>
+
 <body>
 
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <!-- 사이드바 -->
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <!-- 본문 -->
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <!-- 제목 -->
+            <h1 class="main-title">
+                해외즉시송금서비스
+            </h1>
+
+            <!-- 안내 -->
+            <div class="foreign-notice-box">
+                <p>
+                    해외즉시송금 서비스란 해외로 긴급하게 자금을 보내야 할 경우 또는
+                    해외로부터 긴급하게 자금을 받아야 할 경우에 이용하실 수 있는 송금서비스로
+                    해외송금전문회사인 웨스턴 유니언의 네트워크를 통하여
+                    해외송금 즉시 자금을 수령할 수 있습니다.
+                </p>
+            </div>
+
+            <!-- 특징 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    특징
+                </h2>
+
+                <div class="foreign-feature-box">
+
+                    <div class="foreign-feature-item">
+
+                        <h3>신속성</h3>
+
+                        <p>
+                            송금 취결 후 전세계의 웨스턴유니언 가맹점
+                            (해외 은행, 우체국, 약국, 병원, 슈퍼 등)을 통하여
+                            실시간(10분 이내)으로 송금 대전을 수령하실 수 있습니다.
+                        </p>
+
+                    </div>
+
+                    <div class="foreign-feature-item">
+
+                        <h3>편리성</h3>
+
+                        <p>
+                            수취인은 지금지 국내외의 웨스턴유니언 가맹점 어디에서나
+                            송금 대전을 찾을 수 있습니다.
+                            (수취인 계좌가 필요없음)
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- 서비스 주요내용 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    서비스 주요내용
+                </h2>
+
+                <table class="info-table">
+
+                    <thead>
+                    <tr>
+                        <th colspan="3">구분</th>
+                        <th>내용</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr>
+                        <td colspan="3">서비스 대상 고객</td>
+                        <td>실명의 개인(외국인 포함)</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3">송금통화</td>
+                        <td>미국달러화(USD)만 가능</td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="4">송금 가능 시간</td>
+                        <td rowspan="2">당발송금</td>
+                        <td>영업점</td>
+                        <td>은행영업일 09:00 ~ 16:00</td>
+                    </tr>
+
+                    <tr>
+                        <td>모바일뱅킹</td>
+                        <td>
+                            24시간 365일
+                            (시스템 점검시간 23:30 ~ 00:10 제외)<br>
+                            단, 외화예금에서 출금 시 은행영업일 09:00 ~ 23:30 가능
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="2">타발송금</td>
+                        <td>영업점</td>
+                        <td>은행영업일 09:00 ~ 16:00</td>
+                    </tr>
+
+                    <tr>
+                        <td>모바일뱅킹</td>
+                        <td>은행영업일 09:00 ~ 16:00</td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="2">송금한도</td>
+                        <td colspan="2">송금 보내실 때</td>
+                        <td>1일 1회 미화 7,000불 이하</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">송금 받으실 때</td>
+                        <td>1회 미화 7,000불 이하</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3">송금 가능 항목</td>
+
+                        <td class="table-left">
+
+                            · 거주자(외국인거주자 제외)의 무증빙해외송금<br><br>
+
+                            · 해외유학생 및 체재자 송금<br><br>
+
+                            · 외국인 또는 비거주자의 국내보수 지급<br><br>
+
+                            · 비거주자의 여행경비 범위내 환전
+
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+                <div class="foreign-bottom-notice">
+                    ※ 모바일뱅킹에서 제공하는 해외즉시송금의 상품 명칭은
+                    '부산은행-WU Anytime 송금'을 사용합니다.
+                    (WU : Western Union 약칭)
+                </div>
+
+            </section>
+
+            <!-- 수수료 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    해외즉시당발송금수수료표
+                </h2>
+
+                <div class="foreign-unit-text">
+                    (단위 : 미불)
+                </div>
+
+                <div class="foreign-sub-title2">
+                    · 영업점
+                </div>
+
+                <table class="info-table">
+
+                    <thead>
+                    <tr>
+                        <th>송금금액</th>
+                        <th>수수료</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr>
+                        <td>USD 500 이하</td>
+                        <td>USD 10</td>
+                    </tr>
+
+                    <tr>
+                        <td>USD 500 초과 ~ USD 2,000 이하</td>
+                        <td>USD 14</td>
+                    </tr>
+
+                    <tr>
+                        <td>USD 2,000 초과 ~ USD 3,000 이하</td>
+                        <td>USD 18</td>
+                    </tr>
+
+                    <tr>
+                        <td>USD 3,000 초과 ~ USD 7,000 이하</td>
+                        <td>USD 20</td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+                <div class="foreign-sub-title2 mt40">
+                    · 모바일뱅킹
+                </div>
+
+                <div class="foreign-mobile-fee">
+                    USD 5 (송금금액 무관)
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 </body>
 </html>

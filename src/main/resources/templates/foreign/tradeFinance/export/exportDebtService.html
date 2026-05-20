@@ -1,10 +1,135 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>해외채권추심대행서비스</title>
+
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">해외채권추심대행서비스</h1>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">개요</h2>
+
+                <p class="deposit-desc">
+                    해외거래처와의 수출 또는 기타 대외거래에서 상대방의 지급거절 등의 사유로
+                    기업이 회수하지 못한 해외채권을 신속히 회수할 수 있도록
+                    부산은행이 전문 추심기관인 공사와 협약을 체결하여 지원하는 서비스입니다.
+                </p>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">추심 위임대상 채권</h2>
+
+                <p class="deposit-desc">
+                    수출 또는 기타 대외거래에서 발생한 채권으로서 변제기일이 경과한 채권,
+                    기타 기업에 의해 신속한 추심이 요구되는 채권
+                </p>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">업무처리 절차</h2>
+
+                <div class="collection-flow-wrap">
+                    <div class="collection-flow-box pink">수출자</div>
+                    <div class="collection-flow-arrow">→</div>
+                    <div class="collection-flow-box">거래영업점</div>
+                    <div class="collection-flow-arrow">→</div>
+                    <div class="collection-flow-box">외환사업부</div>
+                    <div class="collection-flow-arrow">→</div>
+                    <div class="collection-flow-box">한국무역<br>보험공사</div>
+                    <div class="collection-flow-arrow">→</div>
+                    <div class="collection-flow-box pink">해외수입자</div>
+                </div>
+
+                <p class="deposit-sub-note">
+                    * 수출자가 직접 한국무역보험공사와 해외채권 추심 계약 체결이 가능합니다.
+                </p>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">제출서류</h2>
+
+                <table class="info-table">
+                    <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>일반서류</th>
+                        <th>채권 관련 서류</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>법인</td>
+                        <td>
+                            · 법인등기부등본<br>
+                            · 사업자등록증 사본<br>
+                            · 법인 인감증명서<br>
+                            · 사용인감계<br>
+                            · 법인 통장사본
+                        </td>
+                        <td rowspan="2">
+                            · 채권추심 위임장<br>
+                            · 채권추심 의뢰서<br>
+                            · 계약서, 선적서류, 환어음, 수출입자간 서신, 신용조사서,
+                            제3자 지급보증서, 거래경위서, 기타 참고서류<br>
+                            · 부산은행 외환거래고객 확인서
+                            (당행고객이 채권자인 경우)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>개인사업자</td>
+                        <td>
+                            · 사업자등록증 사본<br>
+                            · 신분증<br>
+                            · 인감증명서 또는 본인서명사실확인서<br>
+                            · 사업자명의 통장사본
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <p class="deposit-sub-note">
+                    주) 채권추심위임장 및 채권추심의뢰서는 한국무역보험공사 홈페이지에서 다운로드받아 사용 가능함.
+                </p>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">해외채권추심 대행서비스에 대한 문의</h2>
+
+                <ul class="deposit-list">
+                    <li>부산은행 외환사업부(051-661-4665)</li>
+                    <li>한국무역보험공사 홈페이지(http://www.ksure.or.kr) 참조</li>
+                </ul>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

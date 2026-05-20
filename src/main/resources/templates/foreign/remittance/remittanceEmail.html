@@ -1,10 +1,83 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>해외송금e-mail서비스</title>
+
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">
+                해외송금e-mail서비스
+            </h1>
+
+            <div class="foreign-notice-box">
+                <p>
+                    해외로 송금 후 해외송금 내역 또는 해외로부터 도착한 송금 내역을
+                    고객님의 모바일폰이나 e-Mail로 받아보실 수 있는 서비스입니다.
+                </p>
+            </div>
+
+            <!-- 서비스 대상 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    서비스 대상
+                </h2>
+
+                <ul class="deposit-list">
+                    <li>해외 및 국내로부터 송금을 받고자 하는 고객</li>
+                    <li>국내·외로 송금을 보내고자 하는 고객</li>
+                </ul>
+
+            </section>
+
+            <!-- 서비스 이용방법 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    서비스 이용방법
+                </h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        해외송금 SMS/e-Mail 서비스를 이용하시고자 하는 고객님은
+                        사전에 거래하시는 영업점을 방문하여 신청 후 이용 가능합니다.
+                    </li>
+
+                    <li>
+                        서비스 이용에 따른 별도의 수수료는 없습니다.
+                        그러나, 향후 동 서비스와 관련된 수수료를 받을 수 있으며,
+                        이 경우에는 사전에 고객님께 알려 드리겠습니다.
+                    </li>
+                </ul>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

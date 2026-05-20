@@ -1,10 +1,174 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>BNK 부산은행 외환</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">수출거래약정</h1>
+
+            <!-- 안내 박스 -->
+            <div class="service-info-box">
+                <p>
+                    · 수출환어음 매입 및 추심 등 수출 관련 외국환 거래를 위해
+                    필요한 약정 서비스입니다.
+                </p>
+            </div>
+
+            <!-- 수출거래약정 필요 거래 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    수출거래약정 필요 거래
+                </h2>
+
+                <ul class="deposit-list">
+
+                    <li>
+                        화환어음(환어음이 첨부되지 않은 선적서류 포함)의 매입 및 추심
+                    </li>
+
+                    <li>
+                        보증신용장 등에 의한 무화환어음의 매입
+                    </li>
+
+                    <li>
+                        기타 이에 준하는 거래
+                    </li>
+
+                </ul>
+
+            </section>
+
+            <!-- 제출서류 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    제출서류
+                </h2>
+
+                <table class="deposit-table">
+
+                    <thead>
+                    <tr>
+                        <th style="width: 35%;">구분</th>
+                        <th>내용</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr>
+                        <td>외국환거래 약정서</td>
+                        <td>은행 서식 작성</td>
+                    </tr>
+
+                    <tr>
+                        <td>사업자등록증</td>
+                        <td>개인 및 법인 제출</td>
+                    </tr>
+
+                    <tr>
+                        <td>법인등기부등본</td>
+                        <td>
+                            법인의 경우 제출<br>
+                            (발행일로부터 3개월 이내)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>정관</td>
+                        <td>법인의 경우 제출</td>
+                    </tr>
+
+                    <tr>
+                        <td>인감증명서</td>
+                        <td>
+                            또는 본인서명사실확인서 제출<br>
+                            법인의 경우 법인인감증명서 제출<br>
+                            (발행일로부터 3개월 이내)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>인감(서명) 신고서</td>
+                        <td>은행 지정 양식 작성</td>
+                    </tr>
+
+                    <tr>
+                        <td>연대보증인 서류</td>
+                        <td>
+                            연대보증인의 인감증명서 또는
+                            본인서명사실확인서 제출
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>외국환거래 상품설명서</td>
+                        <td>상품 설명 확인 후 제출</td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </section>
+
+            <!-- 유의사항 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    유의사항
+                </h2>
+
+                <ul class="deposit-list">
+
+                    <li>
+                        제출 서류는 거래 내용 및 고객 유형에 따라
+                        추가 요청될 수 있습니다.
+                    </li>
+
+                    <li>
+                        법인 관련 서류는 최근 발급본 기준으로
+                        제출하여야 합니다.
+                    </li>
+
+                    <li>
+                        자세한 사항은 가까운 영업점 또는 외환 담당자에게
+                        문의하시기 바랍니다.
+                    </li>
+
+                </ul>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

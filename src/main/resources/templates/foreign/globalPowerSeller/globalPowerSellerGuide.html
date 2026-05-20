@@ -1,10 +1,185 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+<meta charset="UTF-8">
+<title>BNK글로벌파워셀러 특화서비스 안내</title>
+
+<link rel="stylesheet" th:href="@{/css/product/product.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/globalPowerSeller.css}">
+
 </head>
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+<div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+<main class="product-main">
+<div class="service-container">
+
+  <h1 class="main-title">BNK글로벌파워셀러 특화서비스 안내</h1>
+
+  <!-- 소개 -->
+  <section class="deposit-section">
+    <h2 class="deposit-section-title">BNK글로벌파워셀러 특화서비스란?</h2>
+    <div class="gps-hero-box">
+      <div class="gps-hero-text">
+        <p class="deposit-desc">
+          글로벌 마켓플레이스(Amazon, Shopee, Rakuten 등)를 통해 판매한
+          물품대금을 부산은행 제휴사(글로벌 페이먼트 솔루션)로 받은 사업자가
+          부산은행 외화계좌로 수취 후 원화로 환전할 경우
+          <strong class="highlight-red">환율 및 수수료 우대 혜택</strong>을 제공하는 서비스입니다.
+        </p>
+      </div>
+      <div class="gps-hero-img">
+        <img th:src="@{/images/foreign/globalPowerSeller/seller-main.png}" alt="글로벌파워셀러">
+      </div>
+    </div>
+    <div class="service-info-box">
+      외화로 수취할 경우, 환율 상승 시 원하는 때 언제든 즉시 환전 가능하며
+      원화 환전을 통해 수익 극대화가 가능합니다.
+    </div>
+  </section>
+
+  <!-- 서비스 흐름 -->
+  <section class="deposit-section">
+    <h2 class="deposit-section-title">서비스 흐름</h2>
+    <div class="process-image">
+      <img th:src="@{/images/foreign/globalPowerSeller/seller-process.png}" alt="서비스 흐름">
+    </div>
+  </section>
+
+  <!-- 제휴사 -->
+  <section class="deposit-section">
+    <h2 class="deposit-section-title">제휴사</h2>
+    <div class="gps-partner-card">
+      <div class="gps-partner-logo">
+        <img th:src="@{/images/foreign/globalPowerSeller/payoneer-logo.png}" alt="Payoneer">
+      </div>
+      <div class="gps-partner-info">
+        <p>전화 : 070-4784-4047</p>
+        <p>카카오톡 플러스친구 : Payoneer</p>
+      </div>
+      <a href="https://www.payoneer.com/ko/accounts/?utm_source=BNK" target="_blank" class="foreign-link-btn">바로가기</a>
+    </div>
+  </section>
+
+  <!-- 서비스 혜택 -->
+  <section class="deposit-section">
+    <h2 class="deposit-section-title">서비스 혜택</h2>
+    <table class="deposit-table">
+      <thead>
+        <tr>
+          <th style="width:90px;">구분</th>
+          <th style="width:150px;">혜택</th>
+          <th>내용</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th rowspan="2">은행</th>
+          <td class="gps-benefit-cell"><span class="gps-chip">환율우대 80%</span></td>
+          <td>외화계좌 수취 후 인터넷/모바일뱅킹 환전 시 우대</td>
+        </tr>
+        <tr>
+          <td class="gps-benefit-cell"><span class="gps-chip">수수료 면제</span></td>
+          <td>해외 판매대금 수취 수수료 1만원 전액 면제</td>
+        </tr>
+        <tr>
+          <th rowspan="2">Payoneer</th>
+          <td class="gps-benefit-cell"><span class="gps-chip">인출수수료 인하</span></td>
+          <td>계정 인출 시 0.9% 이하 제공</td>
+        </tr>
+        <tr>
+          <td class="gps-benefit-cell"><span class="gps-chip">리워드</span></td>
+          <td>$1,000 로딩 시 $50 지급</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 대상통화 -->
+  <section class="deposit-section">
+    <h2 class="deposit-section-title">대상통화</h2>
+    <div class="gps-currency-wrap">
+      <span class="gps-currency-tag">USD</span>
+      <span class="gps-currency-tag">JPY</span>
+      <span class="gps-currency-tag">EUR</span>
+      <span class="gps-currency-tag">GBP</span>
+      <span class="gps-currency-tag">CAD</span>
+      <span class="gps-currency-tag">AUD</span>
+    </div>
+  </section>
+
+  <!-- 가입대상 -->
+  <section class="deposit-section">
+    <h2 class="deposit-section-title">가입대상</h2>
+    <ul class="deposit-list">
+      <li>부산은행 제휴사 가입 고객</li>
+      <li>국내법인</li>
+      <li>개인사업자</li>
+      <li>개인</li>
+    </ul>
+  </section>
+
+  <!-- 신청절차 -->
+  <section class="deposit-section">
+    <h2 class="deposit-section-title">신청절차</h2>
+    <div class="gps-step-grid">
+      <div class="gps-step-card">
+        <div class="gps-step-header">STEP 1</div>
+        <div class="gps-step-body">서비스 신청</div>
+      </div>
+      <div class="gps-step-card">
+        <div class="gps-step-header">STEP 2</div>
+        <div class="gps-step-body">
+          심사 및 승인
+          <span class="gps-step-sub">통상 2영업일</span>
+        </div>
+      </div>
+      <div class="gps-step-card">
+        <div class="gps-step-header">STEP 3</div>
+        <div class="gps-step-body">
+          가입 완료
+          <span class="gps-step-sub">문자 발송</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 서비스 문의 -->
+  <section class="deposit-section">
+    <h2 class="deposit-section-title">서비스 문의</h2>
+    <div class="gps-contact-card">
+      <div class="gps-contact-head">기타 문의사항</div>
+      <div class="gps-contact-body">
+        <div class="gps-contact-row">
+          <span class="gps-contact-label">고객센터</span>
+          <span class="gps-contact-value">1588-6200 &nbsp;/&nbsp; 1544-6200</span>
+        </div>
+        <div class="gps-contact-row">
+          <span class="gps-contact-label">E-mail</span>
+          <span class="gps-contact-value">bnk-seller@busanbank.co.kr</span>
+        </div>
+        <div class="gps-contact-row">
+          <span class="gps-contact-label">영업점</span>
+          <span class="gps-contact-value">가까운 영업점에서도 문의 가능합니다.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

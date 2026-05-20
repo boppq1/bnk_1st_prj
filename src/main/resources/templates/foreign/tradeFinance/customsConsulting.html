@@ -1,10 +1,322 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+<meta charset="UTF-8">
+<title>수출입통관 상담 서비스 안내</title>
+
+<link rel="stylesheet" th:href="@{/css/product/product.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+<div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+<main class="product-main">
+
+<div class="service-container">
+
+<h1 class="main-title">
+수출입통관 상담 서비스 안내
+</h1>
+
+
+<!-- 상단 안내 -->
+<section class="deposit-section">
+
+<div class="service-info-box">
+
+무료 통관 상담 서비스를 제공합니다.<br><br>
+
+관세 법인과의 업무제휴를 통해  
+당행 거래 수출입업체를 대상으로  
+통관절차, FTA, 환급 등 관세행정 전반 상담 지원
+
+</div>
+
+</section>
+
+
+
+<!-- 서비스 개요 -->
+<section class="deposit-section">
+
+<h2 class="deposit-section-title">
+서비스 개요
+</h2>
+
+<p class="deposit-desc">
+
+전문인력 부족으로 애로를 겪고 있는 중소기업의
+수출입 통관 업무 지원을 위해
+
+저희 은행에서는 업무제휴를 통해
+전문적인 지식을 보유하고 있는 관세 법인의
+
+통관절차, FTA, 환급 등
+관세행정 전반에 관한 상담을 제공하고 있습니다.
+
+</p>
+
+</section>
+
+
+
+<!-- 상담내용 -->
+<section class="deposit-section">
+
+<h2 class="deposit-section-title">
+상담내용 안내
+</h2>
+
+<div class="feature-grid">
+
+<div class="feature-card">
+<div class="feature-title">
+통관절차 안내
+</div>
+
+<div class="feature-desc">
+수출입 통관 절차 전반 안내
+</div>
+</div>
+
+
+<div class="feature-card">
+<div class="feature-title">
+FTA · 환급 컨설팅
+</div>
+
+<div class="feature-desc">
+관세환급 및 원산지 업무 지원
+</div>
+</div>
+
+
+<div class="feature-card">
+<div class="feature-title">
+검역업무 컨설팅
+</div>
+
+<div class="feature-desc">
+수입물품 검역 및 관련 절차 안내
+</div>
+</div>
+
+
+<div class="feature-card">
+<div class="feature-title">
+세관심사 대응
+</div>
+
+<div class="feature-desc">
+세관 심사 및 조사 일반 컨설팅
+</div>
+</div>
+
+
+<div class="feature-card">
+<div class="feature-title">
+AEO 인증지원
+</div>
+
+<div class="feature-desc">
+수출입 안전관리우수업체 인증 지원
+</div>
+</div>
+
+</div>
+
+<div class="service-info-box"
+style="margin-top:20px;">
+
+※ 세부적인 특정 컨설팅 또는 서비스대행 업무는  
+관세법인과 별도 계약으로 진행될 수 있으며  
+업무 내용에 따라 수수료가 발생할 수 있습니다.
+
+</div>
+
+</section>
+
+
+
+<!-- 이용방법 -->
+<section class="deposit-section">
+
+<h2 class="deposit-section-title">
+서비스 이용방법
+</h2>
+
+<table class="deposit-table">
+
+<tbody>
+
+<tr>
+
+<th style="width:220px;">
+E-MAIL 상담
+</th>
+
+<td>
+
+메일주소 :
+<strong>
+custom763035@hanmail.net
+</strong>
+
+<br><br>
+
+메일 작성 시 아래 내용 기재
+
+<ul class="table-list">
+
+<li>① 기업명</li>
+<li>② 담당자 연락처</li>
+<li>③ 부산은행 거래지점명</li>
+
+</ul>
+
+</td>
+
+</tr>
+
+
+<tr>
+
+<th>
+전화 상담
+</th>
+
+<td>
+
+일진 관세법인 김종찬 관세사
+
+<br><br>
+
+☎ (051)462-7181  
+(교) 102번
+
+<br>
+
+FAX : (051)464-5428
+
+</td>
+
+</tr>
+
+
+<tr>
+
+<th>
+방문 상담
+</th>
+
+<td>
+
+일진 관세법인 방문 가능
+
+<br><br>
+
+주소<br>
+
+부산시 중구 충장대로 9번길 16  
+효동빌딩 501호 (중앙동4가)
+
+</td>
+
+</tr>
+
+
+<tr>
+
+<th>
+홈페이지
+</th>
+
+<td>
+
+www.iljinpusan.co.kr
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</section>
+
+
+
+<!-- 상담관세사 -->
+<section class="deposit-section">
+
+<h2 class="deposit-section-title">
+상담관세사 소개
+</h2>
+
+<div class="tracking-top-box">
+
+
+<div class="tracking-logo profile">
+    <img th:src="@{/images/foreign/customs-consultant.png}" alt="김종찬 관세사">
+</div>
+
+
+
+<div class="tracking-content">
+
+<h3 class="foreign-small-title">
+김종찬 관세사
+</h3>
+
+<ul class="deposit-list">
+
+<li>부산세관 신항부두통관과</li>
+
+<li>부산세관 수입과</li>
+
+<li>용당세관 통관지원과</li>
+
+<li>울산세관 수입과</li>
+
+<li>마산세관 수입과 근무</li>
+
+<li>
+30여년간 다양한 실무경험을 보유한
+세관행정 전문가
+</li>
+
+<li>
+관세사 · 원산지관리사 자격증 보유
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+</main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

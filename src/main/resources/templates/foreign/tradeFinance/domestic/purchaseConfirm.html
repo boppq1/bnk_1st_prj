@@ -1,10 +1,183 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+<meta charset="UTF-8">
+<title>구매확인서업무안내</title>
+
+<link rel="stylesheet" th:href="@{/css/product/product.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+	
+	<div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+	
+		<main class="product-main">
+		
+			<div class="service-container">
+			
+			<h1 class="main-title">
+			구매확인서업무안내
+			</h1>
+			
+			
+			<!-- 개요 -->
+			<section class="deposit-section">
+			
+			<h2 class="deposit-section-title">
+			구매확인서의 개요
+			</h2>
+			
+			<p class="deposit-desc">
+			
+			국내에서 생산된 수출물품(완제품 및 원료)을 국내에서 구매하는 경우  
+			외국환은행이 내국신용장에 준하여 발급하는 것으로써  
+			단순송금방식수출, 무역금융 부족 등으로 내국신용장을 발행할 수 없는 상황에서  
+			구매를 원활하게 지원하기 위한 제도입니다.
+			
+			</p>
+			
+			</section>
+			
+			
+			
+			<!-- 혜택 -->
+			<section class="deposit-section">
+			
+			<h2 class="deposit-section-title">
+			구매확인서의 혜택
+			</h2>
+			
+			<ul class="deposit-list">
+			
+			<li>
+			대외무역법 및 무역금융 융자대상 수출실적으로 인정
+			</li>
+			
+			<li>
+			외화획득의 원인 사후 관리 시 공급이행으로 인정
+			</li>
+			
+			<li>
+			관세환급 및 부가가치세 영세율 적용
+			</li>
+			
+			</ul>
+			
+			</section>
+			
+			
+			
+			<!-- 절차 -->
+			<section class="deposit-section">
+			
+			<h2 class="deposit-section-title">
+			구매확인서의 발급절차
+			</h2>
+			
+			<div class="tracking-top-box">
+			
+			<img
+			th:src="@{/images/foreign/purchase-confirm-process.png}"
+			alt="구매확인서 절차"
+			style="
+			width:100%;
+			border-radius:10px;
+			display:block;
+			">
+			
+			</div>
+			
+			</section>
+			
+			
+			
+			<!-- 신청방법 -->
+			<section class="deposit-section">
+			
+			<h2 class="deposit-section-title">
+			구매확인서 발급신청 방법
+			</h2>
+			
+			<table class="deposit-table">
+			
+			<tbody>
+			
+			<tr>
+			
+			<th style="width:30%;">
+			(주)한국무역정보통신(KTNET)
+			</th>
+			
+			<td>
+			
+			전자무역통합포털(Utradehub)에 접속하여  
+			이용신청 및 구매확인서 발급 신청
+			
+			</td>
+			
+			</tr>
+			
+			
+			<tr>
+			
+			<th>
+			은행 이용
+			</th>
+			
+			<td>
+			
+			전자무역통합포털(Utradehub)에 접속 후  
+			저희 은행과 전자무역업무(EDI) 이용약정 체결 후 신청
+			
+			</td>
+			
+			</tr>
+			
+			</tbody>
+			
+			</table>
+			
+			</section>
+			
+			
+			
+			<!-- 사후발급 -->
+			<section class="deposit-section">
+			
+			<h2 class="deposit-section-title">
+			구매확인서 사후 발급
+			</h2>
+			
+			<div class="service-info-box">
+			
+			이미 공급이 이루어진 물품에 대한 사후발급은  
+			부가가치세법 시행규칙 제9조의2에 정한  
+			반기 종료 후 20일 이내 신청 가능합니다.
+			
+			</div>
+		
+		</section>
+		
+		
+		</div>
+	
+	</main>
+
+</div>
+
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

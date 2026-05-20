@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>외화자동송금서비스</title>
+
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+</head>
+
+<body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">외화자동송금서비스</h1>
+
+            <div class="foreign-notice-box">
+                <p>
+                    유학생경비, 해외체재비 및 정기적인 해외송금시,
+                    동일 은행·동일 계좌로 송금시, 사전 예약 송금시 이용할 수 있는 서비스로서
+                    고객의 영업점 방문 시간을 절약할 수 있습니다.
+                </p>
+            </div>
+
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">자동송금 서비스의 종류</h2>
+
+                <table class="info-table">
+                    <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>내용</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>자동송금</td>
+                        <td>
+                            일정 기간 일정 금액을 자동·반복적으로 송금하는 방식
+                            (송금주기는 1, 2, 3개월에 한함)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>예약송금</td>
+                        <td>
+                            특정일 1회 해외 송금 처리하는 방식
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>약식송금</td>
+                        <td>
+                            과거 송금 실적이 있는 고객이 동일 은행·동일 계좌로 송금할 경우
+                            전번 송금 신청번호와 송금금액만을 기재하여 송금하는 방식
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>BNK바로모아송금</td>
+                        <td>
+                            이용자가 정한 기간 내에서 일정한 송금 금액을 지정하고
+                            연동계좌로 송금대금을 입금하여 지정한 송금금액에 도달할 경우
+                            자동으로 송금 되는 방식
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>BNK ONE SHOT 송금</td>
+                        <td>
+                            이용자가 송금전용계좌로 송금 대금을 입금하면
+                            입금금액에서 수수료를 차감하여 지정된 해외수취인 앞으로
+                            자동송금하는 방식
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </section>
+
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">서비스 주요내용</h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        <span class="label">서비스 대상 고객 :</span>
+                        실명의 거주자(외국인 거주자 포함)
+                    </li>
+
+                    <li>
+                        <span class="label">해외송금 항목 및 한도</span>
+                        예약송금, 약식송금은 외국환거래법규에서 정한 바에 따릅니다.
+                        자동송금, BNK바로모아송금, BNK ONE SHOT 송금은 아래 한도를 적용합니다.
+                    </li>
+                </ul>
+
+                <table class="info-table">
+                    <thead>
+                    <tr>
+                        <th>송금항목</th>
+                        <th>건당 송금한도</th>
+                        <th>연간 송금한도</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>거주자(외국인거주자제외)의 무증빙해외송금</td>
+                        <td>미화 1만불 상당액</td>
+                        <td>미화 5만불 상당액</td>
+                    </tr>
+
+                    <tr>
+                        <td>외국인 국내소득 송금</td>
+                        <td>미화 1만불 상당액</td>
+                        <td>미화 5만불 상당액</td>
+                    </tr>
+
+                    <tr>
+                        <td>유학생/체재비</td>
+                        <td>미화 1만불 상당액</td>
+                        <td>미화 10만불 상당액</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <p class="deposit-sub-note">
+                    * 항목별 연간송금 한도는 이 서비스 이외의 송금액과 합산하여 관리되며
+                    외국환 거래법규에서 정한 바에 따라 적용됨.
+                </p>
+
+                <ul class="deposit-list">
+                    <li>
+                        <span class="label">환율 및 수수료 적용</span>
+                        자동·예약송금의 경우 송금일의 2차 고시 전신환매도율 적용
+                    </li>
+
+                    <li>
+                        약식 송금, BNK바로모아송금, BNK ONE SHOT 송금은
+                        처리시점의 전신환매도율을 적용합니다.
+                    </li>
+
+                    <li>
+                        환율 및 수수료 우대 :
+                        BNK바로모아 송금시 환율은 전신환 매매율차 50% 우대,
+                        송금수수료는 건당 5,000원
+                        (전신료는 우대 없음 8,000원)
+                    </li>
+                </ul>
+
+            </section>
+
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">서비스 이용방법</h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        외화자동송금서비스를 이용하시고자 하는 고객님은
+                        사전에 거래하시는 영업점 방문하여
+                        “외화자동송금신청서(당행 소정 양식)”를 작성하여
+                        서비스 신청 후 이용 가능합니다.
+                    </li>
+
+                    <li>
+                        외화송금신청서상의 인감은 고객님 출금계좌와
+                        동일한 인감을 날인하여야 합니다.
+                    </li>
+
+                    <li>
+                        거래 외국환은행 지정, 사전 확인·신고(수리)가 필요한 경우 등
+                        절차 완료 후 송금 처리하여야 합니다.
+                    </li>
+
+                    <li>
+                        서비스 이용에 따른 별도의 수수료는 없습니다.
+                        송금 수수료와 전신료는 고객 부담입니다.
+                    </li>
+                </ul>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
+
+</body>
+</html>

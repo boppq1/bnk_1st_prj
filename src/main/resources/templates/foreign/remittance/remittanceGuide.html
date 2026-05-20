@@ -1,10 +1,171 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>송금안내</title>
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+        <div class="service-container">
+
+            <h1 class="main-title">송금안내</h1>
+
+            <!-- 해외송금 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">해외송금</h2>
+
+                <ul class="service-list">
+
+                    <li>
+                        <strong>편리한 송금 제도</strong>
+                        <p>
+                            세계 각국의 은행과 환거래망을 구축하여
+                            신속하고 빠른 송금 서비스를 제공하고 있습니다.
+                        </p>
+                        <p>
+                            <span class="highlight-red">주요상품</span> —
+                            일반해외송금, 중국지역스피드송금서비스,
+                            이종통화송금서비스, BNK국가간송금서비스,
+                            원화해외송금서비스
+                        </p>
+                    </li>
+
+                    <li>
+                        <strong>외화자동송금 서비스</strong>
+                        <p>
+                            유학생경비, 해외체재비 및 정기적인 해외송금 시,
+                            동일 은행·동일 계좌로 송금 시,
+                            사전 예약 송금 시 이용 가능한 서비스로서
+                            고객의 영업점 방문 시간을 절약할 수 있습니다.
+                        </p>
+                        <p>
+                            <span class="highlight-red">주요상품</span> —
+                            자동송금, 예약송금, 약식송금,
+                            BNK바로모아송금, BNK ONE SHOT 송금,
+                            해외즉시자동송금서비스, 지정환율자동송금서비스
+                        </p>
+                    </li>
+
+                    <li>
+                        <strong>즉시송금 서비스 (BNK WESTERN UNION MONEY TRANSFER)</strong>
+                        <p>
+                            당행과 WESTERN UNION NETWORK(FRANCE) SAS와의 업무협약에 의거
+                            웨스턴유니언의 전산시스템 및 가맹점을 이용하여
+                            당발송금 서비스를 고객에게 제공하고 있습니다.
+                        </p>
+                        <p>
+                            송금 취결 후 전세계의 웨스턴유니언 가맹점을 통해
+                            실시간(10분 이내)으로 송금대전을 수령할 수 있으며,
+                            수취인의 계좌 없이 수취인의 영문성명과
+                            수취국가(도시) 정보만으로 송금 취결이 가능합니다.
+                        </p>
+                    </li>
+
+                    <li>
+                        <strong>비대면 외화송금 서비스를 통한 환율 및 수수료 우대</strong>
+                        <p>
+                            인터넷외화송금서비스를 이용하시면
+                            환율 및 전신료 우대 혜택을 드립니다.
+                        </p>
+                        <p>
+                            <span class="highlight-red">주요상품</span> —
+                            인터넷외화송금서비스, BNK공동해외송금서비스,
+                            모바일송금서비스, 자동화기기(CD/ATM) 송금서비스
+                        </p>
+                    </li>
+
+                </ul>
+
+            </section>
+
+            <!-- 송금서비스 제공 통화 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">송금서비스 제공 통화</h2>
+
+                <div class="deposit-desc">
+                    노르웨이 크로네(NOK), 뉴질랜드 달러(NZD), 덴마크 크로네(DKK),
+                    미국 달러(USD), 스위스 프랑(CHF), 스웨덴 크로나(SEK),
+                    싱가포르 달러(SGD), 아랍에미레이트 디르함(AED),
+                    영국 파운드(GBP), 유로화(EUR), 인도네시아 루피아(IDR),
+                    일본 엔화(JPY), 캐나다 달러(CAD), 태국 바트(THB),
+                    호주 달러(AUD), 홍콩 달러(HKD), 중국 인위안화(CNY),
+                    방글라데시 타카(BDT), 브라질 레알(BRL), 인도 루피(INR),
+                    캄보디아 리엘(KHR), 라오스 킵(LAK), 스리랑카 루피(LKR),
+                    몽골 투그릭(MNT), 멕시코 페소(MXN), 말레이시아 링깃(MYR),
+                    네팔 루피(NPR), 필리핀 페소(PHP), 파키스탄 루피(PKR),
+                    러시아 루블(RUB), 타이완 달러(TWD),
+                    남아프리카공화국 랜드(ZAR), 베트남 동(VND)
+                </div>
+
+            </section>
+
+            <!-- 국내외화송금 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">국내외화송금</h2>
+
+                <ul class="service-list">
+
+                    <li>
+                        <strong>국내 외화송금이란?</strong>
+                        <p>
+                            국내의 다른 거주자와의 물품의 매매,
+                            용역 및 서비스 대가 등을 지급하기 위하여
+                            국내 다른 은행으로 외화를 송금하는 경우를 말합니다.
+                        </p>
+                        <p>
+                            <span class="highlight-red">주요상품</span> —
+                            실시간외화이체(금융결제원 이체),
+                            일반국내외화송금(SWIFT 이체)
+                        </p>
+                    </li>
+
+                    <li>
+                        <strong>인터넷 국내외화송금 서비스</strong>
+                        <ul class="deposit-list" style="margin-top: 6px;">
+                            <li>
+                                <span class="label">이용 가능 고객</span>
+                                국민인 거주자, 법인인 거주자
+                                <span class="deposit-sub-note">※ 외국인 거주자는 이용 불가</span>
+                            </li>
+                            <li>
+                                <span class="label">이용 절차</span>
+                                부산은행 인터넷뱅킹 가입 후 이용 가능합니다.
+                            </li>
+                            <li>
+                                <span class="label">송금 수수료</span>
+                                건당 10,000불 상당액 이하 : 5,000원
+                                <span class="deposit-sub-note">건당 10,000불 상당액 초과 : 10,000원</span>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+
+            </section>
+
+        </div>
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>

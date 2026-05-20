@@ -1,152 +1,578 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>BNK Busan Bank - 관리자 계정 관리</title>
+    <title>BNK Busan Bank - 관리자 관리</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    
-    <style>
-        :root {
-            --primary-color: #ED1C24;    /* BNK Red */
-            --bg-color: #F8F9FA;
-            --card-bg: #FFFFFF;
-            --border-color: #E0E4E8;
-            --text-main: #212529;
-            --text-label: #6C757D;
-            --sidebar-width: 260px;
-            --header-height: 70px;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); display: flex; }
-
-        /* 사이드바 스타일 */
-        .sidebar {
-            width: var(--sidebar-width); height: 100vh; background-color: #FFFFFF;
-            border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0;
-            display: flex; flex-direction: column; z-index: 100;
-        }
-        .sidebar-logo { padding: 10px 30px; margin-bottom: 40px; }
-        .sidebar-logo img { width: 130px; }
-        .sidebar-menu { list-style: none; flex-grow: 1; }
-        .menu-item {
-            display: flex; align-items: center; padding: 15px 30px; color: var(--text-main);
-            text-decoration: none; font-size: 15px; font-weight: 500; transition: all 0.2s;
-        }
-        .menu-item i { margin-right: 15px; width: 20px; text-align: center; color: #ADB5BD; }
-        .menu-item:hover, .menu-item.active {
-            background-color: #FFF2F2; color: var(--primary-color);
-        }
-        .menu-item:hover i, .menu-item.active i { color: var(--primary-color); }
-        .menu-item.active { font-weight: 700; border-left: 4px solid var(--primary-color); padding-left: 26px; }
-
-        /* 헤더 스타일 */
-        .header {
-            position: fixed; top: 0; left: var(--sidebar-width);
-            width: calc(100% - var(--sidebar-width)); height: var(--header-height);
-            background-color: #FFFFFF; border-bottom: 1px solid var(--border-color);
-            display: flex; align-items: center; padding: 0 40px; z-index: 90;
-        }
-        .header-right { margin-left: auto; display: flex; align-items: center; gap: 20px; }
-        .user-profile { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500; }
-        .user-avatar { width: 35px; height: 35px; border-radius: 50%; background-color: #E2E8F0; display: flex; align-items: center; justify-content: center; }
-
-        /* 메인 컨텐츠 영역 */
-        .main-content {
-            margin-left: var(--sidebar-width); margin-top: var(--header-height);
-            width: calc(100% - var(--sidebar-width)); padding: 40px;
-        }
-        .content-header { margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; }
-        .content-title { font-size: 24px; font-weight: 800; }
-
-        /* 테이블 카드 디자인 */
-        .table-card {
-            background-color: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); overflow: hidden;
-        }
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        thead { background-color: #FBFBFC; border-bottom: 1px solid var(--border-color); }
-        th { padding: 18px 20px; font-size: 14px; font-weight: 600; color: var(--text-label); }
-        td { padding: 18px 20px; font-size: 15px; border-bottom: 1px solid #F1F3F5; color: var(--text-main); }
-        tr:last-child td { border-bottom: none; }
-        tr:hover { background-color: #F8F9FA; }
-
-        /* 수정 버튼 스타일 */
-        .btn-update {
-            padding: 6px 12px; border-radius: 6px; background-color: #F1F3F5;
-            color: var(--text-main); text-decoration: none; font-size: 13px; font-weight: 600;
-            transition: all 0.2s; border: 1px solid #DEE2E6;
-        }
-        .btn-update:hover { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
-        
-        /* 배지 스타일 (직위/역할용) */
-        .badge {
-            padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;
-            background-color: #E9ECEF; color: #495057;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
+    <link rel="stylesheet" th:href="@{/css/admin/adminList.css}">
 </head>
 <body>
-    <div class="sidebar">
-        <div class="sidebar-logo">
-            <img src="https://sites.bnk.co.kr/main/resource/img/common/logo_busan.png" alt="BNK 부산은행">
-        </div>
-        <ul class="sidebar-menu">
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> 대시보드</a></li>
-            <li><a href="#" class="menu-item active"><i class="fa-solid fa-users-gear"></i> 회원 및 보안 관리</a></li>
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-money-bill-transfer"></i> 거래 및 자산 관리</a></li>
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-coins"></i> 외환 및 환전 관리</a></li>
-            <li><a href="#" class="menu-item"><i class="fa-solid fa-file-invoice-dollar"></i> 송금 및 결제 심사</a></li>
-        </ul>
-    </div>
 
-    <div class="header">
-        <div class="header-title">관리자 리스트</div>
-        <div class="header-right">
-            <div class="user-profile">
-                <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
-                <span>최고 관리자 OOO</span>
-            </div>
+<!-- ══ SIDEBAR ══ -->
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+    <div class="sidebar-logo">
+        <img th:src="@{/images/BNKlogo.png}" alt="BNK 부산은행">
+    </div>
+    <div class="sidebar-profile">
+        <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
+
+        <div class="sp-info">
+            <div class="sp-name" th:text="${admin.name} + ' 관리자'">홍길동 관리자</div>
+            <span class="sp-role" th:text="${admin.adminRole}">chief</span>
         </div>
     </div>
 
-    <div class="main-content">
-        <div class="content-header">
-            <div>
-                <h1 class="content-title">시스템 관리자 현황</h1>
-                <p style="color: var(--text-label); font-size: 14px; margin-top: 5px;">등록된 관리자 계정 리스트를 조회하고 수정할 수 있습니다.</p>
-            </div>
-        </div>
+    <ul class="sidebar-menu">
 
-        <div class="table-card">
-            <table>
+        <!-- 메인 -->
+        <li class="menu-section-title">메인</li>
+        <li><a th:href="@{/admin/dashboard}" class="menu-item"><i class="fa-solid fa-chart-pie item-icon"></i>대시보드</a></li>
+        <li><a th:href="@{/admin/adminMyPage}" class="menu-item"><i class="fa-solid fa-circle-user item-icon"></i>마이페이지</a></li>
+
+        <!-- 상품 관리 -->
+        <li class="menu-section-title">상품 관리</li>
+
+        <li><a th:href="@{/admin/productRegisterPage}" class="menu-item"><i class="fa-solid fa-plus-circle item-icon"></i>상품 등록</a></li>
+        <li><a th:href="@{/admin/productListPage}" class="menu-item"><i class="fa-solid fa-list item-icon"></i>상품 조회</a></li>
+
+        <!-- 업무 -->
+        <li class="menu-section-title">업무</li>
+        <li><a th:href="@{/admin/approval}" class="menu-item"><i class="fa-solid fa-file-circle-check item-icon"></i>결재 관리</a></li>
+        <li><a th:href="@{/admin/exchange}" class="menu-item"><i class="fa-solid fa-coins item-icon"></i>환전 내역 조회</a></li>
+        <li><a th:href="@{/admin/account}" class="menu-item"><i class="fa-solid fa-wallet item-icon"></i>계좌 관리</a></li>
+        <!-- 관리 -->
+        <li class="menu-section-title">관리</li>
+        <li>
+            <div class="menu-item-parent open"
+                 id="parent-members"
+                 onclick="toggleSubmenu('submenu-members', this)">
+                <i class="fa-solid fa-users-gear item-icon"></i>
+                <span>회원/관리자 관리</span>
+                <i class="fa-solid fa-chevron-right chevron"></i>
+            </div>
+
+            <ul class="submenu open" id="submenu-members">
+                <li><a th:href="@{/admin/members}" class="submenu-item">회원 관리</a></li>
+                <li><a th:href="@{/admin/adminManage}" class="submenu-item active">관리자 관리</a></li>
+            </ul>
+        </li>
+        <li><a th:href="@{/admin/logs}" class="menu-item"><i class="fa-solid fa-receipt item-icon"></i>로그 관리</a></li>
+        <li><a th:href="@{/admin/blacklist}" class="menu-item"><i class="fa-solid fa-ban item-icon"></i>블랙리스트</a></li>
+    </ul>
+    <div class="sidebar-footer">
+        <p>2024 BNK Busan Bank</p>
+        <p>IT Strategy Team</p>
+    </div>
+</div>
+
+<!-- ══ HEADER ══ -->
+<div class="header">
+    <div class="header-title">관리</div>
+    <div class="header-breadcrumb">
+        <i class="fa-solid fa-chevron-right"></i>
+        <span>회원/관리자 관리</span>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span>관리자 관리</span>
+    </div>
+    <div class="header-right">
+        <div class="header-user">
+            <div class="hu-avatar"><i class="fa-solid fa-user-tie"></i></div>
+            <span th:text="'관리자 ' + ${admin.name} + ' 님'">홍길동 관리자</span>
+            <i class="fa-solid fa-chevron-down" style="color:var(--text-muted);font-size:11px;"></i>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div class="main-content">
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">관리자 관리</h1>
+            <p class="page-subtitle">시스템 관리자 계정을 조회하고 권한을 관리합니다.</p>
+        </div>
+        <button class="btn btn-primary" onclick="openRegModal()">
+            <i class="fa-solid fa-user-plus"></i> 관리자 등록
+        </button>
+    </div>
+
+    <!-- 통계 -->
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-icon si-purple"><i class="fa-solid fa-user-shield"></i></div>
+            <div><div class="stat-label">전체 관리자</div><div class="stat-value">36</div></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon si-red"><i class="fa-solid fa-crown"></i></div>
+            <div><div class="stat-label">최고 관리자</div><div class="stat-value">3</div></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon si-blue"><i class="fa-solid fa-user-gear"></i></div>
+            <div><div class="stat-label">일반 관리자</div><div class="stat-value">28</div></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon si-amber"><i class="fa-solid fa-eye"></i></div>
+            <div><div class="stat-label">조회 전용</div><div class="stat-value">5</div></div>
+        </div>
+    </div>
+
+    <!-- 필터 -->
+    <div class="filter-bar">
+        <div class="filter-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="이름, 이메일, 부서로 검색..." oninput="filterTable('adminTbl', this.value)">
+        </div>
+        <div class="filter-select">
+            <select onchange="filterTable('adminTbl', this.value)">
+                <option value="">전체 권한</option>
+                <option value="최고 관리자">최고 관리자</option>
+                <option value="일반 관리자">일반 관리자</option>
+                <option value="조회 전용">조회 전용</option>
+            </select>
+        </div>
+        <div class="filter-select">
+            <select>
+                <option value="">전체 상태</option>
+                <option value="활성">활성</option>
+                <option value="비활성">비활성</option>
+            </select>
+        </div>
+        <div class="filter-divider"></div>
+        <div class="filter-count">총 <strong>36</strong>명</div>
+    </div>
+
+    <!-- 테이블 -->
+    <div class="table-card">
+        <div class="table-wrap">
+            <table id="adminTbl">
                 <thead>
-                    <tr>
-                        <th>번호</th>
-                        <th>아이디</th>
-                        <th>부서</th>
-                        <th>이름</th>
-                        <th>직위</th>
-                        <th style="text-align: center;">관리</th>
-                    </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>관리자 정보</th>
+                    <th>이메일</th>
+                    <th>부서</th>
+                    <th>권한</th>
+                    <th>최근 로그인</th>
+                    <th>상태</th>
+                    <th>관리</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="admin : ${adminList}">
-                        <td th:text="${admin.admin_id}" style="font-weight: 600; color: var(--primary-color);"></td>
-                        <td th:text="${admin.login_id}"></td>
-                        <td th:text="${admin.department}"></td>
-                        <td th:text="${admin.name}" style="font-weight: 600;"></td>
-                        <td><span class="badge" th:text="${admin.admin_role}"></span></td>
-                        <td style="text-align: center;">
-                            <a class="btn-update" th:href="@{/admin/updateAdminPage(admin_id=${admin.admin_id})}">
-                                <i class="fa-solid fa-pen-to-square"></i> 수정
-                            </a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td><span class="td-id">#A001</span></td>
+                    <td><div class="td-user-row"><div class="user-avatar ua-red">홍</div><div><div class="td-name">홍길동</div><div class="td-sub">등록일: 2021.03.01</div></div></div></td>
+                    <td>hong.gd@bnk.co.kr</td>
+                    <td>IT전략팀</td>
+                    <td><span class="badge badge-red"><i class="fa-solid fa-crown"></i> 최고 관리자</span></td>
+                    <td>2025.05.19 09:42</td>
+                    <td><span class="badge badge-green"><i class="fa-solid fa-circle" style="font-size:7px"></i> 활성</span></td>
+                    <td><div class="action-btns">
+                        <button class="act-btn act-manage" onclick="openAdminModal({id:'A001',name:'홍길동',email:'hong.gd@bnk.co.kr',phone:'02-1234-5678',dept:'IT전략팀',role:'최고 관리자',joinDate:'2021.03.01',status:'활성'})"><i class="fa-solid fa-sliders"></i></button>
+                        <button class="act-btn act-del" onclick="confirmDelete('A001','홍길동')"><i class="fa-solid fa-trash"></i></button>
+                    </div></td>
+                </tr>
+                <tr>
+                    <td><span class="td-id">#A002</span></td>
+                    <td><div class="td-user-row"><div class="user-avatar ua-blue">김</div><div><div class="td-name">김영희</div><div class="td-sub">등록일: 2022.06.15</div></div></div></td>
+                    <td>kim.yh@bnk.co.kr</td>
+                    <td>상품관리팀</td>
+                    <td><span class="badge badge-purple"><i class="fa-solid fa-user-shield"></i> 일반 관리자</span></td>
+                    <td>2025.05.18 14:20</td>
+                    <td><span class="badge badge-green"><i class="fa-solid fa-circle" style="font-size:7px"></i> 활성</span></td>
+                    <td><div class="action-btns">
+                        <button class="act-btn act-manage" onclick="openAdminModal({id:'A002',name:'김영희',email:'kim.yh@bnk.co.kr',phone:'02-2345-6789',dept:'상품관리팀',role:'일반 관리자',joinDate:'2022.06.15',status:'활성'})"><i class="fa-solid fa-sliders"></i></button>
+                        <button class="act-btn act-del" onclick="confirmDelete('A002','김영희')"><i class="fa-solid fa-trash"></i></button>
+                    </div></td>
+                </tr>
+                <tr>
+                    <td><span class="td-id">#A003</span></td>
+                    <td><div class="td-user-row"><div class="user-avatar ua-green">이</div><div><div class="td-name">이준호</div><div class="td-sub">등록일: 2023.01.09</div></div></div></td>
+                    <td>lee.jh@bnk.co.kr</td>
+                    <td>고객관리팀</td>
+                    <td><span class="badge badge-slate"><i class="fa-solid fa-eye"></i> 조회 전용</span></td>
+                    <td>2025.05.15 10:05</td>
+                    <td><span class="badge badge-green"><i class="fa-solid fa-circle" style="font-size:7px"></i> 활성</span></td>
+                    <td><div class="action-btns">
+                        <button class="act-btn act-manage" onclick="openAdminModal({id:'A003',name:'이준호',email:'lee.jh@bnk.co.kr',phone:'02-3456-7890',dept:'고객관리팀',role:'조회 전용',joinDate:'2023.01.09',status:'활성'})"><i class="fa-solid fa-sliders"></i></button>
+                        <button class="act-btn act-del" onclick="confirmDelete('A003','이준호')"><i class="fa-solid fa-trash"></i></button>
+                    </div></td>
+                </tr>
+                <tr>
+                    <td><span class="td-id">#A004</span></td>
+                    <td><div class="td-user-row"><div class="user-avatar ua-purple">박</div><div><div class="td-name">박소연</div><div class="td-sub">등록일: 2023.08.22</div></div></div></td>
+                    <td>park.sy@bnk.co.kr</td>
+                    <td>리스크관리팀</td>
+                    <td><span class="badge badge-purple"><i class="fa-solid fa-user-shield"></i> 일반 관리자</span></td>
+                    <td>2025.05.17 16:33</td>
+                    <td><span class="badge badge-green"><i class="fa-solid fa-circle" style="font-size:7px"></i> 활성</span></td>
+                    <td><div class="action-btns">
+                        <button class="act-btn act-manage" onclick="openAdminModal({id:'A004',name:'박소연',email:'park.sy@bnk.co.kr',phone:'02-4567-8901',dept:'리스크관리팀',role:'일반 관리자',joinDate:'2023.08.22',status:'활성'})"><i class="fa-solid fa-sliders"></i></button>
+                        <button class="act-btn act-del" onclick="confirmDelete('A004','박소연')"><i class="fa-solid fa-trash"></i></button>
+                    </div></td>
+                </tr>
+                <tr>
+                    <td><span class="td-id">#A005</span></td>
+                    <td><div class="td-user-row"><div class="user-avatar ua-amber">최</div><div><div class="td-name">최민석</div><div class="td-sub">등록일: 2024.02.01</div></div></div></td>
+                    <td>choi.ms@bnk.co.kr</td>
+                    <td>IT전략팀</td>
+                    <td><span class="badge badge-purple"><i class="fa-solid fa-user-shield"></i> 일반 관리자</span></td>
+                    <td>2025.04.30 11:11</td>
+                    <td><span class="badge badge-slate"><i class="fa-solid fa-circle" style="font-size:7px"></i> 비활성</span></td>
+                    <td><div class="action-btns">
+                        <button class="act-btn act-manage" onclick="openAdminModal({id:'A005',name:'최민석',email:'choi.ms@bnk.co.kr',phone:'02-5678-9012',dept:'IT전략팀',role:'일반 관리자',joinDate:'2024.02.01',status:'비활성'})"><i class="fa-solid fa-sliders"></i></button>
+                        <button class="act-btn act-del" onclick="confirmDelete('A005','최민석')"><i class="fa-solid fa-trash"></i></button>
+                    </div></td>
+                </tr>
                 </tbody>
             </table>
         </div>
+        <div class="pagination">
+            <a href="#" class="page-btn active">1</a>
+            <a href="#" class="page-btn">2</a>
+            <a href="#" class="page-btn"><i class="fa-solid fa-chevron-right"></i></a>
+        </div>
     </div>
+
+</div><!-- /main-content -->
+
+
+<!-- ══ MODAL: 관리자 정보 수정 ══ -->
+<div class="modal-backdrop" id="adminModal" onclick="handleBackdrop(event,'adminModal')">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-header-icon mhi-red" id="a-mhi">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <div class="modal-header-text">
+                <div class="modal-uid" id="a-uid"></div>
+                <div class="modal-uname" id="a-uname"></div>
+                <div class="modal-badge"><span class="badge badge-red" id="a-role-badge"></span></div>
+            </div>
+            <button class="modal-close" onclick="closeModal('adminModal')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="modal-body">
+            <!-- 계정 상태 -->
+            <div class="modal-section">
+                <div class="modal-section-title"><i class="fa-solid fa-circle-dot"></i> 계정 상태</div>
+                <div class="status-banner sb-active" id="a-sb">
+                    <div class="sb-icon"><i class="fa-solid fa-circle-check" id="a-sb-icon"></i></div>
+                    <div>
+                        <div class="sb-label">현재 상태</div>
+                        <div class="sb-value" id="a-sb-val">활성</div>
+                    </div>
+                    <div style="margin-left:auto;">
+                        <select class="form-select" id="a-sel-status" style="width:130px;" onchange="setAdminStatus(this.value)">
+                            <option value="활성">활성</option>
+                            <option value="비활성">비활성</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 기본 정보 -->
+            <div class="modal-section">
+                <div class="modal-section-title"><i class="fa-solid fa-circle-info"></i> 기본 정보 수정</div>
+                <div class="modal-form-grid">
+                    <div>
+                        <label class="form-label">이름</label>
+                        <input class="form-input" id="a-name" type="text">
+                    </div>
+                    <div>
+                        <label class="form-label">부서</label>
+                        <input class="form-input" id="a-dept" type="text">
+                    </div>
+                    <div>
+                        <label class="form-label">이메일</label>
+                        <input class="form-input" id="a-email" type="email">
+                    </div>
+                    <div>
+                        <label class="form-label">연락처</label>
+                        <input class="form-input" id="a-phone" type="text">
+                    </div>
+                    <div>
+                        <label class="form-label">등록일 <span style="color:var(--text-muted);font-weight:400">(읽기 전용)</span></label>
+                        <input class="form-input" id="a-joindate" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 권한 변경 -->
+            <div class="modal-section">
+                <div class="modal-section-title"><i class="fa-solid fa-shield-halved"></i> 권한 변경</div>
+                <div class="role-card-grid" id="role-cards">
+                    <div class="role-card chief" data-role="최고 관리자" onclick="selectRole(this)">
+                        <div class="role-card-icon"><i class="fa-solid fa-crown"></i></div>
+                        <div class="role-card-name">최고 관리자</div>
+                        <div class="role-card-desc">모든 기능<br>접근 가능</div>
+                    </div>
+                    <div class="role-card manager" data-role="일반 관리자" onclick="selectRole(this)">
+                        <div class="role-card-icon"><i class="fa-solid fa-user-shield"></i></div>
+                        <div class="role-card-name">일반 관리자</div>
+                        <div class="role-card-desc">상품 · 회원<br>관리 가능</div>
+                    </div>
+                    <div class="role-card viewer" data-role="조회 전용" onclick="selectRole(this)">
+                        <div class="role-card-icon"><i class="fa-solid fa-eye"></i></div>
+                        <div class="role-card-name">조회 전용</div>
+                        <div class="role-card-desc">데이터 조회만<br>허용</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 비밀번호 초기화 -->
+            <div class="modal-section">
+                <div class="modal-section-title"><i class="fa-solid fa-key"></i> 비밀번호 초기화</div>
+                <div class="pw-reset-box">
+                    <i class="fa-solid fa-lock"></i>
+                    <div style="flex:1">
+                        <div class="pw-reset-title">임시 비밀번호 발송</div>
+                        <div class="pw-reset-sub">등록된 이메일로 임시 비밀번호를 발송합니다.</div>
+                    </div>
+                    <button class="btn btn-ghost" style="height:36px;font-size:12px;" onclick="showToast('임시 비밀번호가 이메일로 발송되었습니다.','success')">
+                        <i class="fa-solid fa-paper-plane"></i> 발송
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-danger" onclick="confirmDelete(currentAdmin?.id, currentAdmin?.name)">
+                <i class="fa-solid fa-trash"></i> 관리자 삭제
+            </button>
+            <button class="modal-btn modal-btn-close" onclick="closeModal('adminModal')"><i class="fa-solid fa-xmark"></i> 취소</button>
+            <button class="modal-btn modal-btn-save" onclick="saveAdmin()"><i class="fa-solid fa-floppy-disk"></i> 저장</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ══ MODAL: 관리자 등록 ══ -->
+<div class="modal-backdrop" id="adminRegModal" onclick="handleBackdrop(event,'adminRegModal')">
+    <div class="modal" style="width:540px;">
+        <div class="modal-header">
+            <div class="modal-header-icon mhi-red">
+                <i class="fa-solid fa-user-plus"></i>
+            </div>
+            <div class="modal-header-text">
+                <div class="modal-uid">신규 등록</div>
+                <div class="modal-uname">관리자 계정 등록</div>
+            </div>
+            <button class="modal-close" onclick="closeModal('adminRegModal')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="modal-body">
+            <!-- 기본 정보 -->
+            <div class="modal-section">
+                <div class="modal-section-title"><i class="fa-solid fa-circle-info"></i> 기본 정보</div>
+                <div class="modal-form-grid">
+                    <div>
+                        <label class="form-label">이름 <span style="color:var(--primary)">*</span></label>
+                        <input class="form-input" id="reg-name" type="text" placeholder="홍길동">
+                    </div>
+                    <div>
+                        <label class="form-label">부서 <span style="color:var(--primary)">*</span></label>
+                        <input class="form-input" id="reg-dept" type="text" placeholder="IT전략팀">
+                    </div>
+                    <div>
+                        <label class="form-label">이메일 <span style="color:var(--primary)">*</span></label>
+                        <input class="form-input" id="reg-email" type="email" placeholder="hong@bnk.co.kr">
+                    </div>
+                    <div>
+                        <label class="form-label">연락처 <span style="color:var(--primary)">*</span></label>
+                        <input class="form-input" id="reg-phone" type="text" placeholder="02-0000-0000">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 권한 -->
+            <div class="modal-section">
+                <div class="modal-section-title"><i class="fa-solid fa-shield-halved"></i> 권한 설정 <span style="color:var(--primary)">*</span></div>
+                <div class="role-card-grid" id="reg-role-cards">
+                    <div class="role-card chief" data-role="최고 관리자" onclick="selectRegRole(this)">
+                        <div class="role-card-icon"><i class="fa-solid fa-crown"></i></div>
+                        <div class="role-card-name">최고 관리자</div>
+                        <div class="role-card-desc">모든 기능<br>접근 가능</div>
+                    </div>
+                    <div class="role-card manager" data-role="일반 관리자" onclick="selectRegRole(this)">
+                        <div class="role-card-icon"><i class="fa-solid fa-user-shield"></i></div>
+                        <div class="role-card-name">일반 관리자</div>
+                        <div class="role-card-desc">상품 · 회원<br>관리 가능</div>
+                    </div>
+                    <div class="role-card viewer" data-role="조회 전용" onclick="selectRegRole(this)">
+                        <div class="role-card-icon"><i class="fa-solid fa-eye"></i></div>
+                        <div class="role-card-name">조회 전용</div>
+                        <div class="role-card-desc">데이터 조회만<br>허용</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 비밀번호 -->
+            <div class="modal-section">
+                <div class="modal-section-title"><i class="fa-solid fa-lock"></i> 초기 비밀번호</div>
+                <div class="modal-form-grid">
+                    <div>
+                        <label class="form-label">비밀번호 <span style="color:var(--primary)">*</span></label>
+                        <input class="form-input" id="reg-pw" type="password" placeholder="초기 비밀번호">
+                    </div>
+                    <div>
+                        <label class="form-label">비밀번호 확인 <span style="color:var(--primary)">*</span></label>
+                        <input class="form-input" id="reg-pw2" type="password" placeholder="비밀번호 재입력">
+                    </div>
+                </div>
+                <div class="form-hint"><i class="fa-solid fa-circle-info"></i> 최초 로그인 시 비밀번호 변경이 필요합니다.</div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-close" onclick="closeModal('adminRegModal')"><i class="fa-solid fa-xmark"></i> 취소</button>
+            <button class="modal-btn modal-btn-save" onclick="registerAdmin()"><i class="fa-solid fa-user-plus"></i> 등록</button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toast-msg"></span>
+</div>
+
+<script>
+    /* ── SIDEBAR SUBMENU ── */
+    function toggleSubmenu(id, parent) {
+        const menu = document.getElementById(id);
+        const isOpen = menu.classList.contains('open');
+        menu.classList.toggle('open', !isOpen);
+        parent.classList.toggle('open', !isOpen);
+    }
+
+    /* ── FILTER ── */
+    function filterTable(id, kw) {
+        kw = (kw || '').toLowerCase();
+        document.querySelectorAll('#' + id + ' tbody tr').forEach(r =>
+            r.style.display = r.textContent.toLowerCase().includes(kw) ? '' : 'none'
+        );
+    }
+
+    /* ── MODAL OPEN/CLOSE ── */
+    function openModal(id)  { document.getElementById(id).classList.add('is-open'); document.body.style.overflow = 'hidden'; }
+    function closeModal(id) { document.getElementById(id).classList.remove('is-open'); document.body.style.overflow = ''; }
+    function handleBackdrop(e, id) { if (e.target === document.getElementById(id)) closeModal(id); }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') ['adminModal','adminRegModal'].forEach(closeModal); });
+
+    /* ── ADMIN MODAL ── */
+    let currentAdmin = null;
+
+    const ROLE_BADGE = {
+        '최고 관리자': 'badge-red',
+        '일반 관리자': 'badge-purple',
+        '조회 전용':   'badge-slate'
+    };
+    const ROLE_ICON = {
+        '최고 관리자': 'fa-crown',
+        '일반 관리자': 'fa-user-shield',
+        '조회 전용':   'fa-eye'
+    };
+
+    function openAdminModal(d) {
+        currentAdmin = d;
+        document.getElementById('a-uid').textContent   = '#' + d.id;
+        document.getElementById('a-uname').textContent = d.name;
+        document.getElementById('a-name').value   = d.name;
+        document.getElementById('a-email').value  = d.email;
+        document.getElementById('a-phone').value  = d.phone;
+        document.getElementById('a-dept').value   = d.dept;
+        document.getElementById('a-joindate').value = d.joinDate;
+        document.getElementById('a-sel-status').value = d.status;
+        setAdminStatus(d.status);
+
+        // 권한 뱃지
+        const rb = document.getElementById('a-role-badge');
+        rb.className = 'badge ' + (ROLE_BADGE[d.role] || 'badge-slate');
+        rb.innerHTML = '<i class="fa-solid ' + (ROLE_ICON[d.role] || 'fa-user') + '"></i> ' + d.role;
+
+        // 권한 카드 선택
+        document.querySelectorAll('#role-cards .role-card').forEach(c => {
+            c.classList.toggle('selected', c.dataset.role === d.role);
+        });
+
+        openModal('adminModal');
+    }
+
+    function setAdminStatus(val) {
+        const sb = document.getElementById('a-sb');
+        if (val === '활성') {
+            sb.className = 'status-banner sb-active';
+            document.getElementById('a-sb-icon').className = 'fa-solid fa-circle-check';
+        } else {
+            sb.className = 'status-banner sb-inactive';
+            document.getElementById('a-sb-icon').className = 'fa-solid fa-circle-xmark';
+        }
+        document.getElementById('a-sb-val').textContent = val;
+    }
+
+    function selectRole(card) {
+        document.querySelectorAll('#role-cards .role-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+    }
+
+    function saveAdmin() {
+        closeModal('adminModal');
+        showToast('관리자 정보가 저장되었습니다.', 'success');
+    }
+
+    /* ── ADMIN REGISTER MODAL ── */
+    let regSelectedRole = null;
+
+    function openRegModal() {
+        ['reg-name','reg-dept','reg-email','reg-phone','reg-pw','reg-pw2'].forEach(id => document.getElementById(id).value = '');
+        document.querySelectorAll('#reg-role-cards .role-card').forEach(c => c.classList.remove('selected'));
+        regSelectedRole = null;
+        openModal('adminRegModal');
+    }
+
+    function selectRegRole(card) {
+        document.querySelectorAll('#reg-role-cards .role-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        regSelectedRole = card.dataset.role;
+    }
+
+    function registerAdmin() {
+        const name  = document.getElementById('reg-name').value.trim();
+        const email = document.getElementById('reg-email').value.trim();
+        const dept  = document.getElementById('reg-dept').value.trim();
+        const pw    = document.getElementById('reg-pw').value;
+        const pw2   = document.getElementById('reg-pw2').value;
+
+        if (!name || !email || !dept || !pw) { showToast('필수 항목을 모두 입력해 주세요.', 'error'); return; }
+        if (!regSelectedRole) { showToast('권한을 선택해 주세요.', 'error'); return; }
+        if (pw !== pw2) { showToast('비밀번호가 일치하지 않습니다.', 'error'); return; }
+
+        closeModal('adminRegModal');
+        showToast(name + ' 관리자 계정이 등록되었습니다.', 'success');
+    }
+
+    /* ── DELETE ── */
+    function confirmDelete(id, name) {
+        if (confirm(name + ' (' + id + ') 계정을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) {
+            ['adminModal','adminRegModal'].forEach(closeModal);
+            showToast(name + ' 계정이 삭제되었습니다.', 'success');
+        }
+    }
+
+    /* ── TOAST ── */
+    let toastTimer;
+    function showToast(msg, type = 'success') {
+        const el = document.getElementById('toast');
+        const ic = el.querySelector('i');
+        ic.className = type === 'success' ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark';
+        ic.style.color = type === 'success' ? '#4ADE80' : '#F87171';
+        document.getElementById('toast-msg').textContent = msg;
+        el.className = 'toast show';
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+    }
+</script>
 </body>
 </html>

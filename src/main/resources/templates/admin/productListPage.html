@@ -172,23 +172,37 @@
             <span class="td-id" th:text="'#' + ${p.product_id}">#001</span>
           </td>
           <td>
+          <td>
             <div class="td-name" th:text="${p.product_name}">BNK 플러스 예금</div>
             <div class="td-sub"
-                 th:text="${p.product_type == 'deposit'} ? '예금 상품' :
-                          (${p.product_type == 'saving'} ? '적금 상품' : '외환 상품')">
+                 th:text="${p.product_type == 'DEPOSIT'}     ? '예금 상품'    :
+                (${p.product_type == 'SAVING'}      ? '적금 상품'    :
+                (${p.product_type == 'FOREIGN_DEP'} ? '외화 예금 상품' :
+                (${p.product_type == 'FOREIGN_SAV'} ? '외화 적금 상품' :
+                (${p.product_type == 'CORP_DEP'}    ? '기업 예금 상품' :
+                (${p.product_type == 'CORP_SAV'}    ? '기업 적금 상품' : '기타 상품')))))">
               예금 상품
             </div>
           </td>
           <td>
-            <span th:if="${p.product_type == 'deposit'}" class="badge badge-blue">
-              <i class="fa-solid fa-piggy-bank"></i> 예금
-            </span>
-            <span th:if="${p.product_type == 'saving'}" class="badge badge-green">
-              <i class="fa-solid fa-sack-dollar"></i> 적금
-            </span>
-            <span th:if="${p.product_type == 'exchange'}" class="badge badge-purple">
-              <i class="fa-solid fa-arrow-right-arrow-left"></i> 외환
-            </span>
+              <span th:if="${p.product_type == 'DEPOSIT'}"     class="badge badge-blue">
+                <i class="fa-solid fa-piggy-bank"></i> 예금
+              </span>
+                        <span th:if="${p.product_type == 'SAVING'}"      class="badge badge-green">
+                <i class="fa-solid fa-sack-dollar"></i> 적금
+              </span>
+                        <span th:if="${p.product_type == 'FOREIGN_DEP'}" class="badge badge-purple">
+                <i class="fa-solid fa-earth-asia"></i> 외화 예금
+              </span>
+                        <span th:if="${p.product_type == 'FOREIGN_SAV'}" class="badge badge-indigo">
+                <i class="fa-solid fa-coins"></i> 외화 적금
+              </span>
+                        <span th:if="${p.product_type == 'CORP_DEP'}"    class="badge badge-amber">
+                <i class="fa-solid fa-building-columns"></i> 기업 예금
+              </span>
+                        <span th:if="${p.product_type == 'CORP_SAV'}"    class="badge badge-teal">
+                <i class="fa-solid fa-briefcase"></i> 기업 적금
+              </span>
           </td>
           <td>
             <span th:if="${p.target_large == 'ALL'}"     class="badge badge-slate">전체</span>

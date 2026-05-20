@@ -2,9 +2,204 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>인터넷외화송금서비스</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <!-- 사이드바 -->
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <!-- 본문 -->
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <!-- 제목 -->
+            <h1 class="main-title">인터넷외화송금서비스</h1>
+
+            <!-- 안내 박스 -->
+            <div class="foreign-notice-box">
+                <p>
+                    인터넷외화송금 서비스란 영업점에 직접 방문하지 않고
+                    인터넷 상에서 외화송금 신청 및 외화송금 전문을
+                    출력할 수 있는 서비스입니다.
+                </p>
+            </div>
+
+            <!-- 특징 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    특징
+                </h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        가정이나 사무실에서 전세계 어디든지 송금할 수 있어
+                        시간이 절약되고 신속합니다.
+                    </li>
+
+                    <li>
+                        해외지점에게 생활비나 학원금, 유학경비 해외주재원의
+                        체재비 및 국내 외화송금 시 이용하시면 매우 편리합니다.
+                    </li>
+
+                    <li>
+                        영수증과 송금 전문을 조회하여 송금받으실 분에게
+                        보내실 수도 있습니다.
+                    </li>
+
+                    <li>
+                        연중무휴 24시간 이용이 가능합니다.
+                        다만, 휴일 및 평일 영업시간외에는 예약등록 거래로 가능합니다.
+                    </li>
+                </ul>
+
+            </section>
+
+            <!-- 이용절차 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    이용절차
+                </h2>
+
+                <div class="foreign-step-wrap">
+
+                    <div class="foreign-step-box">
+                        <span class="step-number">STEP 1</span>
+
+                        <div class="step-content">
+                            인터넷뱅킹<br>
+                            외화송금신청
+                        </div>
+                    </div>
+
+                    <div class="foreign-step-arrow">›</div>
+
+                    <div class="foreign-step-box">
+                        <span class="step-number">STEP 2</span>
+
+                        <div class="step-content">
+                            송금종류선택
+                        </div>
+                    </div>
+
+                    <div class="foreign-step-arrow">›</div>
+
+                    <div class="foreign-step-box">
+                        <span class="step-number">STEP 3</span>
+
+                        <div class="step-content">
+                            송금실행
+                        </div>
+                    </div>
+
+                    <div class="foreign-step-arrow">›</div>
+
+                    <div class="foreign-step-box">
+                        <span class="step-number">STEP 4</span>
+
+                        <div class="step-content">
+                            영수증 및<br>
+                            전문조회
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- 이용시간 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    이용시간
+                </h2>
+
+                <ul class="deposit-list">
+                    <li>
+                        영업 시간 관계없이 신청 가능 (휴무일 포함)
+                    </li>
+
+                    <li>
+                        평일 영업 시간 이후 접수분과 휴일 접수분은
+                        익영업일에 처리합니다.
+                    </li>
+                </ul>
+
+            </section>
+
+            <!-- 우대내용 -->
+            <section class="deposit-section">
+
+                <h2 class="deposit-section-title">
+                    우대내용 및 유의사항
+                </h2>
+
+                <ul class="deposit-list">
+
+                    <li>
+                        송금시 환율 30% 우대,
+                        전신료 우대(3,000원 일괄 적용)
+                    </li>
+
+                    <li>
+                        해외은행에서 발생하는 수수료를 신청인이 부담하는 경우
+                        미달러화 20불 상당액을 송금시 별도 징구하며,
+                        해외은행으로부터 송금수수료 추가 요청시 차액을 추가 부담하여야 합니다.
+                    </li>
+
+                    <li>
+                        건당 및 연간 송금 합계액 미화 1만불 상당액을 초과하는
+                        증빙서류 미제출 지급(증여성 지급) 및
+                        연간 송금 누계액 미화 10만불 상당액을 초과하는
+                        유학경비 송금 내역은 국세청에 통보됩니다.
+                    </li>
+
+                    <li>
+                        거주자(외국인거주자 제외)의 무증빙해외송금은
+                        건당 미화 1만불 상당액 이하,
+                        연간 누계액 10만불 상당액 이하만 가능하며,
+                        동 금액을 초과한 경우 영업점을 방문하여
+                        처리하시기 바랍니다.
+                    </li>
+
+                </ul>
+
+            </section>
+
+            <!-- 버튼 -->
+            <div class="foreign-btn-wrap">
+
+                <a href="#" class="foreign-link-btn">
+                    기업 외환 송금 바로가기
+                </a>
+
+                <a href="#" class="foreign-link-btn">
+                    개인 외환 송금 바로가기
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
 
 </body>
 </html>
