@@ -162,6 +162,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
       </div>
     </div>
   </div>
+  <button type="button"
+        class="global-zoom-btn"
+        id="zoomToggleBtn"
+        title="화면 크게 보기"
+        aria-label="화면 크게 보기">
+    크게
+</button>
 <script>
 	const userinfo = document.querySelector("#user-info")
 	const username = localStorage.getItem("name");
@@ -186,6 +193,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 	
 </script>
 <script th:src="@{/js/search/search.js}"></script>
+
 </header>
+
 </body>
 </html>
