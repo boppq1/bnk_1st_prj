@@ -53,7 +53,7 @@ public class LoginService {
 				log.info("유저 정보 {}", jwt.getUsername(token));
 				return Map.of("token", token);
 			}
-
+			log.error("입력받은 비밀번호 {}, 데이터베이스 비밀번호 {} 매치확인 비밀번호", dto.getSecu_pw(), getUserDTO.getSecu_pw(), service.matchesPassword(dto.getSecu_pw(), getUserDTO.getSecu_pw()));
 			log.error("로그인 실패: 개인회원 비밀번호 불일치  ID: {}", dto.getLogin_id());
 			return Map.of("result", "fail");
 		}

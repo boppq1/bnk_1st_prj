@@ -38,7 +38,10 @@
           </div>
            <div class="submit-wrap">
             <button type="button" class="submit-btn" id="login_btn">로그인</button>
-            <p class="submit-notice">기업회원가입 | 개인회원가입</p>
+           <p class="submit-notice">
+			    <a th:href="@{/registerPage}" style="text-decoration: none; color: inherit;">개인회원가입</a> | 
+			    <a th:href="@{/companyRegisterPage}" style="text-decoration: none; color: inherit;">기업회원가입</a>
+			</p>
           </div>
       </div>
     </div>
