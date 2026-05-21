@@ -1,10 +1,264 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>ONE 환전</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/oneExchange.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="one-page">
+
+        <h1 class="main-title">ONE 환전</h1>
+
+        <!-- 서비스 소개 -->
+        <section class="deposit-section">
+            <h2 class="deposit-section-title">ONE 환전이란?</h2>
+            <div class="deposit-desc">
+                횟수 제한 없이 USD 10,000 이내에서 환전하여 수령, 배달, 보관 할 수 있는 환전서비스 입니다.
+            </div>
+            <div class="one-badge-wrap">
+                <span class="one-badge">ONE환전 (개인)</span>
+                <span class="one-badge">ONE금고 (기업)</span>
+            </div>
+        </section>
+
+        <!-- 탭 -->
+        <div class="foreign-tab-menu">
+            <button type="button" class="foreign-tab-btn active" data-tab="guide">이용안내</button>
+            <button type="button" class="foreign-tab-btn" data-tab="benefit">우대내용</button>
+            <button type="button" class="foreign-tab-btn" data-tab="notice">유의사항</button>
+        </div>
+
+        <!-- 이용안내 -->
+        <div class="foreign-tab-content active" id="guide">
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">이용대상</h2>
+                <ul class="deposit-list">
+                    <li><strong>개인 :</strong> 국민인 거주자 개인</li>
+                    <li><strong>기업 :</strong> 국민인 거주자 기업(개인사업자 포함)</li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">이용시간</h2>
+                <ul class="deposit-list">
+                    <li>24시간 / 365일</li>
+                    <li>수령방식이 '금고보관'인 경우 주말, 공휴일 거래 불가</li>
+                    <li>비로그인 환전 시 가상계좌 입금 불가 : 23:30 ~ 24:30</li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">환전 가능 통화</h2>
+                <ul class="deposit-list">
+                    <li>총 15개 통화</li>
+                    <li><strong>주요통화 :</strong> USD, JPY, EUR, CNY</li>
+                    <li><strong>기타통화 :</strong> THB, SGD, HKD, AUD, GBP, NZD, CAD, CHF, IDR, VND, PHP</li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">환전 가능 한도</h2>
+                <ul class="deposit-list">
+                    <li>로그인 환전 : USD 100 ~ USD 10,000 이하</li>
+                    <li>비로그인 환전 : 원화 1백만원 이하</li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">환전 수령 방법 (환전수령 / 현찰배달 / 금고보관)</h2>
+                <div class="one-table-wrap">
+                    <table class="one-info-table">
+                        <thead>
+                        <tr>
+                            <th colspan="3">구분</th>
+                            <th>부산은행 회원(로그인)</th>
+                            <th>부산은행 비회원(비로그인)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th rowspan="7" class="one-group">환전 수령</th>
+                            <th colspan="2">수령대상</th>
+                            <td>본인 및 대리인 수령 가능</td>
+                            <td>본인만 수령 가능</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">외화인수</th>
+                            <td colspan="2">환전신청일로부터 30일 이내</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">유효기간</th>
+                            <td colspan="2">인수예정일을 포함하여 7영업일까지</td>
+                        </tr>
+                        <tr>
+                            <th rowspan="2">재환전<br>(자동환매)</th>
+                            <th>유효기간 경과 전</th>
+                            <td>재환전 시점의 현찰매입율 적용 후 지정계좌에 원화로 입금</td>
+                            <td class="one-impossible">이용불가</td>
+                        </tr>
+                        <tr>
+                            <th>유효기간 경과 후</th>
+                            <td>금고 자동 보관</td>
+                            <td>현찰매입율 적용 후 입력한 환매대금입금계좌에 원화로 자동환매</td>
+                        </tr>
+                        <tr>
+                            <th rowspan="2">외화수령</th>
+                            <th>영업점</th>
+                            <td colspan="2">신청 시점의 해당 외화 보유 영업점</td>
+                        </tr>
+                        <tr>
+                            <th>외화 ATM<br>(당일 인수 불가)</th>
+                            <td>김해공항 인수 시 : USD, JPY<br>국제여객터미널 인수 시 : JPY</td>
+                            <td class="one-impossible">이용불가</td>
+                        </tr>
+
+                        <tr>
+                            <th rowspan="5" class="one-group">현찰 배달</th>
+                            <th colspan="2">이용 가능 금액</th>
+                            <td>USD 100 이상 원화 150만원 이하</td>
+                            <td rowspan="5" class="one-impossible">이용불가</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">이용 가능 통화</th>
+                            <td>총 11개 통화<br>(USD, JPY, EUR, CNY, GBP, AUD, CAD, HKD, SGD, THB, MYR)</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">배송지역</th>
+                            <td>전국<br>(단, 우체국 배달여건 등으로 인한 배달불가지역 제외)</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">배송가능일 / 배송시간</th>
+                            <td>09:00 ~ 18:00<br>(평일만 가능, 토/일/공휴일 제외)</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">배송비</th>
+                            <td>배송 건당 10,000원</td>
+                        </tr>
+
+                        <tr>
+                            <th class="one-group">금고 보관</th>
+                            <th colspan="2">이용 서비스</th>
+                            <td>환전수령, 원화계좌로 입금(재환전) 또는 외화계좌로 입금 가능</td>
+                            <td class="one-impossible">이용불가</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">계좌입금</h2>
+                <ul class="deposit-list">
+                    <li>원화계좌입금(재환전) 및 외화계좌입금 : 부산은행 회원의 보유중인 계좌로만 가능</li>
+                    <li>환전수령, 금고보관 : 환전한 외화를 원화계좌로 재환전 시 현찰매입율 적용</li>
+                    <li>현찰배달 : 원화계좌로 입금 시 재환전 시점의 현찰매입율 적용</li>
+                    <li>비로그인 고객환전 : 자동환매 시 자동환매 시점의 현찰 매입율 적용</li>
+                    <li>환전한 외화를 외화계좌로 입금 후 재환전 시, 재환전 시점의 환율에 대하여 외화예금 기본우대율을 적용</li>
+                </ul>
+                <div class="deposit-notice-box">
+                    * ONE환전 시행일 이전 환전내역은 외화 &gt; 환전 &gt; 환전거래내역 중 "기타" 항목에서 조회가능합니다.
+                </div>
+            </section>
+
+        </div>
+
+        <!-- 우대내용 -->
+        <div class="foreign-tab-content" id="benefit">
+
+            <div class="service-info-box">
+                ※ 외화를 사실 때 적용받는 우대율이며 환전한 외화를 원화로 재환전 시에는
+                현찰매입율(환율우대 50%)이 적용됩니다.<br>
+                (비로그인 고객 또는 로그인 고객의 현찰배달서비스의 재환전(반송) 시에는 현찰매입율 적용)
+            </div>
+
+            <div class="one-table-wrap">
+                <table class="one-benefit-table">
+                    <thead>
+                    <tr>
+                        <th rowspan="2">통화</th>
+                        <th rowspan="2">기본 우대율</th>
+                        <th colspan="2">이벤트 우대율</th>
+                        <th rowspan="2">현찰배달<br>(로그인)</th>
+                    </tr>
+                    <tr>
+                        <th>로그인환전(개인/기업)</th>
+                        <th>비로그인환전</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr><td>미국 USD</td><td>50</td><td>90</td><td>80</td><td>90</td></tr>
+                    <tr><td>일본 JPY</td><td>50</td><td>80</td><td>70</td><td>90</td></tr>
+                    <tr><td>유럽 EUR</td><td>50</td><td>80</td><td>70</td><td>80</td></tr>
+                    <tr><td>영국 GBP</td><td>20</td><td>30</td><td>20</td><td>90</td></tr>
+                    <tr><td>캐나다 CAD</td><td>20</td><td>30</td><td>20</td><td>80</td></tr>
+                    <tr><td>호주 AUD</td><td>20</td><td>30</td><td>20</td><td>80</td></tr>
+                    <tr><td>싱가포르 SGD</td><td>20</td><td>30</td><td>20</td><td>80</td></tr>
+                    <tr><td>중국 CNY</td><td>30</td><td>30</td><td>20</td><td>50</td></tr>
+                    <tr><td>홍콩 HKD</td><td>20</td><td>30</td><td>20</td><td>30</td></tr>
+                    <tr><td>태국 THB</td><td>20</td><td>30</td><td>20</td><td>30</td></tr>
+                    <tr><td>스위스 CHF</td><td>20</td><td>30</td><td>20</td><td class="one-unsupported">미지원</td></tr>
+                    <tr><td>뉴질랜드 NZD</td><td>20</td><td>30</td><td>20</td><td class="one-unsupported">미지원</td></tr>
+                    <tr><td>베트남 VND</td><td>0</td><td>0</td><td>0</td><td class="one-unsupported">미지원</td></tr>
+                    <tr><td>인도네시아 IDR</td><td>0</td><td>0</td><td>0</td><td class="one-unsupported">미지원</td></tr>
+                    <tr><td>필리핀 PHP</td><td>0</td><td>0</td><td>0</td><td class="one-unsupported">미지원</td></tr>
+                    <tr><td>말레이시아 MYR</td><td colspan="3" class="one-unsupported">미지원</td><td>90</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- 유의사항 -->
+        <div class="foreign-tab-content" id="notice">
+
+            <section class="deposit-section">
+                <ul class="deposit-list">
+                    <li>거래 후 취소 및 내용 변경은 불가능하므로 신청 시 주의하시기 바랍니다.</li>
+                    <li>신청 시 환율이 고시되지 않은 경우 직전 고시 환율이 적용됩니다.</li>
+                    <li>우대율이란 현찰 사실 때 환율과 기준환율의 차이에 대한 할인율을 말합니다.</li>
+                    <li>같은 날짜에 미화 1만불 상당액을 초과하여 환전할 경우에는 외국환거래법에 따라 국세청으로 통보됩니다.</li>
+                    <li>미화 1만불 상당액을 초과하는 외화를 휴대하여 출국할 경우에는 출국 시 관할 세관에 신고하셔야 합니다.</li>
+                </ul>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
+<script th:src="@{/js/zoom.js}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".foreign-tab-btn").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                document.querySelectorAll(".foreign-tab-btn").forEach(function (b) { b.classList.remove("active"); });
+                document.querySelectorAll(".foreign-tab-content").forEach(function (c) { c.classList.remove("active"); });
+                btn.classList.add("active");
+                document.getElementById(btn.dataset.tab).classList.add("active");
+            });
+        });
+    });
+</script>
 
 </body>
 </html>

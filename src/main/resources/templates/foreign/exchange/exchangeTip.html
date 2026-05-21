@@ -1,10 +1,69 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>환전요령</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">환전요령</h1>
+
+            <section class="service-section">
+                <h2 class="section-title">여행가는 나라의 현지 화폐로 준비합니다.</h2>
+
+                <ul class="service-list">
+                    <li>
+                        <p>
+                            일반적으로 해외여행을 한다고 하면 무조건 미국 달러를 준비하시는 분이 많습니다.
+                            그러나, 여행하고자 하는 국가의 화폐로 교환하여 가는 것이 재환전에 따른 비용과 불편함을 덜 수 있습니다.
+                        </p>
+                        <p>
+                            여행경비를 환전할 때에는 꼭 필요한 약 30% 정도만 외화현찰로 준비하는 것이 좋으며
+                            고액권과 소액권을 준비하는 것이 좋습니다.
+                        </p>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="service-section">
+                <h2 class="section-title">비상시 대비하여 신용카드를 휴대합니다.</h2>
+
+                <ul class="service-list">
+                    <li>
+                        <p>
+                            외화신용카드는 세계 대부분의 국가에서 사용하실 수 있습니다.
+                            신용카드는 비밀번호와 서명이 필요하므로 안전성이 뛰어나고
+                            부피가 작아 외화 현찰이나 여행자수표보다 편리합니다.
+                        </p>
+                    </li>
+                </ul>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
+<script th:src="@{/js/zoom.js}"></script>
 
 </body>
 </html>
