@@ -1,547 +1,613 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>BNK Busan Bank - 회원 관리</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
-    <link rel="stylesheet" th:href="@{/css/admin/memberList.css}">
+  <meta charset="UTF-8">
+  <title>BNK Busan Bank - 고객 통합 관리</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
+  <style>
+/* ───────────────────────────────────────
+   ROOT & RESET  (예시 CSS 동일)
+─────────────────────────────────────── */
+:root {
+  --primary:        #ED1C24;
+  --primary-light:  #FFF2F2;
+  --primary-border: #FFCDD0;
+  --bg:             #F4F6F9;
+  --card:           #FFFFFF;
+  --border:         #E2E8F0;
+  --text:           #1E293B;
+  --text-sub:       #64748B;
+  --text-muted:     #94A3B8;
+  --sidebar-w:      260px;
+  --header-h:       68px;
+  --radius:         12px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Pretendard', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  overflow: hidden;
+}
 
+/* ───── SIDEBAR ───── */
+.sidebar {
+  width: var(--sidebar-w); height: 100vh;
+  background: #FFFFFF; border-right: 1px solid var(--border);
+  position: fixed; left: 0; top: 0;
+  display: flex; flex-direction: column;
+  z-index: 100; overflow: hidden;
+}
+.sidebar-logo { padding: 22px 24px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.sidebar-logo img { height: 28px; width: auto; display: block; }
+.sidebar-profile {
+  padding: 18px 24px;
+  display: flex; align-items: center; gap: 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0; background: #FAFBFC;
+}
+.sp-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--primary-light); border: 2px solid var(--primary-border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--primary); font-size: 16px; flex-shrink: 0;
+}
+.sp-info { min-width: 0; }
+.sp-name { font-size: 14px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sp-role {
+  font-size: 11px; color: var(--primary); font-weight: 600;
+  background: var(--primary-light); border: 1px solid var(--primary-border);
+  border-radius: 20px; padding: 1px 8px; display: inline-block; margin-top: 3px;
+}
+.sidebar-menu { list-style: none; flex: 1; overflow-y: auto; padding: 8px 0; }
+.sidebar-menu::-webkit-scrollbar { width: 4px; }
+.sidebar-menu::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.menu-section-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-muted); padding: 16px 24px 6px;
+}
+.menu-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 24px; color: var(--text-sub); text-decoration: none;
+  font-size: 14px; font-weight: 500; transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.menu-item i { width: 18px; text-align: center; font-size: 14px; color: var(--text-muted); transition: color 0.15s; flex-shrink: 0; }
+.menu-item:hover { background: var(--primary-light); color: var(--primary); }
+.menu-item:hover i { color: var(--primary); }
+.menu-item.active { background: var(--primary-light); color: var(--primary); font-weight: 700; border-left-color: var(--primary); }
+.menu-item.active i { color: var(--primary); }
+.sidebar-footer { padding: 14px 24px; border-top: 1px solid var(--border); flex-shrink: 0; }
+.sidebar-footer p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+/* ───── HEADER ───── */
+.header {
+  position: fixed; top: 0; left: var(--sidebar-w);
+  width: calc(100% - var(--sidebar-w)); height: var(--header-h);
+  background: #FFFFFF; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 36px; z-index: 90; gap: 16px;
+}
+.header-title { font-size: 18px; font-weight: 800; color: var(--text); }
+.header-breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-muted); margin-left: 4px; }
+.header-breadcrumb i { font-size: 10px; }
+.header-breadcrumb span:last-child { color: var(--text-sub); font-weight: 500; }
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.header-user {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 14px 6px 8px; border-radius: 40px; border: 1px solid var(--border);
+  cursor: pointer; transition: all 0.15s; font-size: 13px; font-weight: 600; color: var(--text);
+}
+.header-user:hover { background: var(--bg); }
+.hu-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 13px; }
+.hu-chevron { color: var(--text-muted); font-size: 11px; }
+
+/* ───── MAIN ───── */
+.main-content {
+  margin-left: var(--sidebar-w); margin-top: var(--header-h);
+  width: calc(100% - var(--sidebar-w)); height: calc(100vh - var(--header-h));
+  overflow-y: auto; padding: 36px 40px;
+}
+.main-content::-webkit-scrollbar { width: 6px; }
+.main-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* ───── PAGE HEADER ───── */
+.page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; }
+.page-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.page-subtitle { font-size: 14px; color: var(--text-sub); }
+
+/* ───── STAT CARDS ───── */
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.stat-card {
+  background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 20px 24px; display: flex; align-items: center; gap: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: box-shadow 0.15s, transform 0.15s;
+}
+.stat-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); transform: translateY(-1px); }
+.stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.stat-icon.red    { background: var(--primary-light); color: var(--primary); }
+.stat-icon.blue   { background: #EFF6FF; color: #2563EB; }
+.stat-icon.purple { background: #FAF5FF; color: #7C3AED; }
+.stat-icon.green  { background: #F0FDF4; color: #16A34A; }
+.stat-label { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+.stat-value { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1; }
+
+/* ───── TAB ───── */
+.tab-wrapper {
+  background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04); overflow: hidden;
+}
+.tab-header {
+  display: flex; align-items: stretch;
+  border-bottom: 1px solid var(--border);
+  background: #F8FAFC;
+}
+.tab-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 28px; height: 54px;
+  font-size: 14px; font-weight: 600; color: var(--text-muted);
+  border: none; background: transparent; cursor: pointer;
+  border-bottom: 3px solid transparent; margin-bottom: -1px;
+  transition: all 0.15s; font-family: 'Pretendard', sans-serif;
+  position: relative;
+}
+.tab-btn i { font-size: 15px; }
+.tab-btn .tab-count {
+  font-size: 11px; font-weight: 700;
+  background: #E2E8F0; color: var(--text-muted);
+  border-radius: 20px; padding: 2px 8px;
+  transition: all 0.15s;
+}
+.tab-btn:hover { color: var(--text); background: rgba(0,0,0,0.02); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--primary); background: #FFFFFF; }
+.tab-btn.active .tab-count { background: var(--primary-light); color: var(--primary); }
+
+.tab-panel { display: none; padding: 24px; }
+.tab-panel.active { display: block; }
+
+/* ───── FILTER BAR ───── */
+.filter-bar {
+  background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 18px 24px; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.filter-search { position: relative; flex: 1; min-width: 220px; }
+.filter-search i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px; }
+.filter-search input {
+  width: 100%; height: 40px; padding: 0 14px 0 40px;
+  border: 1px solid var(--border); border-radius: 8px;
+  font-size: 14px; font-family: 'Pretendard', sans-serif;
+  color: var(--text); background: var(--bg);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.filter-search input:focus { outline: none; border-color: #94A3B8; box-shadow: 0 0 0 3px rgba(0,0,0,0.05); background: #FFFFFF; }
+.filter-search input::placeholder { color: var(--text-muted); }
+.filter-select { position: relative; }
+.filter-select select {
+  height: 40px; padding: 0 36px 0 14px;
+  border: 1px solid var(--border); border-radius: 8px;
+  font-size: 13px; font-family: 'Pretendard', sans-serif;
+  color: var(--text); background: var(--bg);
+  cursor: pointer; appearance: none; -webkit-appearance: none;
+  transition: border-color 0.15s;
+}
+.filter-select select:focus { outline: none; border-color: #94A3B8; background: #FFFFFF; }
+.filter-select::after {
+  content: '\f078'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); font-size: 11px; pointer-events: none;
+}
+.filter-divider { width: 1px; height: 28px; background: var(--border); flex-shrink: 0; }
+.filter-count { font-size: 13px; color: var(--text-muted); white-space: nowrap; margin-left: auto; }
+.filter-count strong { color: var(--text); font-weight: 700; }
+
+/* ───── TABLE CARD ───── */
+.table-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+thead tr { background: #F8FAFC; border-bottom: 2px solid var(--border); }
+thead th {
+  padding: 13px 16px; font-size: 12px; font-weight: 700;
+  color: var(--text-muted); text-align: left;
+  white-space: nowrap; letter-spacing: 0.03em; text-transform: uppercase;
+}
+thead th:first-child { padding-left: 24px; }
+thead th:last-child  { padding-right: 24px; text-align: center; }
+tbody tr { border-bottom: 1px solid #F1F5F9; transition: background 0.1s; }
+tbody tr:last-child  { border-bottom: none; }
+tbody tr:hover { background: #FAFBFC; }
+tbody td { padding: 14px 16px; font-size: 14px; color: var(--text); vertical-align: middle; white-space: nowrap; }
+tbody td:first-child { padding-left: 24px; }
+tbody td:last-child  { padding-right: 24px; text-align: center; }
+.td-id   { font-size: 12px; color: var(--text-muted); font-weight: 600; font-family: monospace; }
+.td-name { font-weight: 700; color: var(--text); }
+
+/* ───── BADGES ───── */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 700; white-space: nowrap;
+}
+.badge-blue   { background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; }
+.badge-green  { background: #F0FDF4; color: #16A34A; border: 1px solid #BBF7D0; }
+.badge-red    { background: var(--primary-light); color: var(--primary); border: 1px solid var(--primary-border); }
+.badge-amber  { background: #FFFBEB; color: #D97706; border: 1px solid #FDE68A; }
+.badge-slate  { background: #F1F5F9; color: #475569; border: 1px solid #E2E8F0; }
+.badge-purple { background: #FAF5FF; color: #7C3AED; border: 1px solid #DDD6FE; }
+
+/* ───── ACTION BUTTONS ───── */
+.action-btns { display: flex; align-items: center; justify-content: center; gap: 6px; }
+.act-btn {
+  width: 32px; height: 32px; border-radius: 7px; border: 1px solid var(--border);
+  background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--text-muted); transition: all 0.15s; text-decoration: none;
+}
+.act-btn:hover        { background: var(--bg); color: var(--text); border-color: #CBD5E1; }
+.act-btn.act-edit:hover { background: #EFF6FF; color: #2563EB; border-color: #BFDBFE; }
+.act-btn.act-manage:hover { background: #FAF5FF; color: #7C3AED; border-color: #DDD6FE; }
+.act-btn.act-del:hover  { background: var(--primary-light); color: var(--primary); border-color: var(--primary-border); }
+
+/* ───── EMPTY STATE ───── */
+.empty-state { padding: 60px 24px; text-align: center; }
+.empty-icon  { font-size: 40px; color: var(--text-muted); margin-bottom: 16px; opacity: 0.5; }
+.empty-title { font-size: 16px; font-weight: 700; color: var(--text-sub); margin-bottom: 6px; }
+.empty-desc  { font-size: 14px; color: var(--text-muted); }
+  </style>
 </head>
 <body>
 
-<!-- ══ SIDEBAR ══ -->
+<!-- ===== SIDEBAR ===== -->
 <div class="sidebar">
-    <div class="sidebar-logo">
-        <img th:src="@{/images/BNKlogo.png}" alt="BNK 부산은행">
+  <div class="sidebar-logo">
+    <img th:src="@{/images/BNKlogo.png}" src="/images/BNKlogo.png" alt="BNK 부산은행">
+  </div>
+  <div class="sidebar-profile">
+    <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
+    <div class="sp-info">
+      <div class="sp-name" th:text="${admin.name} + ' 관리자'">홍길동 관리자</div>
+      <span class="sp-role" th:text="${admin.adminRole}">chief</span>
     </div>
-    <div class="sidebar-profile">
-        <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
-
-        <div class="sp-info">
-            <div class="sp-name" th:text="${admin.name} + ' 관리자'">홍길동 관리자</div>
-            <span class="sp-role" th:text="${admin.adminRole}">chief</span>
-        </div>
-    </div>
-    <ul class="sidebar-menu">
-        <li class="menu-section-title">메인</li>
-        <li><a href="/admin/dashboard" class="menu-item"><i class="fa-solid fa-chart-pie item-icon"></i> 대시보드</a></li>
-        <li><a href="/admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user item-icon"></i> 마이페이지</a></li>
-
-        <li class="menu-section-title">상품 관리</li>
-        <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle item-icon"></i> 상품 등록</a></li>
-        <li><a href="/admin/productListPage" class="menu-item"><i class="fa-solid fa-list item-icon"></i> 상품 조회</a></li>
-
-        <li class="menu-section-title">업무</li>
-        <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check item-icon"></i> 결재 관리</a></li>
-        <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins item-icon"></i> 환전 내역 조회</a></li>
-        <li><a href="/admin/account" class="menu-item"><i class="fa-solid fa-wallet item-icon"></i> 계좌 관리</a></li>
-
-        <li class="menu-section-title">관리</li>
-
-        <!-- 회원/관리자 관리 (하위메뉴 부모) -->
-        <li>
-            <div class="menu-item-parent open" id="parent-members" onclick="toggleSubmenu('submenu-members', this)">
-                <i class="fa-solid fa-users-gear item-icon"></i>
-                <span>회원/관리자 관리</span>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </div>
-            <ul class="submenu open" id="submenu-members">
-                <li><a href="/admin/members" class="submenu-item active">회원 관리</a></li>
-                <li><a href="/admin/adminManage" class="submenu-item">관리자 관리</a></li>
-            </ul>
-        </li>
-
-        <li><a href="/admin/logs" class="menu-item"><i class="fa-solid fa-receipt item-icon"></i> 로그 관리</a></li>
-        <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban item-icon"></i> 블랙리스트</a></li>
-    </ul>
-    <div class="sidebar-footer">
-        <p>2024 BNK Busan Bank</p>
-        <p>IT Strategy Team</p>
-    </div>
+  </div>
+  <ul class="sidebar-menu">
+    <li class="menu-section-title">메인</li>
+    <li><a href="/admin/dashboard"   class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+    <li><a href="/admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
+    <li class="menu-section-title">상품 관리</li>
+    <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
+    <li><a href="/admin/productListPage"     class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
+    <li class="menu-section-title">업무</li>
+    <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
+    <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
+    <li><a href="/admin/account"  class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
+    <li class="menu-section-title">관리</li>
+    <li><a href="/admin/members"   class="menu-item active"><i class="fa-solid fa-users-gear"></i> 회원/관리자 관리</a></li>
+    <li><a href="/admin/logs"      class="menu-item"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
+    <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
+  </ul>
+  <div class="sidebar-footer">
+    <p>&copy; 2025 BNK Busan Bank</p>
+    <p>IT Strategy Team</p>
+  </div>
 </div>
 
-<!-- ══ HEADER ══ -->
+<!-- ===== HEADER ===== -->
 <div class="header">
-    <div class="header-title">관리</div>
-    <div class="header-breadcrumb">
-        <i class="fa-solid fa-chevron-right"></i>
-        <span>회원/관리자 관리</span>
-        <i class="fa-solid fa-chevron-right"></i>
-        <span>회원 관리</span>
+  <div class="header-title">고객 통합 관리</div>
+  <div class="header-breadcrumb">
+    <i class="fa-solid fa-chevron-right"></i><span>관리</span>
+    <i class="fa-solid fa-chevron-right"></i><span>회원/관리자 관리</span>
+  </div>
+  <div class="header-right">
+    <div class="header-user">
+      <div class="hu-avatar"><i class="fa-solid fa-user-tie"></i></div>
+      <span th:text="'관리자 ' + ${admin.name} + ' 님'">홍길동 관리자</span>
+      <i class="fa-solid fa-chevron-down hu-chevron"></i>
     </div>
-    <div class="header-right">
-        <div class="header-user">
-            <div class="hu-avatar"><i class="fa-solid fa-user-tie"></i></div>
-            <span th:text="'관리자 ' + ${admin.name} + ' 님'">홍길동 관리자</span>
-            <i class="fa-solid fa-chevron-down" style="color:var(--text-muted);font-size:11px;"></i>
-        </div>
-    </div>
+  </div>
 </div>
 
-<!-- ══ MAIN ══ -->
+<!-- ===== MAIN ===== -->
 <div class="main-content">
 
-    <div class="page-header">
-        <div class="page-header-left">
-            <h1 class="page-title">회원 관리</h1>
-            <p class="page-subtitle">개인 및 기업 회원 계정을 조회하고 관리합니다.</p>
-        </div>
+  <!-- 페이지 헤더 -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">등록 고객 통합 현황</h1>
+      <p class="page-subtitle">개인 및 기업 고객의 데이터를 한눈에 확인하고 관리합니다.</p>
+    </div>
+  </div>
+
+  <!-- 통계 카드 -->
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-icon red"><i class="fa-solid fa-users"></i></div>
+      <div>
+        <div class="stat-label">전체 고객</div>
+        <div class="stat-value" th:text="${(userList != null ? #lists.size(userList) : 0) + (companyList != null ? #lists.size(companyList) : 0)}">0</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon blue"><i class="fa-solid fa-user"></i></div>
+      <div>
+        <div class="stat-label">개인 고객</div>
+        <div class="stat-value" th:text="${userList != null ? #lists.size(userList) : 0}">0</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon purple"><i class="fa-solid fa-building"></i></div>
+      <div>
+        <div class="stat-label">기업 고객</div>
+        <div class="stat-value" th:text="${companyList != null ? #lists.size(companyList) : 0}">0</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
+      <div>
+        <div class="stat-label">활성 고객</div>
+        <div class="stat-value">-</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       고객 구분 탭 구성
+  ══════════════════════════════ -->
+  <div class="tab-wrapper">
+    <div class="tab-header">
+      <button type="button" class="tab-btn active" onclick="switchTab(event, 'personalTab')">
+        <i class="fa-solid fa-user"></i> 개인 고객
+        <span class="tab-count" th:text="${userList != null ? #lists.size(userList) : 0}">0</span>
+      </button>
+      <button type="button" class="tab-btn" onclick="switchTab(event, 'corporateTab')">
+        <i class="fa-solid fa-building"></i> 기업 고객
+        <span class="tab-count" th:text="${companyList != null ? #lists.size(companyList) : 0}">0</span>
+      </button>
     </div>
 
-    <!-- 통계 -->
-    <div class="stat-grid">
-        <div class="stat-card">
-            <div class="stat-icon red"><i class="fa-solid fa-users"></i></div>
+    <!-- [탭 패널 1] 개인 고객 -->
+    <div id="personalTab" class="tab-panel active">
+      <div class="table-section">
+        <div class="section-header">
+          <div class="section-label">
+            <div class="section-icon blue"><i class="fa-solid fa-user"></i></div>
             <div>
-                <div class="stat-label">전체 회원</div>
-                <div class="stat-value">1,248</div>
+              <div class="section-title-text">개인 고객</div>
+              <div class="section-sub">Individual Users</div>
             </div>
+          </div>
         </div>
-        <div class="stat-card">
-            <div class="stat-icon blue"><i class="fa-solid fa-user"></i></div>
-            <div>
-                <div class="stat-label">개인 회원</div>
-                <div class="stat-value">1,102</div>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon purple"><i class="fa-solid fa-building"></i></div>
-            <div>
-                <div class="stat-label">기업 회원</div>
-                <div class="stat-value">146</div>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon amber"><i class="fa-solid fa-user-xmark"></i></div>
-            <div>
-                <div class="stat-label">비활성 / 정지</div>
-                <div class="stat-value">12</div>
-            </div>
-        </div>
-    </div>
 
-    <!-- 탭: 개인 / 기업 -->
-    <div class="tab-bar">
-        <button class="tab-btn active" onclick="switchTab('personal', this)">
-            <i class="fa-solid fa-user"></i> 개인 회원
-        </button>
-        <button class="tab-btn" onclick="switchTab('corp', this)">
-            <i class="fa-solid fa-building"></i> 기업 회원
-        </button>
-    </div>
-
-    <!-- ── 개인 회원 탭 ── -->
-    <div class="tab-section active" id="tab-personal">
         <div class="filter-bar">
-            <div class="filter-search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="이름, 이메일로 검색..." oninput="filterTable('tbl-personal', this.value)">
-            </div>
-            <div class="filter-select">
-                <select onchange="filterByStatus('tbl-personal', this.value)">
-                    <option value="">전체 상태</option>
-                    <option value="활성">활성</option>
-                    <option value="비활성">비활성</option>
-                    <option value="정지">정지</option>
-                </select>
-            </div>
-            <div class="filter-divider"></div>
-            <div class="filter-count">총 <strong>1,102</strong>명</div>
+          <div class="filter-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="userSearchInput" placeholder="이름 또는 아이디로 검색...">
+          </div>
+          <div class="filter-select">
+            <select id="userStatusFilter">
+              <option value="">전체 상태</option>
+              <option value="ACTIVE">활성</option>
+              <option value="INACTIVE">비활성</option>
+              <option value="SUSPENDED">정지</option>
+            </select>
+          </div>
+          <div class="filter-divider"></div>
+          <div class="filter-count">
+            총 <strong th:text="${userList != null ? #lists.size(userList) : 0}">0</strong>명
+          </div>
         </div>
 
         <div class="table-card">
-            <div class="table-wrap">
-                <table id="tbl-personal">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>회원 정보</th>
-                        <th>이메일</th>
-                        <th>연락처</th>
-                        <th>생년월일</th>
-                        <th>가입일</th>
-                        <th>상태</th>
-                        <th>관리</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td><span class="td-id">#M001</span></td>
-                        <td><div class="td-user-row"><div class="user-avatar ua-blue">김</div><div><div class="td-name">김민준</div><div class="td-sub">개인 회원</div></div></div></td>
-                        <td><span class="td-email">minjun.kim@email.com</span></td>
-                        <td>010-1234-5678</td>
-                        <td>1992.07.14</td>
-                        <td>2023.03.15</td>
-                        <td><span class="badge badge-green"><i class="fa-solid fa-circle" style="font-size:7px"></i> 활성</span></td>
-                        <td><div class="action-btns">
-                            <button class="act-btn act-manage" onclick="openMemberModal({id:'M001',name:'김민준',email:'minjun.kim@email.com',phone:'010-1234-5678',birth:'1992.07.14',joinDate:'2023.03.15',status:'활성',type:'personal'})"><i class="fa-solid fa-sliders"></i></button>
-                            <button class="act-btn act-del" onclick="confirmDelete('M001','김민준')"><i class="fa-solid fa-trash"></i></button>
-                        </div></td>
-                    </tr>
-                    <tr>
-                        <td><span class="td-id">#M002</span></td>
-                        <td><div class="td-user-row"><div class="user-avatar ua-green">이</div><div><div class="td-name">이서연</div><div class="td-sub">개인 회원</div></div></div></td>
-                        <td><span class="td-email">seoyeon.lee@email.com</span></td>
-                        <td>010-9876-5432</td>
-                        <td>1997.02.28</td>
-                        <td>2023.07.22</td>
-                        <td><span class="badge badge-green"><i class="fa-solid fa-circle" style="font-size:7px"></i> 활성</span></td>
-                        <td><div class="action-btns">
-                            <button class="act-btn act-manage" onclick="openMemberModal({id:'M002',name:'이서연',email:'seoyeon.lee@email.com',phone:'010-9876-5432',birth:'1997.02.28',joinDate:'2023.07.22',status:'활성',type:'personal'})"><i class="fa-solid fa-sliders"></i></button>
-                            <button class="act-btn act-del" onclick="confirmDelete('M002','이서연')"><i class="fa-solid fa-trash"></i></button>
-                        </div></td>
-                    </tr>
-                    <tr>
-                        <td><span class="td-id">#M003</span></td>
-                        <td><div class="td-user-row"><div class="user-avatar ua-amber">최</div><div><div class="td-name">최유나</div><div class="td-sub">개인 회원</div></div></div></td>
-                        <td><span class="td-email">yuna.choi@email.com</span></td>
-                        <td>010-3333-4444</td>
-                        <td>2001.05.19</td>
-                        <td>2024.01.10</td>
-                        <td><span class="badge badge-slate"><i class="fa-solid fa-circle" style="font-size:7px"></i> 비활성</span></td>
-                        <td><div class="action-btns">
-                            <button class="act-btn act-manage" onclick="openMemberModal({id:'M003',name:'최유나',email:'yuna.choi@email.com',phone:'010-3333-4444',birth:'2001.05.19',joinDate:'2024.01.10',status:'비활성',type:'personal'})"><i class="fa-solid fa-sliders"></i></button>
-                            <button class="act-btn act-del" onclick="confirmDelete('M003','최유나')"><i class="fa-solid fa-trash"></i></button>
-                        </div></td>
-                    </tr>
-                    <tr>
-                        <td><span class="td-id">#M004</span></td>
-                        <td><div class="td-user-row"><div class="user-avatar ua-purple">강</div><div><div class="td-name">강동원</div><div class="td-sub">개인 회원</div></div></div></td>
-                        <td><span class="td-email">dw.kang@email.com</span></td>
-                        <td>010-7777-2222</td>
-                        <td>1988.12.03</td>
-                        <td>2022.09.05</td>
-                        <td><span class="badge badge-amber"><i class="fa-solid fa-circle" style="font-size:7px"></i> 정지</span></td>
-                        <td><div class="action-btns">
-                            <button class="act-btn act-manage" onclick="openMemberModal({id:'M004',name:'강동원',email:'dw.kang@email.com',phone:'010-7777-2222',birth:'1988.12.03',joinDate:'2022.09.05',status:'정지',type:'personal'})"><i class="fa-solid fa-sliders"></i></button>
-                            <button class="act-btn act-del" onclick="confirmDelete('M004','강동원')"><i class="fa-solid fa-trash"></i></button>
-                        </div></td>
-                    </tr>
-                    <tr>
-                        <td><span class="td-id">#M005</span></td>
-                        <td><div class="td-user-row"><div class="user-avatar ua-teal">윤</div><div><div class="td-name">윤소희</div><div class="td-sub">개인 회원</div></div></div></td>
-                        <td><span class="td-email">sohee.yoon@email.com</span></td>
-                        <td>010-5566-7788</td>
-                        <td>1995.04.11</td>
-                        <td>2024.03.28</td>
-                        <td><span class="badge badge-green"><i class="fa-solid fa-circle" style="font-size:7px"></i> 활성</span></td>
-                        <td><div class="action-btns">
-                            <button class="act-btn act-manage" onclick="openMemberModal({id:'M005',name:'윤소희',email:'sohee.yoon@email.com',phone:'010-5566-7788',birth:'1995.04.11',joinDate:'2024.03.28',status:'활성',type:'personal'})"><i class="fa-solid fa-sliders"></i></button>
-                            <button class="act-btn act-del" onclick="confirmDelete('M005','윤소희')"><i class="fa-solid fa-trash"></i></button>
-                        </div></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="pagination">
-                <a href="#" class="page-btn active">1</a>
-                <a href="#" class="page-btn">2</a>
-                <a href="#" class="page-btn">3</a>
-                <a href="#" class="page-btn"><i class="fa-solid fa-chevron-right"></i></a>
-            </div>
+          <div class="table-wrap">
+            <table id="userTable">
+              <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>아이디</th>
+                  <th>이름</th>
+                  <th>핸드폰번호</th>
+                  <th>생년월일</th>
+                  <th>이메일</th>
+                  <th>상태</th>
+                  <th>성별</th>
+                  <th>영문명</th>
+                  <th>주소</th>
+                  <th>생성일</th>
+                  <th>마지막 로그인</th>
+                  <th>관리</th>
+                </tr>
+              </thead>
+              <tbody th:if="${userList != null and !#lists.isEmpty(userList)}">
+                <tr th:each="user : ${userList}"
+                    th:attr="data-name=${user.name}, data-login=${user.login_id}, data-status=${user.status}">
+                  <td><span class="td-id" th:text="'#' + ${user.user_id}">#001</span></td>
+                  <td th:text="${user.login_id}"></td>
+                  <td><span class="td-name" th:text="${user.name}">홍길동</span></td>
+                  <td th:text="${user.phone}"></td>
+                  <td th:text="${user.birth}"></td>
+                  <td th:text="${user.email}"></td>
+                  <td>
+                    <span th:if="${user.status == 'ACTIVE'}"    class="badge badge-green"><i class="fa-solid fa-circle-check"></i> 활성</span>
+                    <span th:if="${user.status == 'INACTIVE'}"  class="badge badge-slate"><i class="fa-solid fa-circle-minus"></i> 비활성</span>
+                    <span th:if="${user.status == 'SUSPENDED'}" class="badge badge-red"><i class="fa-solid fa-ban"></i> 정지</span>
+                    <span th:if="${user.status != 'ACTIVE' and user.status != 'INACTIVE' and user.status != 'SUSPENDED'}"
+                          class="badge badge-slate" th:text="${user.status}"></span>
+                  </td>
+                  <td th:text="${user.gender}"></td>
+                  <td th:text="${user.e_name}"></td>
+                  <td th:text="${user.address}"></td>
+                  <td th:text="${user.reg_dt}"></td>
+                  <td th:text="${user.last_lgn_at}"></td>
+                  <td>
+                    <div class="action-btns">
+                      <a class="act-btn act-edit"
+                         th:href="@{/admin/updateMemberPage(user_id=${user.user_id})}"
+                         title="수정">
+                        <i class="fa-solid fa-user-pen"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody th:if="${userList == null or #lists.isEmpty(userList)}">
+                <tr><td colspan="13">
+                  <div class="empty-state">
+                    <div class="empty-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="empty-title">등록된 개인 고객이 없습니다</div>
+                    <div class="empty-desc">개인 고객 데이터가 존재하지 않습니다.</div>
+                  </div>
+                </td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
     </div>
 
-    <!-- ── 기업 회원 탭 ── -->
-    <div class="tab-section" id="tab-corp">
+    <!-- [탭 패널 2] 기업 고객 -->
+    <div id="corporateTab" class="tab-panel">
+      <div class="table-section">
+        <div class="section-header">
+          <div class="section-label">
+            <div class="section-icon purple"><i class="fa-solid fa-building"></i></div>
+            <div>
+              <div class="section-title-text">기업 고객</div>
+              <div class="section-sub">Corporate Clients</div>
+            </div>
+          </div>
+        </div>
+
         <div class="filter-bar">
-            <div class="filter-search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="기업명, 담당자, 이메일로 검색..." oninput="filterTable('tbl-corp', this.value)">
-            </div>
-            <div class="filter-select">
-                <select>
-                    <option value="">전체 업종</option>
-                    <option>제조업</option>
-                    <option>IT / 서비스</option>
-                    <option>유통 / 무역</option>
-                    <option>건설</option>
-                </select>
-            </div>
-            <div class="filter-select">
-                <select onchange="filterByStatus('tbl-corp', this.value)">
-                    <option value="">전체 상태</option>
-                    <option value="활성">활성</option>
-                    <option value="비활성">비활성</option>
-                </select>
-            </div>
-            <div class="filter-divider"></div>
-            <div class="filter-count">총 <strong>146</strong>개사</div>
+          <div class="filter-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="companySearchInput" placeholder="기업명 또는 사업자번호로 검색...">
+          </div>
+          <div class="filter-select">
+            <select id="companyStatusFilter">
+              <option value="">전체 상태</option>
+              <option value="ACTIVE">활성</option>
+              <option value="INACTIVE">비활성</option>
+              <option value="SUSPENDED">정지</option>
+            </select>
+          </div>
+          <div class="filter-divider"></div>
+          <div class="filter-count">
+            총 <strong th:text="${companyList != null ? #lists.size(companyList) : 0}">0</strong>개사
+          </div>
         </div>
 
         <div class="table-card">
-            <div class="table-wrap">
-                <table id="tbl-corp">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>기업 정보</th>
-                        <th>담당자 이메일</th>
-                        <th>연락처</th>
-                        <th>업종</th>
-                        <th>사업자번호</th>
-                        <th>가입일</th>
-                        <th>상태</th>
-                        <th>관리</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td><span class="td-id">#C001</span></td>
-                        <td><div class="td-user-row"><div class="user-avatar ua-purple">㈜</div><div><div class="td-name">㈜부산테크</div><div class="td-sub">담당자: 박지호</div></div></div></td>
-                        <td><span class="td-email">jiho.park@busantech.com</span></td>
-                        <td>051-123-4567</td>
-                        <td><span class="badge badge-blue">IT / 서비스</span></td>
-                        <td>123-45-67890</td>
-                        <td>2022.11.08</td>
-                        <td><span class="badge badge-green"><i class="fa-solid fa-circle" style="font-size:7px"></i> 활성</span></td>
-                        <td><div class="action-btns">
-                            <button class="act-btn act-manage" onclick="openMemberModal({id:'C001',name:'㈜부산테크',email:'jiho.park@busantech.com',phone:'051-123-4567',birth:'(담당자) 박지호',joinDate:'2022.11.08',status:'활성',type:'corp'})"><i class="fa-solid fa-sliders"></i></button>
-                            <button class="act-btn act-del" onclick="confirmDelete('C001','㈜부산테크')"><i class="fa-solid fa-trash"></i></button>
-                        </div></td>
-                    </tr>
-                    <tr>
-                        <td><span class="td-id">#C002</span></td>
-                        <td><div class="td-user-row"><div class="user-avatar ua-teal">㈜</div><div><div class="td-name">정승현무역㈜</div><div class="td-sub">담당자: 정승현</div></div></div></td>
-                        <td><span class="td-email">sh.jung@jstrade.com</span></td>
-                        <td>051-987-6543</td>
-                        <td><span class="badge badge-amber">유통 / 무역</span></td>
-                        <td>234-56-78901</td>
-                        <td>2023.09.30</td>
-                        <td><span class="badge badge-green"><i class="fa-solid fa-circle" style="font-size:7px"></i> 활성</span></td>
-                        <td><div class="action-btns">
-                            <button class="act-btn act-manage" onclick="openMemberModal({id:'C002',name:'정승현무역㈜',email:'sh.jung@jstrade.com',phone:'051-987-6543',birth:'(담당자) 정승현',joinDate:'2023.09.30',status:'활성',type:'corp'})"><i class="fa-solid fa-sliders"></i></button>
-                            <button class="act-btn act-del" onclick="confirmDelete('C002','정승현무역㈜')"><i class="fa-solid fa-trash"></i></button>
-                        </div></td>
-                    </tr>
-                    <tr>
-                        <td><span class="td-id">#C003</span></td>
-                        <td><div class="td-user-row"><div class="user-avatar ua-red">㈜</div><div><div class="td-name">한빛건설㈜</div><div class="td-sub">담당자: 한지수</div></div></div></td>
-                        <td><span class="td-email">jisu.han@hanbit.co.kr</span></td>
-                        <td>02-555-1234</td>
-                        <td><span class="badge badge-slate">건설</span></td>
-                        <td>345-67-89012</td>
-                        <td>2021.06.14</td>
-                        <td><span class="badge badge-slate"><i class="fa-solid fa-circle" style="font-size:7px"></i> 비활성</span></td>
-                        <td><div class="action-btns">
-                            <button class="act-btn act-manage" onclick="openMemberModal({id:'C003',name:'한빛건설㈜',email:'jisu.han@hanbit.co.kr',phone:'02-555-1234',birth:'(담당자) 한지수',joinDate:'2021.06.14',status:'비활성',type:'corp'})"><i class="fa-solid fa-sliders"></i></button>
-                            <button class="act-btn act-del" onclick="confirmDelete('C003','한빛건설㈜')"><i class="fa-solid fa-trash"></i></button>
-                        </div></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="pagination">
-                <a href="#" class="page-btn active">1</a>
-                <a href="#" class="page-btn">2</a>
-                <a href="#" class="page-btn"><i class="fa-solid fa-chevron-right"></i></a>
-            </div>
+          <div class="table-wrap">
+            <table id="companyTable">
+              <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>사업자번호</th>
+                  <th>아이디</th>
+                  <th>기업명</th>
+                  <th>대표번호</th>
+                  <th>설립일</th>
+                  <th>이메일</th>
+                  <th>상태</th>
+                  <th>영문명</th>
+                  <th>생성일</th>
+                  <th>관리</th>
+                </tr>
+              </thead>
+              <tbody th:if="${companyList != null and !#lists.isEmpty(companyList)}">
+                <tr th:each="company : ${companyList}"
+                    th:attr="data-name=${company.name}, data-cid=${company.company_id}, data-status=${company.status}">
+                  <td><span class="td-id" th:text="'#' + ${company.company_user_id}">#001</span></td>
+                  <td th:text="${company.company_id}"></td>
+                  <td th:text="${company.login_id}"></td>
+                  <td><span class="td-name" th:text="${company.name}">기업명</span></td>
+                  <td th:text="${company.phone}"></td>
+                  <td th:text="${company.birth}"></td>
+                  <td th:text="${company.email}"></td>
+                  <td>
+                    <span th:if="${company.status == 'ACTIVE'}"    class="badge badge-green"><i class="fa-solid fa-circle-check"></i> 활성</span>
+                    <span th:if="${company.status == 'INACTIVE'}"  class="badge badge-slate"><i class="fa-solid fa-circle-minus"></i> 비활성</span>
+                    <span th:if="${company.status == 'SUSPENDED'}" class="badge badge-red"><i class="fa-solid fa-ban"></i> 정지</span>
+                    <span th:if="${company.status != 'ACTIVE' and company.status != 'INACTIVE' and company.status != 'SUSPENDED'}"
+                          class="badge badge-slate" th:text="${company.status}"></span>
+                  </td>
+                  <td th:text="${company.e_name}"></td>
+                  <td th:text="${company.created_at}"></td>
+                  <td>
+                    <div class="action-btns">
+                      <a class="act-btn act-manage"
+                         th:href="@{/admin/updateCompanyMemberPage(company_user_id=${company.company_user_id})}"
+                         title="관리">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody th:if="${companyList == null or #lists.isEmpty(companyList)}">
+                <tr><td colspan="11">
+                  <div class="empty-state">
+                    <div class="empty-icon"><i class="fa-solid fa-building"></i></div>
+                    <div class="empty-title">등록된 기업 고객이 없습니다</div>
+                    <div class="empty-desc">기업 고객 데이터가 존재하지 않습니다.</div>
+                  </div>
+                </td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
 </div><!-- /main-content -->
 
-
-<!-- ══ MODAL: 회원 정보 수정 ══ -->
-<div class="modal-backdrop" id="memberModal" onclick="handleBackdrop(event,'memberModal')">
-    <div class="modal">
-        <div class="modal-header">
-            <div class="modal-header-icon mhi-blue" id="mhi">
-                <i class="fa-solid fa-user" id="mhi-icon"></i>
-            </div>
-            <div class="modal-header-text">
-                <div class="modal-uid" id="m-uid"></div>
-                <div class="modal-uname" id="m-uname"></div>
-            </div>
-            <button class="modal-close" onclick="closeModal('memberModal')"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-
-        <div class="modal-body">
-            <!-- 상태 -->
-            <div class="modal-section">
-                <div class="modal-section-title"><i class="fa-solid fa-circle-dot"></i> 계정 상태</div>
-                <div class="status-banner sb-active" id="m-sb">
-                    <div class="sb-icon"><i class="fa-solid fa-circle-check" id="m-sb-icon"></i></div>
-                    <div>
-                        <div class="sb-label">현재 상태</div>
-                        <div class="sb-value" id="m-sb-val">활성</div>
-                    </div>
-                    <div style="margin-left:auto;">
-                        <select class="form-select" id="m-sel-status" style="width:140px;" onchange="setMemberStatus(this.value)">
-                            <option value="활성">활성</option>
-                            <option value="비활성">비활성</option>
-                            <option value="정지">정지</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 기본 정보 -->
-            <div class="modal-section">
-                <div class="modal-section-title"><i class="fa-solid fa-circle-info"></i> 기본 정보 수정</div>
-                <div class="modal-form-grid">
-                    <div>
-                        <label class="form-label" id="m-lbl-name">이름</label>
-                        <input class="form-input" id="m-name" type="text">
-                    </div>
-                    <div>
-                        <label class="form-label" id="m-lbl-birth">생년월일 / 담당자</label>
-                        <input class="form-input" id="m-birth" type="text">
-                    </div>
-                    <div>
-                        <label class="form-label">이메일</label>
-                        <input class="form-input" id="m-email" type="email">
-                    </div>
-                    <div>
-                        <label class="form-label">연락처</label>
-                        <input class="form-input" id="m-phone" type="text">
-                    </div>
-                    <div>
-                        <label class="form-label">가입일 <span style="color:var(--text-muted);font-weight:400">(읽기 전용)</span></label>
-                        <input class="form-input" id="m-joindate" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 비밀번호 초기화 -->
-            <div class="modal-section">
-                <div class="modal-section-title"><i class="fa-solid fa-key"></i> 비밀번호 초기화</div>
-                <div class="pw-reset-box">
-                    <i class="fa-solid fa-lock"></i>
-                    <div style="flex:1">
-                        <div class="pw-reset-title">임시 비밀번호 발송</div>
-                        <div class="pw-reset-sub">등록된 이메일로 임시 비밀번호를 발송합니다.</div>
-                    </div>
-                    <button class="btn btn-ghost" style="height:36px;font-size:12px;" onclick="showToast('임시 비밀번호가 이메일로 발송되었습니다.','success')">
-                        <i class="fa-solid fa-paper-plane"></i> 발송
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal-footer">
-            <button class="modal-btn modal-btn-danger" onclick="confirmDelete(currentData?.id, currentData?.name)">
-                <i class="fa-solid fa-trash"></i> 삭제
-            </button>
-            <button class="modal-btn modal-btn-close" onclick="closeModal('memberModal')"><i class="fa-solid fa-xmark"></i> 취소</button>
-            <button class="modal-btn modal-btn-save" onclick="saveMember()"><i class="fa-solid fa-floppy-disk"></i> 저장</button>
-        </div>
-    </div>
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast">
-    <i class="fa-solid fa-circle-check"></i>
-    <span id="toast-msg"></span>
-</div>
-
 <script>
-    /* ── SIDEBAR SUBMENU ── */
-    function toggleSubmenu(id, parent) {
-        const menu = document.getElementById(id);
-        const isOpen = menu.classList.contains('open');
-        menu.classList.toggle('open', !isOpen);
-        parent.classList.toggle('open', !isOpen);
-    }
+  /* ───── 탭 전환 스크립트 ───── */
+  function switchTab(event, tabId) {
+    document.querySelectorAll('.tab-panel').forEach(panel => {
+      panel.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
 
-    /* ── TAB ── */
-    function switchTab(tab, btn) {
-        document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('tab-' + tab).classList.add('active');
-        btn.classList.add('active');
-    }
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
 
-    /* ── FILTER ── */
-    function filterTable(id, kw) {
-        kw = kw.toLowerCase();
-        document.querySelectorAll('#' + id + ' tbody tr').forEach(r =>
-            r.style.display = r.textContent.toLowerCase().includes(kw) ? '' : 'none'
-        );
-    }
-    function filterByStatus(id, val) {
-        document.querySelectorAll('#' + id + ' tbody tr').forEach(r => {
-            r.style.display = (!val || r.textContent.includes(val)) ? '' : 'none';
-        });
-    }
+  /* 개인 고객 필터 */
+  const userSearch = document.getElementById('userSearchInput');
+  const userStatus = document.getElementById('userStatusFilter');
+  function filterUsers() {
+    const kw = userSearch.value.toLowerCase().trim();
+    const st = userStatus.value;
+    document.querySelectorAll('#userTable tbody tr[data-name]').forEach(row => {
+      const name  = (row.getAttribute('data-name')  || '').toLowerCase();
+      const login = (row.getAttribute('data-login') || '').toLowerCase();
+      const status = row.getAttribute('data-status') || '';
+      row.style.display = (!kw || name.includes(kw) || login.includes(kw)) && (!st || status === st) ? '' : 'none';
+    });
+  }
+  userSearch.addEventListener('input',  filterUsers);
+  userStatus.addEventListener('change', filterUsers);
 
-    /* ── MODAL ── */
-    let currentData = null;
-
-    const STATUS_CFG = {
-        '활성':   { cls: 'sb-active',   icon: 'fa-circle-check', label: '활성' },
-        '비활성': { cls: 'sb-inactive', icon: 'fa-circle-xmark', label: '비활성' },
-        '정지':   { cls: 'sb-blocked',  icon: 'fa-ban',          label: '정지' },
-    };
-
-    function openMemberModal(d) {
-        currentData = d;
-        document.getElementById('m-uid').textContent = '#' + d.id;
-        document.getElementById('m-uname').textContent = d.name;
-        document.getElementById('m-name').value = d.name;
-        document.getElementById('m-email').value = d.email;
-        document.getElementById('m-phone').value = d.phone;
-        document.getElementById('m-birth').value = d.birth;
-        document.getElementById('m-joindate').value = d.joinDate;
-        document.getElementById('m-sel-status').value = d.status;
-
-        // 아이콘 / 라벨
-        const isCorp = d.type === 'corp';
-        document.getElementById('mhi').className = 'modal-header-icon ' + (isCorp ? 'mhi-teal' : 'mhi-blue');
-        document.getElementById('mhi-icon').className = 'fa-solid ' + (isCorp ? 'fa-building' : 'fa-user');
-        document.getElementById('m-lbl-name').textContent = isCorp ? '기업명' : '이름';
-        document.getElementById('m-lbl-birth').textContent = isCorp ? '담당자' : '생년월일';
-
-        setMemberStatus(d.status);
-        openModal('memberModal');
-    }
-
-    function setMemberStatus(val) {
-        const cfg = STATUS_CFG[val] || STATUS_CFG['활성'];
-        const sb = document.getElementById('m-sb');
-        sb.className = 'status-banner ' + cfg.cls;
-        document.getElementById('m-sb-icon').className = 'fa-solid ' + cfg.icon;
-        document.getElementById('m-sb-val').textContent = cfg.label;
-    }
-
-    function saveMember() {
-        closeModal('memberModal');
-        showToast('회원 정보가 저장되었습니다.', 'success');
-    }
-
-    function openModal(id) {
-        document.getElementById(id).classList.add('is-open');
-        document.body.style.overflow = 'hidden';
-    }
-    function closeModal(id) {
-        document.getElementById(id).classList.remove('is-open');
-        document.body.style.overflow = '';
-    }
-    function handleBackdrop(e, id) {
-        if (e.target === document.getElementById(id)) closeModal(id);
-    }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal('memberModal'); });
-
-    /* ── DELETE ── */
-    function confirmDelete(id, name) {
-        if (confirm(name + ' (' + id + ') 을(를) 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) {
-            closeModal('memberModal');
-            showToast(name + ' 계정이 삭제되었습니다.', 'success');
-        }
-    }
-
-    /* ── TOAST ── */
-    let toastTimer;
-    function showToast(msg, type = 'success') {
-        const el = document.getElementById('toast');
-        el.querySelector('i').className = type === 'success' ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark';
-        el.querySelector('i').style.color = type === 'success' ? '#4ADE80' : '#F87171';
-        document.getElementById('toast-msg').textContent = msg;
-        el.className = 'toast show';
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
-    }
+  /* 기업 고객 필터 */
+  const companySearch = document.getElementById('companySearchInput');
+  const companyStatus = document.getElementById('companyStatusFilter');
+  function filterCompanies() {
+    const kw = companySearch.value.toLowerCase().trim();
+    const st = companyStatus.value;
+    document.querySelectorAll('#companyTable tbody tr[data-name]').forEach(row => {
+      const name = (row.getAttribute('data-name') || '').toLowerCase();
+      const cid  = (row.getAttribute('data-cid')  || '').toLowerCase();
+      const status = row.getAttribute('data-status') || '';
+      row.style.display = (!kw || name.includes(kw) || cid.includes(kw)) && (!st || status === st) ? '' : 'none';
+    });
+  }
+  companySearch.addEventListener('input',  filterCompanies);
+  companyStatus.addEventListener('change', filterCompanies);
 </script>
 </body>
 </html>

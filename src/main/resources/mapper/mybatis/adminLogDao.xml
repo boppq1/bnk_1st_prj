@@ -47,11 +47,11 @@
     </insert>
     
     <select id="userLog" resultMap="apiLogDtoMap">
-    	select * from api_logs
+    	select * from api_logs order by REG_DT desc
     </select>
     
     <select id="adminLog" resultMap="adminActionLogDtoMap">
-    	select * from admin_action_logs
+    	select * from admin_action_logs order by REG_DT desc
     </select>
     
 </mapper>

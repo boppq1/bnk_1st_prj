@@ -3,14 +3,13 @@
 <body>
 
 <aside th:fragment="foreignSidebar" class="product-sidebar">
-
+	<div th:if="${name != null}">
     <div class="sidebar-profile">
         <div class="profile-bank">BNK 부산은행 외환</div>
-        <div class="profile-name">외환 고객님 반갑습니다</div>
-        <div class="profile-date">최근 접속일 2026.05.06</div>
+         <div class="profile-name" th:text="|*{name} 님 반갑습니다|"></div>
     </div>
-
-    <button class="logout-btn">LOGOUT</button>
+	</div>
+<!--     <button class="logout-btn">LOGOUT</button> -->
 	<button type="button" class="zoom-toggle-btn" id="zoomToggleBtn">
 	    화면 크게 보기
 	</button>
