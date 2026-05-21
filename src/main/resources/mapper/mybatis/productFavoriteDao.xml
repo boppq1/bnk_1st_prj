@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.product.dao.ProductFavoriteDao">
+
+    <select id="selectPersonalUsrNoByLoginId" resultType="long">
+        SELECT usr_no
+        FROM USERS
+        WHERE login_id = #{loginId}
+    </select>
+
+    <select id="selectCompanyUsrNoByLoginId" resultType="long">
+        SELECT com_usr_no
+        FROM COMPANY_USERS
+        WHERE login_id = #{loginId}
+    </select>
+
+    <select id="existsFavorite"
+            parameterType="com.example.demo.product.dto.request.ProductFavoriteRequestDto"
+            resultType="int">
+        SELECT COUNT(*)
+        FROM FAVORITE_PRODUCTS
+        WHERE usr_type = #{usrType}
+          AND usr_no = #{usrNo}
+          AND prod_no = #{productId}
+    </select>
+
+    <insert id="insertFavorite"
+            parameterType="com.example.demo.product.dto.request.ProductFavoriteRequestDto">
+        INSERT INTO FAVORITE_PRODUCTS (
+            fav_no,
+            usr_type,
+            usr_no,
+            prod_no,
+            reg_dt
+        ) VALUES (
+            SEQ_FAVORITE_PRODUCTS.NEXTVAL,
+            #{usrType},
+            #{usrNo},
+            #{productId},
+            SYSDATE
+        )
+    </insert>
+
+    <delete id="deleteFavorite"
+            parameterType="com.example.demo.product.dto.request.ProductFavoriteRequestDto">
+        DELETE FROM FAVORITE_PRODUCTS
+        WHERE usr_type = #{usrType}
+          AND usr_no = #{usrNo}
+          AND prod_no = #{productId}
+    </delete>
+
+    <select id="selectFavoriteProducts"
+            parameterType="com.example.demo.product.dto.request.ProductFavoriteRequestDto"
+            resultType="com.example.demo.product.dto.response.ProductListResponseDto">
+        SELECT
+            p.prod_no AS productId,
+            p.prod_nm AS productName,
+            p.prod_type AS productType,
+            p.tgt_lrg AS targetLarge,
+            p.tgt_dtl AS targetDetail,
+            p.prod_desc AS productDesc,
+            p.rate_cat AS rateCategory,
+            p.min_prd_mon AS minPeriodMonth,
+            p.max_prd_mon AS maxPeriodMonth,
+            p.min_amt AS minAmount,
+            p.max_amt AS maxAmount,
+            NVL(MIN(r.base_rate), 0) AS minRate,
+            NVL(MAX(NVL(r.mtr_rate, r.base_rate) + NVL(r.pref_rate, 0)), 0) AS maxRate
+        FROM FAVORITE_PRODUCTS f
+        JOIN PRODUCTS p
+          ON f.prod_no = p.prod_no
+        LEFT JOIN INTEREST_RATES r
+          ON p.prod_no = r.prod_no
+         AND r.is_active = 'Y'
+        WHERE f.usr_type = #{usrType}
+          AND f.usr_no = #{usrNo}
+          AND p.active = 'Y'
+        GROUP BY
+            p.prod_no,
+            p.prod_nm,
+            p.prod_type,
+            p.tgt_lrg,
+            p.tgt_dtl,
+            p.prod_desc,
+            p.rate_cat,
+            p.min_prd_mon,
+            p.max_prd_mon,
+            p.min_amt,
+            p.max_amt,
+            f.reg_dt
+        ORDER BY f.reg_dt DESC
+    </select>
+
+</mapper>

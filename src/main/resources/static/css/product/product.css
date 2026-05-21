@@ -1329,17 +1329,11 @@ a { text-decoration: none; color: inherit; }
 
 /* 돋보기 */
 .zoom-toggle-btn::after {
-
-    content: "＋";
-
+    content: "+";
     position: absolute;
-
     right: 18px;
-
     font-size: 18px;
-
     font-weight: 900;
-
     color: #e31b23;
 }
 
