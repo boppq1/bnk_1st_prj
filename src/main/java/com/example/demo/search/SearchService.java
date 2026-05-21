@@ -26,7 +26,7 @@ public class SearchService {
 	 * DB LIKE 방식 (현재 기본값, XML 참고)
 	 */
 	public List<SearchDto> findByKeywordChars(String query) {
-
+		
 		// ── 방법 1: DB에서 LIKE로 검색 (기본값) ──────────────────
 		return searchDao.selectByKeyword(query);
 

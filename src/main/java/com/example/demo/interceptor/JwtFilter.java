@@ -1,4 +1,4 @@
-//package com.example.demo.admin.interceptor;
+//package com.example.demo.interceptor;
 //
 //import com.example.demo.jwt.JwtUtil;
 //import jakarta.servlet.FilterChain;
