@@ -227,7 +227,7 @@
             <span th:if="${p.approve_status == '승인'}"  class="badge badge-green">
               <i class="fa-solid fa-circle-check"></i> 승인
             </span>
-            <span th:if="${p.approve_status == 'SUBMIT'}" class="badge badge-amber">
+            <span th:if="${p.approve_status == '검토중'}" class="badge badge-amber">
               <i class="fa-solid fa-clock"></i> 검토 중
             </span>
             <span th:if="${p.approve_status == '반려'}"  class="badge badge-red">
@@ -465,7 +465,7 @@
   /* 상태별 설정 맵 */
   const STATUS_MAP = {
     '승인':   { bannerClass: 'status-green', icon: 'fa-circle-check',  label: '승인 완료' },
-    'SUBMIT': { bannerClass: 'status-amber', icon: 'fa-clock',         label: '검토 중'   },
+    '검토중': { bannerClass: 'status-amber', icon: 'fa-clock',         label: '검토 중'   },
     '반려':   { bannerClass: 'status-red',   icon: 'fa-circle-xmark',  label: '반려'      },
     'SAVE':   { bannerClass: 'status-slate', icon: 'fa-floppy-disk',   label: '임시 저장' }
   };

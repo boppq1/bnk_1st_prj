@@ -90,7 +90,7 @@ public class AdminProductService {
     public void updateProduct(ProductDto dto) {
 
         productDao.updatePro(dto);
-
+        productDao.submitProductRequest(dto.getProduct_id());
         productDao.updateProPdf(dto);
     }
 
@@ -111,6 +111,14 @@ public class AdminProductService {
         productDao.deleteProductRequest(product_no);
 
         productDao.deletePro(product_no);
+    }
+
+    public int getCountByType(String product_type) {
+        return productDao.getCountByType(product_type);
+    }
+
+    public int getCountByStatus(String approve_status) {
+        return productDao.getCountByStatus(approve_status);
     }
 
 }
