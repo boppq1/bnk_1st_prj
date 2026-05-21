@@ -5,6 +5,7 @@
 <title>사용자정보변경</title>
 <link rel="stylesheet" th:href="@{/css/header.css}">
 <link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <link rel="stylesheet" th:href='@{/css/personal/changeUserInfo.css}'>
 </head>
 <body>
@@ -17,9 +18,9 @@
 			<table>
 				<tr>
 					<td class="lbl">성명(실명)</td>
-					<td th:text="*{userInfo.usr_nm}">홍길동</td>
+					<td><input type='text' th:value="${userInfo.usr_nm}" id="usr_nm"></td>
 					<td class="lbl">회원아이디</td>
-					<td>A0840776</td>
+					<td th:text="*{userInfo.login_id}">A0840776</td>
 				</tr>
 				<tr>
 					<td class="lbl">고객상태</td>
@@ -38,7 +39,7 @@
 					<td class="lbl" >휴대폰번호</td>
 					<td>
 						<div class="row">
-							<input type="text" name="tel_no" id="tel_no" style="width: 200px" th:placeholder="${userInfo.tel_no}">
+							<input type="text" name="tel_no" id="tel_no" style="width: 200px" th:value="${userInfo.tel_no}">
 							<button class="btn" type="button" id="phonBtn">변경</button>
 						</div>
 					</td>
@@ -48,24 +49,24 @@
 					<td>
 						<div class="addr-line">
 							<input type="text"  id="zip_cd" name="zip_cd" readonly
-								th:placeholder="${userInfo.zip_cd}" style="width: 120px">
+								th:value="${userInfo.zip_cd}" style="width: 120px">
 							<button class="btn" type="button" onclick="DaumPostcode()">우편번호
 								찾기</button>
 						</div>
 						<div class="addr-line">
 							<input type="text" id="addr" name="addr" readonly
-								th:placeholder="${userInfo.addr}" style="width: 400px">
+								th:value="${userInfo.addr}" style="width: 400px">
 						</div>
 						<div class="addr-line">
 							<input type="text"  id="addr_dtl" name="addr_dtl"
-								th:placeholder="userInfo.addr_dtl" style="width: 400px">
+								th:value="${userInfo.addr_dtl}" style="width: 400px">
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td class="lbl">이메일<span class="req">*</span></td>
 					<td><input type="email" name="email" id="email"
-						th:placeholder="${userInfo.email}" style="width: 280px"></td>
+						th:value="${userInfo.email}" style="width: 280px"></td>
 				</tr>
 			</table>
 		</div>
@@ -76,7 +77,6 @@
 			<table>
 				<tr>
 					<td class="lbl">생년월일</td>
-					<td><input type="date" name="birth_dt" id="birth_dt"></td>
 					<td th:text="*{userInfo.birth_dt}"></td>
 				</tr>
 			</table>
@@ -90,7 +90,7 @@
 					<td class="lbl">영문성명</td>
 					<td>
 						<div class="row">
-							<input type="text" name="eng_nm" th:placeholder="${userInfo.eng_nm}" style="width: 300px">
+							<input type="text" id="eng_nm" name="eng_nm" th:value="${userInfo.eng_nm}" style="width: 300px">
 							<button class="btn" type="button">영문변환</button>
 						</div>
 						<div class="note">※ 영문 성명 입력 시 Full Name을 정확하게 입력해주세요.</div>
@@ -101,7 +101,7 @@
 
 		<!-- ════ 변경 버튼 ════ -->
 		<div class="submit-wrap">
-			<button class="submit-btn" type="button" id="btn">변경</button>
+			<button class="submit-btn" type="button" id="changeBtn">변경</button>
 		</div>
 
 	</div>
@@ -153,7 +153,7 @@
 				alert("전화번호를 입력해주세요");
 				return
 			}
-			fetch('/changeUserInfo?tel_no=' + tel)
+			fetch('/checkPhon?tel_no=' + tel)
 				.then(response => {
 					if(response.ok){
 						alert("변경가능합니다");
@@ -164,6 +164,37 @@
 				.catch(error => console.error("에러발생", error));		
 		}
 		// 전체 정보 보내서 변경보내기
+		
+		document.querySelector("#changeBtn").addEventListener('click', function(e){
+	    const tel_no = document.querySelector("#tel_no").value;
+	    const zip_cd = document.querySelector("#zip_cd").value;
+	    const addr = document.querySelector("#addr").value;
+	    const addr_dtl = document.querySelector("#addr_dtl").value;
+	    const email = document.querySelector("#email").value;
+	    const eng_nm = document.querySelector("#eng_nm").value;
+	    const usr_nm = document.querySelector("#usr_nm").value;
+	    
+   
+    const data = { tel_no, zip_cd, addr, addr_dtl, email, eng_nm, usr_nm };
+        
+  
+    fetch('/changeUserInfo', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json' // 나 지금 JSON 보낸다고 서버에 알림
+        },
+        body: JSON.stringify(data)
+	    })
+	    .then(response => {
+	        if(response === '성공' || response != null){
+	            alert("변경되었습니다.");
+	            location.href="/personal/myPage";
+	        } else {
+	            alert("변경 실패"); 
+	        }
+	    });
+	});
+		
 	</script>
 </body>
 </html>
