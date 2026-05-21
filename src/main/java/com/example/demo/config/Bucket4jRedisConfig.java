@@ -1,4 +1,4 @@
-//package com.example.demo.admin.config;
+//package com.example.demo.config;
 //
 //import java.time.Duration;
 //

@@ -1,35 +1,43 @@
 /* =========================
-   footer.css
+   footer.css (전체본)
 ========================= */
 @charset "UTF-8";
 
-/* 초기화 */
+/* 초기화 및 전체 화면 높이 확보 */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* 
+   [수정] html과 body가 브라우저 화면의 전체 높이를 차지하게 하고,
+   세로형 Flexbox로 지정하여 푸터를 아래로 밀어낼 준비를 합니다.
+*/
+html, body {
+    height: 100%;
+}
+
 body {
     width: 100%;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 /* =========================
    footer 전체
 ========================= */
 footer {
-
     width: 100%;
-
     border-top: 1px solid #ddd;
-
     display: flex;
     justify-content: center;
-
     padding: 35px 0;
-
     background: #fff;
+    
+    /* [추가] 상단 마진을 auto로 주어 빈 공간을 전부 밀어내고 최하단에 붙도록 만듭니다. */
+    margin-top: auto; 
 }
 
 /* =========================
@@ -37,10 +45,8 @@ footer {
    (header랑 폭 맞춤)
 ========================= */
 #bigcontainer {
-
     width: 100%;
     max-width: 1100px;
-
     padding: 0 30px;
 }
 
@@ -48,36 +54,25 @@ footer {
    상단 링크 영역
 ========================= */
 #container {
-
     display: flex;
-
     flex-wrap: wrap;
-
     justify-content: center;
     align-items: center;
-
     gap: 10px;
-
     margin-bottom: 25px;
 }
 
 /* 링크 */
 #container a {
-
     text-decoration: none;
-
     color: #555;
-
     font-size: 12px;
-
     white-space: nowrap;
-
     transition: 0.2s;
 }
 
 /* hover */
 #container a:hover {
-
     color: #e60012;
 }
 
@@ -85,21 +80,14 @@ footer {
    고객센터 영역
 ========================= */
 #container2 {
-
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     flex-wrap: wrap;
-
     gap: 10px;
-
     font-size: 15px;
     font-weight: bold;
-
     color: #222;
-
     margin-bottom: 25px;
 }
 
@@ -107,21 +95,17 @@ footer {
    하단 영역
 ========================= */
 #container3 {
-
     display: flex;
-
     justify-content: center;
-
     flex-wrap: wrap;
-
     gap: 20px;
 }
 
 /* 카피라이트 */
 #container3 div {
-	align-items: center;
+    display: flex; /* 가로 정렬을 위해 추가 */
+    align-items: center;
     font-size: 13px;
-
     color: #666;
 }
 
@@ -129,19 +113,12 @@ footer {
    셀렉트박스
 ========================= */
 select {
-
     width: 180px;
-
     padding: 8px 12px;
-
     border: 1px solid #ccc;
-
     outline: none;
-
     font-size: 13px;
-
     cursor: pointer;
-
     background: white;
 }
 

@@ -1,9 +1,11 @@
-//package com.example.demo.admin.interceptor;
+//package com.example.demo.config;
 //import org.springframework.boot.web.servlet.FilterRegistrationBean;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
 //
-//import com.example.demo.jwt.JwtUtil;
+////import com.example.demo.interceptor.JwtFilter;
+//import com.example.demo.interceptor.RateLimitFilter;
+////import com.example.demo.jwt.JwtUtil;
 //
 //import jakarta.servlet.Filter;
 //
@@ -21,7 +23,7 @@
 //		
 //		return bean;
 //	}
-//
+
 //    @Bean
 //    public FilterRegistrationBean<JwtFilter> jwtFilter(JwtUtil jwtUtil) {
 //
@@ -33,5 +35,8 @@
 //
 //        return bean;
 //    }
-//
+
 //}
+
+
+
