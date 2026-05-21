@@ -1,6 +1,7 @@
 package com.example.demo.fx_personal;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,12 +46,18 @@ public class FxController {
 
 	}
 	
+	@GetMapping("/view/rateTable")
+	public String rateTablePage() {
+		System.out.println(fxService.getFxData("미국 달러"));
+	    return "fx/viewRate"; 
+	}
+	
+	@ResponseBody
 	@GetMapping("/viewRate")
 	public List<FxDataDto> viewRate(@RequestParam(name = "cur_nm") String cur_nm){
 		
-		FxDataDto fxData = fxService.getFxData(cur_nm);
 		
-		return (List<FxDataDto>) fxData;
+		return (List<FxDataDto>) fxService.getFxData(cur_nm);
 	}
 	
 	

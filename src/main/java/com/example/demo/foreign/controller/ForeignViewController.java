@@ -377,12 +377,6 @@ public class ForeignViewController {
 	// 환전
 	// =========================
 
-	@GetMapping("/exchange/exchangeGuide")
-	public String exchangeGuide(Model model, HttpServletRequest request) {
-		setLoginName(model, request);
-		return "foreign/exchange/exchangeGuide";
-	}
-
 	@GetMapping("/exchange/exchangeCurrency")
 	public String exchangeCurrency(Model model, HttpServletRequest request) {
 		setLoginName(model, request);
