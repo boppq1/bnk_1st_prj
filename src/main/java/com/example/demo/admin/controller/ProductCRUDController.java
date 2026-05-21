@@ -134,6 +134,10 @@ public class ProductCRUDController {
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("currentPage", page);
+        model.addAttribute("totalCount",   serv.getTotalCount());
+        model.addAttribute("depositCount", serv.getCountByType("DEPOSIT"));
+        model.addAttribute("savingCount",  serv.getCountByType("SAVING"));
+        model.addAttribute("pendingCount", serv.getCountByStatus("검토중"));
 
         return "admin/productListPage";
     }
