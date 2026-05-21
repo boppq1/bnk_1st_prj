@@ -1,10 +1,195 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>환전가능통화</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/exchangeCurrency.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="exchange-page">
+
+        <h1 class="main-title">환전가능통화</h1>
+
+        <!-- 이용가이드 접기/펼치기 -->
+        <div class="notice-box" id="noticeBox">
+            <button type="button" class="notice-title" id="noticeToggle">
+                <span>이용가이드를 참고해 주십시오.</span>
+                <span class="notice-arrow">⌄</span>
+            </button>
+            <div class="notice-content">
+                <p>· 부산은행에 오시면 전세계 17개국의 주화를 제외한 현찰 통화를 환전하실 수 있습니다.</p>
+                <p>· 미국 달러, 일본 엔화 유로 중국위안화 이외의 외국통화를 사시는 경우 미리 해당 통화 보유여부를 확인하시기 바랍니다.</p>
+                <p>· 공휴일 환전 가능 영업점은 연중 무휴</p>
+            </div>
+        </div>
+
+        <!-- 탭 버튼 -->
+        <div class="exchange-tabs">
+            <button type="button" class="exchange-tab active" data-tab="cash">외화환찰</button>
+            <button type="button" class="exchange-tab" data-tab="coin">외국동전환전</button>
+        </div>
+
+        <!-- 외화환찰 탭 -->
+        <div class="tab-content active" id="cash">
+
+            <section>
+                <h2 class="region-title">아시아(ASIA) 지역</h2>
+                <table class="currency-table">
+                    <tbody>
+                    <tr>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/tw.png" alt="대만">대만</td><td class="code">TWD</td>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/vn.png" alt="베트남">베트남</td><td class="code">VND</td>
+                    </tr>
+                    <tr>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/sg.png" alt="싱가포르">싱가포르</td><td class="code">SGD</td>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/id.png" alt="인도네시아">인도네시아</td><td class="code">IDR</td>
+                    </tr>
+                    <tr>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/jp.png" alt="일본">일본</td><td class="code">JPY</td>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/cn.png" alt="중국">중국</td><td class="code">CNY</td>
+                    </tr>
+                    <tr>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/th.png" alt="태국">태국</td><td class="code">THB</td>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/ph.png" alt="필리핀">필리핀</td><td class="code">PHP</td>
+                    </tr>
+                    <tr>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/hk.png" alt="홍콩">홍콩</td><td class="code">HKD</td>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/my.png" alt="말레이시아">말레이시아</td><td class="code">MYR</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2 class="region-title">오세아니아(OCEANIA) 지역</h2>
+                <table class="currency-table">
+                    <tbody>
+                    <tr>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/nz.png" alt="뉴질랜드">뉴질랜드</td><td class="code">NZD</td>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/au.png" alt="호주">호주</td><td class="code">AUD</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2 class="region-title">북아메리카(North America) 지역</h2>
+                <table class="currency-table">
+                    <tbody>
+                    <tr>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/us.png" alt="미국">미국</td><td class="code">USD</td>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/ca.png" alt="캐나다">캐나다</td><td class="code">CAD</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2 class="region-title">유럽(Europe) 지역</h2>
+                <table class="currency-table">
+                    <tbody>
+                    <tr>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/ch.png" alt="스위스">스위스</td><td class="code">CHF</td>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/gb.png" alt="영국">영국</td><td class="code">GBP</td>
+                    </tr>
+                    <tr>
+                        <td><img class="flag-img" src="https://flagcdn.com/w40/eu.png" alt="유럽연합">유럽연합</td><td class="code">EUR</td>
+                        <td></td><td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <div class="guide-btn-wrap">
+                <a href="#" class="guide-btn">국가별 외국통화 견양 바로가기</a>
+            </div>
+
+        </div>
+
+        <!-- 외국동전환전 탭 -->
+        <div class="tab-content" id="coin">
+
+            <section class="coin-section">
+                <h2 class="coin-title">환전 가능한 외국 동전</h2>
+                <ul class="coin-list">
+                    <li><strong>파실 수 있는 동전 :</strong> 미국달러화(USD), 일본엔화(JPY)</li>
+                    <li><strong>사실 수 있는 동전 :</strong> 불가</li>
+                </ul>
+            </section>
+
+            <section class="coin-section">
+                <h2 class="coin-title">외국 동전을 파실 때 적용 환율</h2>
+                <ul class="coin-list">
+                    <li><strong>통화 별 기준환율의 50%</strong></li>
+                </ul>
+                <p class="coin-example">(1달러 환율이 1천원일 때, 동전의 경우 50%인 5백원 적용)</p>
+            </section>
+
+            <section class="coin-section">
+                <h2 class="coin-title">외국 동전 환전 유의사항</h2>
+                <ul class="coin-list">
+                    <li>수요가 불규칙함을 감안하여 방문하실 영업점에 사전 확인이 필요합니다.</li>
+                    <li>외국동전은 지폐와 다르게 국내에서 환전서비스에 어려움이 있으니, 가급적 해당국가에 사용하시기를 권장드립니다.</li>
+                    <li>외국동전은 국내에서 수요가 없다보니, 해당국가로 수출(최대 70%까지 수출비용 발생)을 해야하므로 지폐보다 무거운 운송비 등의 높은 비용의 발생으로 고객님께는 환율의 50%를 적용하여 환전해 드려도 손해를 보게됩니다.</li>
+                </ul>
+            </section>
+
+            <section class="coin-section">
+                <h2 class="coin-title">외국 동전을 이렇게 사용해 보세요.</h2>
+                <p class="coin-sub-question">해외여행 후 남겨온 동전을 환전에 따른 손해 없이 사용하는 방법은 무엇일까요?</p>
+                <ul class="coin-use-list">
+                    <li>입국 전 지폐로 바꾸세요. 동행이 있는 경우 모아서 지폐로 교환하세요.</li>
+                    <li>공항 면세점에서 사용하세요.</li>
+                    <li>공항 내 유니세프 모금함에 기부하여 고객님의 따뜻한 마음을 전해 보세요.</li>
+                </ul>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/zoom.js}"></script>
+<script th:src="@{/js/product/foreign.js}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        /* 탭 전환 */
+        document.querySelectorAll(".exchange-tab").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                document.querySelectorAll(".exchange-tab").forEach(function (b) { b.classList.remove("active"); });
+                document.querySelectorAll(".tab-content").forEach(function (c) { c.classList.remove("active"); });
+                btn.classList.add("active");
+                document.getElementById(btn.dataset.tab).classList.add("active");
+            });
+        });
+
+        /* 이용가이드 접기/펼치기 */
+        var noticeBox    = document.getElementById("noticeBox");
+        var noticeToggle = document.getElementById("noticeToggle");
+        if (noticeBox && noticeToggle) {
+            noticeToggle.addEventListener("click", function () {
+                noticeBox.classList.toggle("open");
+            });
+        }
+    });
+</script>
 
 </body>
 </html>
