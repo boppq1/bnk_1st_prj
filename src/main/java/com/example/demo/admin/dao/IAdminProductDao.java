@@ -55,4 +55,10 @@ public interface IAdminProductDao {
 	int saveProduct(ProductDto dto);
 	int submitProduct(ProductDto dto);
 
+	void submitProductRequest(long product_no);
+
+	// IAdminProductDao.java
+	int getCountByType(String product_type);
+	int getCountByStatus(String approve_status);
+
 }

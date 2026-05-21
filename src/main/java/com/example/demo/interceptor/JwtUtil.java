@@ -1,4 +1,4 @@
-//package com.example.demo.admin.interceptor;
+//package com.example.demo.interceptor;
 //import io.jsonwebtoken.Claims;
 //import io.jsonwebtoken.JwtException;
 //import io.jsonwebtoken.Jwts;
