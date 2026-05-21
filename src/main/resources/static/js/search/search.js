@@ -1,4 +1,4 @@
-/**
+/*
  * BNKSearch — BNK 부산은행 통합 검색 모듈  |  search.js
  *
  * [사용법]
@@ -63,21 +63,23 @@ const BNKSearch = (() => {
         const inputRow = document.createElement('div');
         inputRow.className = 'bnk-search-input-row';
         inputRow.innerHTML = `
-            <div class="bnk-search-input-box">
-                <i class="fa fa-search" aria-hidden="true"></i>
-                <input type="text" id="bnkSearchInput"
-                       placeholder="검색어를 입력하세요"
-                       autocomplete="off"
-                       aria-autocomplete="list"
-                       aria-label="검색어 입력" />
-                <button class="bnk-search-clear" aria-label="입력 지우기">
-                    <i class="fa fa-times"></i>
-                </button>
-            </div>
-            <button class="bnk-search-submit" aria-label="검색">검색</button>
-            <button class="bnk-search-close" aria-label="검색창 닫기">
-                <i class="fa fa-times"></i>
-            </button>
+			<form action="/search_page" method="get">
+			    <div class="bnk-search-input-box">
+			        <i class="fa fa-search" aria-hidden="true"></i>
+			        <input type="text" name="search_text" id="bnkSearchInput"
+			               placeholder="검색어를 입력하세요"
+			               autocomplete="off"
+			               aria-autocomplete="list"
+			               aria-label="검색어 입력" />
+			        <button type="button" class="bnk-search-clear" aria-label="입력 지우기">
+			            <i class="fa fa-times"></i>
+			        </button>
+			    </div>
+			    <button type="submit" class="bnk-search-submit" aria-label="검색">검색</button>
+			</form>
+			<button type="button" class="bnk-search-close" aria-label="검색창 닫기">
+			    <i class="fa fa-times"></i>
+			</button>
         `;
 
         /* 탭 */
@@ -133,8 +135,6 @@ const BNKSearch = (() => {
         panel.querySelector('.bnk-search-close').addEventListener('click', close);
         overlay.addEventListener('click', close);
 
-        /* 검색 버튼 */
-        panel.querySelector('.bnk-search-submit').addEventListener('click', _submitSearch);
 
         /* 지우기 버튼 */
         clearBtn.addEventListener('click', _clearInput);
@@ -358,29 +358,34 @@ const BNKSearch = (() => {
     }
 
     /* ── 키보드 네비게이션 ──────────────────────── */
-    function _onKeydown(e) {
-        const items = [...resultList.querySelectorAll('li a')];
-        if (!items.length) {
-            if (e.key === 'Enter') _submitSearch();
-            return;
-        }
+	function _onKeydown(e) {
+	    const items = [...resultList.querySelectorAll('li a')];
+	    
+	    if (!items.length) {
+	        if (e.key === 'Enter') {
+	            panel.querySelector('form').submit();  // ← form submit으로 변경
+	        }
+	        return;
+	    }
 
-        if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            focusedIndex = Math.min(focusedIndex + 1, items.length - 1);
-            _applyFocus(items);
-        } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            focusedIndex = Math.max(focusedIndex - 1, -1);
-            _applyFocus(items);
-        } else if (e.key === 'Enter') {
-            if (focusedIndex >= 0 && items[focusedIndex]) {
-                window.location.href = items[focusedIndex].href;
-            } else {
-                _submitSearch();
-            }
-        }
-    }
+	    if (e.key === 'ArrowDown') {
+	        e.preventDefault();
+	        focusedIndex = Math.min(focusedIndex + 1, items.length - 1);
+	        _applyFocus(items);
+	    } else if (e.key === 'ArrowUp') {
+	        e.preventDefault();
+	        focusedIndex = Math.max(focusedIndex - 1, -1);
+	        _applyFocus(items);
+	    } else if (e.key === 'Enter') {
+	        if (focusedIndex >= 0 && items[focusedIndex]) {
+	            // 추천 검색어 클릭 시 해당 페이지로 이동
+	            window.location.href = items[focusedIndex].href;
+	        } else {
+	            // 직접 입력 후 Enter → form submit
+	            panel.querySelector('form').submit();
+	        }
+	    }
+	}
 
     function _applyFocus(items) {
         items.forEach((a, i) => a.classList.toggle('is-focused', i === focusedIndex));
@@ -389,12 +394,7 @@ const BNKSearch = (() => {
         }
     }
 
-    /* ── 검색 제출 ─────────────────────────────── */
-    function _submitSearch() {
-        const q = inputEl.value.trim();
-        if (!q) return;
-        window.location.href = `/search?q=${encodeURIComponent(q)}`;
-    }
+   
 
     /* ── 입력 지우기 ────────────────────────────── */
     function _clearInput() {
