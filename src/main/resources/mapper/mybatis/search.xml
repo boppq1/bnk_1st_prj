@@ -31,5 +31,9 @@
 		WHERE KEYWORD LIKE '%' || #{query} || '%'
 		ORDER BY SEARCH_VOLUME DESC
 	</select>
+	
+	<insert id="insertSearchKeyword">
+		insert into search_log (search_no, searcher, role_type, keyword) values (SEQ_SEARCH_LOG.nextval, searcher, role_type, query)
+	</insert>
 
 </mapper>
