@@ -20,9 +20,7 @@
             <div class="profile-bank">BNK 부산은행</div>
             <div class="profile-name" th:text="|*{name} 님 반갑습니다|"></div>
         </div>
-		<button type="button" class="zoom-toggle-btn" id="zoomToggleBtn">
-			    화면 크게 보기
-		</button>
+		
 <!--         <button class="logout-btn" id="logout-btn">LOGOUT</button> -->
 	</div>
         <nav class="sidebar-category">
@@ -30,8 +28,6 @@
             <a th:href="@{/product/personal(productType='DEPOSIT')}">예금</a>
             <a th:href="@{/product/personal(productType='SAVINGS')}">적금</a>
             <a th:href="@{/product/personal(productType='FOREIGN_DEP')}">외환</a>
-            <a href="#">퇴직연금</a>
-            <a href="#">펀드</a>
         </nav>
     </aside>
 
@@ -43,9 +39,8 @@
                 <p>부산은행의 다양한 상품을 한눈에 비교하고 가입하실 수 있습니다</p>
             </div>
 
-            <div class="quick-menu">
-                <a href="#">상품가입내역</a>
-                <a href="#">관심상품</a>
+           <div class="quick-menu">
+                <a th:href="@{/product/favorite}">관심상품</a>
                 <a href="#compareArea">비교함</a>
             </div>
         </section>
@@ -86,7 +81,19 @@
                                 <span th:case="'FOREIGN_SAV'">외화적금</span>
                                 <span th:case="*" th:text="${item.productType}">상품</span>
                             </span>
-                            <a th:href="@{/product/{id}(id=${item.productId})}">상품 상세</a>
+                            <div class="card-actions">
+							    <button type="button"
+							            class="favorite-btn"
+							            th:data-product-id="${item.productId}"
+							            onclick="event.stopPropagation();">
+							        ♡
+							    </button>
+							
+							    <a th:href="@{/product/{id}(id=${item.productId})}"
+							       onclick="event.stopPropagation();">
+							        상품 상세
+							    </a>
+							</div>
                         </div>
 
                         <h3 th:text="${item.productName}">상품명</h3>
@@ -130,11 +137,12 @@
                 <thead>
                 <tr>
                     <th>상품명</th>
-                    <th>상품분류</th>
-                    <th>가입대상</th>
-                    <th>금리/수수료</th>
-                    <th>상품특징</th>
-                    <th>비교함</th>
+					<th>상품분류</th>
+					<th>가입대상</th>
+					<th>금리/수수료</th>
+					<th>상품특징</th>
+					<th>비교함</th>
+					<th>관심</th>
                 </tr>
                 </thead>
 
@@ -186,6 +194,14 @@
 					       th:data-min-amount="${item.minAmount}"
 					       th:data-max-amount="${item.maxAmount}">
                     </td>
+                    <td>
+					    <button type="button"
+					            class="favorite-btn"
+					            th:data-product-id="${item.productId}"
+					            onclick="event.stopPropagation();">
+					        ♡
+					    </button>
+					</td>
                 </tr>
                 </tbody>
             </table>
@@ -261,6 +277,7 @@
 <div th:replace="~{footer :: footer}"></div>
 
 <script th:src="@{/js/zoom.js}"></script>
+<script th:src="@{/js/product/productFavorite.js}"></script>
 <script th:src="@{/js/product/productComparePopup.js}"></script>
 
 </body>

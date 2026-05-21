@@ -44,7 +44,7 @@
     </div>
   </div>
 	<div th:replace="~{footer :: footer}"></div>
-	
+	 <script th:src="@{/js/zoom.js}"></script>
 	<script>
 		localStorage.clear(); 
 		document.querySelector("#login_btn").addEventListener('click', login);

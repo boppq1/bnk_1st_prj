@@ -1266,173 +1266,46 @@ a { text-decoration: none; color: inherit; }
 
 
 
-/* =========================
-   화면 크게 보기 - 상품 상세 페이지
-========================= */
 
-.zoom-toggle-btn {
 
-    width: 100%;
-    height: 52px;
 
-    margin: 14px 0 22px;
 
-    border: 2px solid #e31b23;
 
-    border-radius: 16px;
+.favorite-btn {
+    width: 34px;
+    height: 34px;
 
-    background: #ffffff;
+    border: 1.5px solid #ffd7d9;
+    border-radius: 50%;
 
+    background: #fff;
     color: #e31b23;
 
-    font-size: 14px;
-
-    font-weight: 800;
-
-    letter-spacing: -0.2px;
+    font-size: 18px;
+    font-weight: 900;
 
     cursor: pointer;
 
-    transition: all 0.22s ease;
-
-    position: relative;
-
-    overflow: hidden;
-
-    display: flex;
-
+    display: inline-flex;
     align-items: center;
-
     justify-content: center;
 
-    box-shadow:
-        0 6px 18px rgba(227,27,35,.08);
+    transition: all 0.18s ease;
 }
 
-/* 왼쪽 포인트 라인 */
-.zoom-toggle-btn::before {
+.favorite-btn:hover {
+    background: #fff0f1;
+    transform: translateY(-1px);
+}
 
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-
-    top: 0;
-
-    width: 6px;
-
-    height: 100%;
-
+.favorite-btn.active {
     background: #e31b23;
+    color: #fff;
+    border-color: #e31b23;
 }
 
-/* 돋보기 */
-.zoom-toggle-btn::after {
-    content: "+";
-    position: absolute;
-    right: 18px;
-    font-size: 18px;
-    font-weight: 900;
-    color: #e31b23;
-}
-
-/* 호버 */
-
-.zoom-toggle-btn:hover {
-
-    background: #e31b23;
-
-    color: white;
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 12px 28px rgba(227,27,35,.22);
-}
-
-.zoom-toggle-btn:hover::before {
-
-    background: white;
-}
-
-.zoom-toggle-btn:hover::after {
-
-    color: white;
-}
-
-/* 클릭 */
-
-.zoom-toggle-btn:active {
-
-    transform: scale(.98);
-}
-
-
-/* =========================
-   확대
-========================= */
-
-body.zoom-mode .detail-page {
-    font-size: 1.18em;
-}
-
-body.zoom-mode .detail-page p,
-body.zoom-mode .detail-page li,
-body.zoom-mode .detail-page td,
-body.zoom-mode .detail-page th,
-body.zoom-mode .detail-page label,
-body.zoom-mode .detail-page input,
-body.zoom-mode .detail-page button {
-    font-size: 1.18em;
-    line-height: 2;
-}
-
-body.zoom-mode .detail-page h1 {
-    font-size: 2.4em;
-}
-
-body.zoom-mode .detail-page h2 {
-    font-size: 1.8em;
-}
-
-body.zoom-mode .detail-page h3 {
-    font-size: 1.35em;
-}
-
-body.zoom-mode .detail-page img {
-    transform: scale(1.06);
-    transform-origin: top center;
-}
-/* =========================
-   전체 화면 확대 공통
-========================= */
-
-body.zoom-mode {
-    font-size: 1.12em;
-}
-
-body.zoom-mode .product-layout,
-body.zoom-mode .detail-page {
-    transform: none;
-}
-
-body.zoom-mode .product-sidebar,
-body.zoom-mode .product-main,
-body.zoom-mode .detail-page {
-    font-size: 1.12em;
-}
-
-body.zoom-mode .product-head h1 {
-    font-size: 2.4em;
-}
-
-body.zoom-mode .recommend-card h3 {
-    font-size: 1.35em;
-}
-
-body.zoom-mode .product-table td,
-body.zoom-mode .product-table th {
-    font-size: 1.08em;
-    line-height: 1.8;
+.card-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }

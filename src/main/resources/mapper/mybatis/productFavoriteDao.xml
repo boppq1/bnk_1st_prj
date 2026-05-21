@@ -61,14 +61,14 @@
             p.prod_type AS productType,
             p.tgt_lrg AS targetLarge,
             p.tgt_dtl AS targetDetail,
-            p.prod_desc AS productDesc,
+            TO_CHAR(DBMS_LOB.SUBSTR(p.prod_desc, 1000, 1)) AS productDesc,
             p.rate_cat AS rateCategory,
             p.min_prd_mon AS minPeriodMonth,
             p.max_prd_mon AS maxPeriodMonth,
             p.min_amt AS minAmount,
             p.max_amt AS maxAmount,
             NVL(MIN(r.base_rate), 0) AS minRate,
-            NVL(MAX(NVL(r.mtr_rate, r.base_rate) + NVL(r.pref_rate, 0)), 0) AS maxRate
+            NVL(MAX(r.base_rate + NVL(r.pref_rate, 0)), 0) AS maxRate
         FROM FAVORITE_PRODUCTS f
         JOIN PRODUCTS p
           ON f.prod_no = p.prod_no
@@ -78,13 +78,14 @@
         WHERE f.usr_type = #{usrType}
           AND f.usr_no = #{usrNo}
           AND p.active = 'Y'
+          AND p.apv_stat_cd = '승인'
         GROUP BY
             p.prod_no,
             p.prod_nm,
             p.prod_type,
             p.tgt_lrg,
             p.tgt_dtl,
-            p.prod_desc,
+            TO_CHAR(DBMS_LOB.SUBSTR(p.prod_desc, 1000, 1)),
             p.rate_cat,
             p.min_prd_mon,
             p.max_prd_mon,

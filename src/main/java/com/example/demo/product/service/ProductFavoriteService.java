@@ -98,48 +98,28 @@ public class ProductFavoriteService {
         String usrType;
         Long usrNo;
 
-        /*
-         * 개인 회원이면 USERS 테이블에서 usr_no 조회
-         */
-        if ("ROLE_PERSONAL".equals(role)) {
+        if ("user".equals(role) || "ROLE_PERSONAL".equals(role)) {
             usrType = "PERSONAL";
             usrNo = dao.selectPersonalUsrNoByLoginId(loginId);
         }
 
-        /*
-         * 기업 회원이면 COMPANY_USERS 테이블에서 com_usr_no 조회
-         */
-        else if ("ROLE_COMPANY".equals(role)) {
+        else if ("company".equals(role) || "ROLE_COMPANY".equals(role)) {
             usrType = "COMPANY";
             usrNo = dao.selectCompanyUsrNoByLoginId(loginId);
         }
 
-        /*
-         * 개인/기업이 아닌 role이면 관심상품 사용 불가
-         */
         else {
-            throw new IllegalArgumentException("지원하지 않는 사용자 권한입니다.");
+            throw new IllegalArgumentException(
+                    "지원하지 않는 사용자 권한입니다. role=" + role
+            );
         }
 
-        /*
-         * loginId로 사용자 번호를 못 찾은 경우
-         */
         if (usrNo == null) {
-            throw new IllegalArgumentException("사용자 정보를 찾을 수 없습니다.");
+            throw new IllegalArgumentException(
+                    "사용자 정보를 찾을 수 없습니다. role=" + role + ", loginId=" + loginId
+            );
         }
 
-        /*
-         * 최종적으로 FAVORITE_PRODUCTS 테이블에 필요한 값 생성
-         *
-         * usrType:
-         * PERSONAL 또는 COMPANY
-         *
-         * usrNo:
-         * USERS.usr_no 또는 COMPANY_USERS.com_usr_no
-         *
-         * productId:
-         * 상품 번호
-         */
         return new ProductFavoriteRequestDto(usrType, usrNo, productId);
     }
 }
