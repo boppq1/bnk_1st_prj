@@ -5,7 +5,98 @@
   <title>BNK Busan Bank - 상품 수정</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
-  <link rel="stylesheet" th:href="@{/css/admin/product/productUpdatePage.css}">
+  <link rel="stylesheet" th:href="@{/css/admin/product/productRegisterPage.css}">
+  <style>
+    /* ── 수정 페이지 전용 추가 스타일 ── */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .status-badge.save    { background: #F1F5F9; color: #64748B; }
+    .status-badge.submit  { background: #FFF7ED; color: #C2410C; }
+    .status-badge.approve { background: #F0FDF4; color: #16A34A; }
+    .status-badge.reject  { background: #FFF1F2; color: #E11D48; }
+
+    .file-upload-notice {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #1D4ED8;
+      margin-bottom: 16px;
+    }
+    .file-upload-notice i { font-size: 14px; }
+
+    .current-file {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #FFF5F5;
+      border: 1px solid #FECACA;
+      border-radius: 6px;
+      font-size: 12px;
+      color: var(--text-label);
+      margin-bottom: 8px;
+    }
+    .current-file i { color: #EF4444; }
+    .current-file a {
+      margin-left: auto;
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 12px;
+    }
+    .current-file a:hover { text-decoration: underline; }
+
+    .file-upload-item { display: flex; flex-direction: column; }
+
+    .file-upload-area {
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      background: #FAFBFC;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .file-upload-area:hover,
+    .file-upload-area.has-file {
+      border-color: var(--primary);
+      background: #FFF5F5;
+    }
+    .file-upload-area input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .file-upload-content {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      pointer-events: none;
+    }
+    .file-upload-icon { font-size: 24px; color: var(--text-muted); }
+    .file-upload-area:hover .file-upload-icon,
+    .file-upload-area.has-file .file-upload-icon { color: var(--primary); }
+    .file-upload-label { font-size: 14px; font-weight: 600; color: var(--text-main); }
+    .file-upload-hint  { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .file-name-display { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .file-upload-area.has-file .file-name-display { color: var(--primary); font-weight: 600; }
+  </style>
 </head>
 <body>
 
@@ -71,341 +162,568 @@
 
   <!-- 페이지 헤더 -->
   <div class="page-header">
-    <div class="page-header-left">
+    <div>
       <h1 class="page-title" th:text="'[수정] ' + ${product.product_name}">상품 수정</h1>
       <p class="page-subtitle" th:text="'상품 ID : #' + ${product.product_id}">상품 정보를 수정합니다.</p>
     </div>
-    <span class="status-badge save"
-          th:classappend="${product.approve_status == 'SAVE'} ? 'save' :
-                           (${product.approve_status == 'SUBMIT'} ? 'submit' :
-                           (${product.approve_status == 'APPROVE'} ? 'approve' : 'reject'))">
+    <span class="status-badge"
+          th:classappend="${product.approve_status == 'SAVE'}   ? 'save'   :
+                          (${product.approve_status == 'SUBMIT'} ? 'submit' :
+                          (${product.approve_status == 'APPROVE'} ? 'approve' : 'reject'))">
       <i class="fa-solid fa-circle-dot"></i>
-      <span th:text="${product.approve_status == 'SAVE'} ? '임시저장' :
-                      (${product.approve_status == 'SUBMIT'} ? '결재 대기중' :
-                      (${product.approve_status == 'APPROVE'} ? '승인됨' : '반려됨'))">상태</span>
+      <span th:text="${product.approve_status == 'SAVE'}    ? '임시저장'   :
+                      (${product.approve_status == 'SUBMIT'}  ? '결재 대기중' :
+                      (${product.approve_status == 'APPROVE'} ? '승인됨'     : '반려됨'))">상태</span>
     </span>
   </div>
 
   <form th:action="@{/admin/updateProWrite}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="product_id"     th:value="${product.product_id}">
-    <input type="hidden" name="approve_status" id="approve_status" th:value="${product.approve_status}">
+    <input type="hidden" name="rate_id"        th:value="${product.rate_id}"> <!-- rate_id 수정 시 필요 -->
+    <input type="hidden" name="pref_rate_id"   th:value="${product.pref_rate_id}"> <!-- pref_rate_id 수정 시 필요 -->
+    <input type="hidden" name="action" id="action_status" value="save">
 
     <!-- ── 기본 정보 ── -->
-    <div class="form-card">
-      <div class="form-card-header">
+    <div class="card">
+      <div class="card-header">
         <i class="fa-solid fa-circle-info"></i>
-        <span>기본 정보</span>
+        기본 정보
       </div>
-      <div class="form-card-body">
-        <div class="form-grid">
+      <div class="form-grid">
 
-          <div class="form-group">
-            <label>상품명 <span class="req">*</span></label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-tag"></i>
-              <input type="text" name="product_name"
-                     th:value="${product.product_name}"
-                     placeholder="상품명을 입력하세요" required>
-            </div>
+        <div class="form-group">
+          <label>상품명 <span style="color:var(--primary)">*</span></label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-tag"></i>
+            <input type="text" name="product_name"
+                   th:value="${product.product_name}"
+                   placeholder="상품명을 입력하세요" required>
           </div>
-
-          <div class="form-group">
-            <label>상품 타입</label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-layer-group"></i>
-              <select name="product_type">
-                <option value="deposit" th:selected="${product.product_type == 'deposit'}">예금</option>
-                <option value="saving"  th:selected="${product.product_type == 'saving'}">적금</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>등록자</label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-id-badge"></i>
-              <input type="text" th:value="${session.name}" readonly>
-            </div>
-          </div>
-
         </div>
+
+        <div class="form-group">
+          <label>상품 타입</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-layer-group"></i>
+            <select name="product_type">
+              <option value="DEPOSIT"      th:selected="${product.product_type == 'DEPOSIT'}">예금</option>
+              <option value="SAVINGS"      th:selected="${product.product_type == 'SAVINGS'}">적금</option>
+              <option value="FOREIGN_DEP"  th:selected="${product.product_type == 'FOREIGN_DEP'}">외화 예금</option>
+              <option value="FOREIGN_SAV"  th:selected="${product.product_type == 'FOREIGN_SAV'}">외화 적금</option>
+              <option value="CORP_DEP"     th:selected="${product.product_type == 'CORP_DEP'}">기업 예금</option>
+              <option value="CORP_SAV"     th:selected="${product.product_type == 'CORP_SAV'}">기업 적금</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>등록자</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-user-pen"></i>
+            <input type="text" th:value="${session.name}" readonly>
+          </div>
+        </div>
+
       </div>
     </div>
 
     <!-- ── 금액 / 기간 ── -->
-    <div class="form-card">
-      <div class="form-card-header">
+    <div class="card">
+      <div class="card-header">
         <i class="fa-solid fa-won-sign"></i>
-        <span>금액 / 기간</span>
+        금액 / 기간
       </div>
-      <div class="form-card-body">
-        <div class="form-grid col3">
+      <div class="form-grid col3">
 
-          <div class="form-group">
-            <label>최소 가입 금액</label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-circle-arrow-down"></i>
-              <input type="number" name="min_amount"
-                     th:value="${product.min_amount}" placeholder="0">
-            </div>
+        <div class="form-group amount-group">
+          <label>최소 가입 금액 <span style="color:var(--primary)">*</span></label>
+          <div class="input-wrap amount-input-wrap">
+            <i class="fa-solid fa-circle-arrow-down"></i>
+            <input type="number" name="min_amount" id="min_amount"
+                   th:value="${product.min_amount}" placeholder="0" required>
           </div>
-
-          <div class="form-group">
-            <label>최대 가입 금액</label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-circle-arrow-up"></i>
-              <input type="number" name="max_amount"
-                     th:value="${product.max_amount}" placeholder="0">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>금리 분류</label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-percent"></i>
-              <select name="rate_category">
-                <option value="">선택안함</option>
-                <option value="PREFERENTIAL" th:selected="${product.rate_category == 'PREFERENTIAL'}">우대</option>
-                <option value="FIXED"        th:selected="${product.rate_category == 'FIXED'}">고정</option>
-                <option value="CORP"         th:selected="${product.rate_category == 'CORP'}">변동</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>최소 가입 기간</label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-calendar-minus"></i>
-              <select name="min_period_month">
-                <option value="1"  th:selected="${product.min_period_month == 1}">1개월</option>
-                <option value="3"  th:selected="${product.min_period_month == 3}">3개월</option>
-                <option value="6"  th:selected="${product.min_period_month == 6}">6개월</option>
-                <option value="12" th:selected="${product.min_period_month == 12}">12개월</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>최대 가입 기간</label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-calendar-plus"></i>
-              <select name="max_period_month">
-                <option value="1"  th:selected="${product.max_period_month == 1}">1개월</option>
-                <option value="3"  th:selected="${product.max_period_month == 3}">3개월</option>
-                <option value="6"  th:selected="${product.max_period_month == 6}">6개월</option>
-                <option value="12" th:selected="${product.max_period_month == 12}">12개월</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>이자 지급 방식</label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-hand-holding-dollar"></i>
-              <select name="interest_payment_type">
-                <option value="MATURITY_PAYMENT" th:selected="${product.interest_payment_type == 'MATURITY_PAYMENT'}">만기일시지급</option>
-                <option value="MONTHLY_PAYMENT"  th:selected="${product.interest_payment_type == 'MONTHLY_PAYMENT'}">월지급</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>환율 적용 기준</label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-arrow-right-arrow-left"></i>
-              <select name="applied_exchange_rate_type">
-                <option value="CLOSING_RATE"  th:selected="${product.applied_exchange_rate_type == 'CLOSING_RATE'}">전일 종가</option>
-                <option value="REALTIME_RATE" th:selected="${product.applied_exchange_rate_type == 'REALTIME_RATE'}">실시간 환율</option>
-              </select>
-            </div>
-          </div>
-
+          <div id="min_amount_display" class="amount-display"
+               th:text="${product.min_amount != null ? #numbers.formatInteger(product.min_amount,1,'COMMA') + '원' : '0원'}">0원</div>
         </div>
+
+        <div class="form-group amount-group">
+          <label>최대 가입 금액 <span style="color:var(--primary)">*</span></label>
+          <div class="input-wrap amount-input-wrap">
+            <i class="fa-solid fa-circle-arrow-up"></i>
+            <input type="number" name="max_amount" id="max_amount"
+                   th:value="${product.max_amount}" placeholder="0" required>
+          </div>
+          <div id="max_amount_display" class="amount-display"
+               th:text="${product.max_amount != null ? #numbers.formatInteger(product.max_amount,1,'COMMA') + '원' : '0원'}">0원</div>
+        </div>
+
+        <div class="form-group">
+          <label>금리 분류 <span style="color:var(--primary)">*</span></label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-percent"></i>
+            <select name="rate_category">
+              <option value="PREFERENTIAL" th:selected="${product.rate_category == 'PREFERENTIAL'}">우대</option>
+              <option value="FIXED"        th:selected="${product.rate_category == 'FIXED'}">고정</option>
+              <option value="CORP"         th:selected="${product.rate_category == 'CORP'}">변동</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>최소 가입 기간 <span style="color:var(--primary)">*</span></label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-calendar-minus"></i>
+            <select name="min_period_month">
+              <option value="1"  th:selected="${product.min_period_month == 1}">1개월</option>
+              <option value="3"  th:selected="${product.min_period_month == 3}">3개월</option>
+              <option value="6"  th:selected="${product.min_period_month == 6}">6개월</option>
+              <option value="12" th:selected="${product.min_period_month == 12}">12개월</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>최대 가입 기간 <span style="color:var(--primary)">*</span></label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-calendar-plus"></i>
+            <select name="max_period_month">
+              <option value="0"  th:selected="${product.max_period_month == 0}">무기한</option>
+              <option value="3"  th:selected="${product.max_period_month == 3}">3개월</option>
+              <option value="6"  th:selected="${product.max_period_month == 6}">6개월</option>
+              <option value="12" th:selected="${product.max_period_month == 12}">12개월</option>
+              <option value="24" th:selected="${product.max_period_month == 24}">24개월</option>
+              <option value="36" th:selected="${product.max_period_month == 36}">36개월</option>
+              <option value="60" th:selected="${product.max_period_month == 60}">60개월</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>이자 지급 방식</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-hand-holding-dollar"></i>
+            <select name="interest_payment_type">
+              <option value="MATURITY"   th:selected="${product.interest_payment_type == 'MATURITY'}">만기일시지급</option>
+              <option value="MONTHLY"    th:selected="${product.interest_payment_type == 'MONTHLY'}">월지급</option>
+              <option value="BOTH"       th:selected="${product.interest_payment_type == 'BOTH'}">만기일&amp;월지급</option>
+              <option value="QUARTERLY"  th:selected="${product.interest_payment_type == 'QUARTERLY'}">분기별</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>환율 적용 기준</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            <select name="applied_exchange_rate_type">
+              <option value=""              th:selected="${product.applied_exchange_rate_type == null or product.applied_exchange_rate_type == ''}">제외</option>
+              <option value="CLOSING_RATE"  th:selected="${product.applied_exchange_rate_type == 'CLOSING_RATE'}">전일 종가</option>
+              <option value="REALTIME_RATE" th:selected="${product.applied_exchange_rate_type == 'REALTIME_RATE'}">실시간 환율</option>
+            </select>
+          </div>
+        </div>
+
       </div>
     </div>
 
     <!-- ── 대상 고객 ── -->
-    <div class="form-card">
-      <div class="form-card-header">
+    <div class="card">
+      <div class="card-header">
         <i class="fa-solid fa-users"></i>
-        <span>대상 고객</span>
+        대상 고객
       </div>
-      <div class="form-card-body">
-        <div class="form-grid">
+      <div class="form-grid">
 
-          <div class="form-group">
-            <label>대상 고객 대분류</label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-sitemap"></i>
-              <select name="target_large">
-                <option value="ALL"      th:selected="${product.target_large == 'ALL'}">전체</option>
-                <option value="PERSONAL" th:selected="${product.target_large == 'PERSONAL'}">개인</option>
-                <option value="COMPANY"  th:selected="${product.target_large == 'COMPANY'}">기업</option>
-              </select>
-            </div>
+        <div class="form-group">
+          <label>대상 고객 대분류 <span style="color:var(--primary)">*</span></label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-sitemap"></i>
+            <select name="target_large">
+              <option value="ALL"      th:selected="${product.target_large == 'ALL'}">전체</option>
+              <option value="PERSONAL" th:selected="${product.target_large == 'PERSONAL'}">개인</option>
+              <option value="COMPANY"  th:selected="${product.target_large == 'COMPANY'}">기업</option>
+            </select>
           </div>
-
-          <div class="form-group">
-            <label>대상 고객 세분류</label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-user-tag"></i>
-              <select name="target_detail">
-                <option value=""       th:selected="${product.target_detail == null or product.target_detail == ''}">선택안함</option>
-                <option value="YOUTH"  th:selected="${product.target_detail == 'YOUTH'}">청년</option>
-                <option value="SENIOR" th:selected="${product.target_detail == 'SENIOR'}">시니어</option>
-              </select>
-            </div>
-          </div>
-
         </div>
+
+        <div class="form-group">
+          <label>대상 고객 세분류 <span style="color:var(--primary)">*</span></label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-user-tag"></i>
+            <select name="target_detail">
+              <option value=""        th:selected="${product.target_detail == null or product.target_detail == ''}">선택안함</option>
+              <option value="ALL"     th:selected="${product.target_detail == 'ALL'}">전체</option>
+              <option value="YOUTH"   th:selected="${product.target_detail == 'YOUTH'}">청년</option>
+              <option value="SENIOR"  th:selected="${product.target_detail == 'SENIOR'}">시니어</option>
+              <option value="STARTUP" th:selected="${product.target_detail == 'STARTUP'}">스타트업</option>
+              <option value="SME"     th:selected="${product.target_detail == 'SME'}">소상공인 및 자영업자</option>
+              <option value="PUBLIC"  th:selected="${product.target_detail == 'PUBLIC'}">공공기관 및 지자체</option>
+            </select>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <!-- ── 상품 설명 ── -->
-    <div class="form-card">
-      <div class="form-card-header">
-        <i class="fa-solid fa-align-left"></i>
-        <span>상품 설명</span>
+    <!-- =========================
+     금리 설정 영역 (교체)
+========================= -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fa-solid fa-percent"></i>
+        금리 설정
       </div>
-      <div class="form-card-body">
-        <div class="form-group">
-          <label>상품 설명</label>
-          <div class="input-wrap textarea-wrap">
-            <i class="fa-solid fa-pen-clip"></i>
-            <textarea name="product_desc"
-                      placeholder="상품 설명을 입력하세요"
-                      th:text="${product.product_desc}"></textarea>
+
+      <div id="rate-list">
+
+        <!-- rate_id hidden -->
+        <input type="hidden"
+               name="rates[0].rate_id"
+               th:value="${product.rates != null ? product.rates[0].rate_id : ''}">
+
+        <div class="rate-item" data-index="0">
+          <div class="rate-item-header">
+            <span class="rate-item-title">금리 정보 수정</span>
+          </div>
+
+          <div class="form-grid col3">
+
+            <!-- 통화 -->
+            <div class="form-group">
+              <label>통화 코드 <span style="color:var(--primary)">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-coins"></i>
+                <select name="rates[0].currency_code">
+                  <option value="KRW"
+                          th:selected="${product.rates != null && product.rates[0].currency_code == 'KRW'}">
+                    KRW (원화)
+                  </option>
+                  <option value="USD"
+                          th:selected="${product.rates != null && product.rates[0].currency_code == 'USD'}">
+                    USD (달러)
+                  </option>
+                  <option value="EUR"
+                          th:selected="${product.rates != null && product.rates[0].currency_code == 'EUR'}">
+                    EUR (유로)
+                  </option>
+                  <option value="JPY"
+                          th:selected="${product.rates != null && product.rates[0].currency_code == 'JPY'}">
+                    JPY (엔화)
+                  </option>
+                  <option value="CNY"
+                          th:selected="${product.rates != null && product.rates[0].currency_code == 'CNY'}">
+                    CNY (위안)
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 금리 유형 -->
+            <div class="form-group">
+              <label>금리 유형 <span style="color:var(--primary)">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-sliders"></i>
+                <select name="rates[0].rate_type">
+                  <option value="고정"
+                          th:selected="${product.rates != null && product.rates[0].rate_type == '고정'}">
+                    고정
+                  </option>
+                  <option value="변동"
+                          th:selected="${product.rates != null && product.rates[0].rate_type == '변동'}">
+                    변동
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 가입기간 -->
+            <div class="form-group">
+              <label>가입 기간 (개월)</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-calendar"></i>
+                <input type="number"
+                       name="rates[0].period_month"
+                       th:value="${product.rates != null ? product.rates[0].period_month : ''}"
+                       placeholder="예: 12">
+              </div>
+            </div>
+
+            <!-- 기본금리 -->
+            <div class="form-group">
+              <label>기본 금리 (%) <span style="color:var(--primary)">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+                <input type="number"
+                       step="0.01"
+                       name="rates[0].base_rate"
+                       th:value="${product.rates != null ? product.rates[0].base_rate : ''}"
+                       required>
+              </div>
+            </div>
+
+            <!-- 만기금리 -->
+            <div class="form-group">
+              <label>만기 금리 (%)</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-flag-checkered"></i>
+                <input type="number"
+                       step="0.01"
+                       name="rates[0].maturity_rate"
+                       th:value="${product.rates != null ? product.rates[0].maturity_rate : ''}">
+              </div>
+            </div>
+
+            <!-- 중도해지금리 -->
+            <div class="form-group">
+              <label>중도해지 금리 (%)</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-ban"></i>
+                <input type="number"
+                       step="0.01"
+                       name="rates[0].early_cancel_rate"
+                       th:value="${product.rates != null ? product.rates[0].early_cancel_rate : ''}">
+              </div>
+            </div>
+
+            <!-- 시작일 -->
+            <div class="form-group">
+              <label>금리 시작일 <span style="color:var(--primary)">*</span></label>
+              <input type="date"
+                     name="rates[0].rate_start_date"
+                     th:value="${product.rates != null ? product.rates[0].rate_start_date : ''}"
+                     required>
+            </div>
+
+            <!-- 종료일 -->
+            <div class="form-group">
+              <label>금리 종료일</label>
+              <input type="date"
+                     name="rates[0].rate_end_date"
+                     th:value="${product.rates != null ? product.rates[0].rate_end_date : ''}">
+            </div>
+
+          </div>
+
+          <!-- =========================
+               우대금리 조건
+          ========================= -->
+          <div class="pref-section">
+
+            <div class="pref-header">
+          <span class="pref-title">
+            <i class="fa-solid fa-star"></i>
+            우대금리 조건
+          </span>
+
+              <button type="button"
+                      class="btn-pref-add"
+                      onclick="addPref()">
+                <i class="fa-solid fa-plus"></i>
+                조건 추가
+              </button>
+            </div>
+
+            <div class="pref-list" id="pref-list-container">
+
+              <!-- 기존 데이터 출력 -->
+              <div class="pref-item"
+                   th:each="pref, stat : ${product.rates[0].prefRateConditions}">
+
+                <!-- pref_rate_id -->
+                <input type="hidden"
+                       th:name="'rates[0].prefRateConditions[' + ${stat.index} + '].pref_rate_id'"
+                       th:value="${pref.pref_rate_id}">
+
+                <!-- 조건유형 -->
+                <div class="input-wrap">
+                  <i class="fa-solid fa-tag"></i>
+
+                  <input type="text"
+                         th:name="'rates[0].prefRateConditions[' + ${stat.index} + '].condition_type'"
+                         th:value="${pref.condition_type}"
+                         placeholder="조건 유형">
+                </div>
+
+                <!-- 조건설명 -->
+                <div class="input-wrap">
+                  <i class="fa-solid fa-align-left"></i>
+
+                  <input type="text"
+                         th:name="'rates[0].prefRateConditions[' + ${stat.index} + '].condition_desc'"
+                         th:value="${pref.condition_desc}"
+                         placeholder="조건 설명">
+                </div>
+
+                <!-- 우대금리 -->
+                <div class="input-wrap">
+                  <i class="fa-solid fa-plus"></i>
+
+                  <input type="number"
+                         step="0.01"
+                         th:name="'rates[0].prefRateConditions[' + ${stat.index} + '].preferential_rate'"
+                         th:value="${pref.preferential_rate}"
+                         placeholder="우대금리 (%)">
+                </div>
+
+                <button type="button"
+                        class="btn-pref-remove"
+                        onclick="removePref(this)">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- ── PDF 문서 교체 ── -->
-    <div class="form-card">
-      <div class="form-card-header">
+    <div class="card">
+      <div class="card-header">
         <i class="fa-solid fa-file-pdf"></i>
-        <span>PDF 문서 교체</span>
+        PDF 문서 교체
       </div>
-      <div class="form-card-body">
 
-        <div class="file-upload-notice">
-          <i class="fa-solid fa-circle-info"></i>
-          파일을 선택하지 않으면 기존 파일이 유지됩니다.
+      <div class="file-upload-notice">
+        <i class="fa-solid fa-circle-info"></i>
+        파일을 선택하지 않으면 기존 파일이 유지됩니다.
+      </div>
+
+      <div class="file-upload-grid">
+
+        <!-- 기본 약관 -->
+        <div class="file-upload-item">
+          <div class="current-file" th:if="${product.basic_terms_path != null}">
+            <i class="fa-solid fa-file-pdf"></i>
+            <span>기존: 기본 약관 PDF</span>
+            <a th:href="${product.basic_terms_path}" target="_blank">보기</a>
+          </div>
+          <div class="file-upload-area" id="area-basic">
+            <input type="file" name="basicTermsFile" accept=".pdf"
+                   onchange="setFile(this,'basic')">
+            <div class="file-upload-content">
+              <i class="fa-solid fa-file-arrow-up file-upload-icon"></i>
+              <div>
+                <div class="file-upload-label">기본 약관 PDF</div>
+                <div class="file-upload-hint">클릭하여 PDF 선택</div>
+                <div class="file-name-display" id="fname-basic">새 파일 미선택</div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="file-upload-grid">
-
-          <!-- 기본 약관 -->
-          <div class="file-upload-item">
-            <div class="current-file" th:if="${product.basic_terms_path != null}">
-              <i class="fa-solid fa-file-pdf"></i>
-              <span>기존: 기본 약관 PDF</span>
-              <a th:href="${product.basic_terms_path}" target="_blank">보기</a>
-            </div>
-            <div class="file-upload-area" id="area-basic">
-              <input type="file" name="basicTermsFile" accept=".pdf"
-                     onchange="setFile(this,'basic')">
-              <div class="file-upload-content">
-                <i class="fa-solid fa-file-arrow-up file-upload-icon"></i>
-                <div>
-                  <div class="file-upload-label">기본 약관 PDF</div>
-                  <div class="file-upload-hint">클릭하여 PDF 선택</div>
-                  <div class="file-name-display" id="fname-basic">새 파일 미선택</div>
-                </div>
+        <!-- 카테고리 약관 -->
+        <div class="file-upload-item">
+          <div class="current-file" th:if="${product.category_terms_path != null}">
+            <i class="fa-solid fa-file-pdf"></i>
+            <span>기존: 카테고리 약관 PDF</span>
+            <a th:href="${product.category_terms_path}" target="_blank">보기</a>
+          </div>
+          <div class="file-upload-area" id="area-category">
+            <input type="file" name="categoryTermsFile" accept=".pdf"
+                   onchange="setFile(this,'category')">
+            <div class="file-upload-content">
+              <i class="fa-solid fa-file-arrow-up file-upload-icon"></i>
+              <div>
+                <div class="file-upload-label">카테고리 약관 PDF</div>
+                <div class="file-upload-hint">클릭하여 PDF 선택</div>
+                <div class="file-name-display" id="fname-category">새 파일 미선택</div>
               </div>
             </div>
           </div>
-
-          <!-- 카테고리 약관 -->
-          <div class="file-upload-item">
-            <div class="current-file" th:if="${product.category_terms_path != null}">
-              <i class="fa-solid fa-file-pdf"></i>
-              <span>기존: 카테고리 약관 PDF</span>
-              <a th:href="${product.category_terms_path}" target="_blank">보기</a>
-            </div>
-            <div class="file-upload-area" id="area-category">
-              <input type="file" name="categoryTermsFile" accept=".pdf"
-                     onchange="setFile(this,'category')">
-              <div class="file-upload-content">
-                <i class="fa-solid fa-file-arrow-up file-upload-icon"></i>
-                <div>
-                  <div class="file-upload-label">카테고리 약관 PDF</div>
-                  <div class="file-upload-hint">클릭하여 PDF 선택</div>
-                  <div class="file-name-display" id="fname-category">새 파일 미선택</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 특별 약관 -->
-          <div class="file-upload-item">
-            <div class="current-file" th:if="${product.special_terms_path != null}">
-              <i class="fa-solid fa-file-pdf"></i>
-              <span>기존: 특별 약관 PDF</span>
-              <a th:href="${product.special_terms_path}" target="_blank">보기</a>
-            </div>
-            <div class="file-upload-area" id="area-special">
-              <input type="file" name="specialTermsFile" accept=".pdf"
-                     onchange="setFile(this,'special')">
-              <div class="file-upload-content">
-                <i class="fa-solid fa-file-arrow-up file-upload-icon"></i>
-                <div>
-                  <div class="file-upload-label">특별 약관 PDF</div>
-                  <div class="file-upload-hint">클릭하여 PDF 선택</div>
-                  <div class="file-name-display" id="fname-special">새 파일 미선택</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 상품 설명서 -->
-          <div class="file-upload-item">
-            <div class="current-file" th:if="${product.product_guide_path != null}">
-              <i class="fa-solid fa-file-pdf"></i>
-              <span>기존: 상품 설명서 PDF</span>
-              <a th:href="${product.product_guide_path}" target="_blank">보기</a>
-            </div>
-            <div class="file-upload-area" id="area-guide">
-              <input type="file" name="productGuideFile" accept=".pdf"
-                     onchange="setFile(this,'guide')">
-              <div class="file-upload-content">
-                <i class="fa-solid fa-file-arrow-up file-upload-icon"></i>
-                <div>
-                  <div class="file-upload-label">상품 설명서 PDF</div>
-                  <div class="file-upload-hint">클릭하여 PDF 선택</div>
-                  <div class="file-name-display" id="fname-guide">새 파일 미선택</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
+
+        <!-- 특별 약관 -->
+        <div class="file-upload-item">
+          <div class="current-file" th:if="${product.special_terms_path != null}">
+            <i class="fa-solid fa-file-pdf"></i>
+            <span>기존: 특별 약관 PDF</span>
+            <a th:href="${product.special_terms_path}" target="_blank">보기</a>
+          </div>
+          <div class="file-upload-area" id="area-special">
+            <input type="file" name="specialTermsFile" accept=".pdf"
+                   onchange="setFile(this,'special')">
+            <div class="file-upload-content">
+              <i class="fa-solid fa-file-arrow-up file-upload-icon"></i>
+              <div>
+                <div class="file-upload-label">특별 약관 PDF</div>
+                <div class="file-upload-hint">클릭하여 PDF 선택</div>
+                <div class="file-name-display" id="fname-special">새 파일 미선택</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 상품 설명서 -->
+        <div class="file-upload-item">
+          <div class="current-file" th:if="${product.product_guide_path != null}">
+            <i class="fa-solid fa-file-pdf"></i>
+            <span>기존: 상품 설명서 PDF</span>
+            <a th:href="${product.product_guide_path}" target="_blank">보기</a>
+          </div>
+          <div class="file-upload-area" id="area-guide">
+            <input type="file" name="productGuideFile" accept=".pdf"
+                   onchange="setFile(this,'guide')">
+            <div class="file-upload-content">
+              <i class="fa-solid fa-file-arrow-up file-upload-icon"></i>
+              <div>
+                <div class="file-upload-label">상품 설명서 PDF</div>
+                <div class="file-upload-hint">클릭하여 PDF 선택</div>
+                <div class="file-name-display" id="fname-guide">새 파일 미선택</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <!-- ── 하단 버튼 영역 ── -->
-    <div class="submit-area">
-      <a th:href="@{/admin/productListPage}" class="btn-cancel">
-        <i class="fa-solid fa-arrow-left"></i> 목록으로
-      </a>
-      <div class="submit-right">
-        <button type="submit" name="action" value="save" class="btn btn-save">
-          임시 저장
-        </button>
-
-        <button type="submit" name="action" value="검토중" class="btn btn-primary">
-          결재 제출
-        </button>
+    <!-- ── 하단 버튼 ── -->
+    <div class="form-actions">
+      <div class="left">
+        <a href="/admin/productListPage" class="btn btn-ghost">
+          <i class="fa-solid fa-arrow-left"></i> 취소
+        </a>
       </div>
+      <button type="submit" class="btn btn-outline btn-lg"
+              onclick="document.getElementById('action_status').value='save'">
+        <i class="fa-solid fa-floppy-disk"></i> 임시 저장
+      </button>
+      <button type="submit" class="btn btn-primary btn-lg"
+              onclick="document.getElementById('action_status').value='submit'">
+        <i class="fa-solid fa-paper-plane"></i> 결재 제출
+      </button>
     </div>
 
   </form>
 </div>
 
+<!-- =========================
+     script 부분 교체
+========================= -->
 <script>
+
+  /* 금액 포맷터 */
+  function bindAmountFormatter(inputId, displayId) {
+    const input = document.getElementById(inputId);
+    const display = document.getElementById(displayId);
+
+    input.addEventListener('input', function () {
+      display.textContent =
+              Number(this.value || 0).toLocaleString('ko-KR') + '원';
+    });
+  }
+
+  bindAmountFormatter('min_amount', 'min_amount_display');
+  bindAmountFormatter('max_amount', 'max_amount_display');
+
+  /* 파일 선택 표시 */
   function setFile(input, key) {
-    const area    = document.getElementById('area-' + key);
+    const area = document.getElementById('area-' + key);
     const display = document.getElementById('fname-' + key);
+
     if (input.files && input.files.length > 0) {
       display.textContent = input.files[0].name;
       area.classList.add('has-file');
@@ -413,6 +731,122 @@
       display.textContent = '새 파일 미선택';
       area.classList.remove('has-file');
     }
+  }
+
+  /* 제출 유효성 */
+  document.querySelector('form').addEventListener('submit', function (e) {
+
+    if (!this.checkValidity()) {
+      e.preventDefault();
+
+      alert('필수 항목을 모두 입력해 주세요.');
+
+      this.reportValidity();
+    }
+  });
+
+  /* =========================
+     우대금리 추가
+  ========================= */
+
+  function addPref() {
+
+    const prefList =
+            document.getElementById('pref-list-container');
+
+    const index =
+            prefList.querySelectorAll('.pref-item').length;
+
+    const html = `
+      <div class="pref-item">
+
+        <div class="input-wrap">
+          <i class="fa-solid fa-tag"></i>
+
+          <input type="text"
+                 name="rates[0].prefRateConditions[${index}].condition_type"
+                 placeholder="조건 유형">
+        </div>
+
+        <div class="input-wrap">
+          <i class="fa-solid fa-align-left"></i>
+
+          <input type="text"
+                 name="rates[0].prefRateConditions[${index}].condition_desc"
+                 placeholder="조건 설명">
+        </div>
+
+        <div class="input-wrap">
+          <i class="fa-solid fa-plus"></i>
+
+          <input type="number"
+                 step="0.01"
+                 name="rates[0].prefRateConditions[${index}].preferential_rate"
+                 placeholder="우대금리 (%)">
+        </div>
+
+        <button type="button"
+                class="btn-pref-remove"
+                onclick="removePref(this)">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+      </div>
+    `;
+
+    prefList.insertAdjacentHTML('beforeend', html);
+  }
+
+  /* =========================
+     우대금리 삭제
+  ========================= */
+
+  function removePref(btn) {
+
+    btn.closest('.pref-item').remove();
+
+    reIndexPref();
+  }
+
+  /* =========================
+     인덱스 재정렬
+  ========================= */
+
+  function reIndexPref() {
+
+    const items =
+            document.querySelectorAll('#pref-list-container .pref-item');
+
+    items.forEach((item, index) => {
+
+      const inputs = item.querySelectorAll('input');
+
+      inputs.forEach(input => {
+
+        if (input.name.includes('condition_type')) {
+          input.name =
+                  `rates[0].prefRateConditions[${index}].condition_type`;
+        }
+
+        if (input.name.includes('condition_desc')) {
+          input.name =
+                  `rates[0].prefRateConditions[${index}].condition_desc`;
+        }
+
+        if (input.name.includes('preferential_rate')) {
+          input.name =
+                  `rates[0].prefRateConditions[${index}].preferential_rate`;
+        }
+
+        if (input.name.includes('pref_rate_id')) {
+          input.name =
+                  `rates[0].prefRateConditions[${index}].pref_rate_id`;
+        }
+
+      });
+
+    });
+
   }
 
 </script>

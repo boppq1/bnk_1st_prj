@@ -18,9 +18,9 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Pretendard', sans-serif;
+    font-family: 'Pretendard', sans-serif; /* 폰트는 body에 지정 */
     background: var(--bg);
-    color: var(--text);
+    color: var(--text-main);
     display: flex;
     overflow: hidden;
 }

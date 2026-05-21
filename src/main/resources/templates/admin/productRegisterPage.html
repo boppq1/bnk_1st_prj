@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
   <link rel="stylesheet" th:href="@{/css/admin/product/productRegisterPage.css}">
-
 </head>
 <body>
 
@@ -96,7 +95,7 @@
             <i class="fa-solid fa-layer-group"></i>
             <select name="product_type">
               <option value="DEPOSIT">예금</option>
-              <option value="SAVING">적금</option>
+              <option value="SAVINGS">적금</option>
               <option value="FOREIGN_DEP">외화 예금</option>
               <option value="FOREIGN_SAV">외화 적금</option>
               <option value="CORP_DEP">기업 예금</option>
@@ -192,9 +191,10 @@
           <div class="input-wrap">
             <i class="fa-solid fa-hand-holding-dollar"></i>
             <select name="interest_payment_type">
-              <option value="MATURITY_PAYMENT">만기일시지급</option>
-              <option value="MONTHLY_PAYMENT">월지급</option>
-              <option value="BOTH">둘다적용</option>
+              <option value="MATURITY">만기일시지급</option>
+              <option value="MONTHLY">월지급</option>
+              <option value="BOTH">만기일&월지급</option>
+              <option value="QUARTERLY">분기별</option>
             </select>
           </div>
         </div>
@@ -212,7 +212,7 @@
           </div>
         </div>
 
-      </div>  <!-- ← form-grid 여기서 닫기 -->
+      </div>
     </div>
 
     <!-- 대상 고객 -->
@@ -264,6 +264,123 @@
           <textarea name="product_desc" placeholder="상품에 대한 상세 설명을 입력하세요."></textarea>
         </div>
       </div>
+    </div>
+
+    <!-- 금리 설정 -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fa-solid fa-percent"></i>
+        금리 설정
+      </div>
+
+      <div id="rate-list">
+        <!-- 금리 항목 1개 (기본) -->
+        <div class="rate-item" data-index="0">
+          <div class="rate-item-header">
+            <span class="rate-item-title">금리 정보 입력</span>
+          </div>
+
+          <div class="form-grid col3">
+            <div class="form-group">
+              <label>통화 코드 <span style="color:var(--primary)">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-coins"></i>
+                <select name="currency_code">
+                  <option value="KRW">KRW (원화)</option>
+                  <option value="USD">USD (달러)</option>
+                  <option value="EUR">EUR (유로)</option>
+                  <option value="JPY">JPY (엔화)</option>
+                  <option value="CNY">CNY (위안)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>금리 유형 <span style="color:var(--primary)">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-sliders"></i>
+                <select name="rate_type">
+                  <option value="고정">고정</option>
+                  <option value="변동">변동</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>가입 기간 (개월)</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-calendar"></i>
+                <input type="number" name="period_month" placeholder="예: 12">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>기본 금리 (%) <span style="color:var(--primary)">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+                <input type="number" step="0.01" name="base_rate" placeholder="예: 3.50" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>만기 금리 (%)</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-flag-checkered"></i>
+                <input type="number" step="0.01" name="maturity_rate" placeholder="예: 3.80">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>중도해지 금리 (%)</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-ban"></i>
+                <input type="number" step="0.01" name="early_cancel_rate" placeholder="예: 1.00">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>금리 시작일 <span style="color:var(--primary)">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-calendar-day"></i>
+                <input type="date" name="rate_start_date" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>금리 종료일</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-calendar-xmark"></i>
+                <input type="date" name="rate_end_date">
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 우대금리 조건 -->
+          <div class="pref-section">
+            <div class="pref-header">
+              <span class="pref-title"><i class="fa-solid fa-star"></i> 우대금리 조건</span>
+              <!-- 단일 DTO 구조이므로 추가 기능 제한 (프론트/백엔드 싱크 목적) -->
+              <button type="button" class="btn-pref-add" onclick="addPref(this)">
+                <i class="fa-solid fa-plus"></i> 조건 추가 (1개 제한)
+              </button>
+            </div>
+            <div class="pref-list" id="pref-list-container">
+              <!-- 우대금리 조건은 동적으로 추가 -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 백엔드 DTO가 배열이 아닌 단일 객체이므로 '금리 추가' 버튼은 주석처리 또는 삭제하는 것이 안전합니다 -->
+      <!--
+      <div class="rate-add-wrap">
+        <button type="button" class="btn-rate-add" onclick="addRate()">
+          <i class="fa-solid fa-plus-circle"></i> 금리 추가
+        </button>
+      </div>
+      -->
     </div>
 
     <!-- PDF 업로드 -->
@@ -353,34 +470,67 @@
   }
 
   document.querySelector("form").addEventListener("submit", function (e) {
-
     const form = e.target;
-
     if (!form.checkValidity()) {
       e.preventDefault();
       alert("필수 항목을 모두 입력해 주세요.");
-      form.reportValidity(); // 브라우저 기본 빨간 메시지 표시
+      form.reportValidity();
     }
-
   });
 
-    function bindAmountFormatter(inputId, displayId) {
-
+  function bindAmountFormatter(inputId, displayId) {
     const input = document.getElementById(inputId);
     const display = document.getElementById(displayId);
-
     input.addEventListener("input", function () {
-
-    const value = Number(this.value || 0);
-
-    display.textContent =
-    value.toLocaleString("ko-KR") + "원";
-
-  });
+      const value = Number(this.value || 0);
+      display.textContent = value.toLocaleString("ko-KR") + "원";
+    });
   }
 
-    bindAmountFormatter("min_amount", "min_amount_display");
-    bindAmountFormatter("max_amount", "max_amount_display");
+  bindAmountFormatter("min_amount", "min_amount_display");
+  bindAmountFormatter("max_amount", "max_amount_display");
+
+  // 백엔드가 단일 DTO 구조이므로 배열 처리를 막고 단건만 들어가도록 수정되었습니다.
+  function addPref(btn) {
+    const prefList = document.getElementById('pref-list-container');
+
+    // 이미 우대조건이 1개 이상 있다면 추가 방지 (단일 DTO 제약)
+    if(prefList.children.length >= 1) {
+      alert("현재 구조에서는 우대금리 조건을 1개만 추가할 수 있습니다.");
+      return;
+    }
+
+    const html = `
+    <div class="pref-item">
+      <div class="input-wrap">
+        <i class="fa-solid fa-tag"></i>
+        <input type="text"
+               name="condition_type"
+               placeholder="조건 유형 (예: 급여이체)">
+      </div>
+      <div class="input-wrap">
+        <i class="fa-solid fa-align-left"></i>
+        <input type="text"
+               name="condition_desc"
+               placeholder="조건 설명">
+      </div>
+      <div class="input-wrap">
+        <i class="fa-solid fa-plus"></i>
+        <input type="number" step="0.01"
+               name="preferential_rate"
+               placeholder="우대금리 (%)">
+      </div>
+      <button type="button" class="btn-pref-remove" onclick="removePref(this)">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>`;
+
+    prefList.insertAdjacentHTML('beforeend', html);
+  }
+
+  function removePref(btn) {
+    btn.closest('.pref-item').remove();
+  }
 </script>
 </body>
 </html>
