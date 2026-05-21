@@ -96,7 +96,7 @@
                        WHERE P.prod_no = #{product_id}
                    ),
 
-                   'WAITING',
+                   '검토중',
                    'CREATE',
                    SYSDATE
                )
@@ -225,6 +225,11 @@
 
     </select>
 
+    <update id="submitProductRequest">
+        UPDATE PRODUCT_REQUESTS
+        SET req_stat_cd = 'UPDATE'
+        WHERE prod_no = #{product_id}
+    </update>
 
     <!-- 상품 저장 수정 -->
     <update id="saveProduct"
@@ -366,7 +371,7 @@
                 rate_cat = #{rate_category},
             </if>
 
-            apv_stat_cd = 'SUBMIT',
+            apv_stat_cd = '검토중',
 
             update_dt = SYSDATE,
             upd_by = #{updated_by}
@@ -380,35 +385,25 @@
 
 
     <!-- PDF 수정 -->
-    <update id="updateProPdf"
-            parameterType="com.example.demo.admin.dto.ProductDto">
-
-        UPDATE PRODUCT_PDFS
-
-        <set>
-
-            <if test="basic_terms_path != null">
-                basic_terms_path = #{basic_terms_path},
-            </if>
-
-            <if test="category_terms_path != null">
-                cat_terms_path = #{category_terms_path},
-            </if>
-
-            <if test="special_terms_path != null">
-                spec_terms_path = #{special_terms_path},
-            </if>
-
-            <if test="product_guide_path != null">
-                prod_guide_path = #{product_guide_path},
-            </if>
-
-            upd_dt = SYSDATE
-
-        </set>
-
-        WHERE prod_no = #{product_id}
-
+    <update id="updateProPdf" parameterType="com.example.demo.admin.dto.ProductDto">
+        MERGE INTO PRODUCT_PDFS T
+            USING (SELECT #{product_id} AS prod_no FROM DUAL) S
+            ON (T.prod_no = S.prod_no)
+            WHEN MATCHED THEN
+                UPDATE SET
+                    basic_terms_path = COALESCE(#{basic_terms_path, jdbcType=VARCHAR}, T.basic_terms_path),
+                    cat_terms_path   = COALESCE(#{category_terms_path, jdbcType=VARCHAR}, T.cat_terms_path),
+                    spec_terms_path  = COALESCE(#{special_terms_path, jdbcType=VARCHAR}, T.spec_terms_path),
+                    prod_guide_path  = COALESCE(#{product_guide_path, jdbcType=VARCHAR}, T.prod_guide_path),
+                    upd_dt           = SYSDATE
+            WHEN NOT MATCHED THEN
+                INSERT (pdf_no, prod_no, basic_terms_path, cat_terms_path, spec_terms_path, prod_guide_path, reg_dt)
+                    VALUES (SEQ_PRODUCT_PDFS.NEXTVAL, #{product_id},
+                            #{basic_terms_path, jdbcType=VARCHAR},
+                            #{category_terms_path, jdbcType=VARCHAR},
+                            #{special_terms_path, jdbcType=VARCHAR},
+                            #{product_guide_path, jdbcType=VARCHAR},
+                            SYSDATE)
     </update>
 
 
