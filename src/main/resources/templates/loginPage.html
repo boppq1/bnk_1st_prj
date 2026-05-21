@@ -4,47 +4,59 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" th:href="@{/css/header.css}">
 <link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/body.css}">
+<link rel="stylesheet" th:href="@{/css/search/search.css}">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <!-- CSS 파일 연결 -->
-<link rel="stylesheet" type="text/css" th:href="@{/css/personal/personalRegisterPage.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/personal/personalRegisterPage.css}">
 <title>로그인페이지</title>
 </head>
 <body>
 	<div th:replace="~{header :: header}"></div>
-	
+
 	<div class="register-page">
-    <div class="register-card">
-      <div class="register-card-header">
-        <h2>회원가입</h2>
-      </div>
+		<div class="register-card">
+			<div class="register-card-header">
+				<h2>회원가입</h2>
+			</div>
 
-      <div class="register-card-body">
+			<div class="register-card-body">
 
-          <!-- 계정 정보 -->
-          <div class="sec-title">계정 정보</div>
+				<!-- 계정 정보 -->
+				<div class="sec-title">계정 정보</div>
 
-          <div class="field">
-            <label for="login_id">아이디</label>
-            <div class="input-btn-row">
-              <input type="text" name="login_id" id="login_id" placeholder="영문/숫자 4~10자" required>
-            </div>
-            <p class="hint info" id="duplText"></p>
-            <p class="hint info" id="checkIdText"></p>
-          </div>
-			
-          <div class="field">
-            <label for="password">비밀번호</label>
-            <input type="password" name="secu_pw" id="password" placeholder="8자 이상, 특수문자 포함" required>
-            <p class="hint info" id="passwordText"></p>
-          </div>
-           <div class="submit-wrap">
-            <button type="button" class="submit-btn" id="login_btn">로그인</button>
-            <p class="submit-notice">기업회원가입 | 개인회원가입</p>
-          </div>
-      </div>
-    </div>
-  </div>
+				<div class="field">
+					<label for="login_id">아이디</label>
+					<div class="input-btn-row">
+						<input type="text" name="login_id" id="login_id"
+							placeholder="영문/숫자 4~10자" required>
+					</div>
+					<p class="hint info" id="duplText"></p>
+					<p class="hint info" id="checkIdText"></p>
+				</div>
+
+				<div class="field">
+					<label for="password">비밀번호</label> <input type="password"
+						name="secu_pw" id="password" placeholder="8자 이상, 특수문자 포함" required>
+					<p class="hint info" id="passwordText"></p>
+				</div>
+				<div class="submit-wrap">
+					<button type="button" class="submit-btn" id="login_btn">로그인</button>
+					<p class="submit-notice">
+						<a th:href="@{/registerPage}"
+							style="text-decoration: none; color: inherit;">개인회원가입</a> | <a
+							th:href="@{/companyRegisterPage}"
+							style="text-decoration: none; color: inherit;">기업회원가입</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div th:replace="~{footer :: footer}"></div>
-	 <script th:src="@{/js/zoom.js}"></script>
+	<script th:src="@{/js/zoom.js}"></script>
 	<script>
 		localStorage.clear(); 
 		document.querySelector("#login_btn").addEventListener('click', login);

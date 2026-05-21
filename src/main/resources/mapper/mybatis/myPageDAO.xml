@@ -21,5 +21,26 @@
 	<select id="checkPhonCompany" resultType="int">
 		select count(*) FROM company_users Where phone = #{tel_no}
 	</select>
+	<update id="updateUserInfo">
+    UPDATE users
+       SET usr_nm   = #{usr_nm},
+           tel_no   = #{tel_no},
+           email    = #{email},
+           zip_cd   = #{zip_cd},
+           addr     = #{addr},
+           addr_dtl = #{addr_dtl},
+           upd_dt   = SYSDATE
+     WHERE tel_no   = #{tel_no}  <!-- 또는 WHERE login_id = #{login_id} -->
+	</update>
+	
+	<select id="checkPassword" resultType="String">
+		select secu_pw from users where login_id= #{login_id} 
+	</select>
+	
+<update id="updatePassword">
+    UPDATE users 
+    SET secu_pw = #{secu_pw} 
+    WHERE login_id = #{login_id}
+</update>
 	
 </mapper>
