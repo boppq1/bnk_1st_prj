@@ -436,4 +436,12 @@
 
     </delete>
 
+    <select id="getCountByType" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM PRODUCTS WHERE prod_type = #{product_type}
+    </select>
+
+    <select id="getCountByStatus" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM PRODUCTS WHERE apv_stat_cd = #{approve_status}
+    </select>
+
 </mapper>
