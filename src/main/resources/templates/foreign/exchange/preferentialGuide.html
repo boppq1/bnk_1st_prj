@@ -1,10 +1,121 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>환율우대란</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/preferentialGuide.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="preferential-page">
+
+        <h1 class="preferential-title">환율우대란</h1>
+
+        <section class="preferential-section">
+            <h2 class="preferential-section-title">용어설명</h2>
+
+            <div class="preferential-card">
+                <h3>현찰수수료(환전수수료)란</h3>
+                <p>
+                    은행 거래시 거래하는 외화의 현찰 매매율과 매매기준율과의 차액을
+                    현찰수수료 또는 환전수수료라 합니다.
+                </p>
+            </div>
+
+            <div class="preferential-card emphasis">
+                <h3>환율우대란</h3>
+                <p>
+                    고시된 대고객매매율(현찰매매율, 전신환매매율)과 매매기준율과의 차액인
+                    현찰 수수료를 몇 % 우대하여 준다는 의미입니다.
+                </p>
+                <p>
+                    아래 표에서 보는 바와 같이 “외화현찰 환전시 50% 우대”라고 함은
+                    미국달러화(USD)의 경우 현찰수수료 19.66원
+                    〈외화현찰 사실 때 1,143.16 - 매매기준율 1,123.50〉의
+                    50%인 9.83원(19.66원 × 50%)을 할인하여 준다는 의미입니다.
+                </p>
+            </div>
+        </section>
+
+        <section class="preferential-section">
+            <h2 class="preferential-section-title">외화현찰로 환전 시</h2>
+
+            <p class="table-unit">(단위 : 원)</p>
+
+            <div class="preferential-table-wrap">
+                <table class="preferential-table">
+                    <thead>
+                    <tr>
+                        <th>통화명</th>
+                        <th>매매기준율<br>(A)</th>
+                        <th>현찰사실때<br>(B)</th>
+                        <th>현찰수수료<br>(C) = (B) - (A)</th>
+                        <th>50% 우대금액<br>(D)</th>
+                        <th>고객적용환율<br>(B - D)</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>미국달러화<br><span>(USD)</span></td>
+                        <td>1,123.50</td>
+                        <td>1,143.16</td>
+                        <td>19.66</td>
+                        <td>9.83</td>
+                        <td>1,133.33</td>
+                    </tr>
+
+                    <tr>
+                        <td>일본엔화<br><span>(JPY)</span></td>
+                        <td>1,381.32</td>
+                        <td>1,405.49</td>
+                        <td>24.17</td>
+                        <td>12.08</td>
+                        <td>1,393.41</td>
+                    </tr>
+
+                    <tr>
+                        <td>유럽연합유로화<br><span>(EUR)</span></td>
+                        <td>1,555.48</td>
+                        <td>1,582.70</td>
+                        <td>27.22</td>
+                        <td>13.61</td>
+                        <td>1,569.09</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="preferential-card formula">
+                <h3>우대환율 계산식</h3>
+                <p>
+                    우대환율 = 매매기준율 + &lt;현찰 수수료 - (현찰수수료 × 우대율)&gt;
+                </p>
+            </div>
+        </section>
+
+        
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+
+<script th:src="@{/js/product/foreign.js}"></script>
+<script th:src="@{/js/zoom.js}"></script>
 
 </body>
 </html>

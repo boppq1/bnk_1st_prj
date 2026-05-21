@@ -425,11 +425,7 @@ public class ForeignViewController {
 		return "foreign/exchange/oneExchange";
 	}
 
-	@GetMapping("/exchange/exchangePreferential")
-	public String exchangePreferential(Model model, HttpServletRequest request) {
-		setLoginName(model, request);
-		return "foreign/exchange/exchangePreferential";
-	}
+
 
 	@GetMapping("/exchange/preferentialGuide")
 	public String preferentialGuide(Model model, HttpServletRequest request) {
