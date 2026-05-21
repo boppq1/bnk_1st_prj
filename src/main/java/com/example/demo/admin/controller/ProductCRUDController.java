@@ -1,10 +1,11 @@
 package com.example.demo.admin.controller;
 
-import com.example.demo.admin.config.FileProperties;
 import com.example.demo.admin.dto.AdminDto;
 import com.example.demo.admin.dto.ProductDto;
 import com.example.demo.admin.service.AdminMergeService;
 import com.example.demo.admin.service.AdminProductService;
+import com.example.demo.config.FileProperties;
+
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
