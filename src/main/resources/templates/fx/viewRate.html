@@ -37,7 +37,7 @@
 			<div></div>
 		</div>
 		<div class="view_rate_table">
-			<table>
+			<table border="1">
 				<tr>
 					<th>고지 시간</th>
 					<th>환율코드</th>
@@ -46,13 +46,13 @@
 					<th>통화 팔 때</th>
 					<th>기준 환율</th>
 				</tr>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+				<tr th:each="item : ${items}">
+					<td th:text="${item.id}"></td>
+					<td th:text="${item.id}"></td>
+					<td th:text="${item.id}"></td>
+					<td th:text="${item.id}"></td>
+					<td th:text="${item.id}"></td>
+					<td th:text="${item.id}"></td>
 				</tr>
 			</table>
 		</div>
