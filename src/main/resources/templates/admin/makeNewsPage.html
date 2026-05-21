@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>BNK Busan Bank - 공지사항 작성</title>
+  <!-- Font Awesome & Pretendard -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
+  
+  <style>
+/* ───────────────────────────────────────
+   ROOT & RESET (BNK 공통 디자인 시스템 규격 일치)
+─────────────────────────────────────── */
+:root {
+  --primary:        #ED1C24;
+  --primary-light:  #FFF2F2;
+  --primary-border: #FFCDD0;
+  --bg:             #F4F6F9;
+  --card:           #FFFFFF;
+  --border:         #E2E8F0;
+  --text:           #1E293B;
+  --text-sub:       #64748B;
+  --text-muted:     #94A3B8;
+  --sidebar-w:      260px;
+  --header-h:       68px;
+  --radius:         12px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Pretendard', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  overflow: hidden;
+}
+
+/* ───── SIDEBAR ───── */
+.sidebar {
+  width: var(--sidebar-w); height: 100vh;
+  background: #FFFFFF; border-right: 1px solid var(--border);
+  position: fixed; left: 0; top: 0;
+  display: flex; flex-direction: column;
+  z-index: 100; overflow: hidden;
+}
+.sidebar-logo { padding: 22px 24px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.sidebar-logo img { height: 28px; width: auto; display: block; }
+.sidebar-profile {
+  padding: 18px 24px;
+  display: flex; align-items: center; gap: 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0; background: #FAFBFC;
+}
+.sp-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--primary-light); border: 2px solid var(--primary-border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--primary); font-size: 16px; flex-shrink: 0;
+}
+.sp-info { min-width: 0; }
+.sp-name { font-size: 14px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sp-role {
+  font-size: 11px; color: var(--primary); font-weight: 600;
+  background: var(--primary-light); border: 1px solid var(--primary-border);
+  border-radius: 20px; padding: 1px 8px; display: inline-block; margin-top: 3px;
+}
+.sidebar-menu { list-style: none; flex: 1; overflow-y: auto; padding: 8px 0; }
+.sidebar-menu::-webkit-scrollbar { width: 4px; }
+.sidebar-menu::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.menu-section-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-muted); padding: 16px 24px 6px;
+}
+.menu-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 24px; color: var(--text-sub); text-decoration: none;
+  font-size: 14px; font-weight: 500; transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.menu-item i { width: 18px; text-align: center; font-size: 14px; color: var(--text-muted); transition: color 0.15s; flex-shrink: 0; }
+.menu-item:hover { background: var(--primary-light); color: var(--primary); }
+.menu-item:hover i { color: var(--primary); }
+.menu-item.active { background: var(--primary-light); color: var(--primary); font-weight: 700; border-left-color: var(--primary); }
+.menu-item.active i { color: var(--primary); }
+.sidebar-footer { padding: 14px 24px; border-top: 1px solid var(--border); flex-shrink: 0; }
+.sidebar-footer p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+/* ───── HEADER ───── */
+.header {
+  position: fixed; top: 0; left: var(--sidebar-w);
+  width: calc(100% - var(--sidebar-w)); height: var(--header-h);
+  background: #FFFFFF; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 36px; z-index: 90; gap: 16px;
+}
+.header-title { font-size: 18px; font-weight: 800; color: var(--text); }
+.header-breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-muted); margin-left: 4px; }
+.header-breadcrumb i { font-size: 10px; }
+.header-breadcrumb span:last-child { color: var(--text-sub); font-weight: 500; }
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.header-user {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 14px 6px 8px; border-radius: 40px; border: 1px solid var(--border);
+  cursor: pointer; transition: all 0.15s; font-size: 13px; font-weight: 600; color: var(--text);
+}
+.header-user:hover { background: var(--bg); }
+.hu-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 13px; }
+.hu-chevron { color: var(--text-muted); font-size: 11px; }
+
+/* ───── MAIN CONTENT ───── */
+.main-content {
+  margin-left: var(--sidebar-w); margin-top: var(--header-h);
+  width: calc(100% - var(--sidebar-w)); height: calc(100vh - var(--header-h));
+  overflow-y: auto; padding: 36px 40px;
+}
+.main-content::-webkit-scrollbar { width: 6px; }
+.main-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* ───── PAGE HEADER ───── */
+.page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; }
+.page-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.page-subtitle { font-size: 14px; color: var(--text-sub); }
+
+/* ───── FORM LAYOUT CARD ───── */
+.form-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  max-width: 960px;
+  margin-bottom: 40px;
+}
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.form-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-sub);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.form-group label i {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.form-group input[type="text"], .form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Pretendard', sans-serif;
+  color: var(--text);
+  background: #FFFFFF;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.form-group input[type="text"]:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-border);
+  box-shadow: 0 0 0 3px rgba(237, 28, 36, 0.08);
+}
+.form-group textarea {
+  height: 280px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+/* ───── SUBMIT AREA ───── */
+.submit-area {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Pretendard', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+.btn-primary {
+  background: var(--primary);
+  color: #FFFFFF;
+  box-shadow: 0 4px 10px rgba(237, 28, 36, 0.15);
+}
+.btn-primary:hover {
+  background: #D1141B;
+  box-shadow: 0 4px 14px rgba(237, 28, 36, 0.25);
+  transform: translateY(-1px);
+}
+.btn-secondary {
+  background: #F1F5F9;
+  color: #475569;
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover {
+  background: #E2E8F0;
+  transform: translateY(-1px);
+}
+.btn:active { transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <img src="/images/BNKlogo.png" alt="BNK 부산은행">
+  </div>
+  <div class="sidebar-profile">
+    <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
+    <div class="sp-info">
+      <div class="sp-name" th:text="${admin.name} + ' 관리자'">홍길동 관리자</div>
+      <span class="sp-role" th:text="${admin.admin_role != null ? admin.admin_role : 'chief'}">chief</span>
+    </div>
+  </div>
+  <ul class="sidebar-menu">
+    <li class="menu-section-title">메인</li>
+    <li><a href="/admin/dashboard"   class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+    <li><a href="/admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
+    <li class="menu-section-title">상품 관리</li>
+    <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
+    <li><a href="/admin/productListPage"     class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
+    <li class="menu-section-title">업무</li>
+    <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
+    <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
+    <li><a href="/admin/account"  class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
+    <li class="menu-section-title">관리</li>
+    <li><a href="/admin/members"   class="menu-item"><i class="fa-solid fa-users-gear"></i> 회원/관리자 관리</a></li>
+    <li><a href="/admin/logs"      class="menu-item"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
+    <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
+    <li><a href="#"               class="menu-item active"><i class="fa-solid fa-bullhorn"></i> 공지사항 관리</a></li>
+  </ul>
+  <div class="sidebar-footer">
+    <p>&copy; 2025 BNK Busan Bank</p>
+    <p>IT Strategy Team</p>
+  </div>
+</div>
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <div class="header-title">업무지원 시스템 > 마케팅 및 대고객 공시 센터</div>
+  <div class="header-breadcrumb">
+    <i class="fa-solid fa-chevron-right"></i><span>관리</span>
+    <i class="fa-solid fa-chevron-right"></i><span>공지사항 관리</span>
+    <i class="fa-solid fa-chevron-right"></i><span>공지사항 등록</span>
+  </div>
+  <div class="header-right">
+    <div class="header-user">
+      <div class="hu-avatar"><i class="fa-solid fa-user-tie"></i></div>
+      <span th:text="'관리자 ' + ${admin.name} + ' 님'">홍길동 관리자</span>
+      <i class="fa-solid fa-chevron-down hu-chevron"></i>
+    </div>
+  </div>
+</div>
+
+<!-- ===== STREAMING_CHUNK:등록 폼 레이아웃 및 폼 필드 렌더링... ===== -->
+<!-- ===== MAIN CONTENT ===== -->
+<div class="main-content">
+
+  <!-- 페이지 헤더 -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">신규 공지사항 배포 및 고시</h1>
+      <p class="page-subtitle">대고객 서비스 모바일 뱅킹 및 연동 웹 플랫폼 채널에 게재되는 실시간 고시 공지사항을 성안하고 작성합니다.</p>
+    </div>
+  </div>
+
+  <!-- 공지사항 생성 폼 카드 -->
+  <div class="form-card">
+    <form th:action="@{/admin/makeNews}" method="post">
+      
+      <div class="form-grid">
+        <!-- 1. news_ttl (제목) -->
+        <div class="form-group">
+          <label for="news_ttl"><i class="fa-solid fa-heading"></i> 공지 고시 제목</label>
+          <input type="text" id="news_ttl" name="news_ttl" placeholder="대고객 채널에 노출될 공시 제목을 입력해 주십시오." required>
+        </div>
+
+        <!-- 2. news_cont (내용) -->
+        <div class="form-group">
+          <label for="news_cont"><i class="fa-solid fa-file-pen"></i> 공지 상세 내용</label>
+          <textarea id="news_cont" name="news_cont" placeholder="상세한 공지 고시 내용 및 줄바꿈 문장을 마크업/텍스트로 자유롭게 작성해 주십시오." required></textarea>
+        </div>
+      </div>
+
+      <!-- 3. 전송 및 취소 영역 -->
+      <div class="submit-area">
+        <a href="#" onclick="history.back(); return false;" class="btn btn-secondary">
+          <i class="fa-solid fa-rotate-left"></i> 작성 취소
+        </a>
+        <button type="submit" class="btn btn-primary">
+          <i class="fa-solid fa-cloud-arrow-up"></i> 신규 고시 배포
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</div><!-- /main-content -->
+
+</body>
+</html>

@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<!-- SIDEBAR -->
+<!-- ===== SIDEBAR ===== -->
 <div class="sidebar">
   <div class="sidebar-logo">
     <img th:src="@{/images/BNKlogo.png}" alt="BNK 부산은행">
@@ -29,6 +29,11 @@
     <li class="menu-section-title">상품 관리</li>
     <li><a href="/admin/productRegisterPage" class="menu-item active"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
     <li><a href="/admin/productListPage" class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
+    <li class="menu-section-title">콘텐츠 관리</li>
+    <li><a href="/admin/noticeListPage" class="menu-item"><i class="fa-solid fa-bullhorn"></i> 공지사항 목록</a></li>
+    <li><a href="/admin/noticeRegisterPage" class="menu-item"><i class="fa-solid fa-pen-to-square"></i> 공지사항 등록</a></li>
+    <li><a href="/admin/adminEventListPage" class="menu-item"><i class="fa-solid fa-calendar-days"></i> 이벤트 목록</a></li>
+    <li><a href="/admin/adminEventPage" class="menu-item"><i class="fa-solid fa-circle-plus"></i> 이벤트 등록</a></li>
     <li class="menu-section-title">업무</li>
     <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
     <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
@@ -116,20 +121,28 @@
         금액 / 기간
       </div>
       <div class="form-grid col3">
-        <div class="form-group">
+
+        <!-- 최소 가입 금액 -->
+        <div class="form-group amount-group">
           <label>최소 가입 금액 <span style="color:var(--primary)">*</span></label>
-          <div class="input-wrap">
+          <div class="input-wrap amount-input-wrap">
             <i class="fa-solid fa-circle-arrow-down"></i>
-            <input type="number" name="min_amount" placeholder="0" required>
+            <input type="number" name="min_amount" id="min_amount" placeholder="0" required>
           </div>
+          <div id="min_amount_display" class="amount-display">0원</div>
         </div>
-        <div class="form-group">
+
+        <!-- 최대 가입 금액 -->
+        <div class="form-group amount-group">
           <label>최대 가입 금액 <span style="color:var(--primary)">*</span></label>
-          <div class="input-wrap">
+          <div class="input-wrap amount-input-wrap">
             <i class="fa-solid fa-circle-arrow-up"></i>
-            <input type="number" name="max_amount" placeholder="0" required>
+            <input type="number" name="max_amount" id="max_amount" placeholder="0" required>
           </div>
+          <div id="max_amount_display" class="amount-display">0원</div>
         </div>
+
+        <!-- 금리 분류 -->
         <div class="form-group">
           <label>금리 분류 <span style="color:var(--primary)">*</span></label>
           <div class="input-wrap">
@@ -141,6 +154,8 @@
             </select>
           </div>
         </div>
+
+        <!-- 최소 가입 기간 -->
         <div class="form-group">
           <label>최소 가입 기간 <span style="color:var(--primary)">*</span></label>
           <div class="input-wrap">
@@ -153,19 +168,25 @@
             </select>
           </div>
         </div>
+
+        <!-- 최대 가입 기간 -->
         <div class="form-group">
           <label>최대 가입 기간 <span style="color:var(--primary)">*</span></label>
           <div class="input-wrap">
             <i class="fa-solid fa-calendar-plus"></i>
             <select name="max_period_month">
-              <option value="">예금 전용(0)</option>
+              <option value="0">무기한</option>
               <option value="3">3개월</option>
               <option value="6">6개월</option>
               <option value="12">12개월</option>
               <option value="24">24개월</option>
+              <option value="36">36개월</option>
+              <option value="60">60개월</option>
             </select>
           </div>
         </div>
+
+        <!-- 이자 지급 방식 -->
         <div class="form-group">
           <label>이자 지급 방식</label>
           <div class="input-wrap">
@@ -173,9 +194,12 @@
             <select name="interest_payment_type">
               <option value="MATURITY_PAYMENT">만기일시지급</option>
               <option value="MONTHLY_PAYMENT">월지급</option>
+              <option value="BOTH">둘다적용</option>
             </select>
           </div>
         </div>
+
+        <!-- 환율 적용 기준 -->
         <div class="form-group">
           <label>환율 적용 기준</label>
           <div class="input-wrap">
@@ -183,11 +207,12 @@
             <select name="applied_exchange_rate_type">
               <option value="">제외</option>
               <option value="CLOSING_RATE">전일 종가</option>
-              <option value="REALTIME_RATE">실시간 환율</option>ㄴ
+              <option value="REALTIME_RATE">실시간 환율</option>
             </select>
           </div>
         </div>
-      </div>
+
+      </div>  <!-- ← form-grid 여기서 닫기 -->
     </div>
 
     <!-- 대상 고객 -->
@@ -307,7 +332,7 @@
         <i class="fa-solid fa-floppy-disk"></i> 임시 저장
       </button>
       <button type="submit" class="btn btn-primary btn-lg"
-              onclick="document.getElementById('approve_status').value='SUBMIT'">
+              onclick="document.getElementById('approve_status').value='검토중'">
         <i class="fa-solid fa-paper-plane"></i> 결재 제출
       </button>
     </div>
@@ -338,6 +363,24 @@
     }
 
   });
+
+    function bindAmountFormatter(inputId, displayId) {
+
+    const input = document.getElementById(inputId);
+    const display = document.getElementById(displayId);
+
+    input.addEventListener("input", function () {
+
+    const value = Number(this.value || 0);
+
+    display.textContent =
+    value.toLocaleString("ko-KR") + "원";
+
+  });
+  }
+
+    bindAmountFormatter("min_amount", "min_amount_display");
+    bindAmountFormatter("max_amount", "max_amount_display");
 </script>
 </body>
 </html>

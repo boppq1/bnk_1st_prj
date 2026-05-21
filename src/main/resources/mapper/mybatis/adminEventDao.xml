@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.admin.dao.IAdminEventDao">
+
+    <insert id="insertEvent"
+            parameterType="com.example.demo.admin.dto.AdminEventDto">
+
+        <selectKey keyProperty="event_no"
+                   resultType="long"
+                   order="BEFORE">
+
+            SELECT SEQ_EVENTS.NEXTVAL FROM DUAL
+
+        </selectKey>
+
+        INSERT INTO EVENTS (
+        event_no,
+        event_ttl,
+        event_cont,
+        event_wtr_no,
+        event_dt,
+        views
+        ) VALUES (
+        SEQ_EVENTS.NEXTVAL,
+        #{event_ttl},
+        #{event_cont},
+        #{event_wtr_no},
+        SYSDATE,
+        0
+        )
+
+    </insert>
+
+    <update id="increaseViewCount" parameterType="long">
+
+        update events
+        set views = views + 1
+        where event_no = #{event_no}
+
+    </update>
+
+    <select id="selectList"
+            resultType="com.example.demo.admin.dto.AdminEventDto">
+
+        SELECT
+            e.event_no,
+            e.event_ttl,
+            e.event_cont,
+            e.event_wtr_no,
+            e.event_dt,
+            e.views,
+            a.name AS admin_name
+        FROM EVENTS e
+                 JOIN ADMIN_USERS a
+                      ON e.event_wtr_no = a.adm_no
+        ORDER BY e.event_no DESC
+
+    </select>
+
+    <select id="selectAll"
+            parameterType="long"
+            resultType="com.example.demo.admin.dto.AdminEventDto">
+
+        select * from EVENTS where event_no = #{event_no}
+
+    </select>
+
+    <update id="updateEvent"
+            parameterType="com.example.demo.admin.dto.AdminEventDto">
+
+        update EVENTS
+        set event_ttl = #{event_ttl},
+            event_cont = #{event_cont}
+        where event_no = #{event_no}
+
+    </update>
+
+    <delete id="deleteEvent" parameterType="long">
+
+        delete from EVENTS where event_no = #{event_no}
+
+    </delete>
+
+    <select id="countEvents" resultType="int">
+
+        SELECT COUNT(*)
+        FROM EVENTS
+
+    </select>
+
+    <select id="countAdmins" resultType="int">
+
+        SELECT COUNT(DISTINCT event_wtr_no)
+        FROM EVENTS
+
+    </select>
+
+</mapper>

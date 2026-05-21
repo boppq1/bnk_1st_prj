@@ -1263,3 +1263,49 @@ a { text-decoration: none; color: inherit; }
     color: var(--red);
     font-weight: 700;
 }
+
+
+
+
+
+
+
+
+.favorite-btn {
+    width: 34px;
+    height: 34px;
+
+    border: 1.5px solid #ffd7d9;
+    border-radius: 50%;
+
+    background: #fff;
+    color: #e31b23;
+
+    font-size: 18px;
+    font-weight: 900;
+
+    cursor: pointer;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.18s ease;
+}
+
+.favorite-btn:hover {
+    background: #fff0f1;
+    transform: translateY(-1px);
+}
+
+.favorite-btn.active {
+    background: #e31b23;
+    color: #fff;
+    border-color: #e31b23;
+}
+
+.card-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

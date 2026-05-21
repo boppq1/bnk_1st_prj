@@ -29,6 +29,11 @@
     <li class="menu-section-title">상품 관리</li>
     <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
     <li><a href="/admin/productListPage" class="menu-item active"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
+    <li class="menu-section-title">콘텐츠 관리</li>
+    <li><a href="/admin/noticeListPage" class="menu-item"><i class="fa-solid fa-bullhorn"></i> 공지사항 목록</a></li>
+    <li><a href="/admin/noticeRegisterPage" class="menu-item"><i class="fa-solid fa-pen-to-square"></i> 공지사항 등록</a></li>
+    <li><a href="/admin/adminEventListPage" class="menu-item"><i class="fa-solid fa-calendar-days"></i> 이벤트 목록</a></li>
+    <li><a href="/admin/adminEventPage" class="menu-item"><i class="fa-solid fa-circle-plus"></i> 이벤트 등록</a></li>
     <li class="menu-section-title">업무</li>
     <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
     <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
@@ -222,7 +227,7 @@
             <span th:if="${p.approve_status == '승인'}"  class="badge badge-green">
               <i class="fa-solid fa-circle-check"></i> 승인
             </span>
-            <span th:if="${p.approve_status == 'SUBMIT'}" class="badge badge-amber">
+            <span th:if="${p.approve_status == '검토중'}" class="badge badge-amber">
               <i class="fa-solid fa-clock"></i> 검토 중
             </span>
             <span th:if="${p.approve_status == '반려'}"  class="badge badge-red">
@@ -460,7 +465,7 @@
   /* 상태별 설정 맵 */
   const STATUS_MAP = {
     '승인':   { bannerClass: 'status-green', icon: 'fa-circle-check',  label: '승인 완료' },
-    'SUBMIT': { bannerClass: 'status-amber', icon: 'fa-clock',         label: '검토 중'   },
+    '검토중': { bannerClass: 'status-amber', icon: 'fa-clock',         label: '검토 중'   },
     '반려':   { bannerClass: 'status-red',   icon: 'fa-circle-xmark',  label: '반려'      },
     'SAVE':   { bannerClass: 'status-slate', icon: 'fa-floppy-disk',   label: '임시 저장' }
   };

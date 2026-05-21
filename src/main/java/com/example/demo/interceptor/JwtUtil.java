@@ -1,4 +1,4 @@
-//package com.example.demo.admin.interceptor;
+//package com.example.demo.interceptor;
 //import io.jsonwebtoken.Claims;
 //import io.jsonwebtoken.JwtException;
 //import io.jsonwebtoken.Jwts;
@@ -23,6 +23,7 @@
 //
 //        return Jwts.builder()
 //                .setSubject(String.valueOf(adminId))
+//                .claim("role", role)
 //                .setIssuedAt(new Date())
 //                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
 //                .signWith(key, SignatureAlgorithm.HS256)

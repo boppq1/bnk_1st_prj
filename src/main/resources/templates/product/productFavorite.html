@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>관심상품</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+</head>
+
+<body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="detail-page">
+
+    <section class="product-head">
+        <div>
+            <h1>관심상품</h1>
+            <p>내가 관심상품으로 등록한 상품을 한눈에 확인할 수 있습니다</p>
+        </div>
+
+        <div class="quick-menu">
+            <a th:href="@{/product/personal}">개인 상품몰</a>
+            <a th:href="@{/product/company}">기업 상품몰</a>
+            <a th:href="@{/product/foreign}">외환 상품몰</a>
+        </div>
+    </section>
+
+    <section class="all-product-section">
+
+        <div class="section-title-row">
+            <h2>나의 관심상품</h2>
+            <span th:text="|총 ${#lists.size(favorites)}개|">총 0개</span>
+        </div>
+
+        <div th:if="${#lists.isEmpty(favorites)}" class="info-box">
+            <h3>등록된 관심상품이 없습니다.</h3>
+            <p>상품몰에서 하트 버튼을 눌러 관심상품을 추가해보세요.</p>
+        </div>
+
+        <table class="product-table" th:if="${!#lists.isEmpty(favorites)}">
+            <thead>
+            <tr>
+                <th>상품명</th>
+                <th>상품분류</th>
+                <th>가입대상</th>
+                <th>최고금리</th>
+                <th>상품특징</th>
+                <th>관심</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="item : ${favorites}"
+                class="clickable-row"
+                th:onclick="|location.href='@{/product/{id}(id=${item.productId})}'|">
+
+                <td>
+                    <a th:href="@{/product/{id}(id=${item.productId})}"
+                       th:text="${item.productName}"
+                       onclick="event.stopPropagation();">
+                        상품명
+                    </a>
+                </td>
+
+                <td th:switch="${item.productType}">
+                    <span th:case="'DEPOSIT'">예금</span>
+                    <span th:case="'SAVINGS'">적금</span>
+                    <span th:case="'FOREIGN_DEP'">외화예금</span>
+                    <span th:case="'FOREIGN_SAV'">외화적금</span>
+                    <span th:case="'CORP_DEP'">기업예금</span>
+                    <span th:case="'CORP_SAV'">기업적금</span>
+                    <span th:case="*" th:text="${item.productType}">상품</span>
+                </td>
+
+                <td th:switch="${item.targetLarge}">
+                    <span th:case="'ALL'">전체고객</span>
+                    <span th:case="'PERSONAL'">개인고객</span>
+                    <span th:case="'COMPANY'">기업고객</span>
+                    <span th:case="*" th:text="${item.targetLarge}">전체고객</span>
+                </td>
+
+                <td>
+                    연 <span th:text="${item.maxRate}">0</span>%
+                </td>
+
+                <td th:text="${item.productDesc}">상품설명</td>
+
+                <td>
+                    <button type="button"
+                            class="favorite-btn active"
+                            th:data-product-id="${item.productId}"
+                            onclick="event.stopPropagation();">
+                        ♥
+                    </button>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+
+    </section>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/zoom.js}"></script>
+<script th:src="@{/js/product/productFavorite.js}"></script>
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>BNK Busan Bank - 이벤트 등록</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
+  <link rel="stylesheet" th:href="@{/css/admin/adminEventPage.css}">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <img th:src="@{/images/BNKlogo.png}" alt="BNK 부산은행">
+  </div>
+  <div class="sidebar-profile">
+    <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
+    <div class="sp-info">
+      <div class="sp-name" th:text="${admin.name} + ' 관리자'">홍길동 관리자</div>
+      <span class="sp-role" th:text="${admin.adminRole}">chief</span>
+    </div>
+  </div>
+  <ul class="sidebar-menu">
+    <li class="menu-section-title">메인</li>
+    <li><a href="/admin/dashboard" class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+    <li><a href="/admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
+    <li class="menu-section-title">상품 관리</li>
+    <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
+    <li><a href="/admin/productListPage" class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
+    <li class="menu-section-title">콘텐츠 관리</li>
+    <li><a href="/admin/noticeListPage" class="menu-item"><i class="fa-solid fa-bullhorn"></i> 공지사항 목록</a></li>
+    <li><a href="/admin/noticeRegisterPage" class="menu-item"><i class="fa-solid fa-pen-to-square"></i> 공지사항 등록</a></li>
+    <li><a href="/admin/eventListPage" class="menu-item"><i class="fa-solid fa-calendar-days"></i> 이벤트 목록</a></li>
+    <li><a href="/admin/eventRegisterPage" class="menu-item active"><i class="fa-solid fa-circle-plus"></i> 이벤트 등록</a></li>
+    <li class="menu-section-title">업무</li>
+    <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
+    <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
+    <li><a href="/admin/account" class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
+    <li class="menu-section-title">관리</li>
+    <li><a href="/admin/members" class="menu-item"><i class="fa-solid fa-users-gear"></i> 회원/관리자 관리</a></li>
+    <li><a href="/admin/logs" class="menu-item"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
+    <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
+  </ul>
+  <div class="sidebar-footer">
+    <p>2024 BNK Busan Bank</p>
+    <p>IT Strategy Team</p>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-title">콘텐츠 관리</div>
+  <div class="header-breadcrumb">
+    <i class="fa-solid fa-chevron-right"></i>
+    <span>이벤트 관리</span>
+    <i class="fa-solid fa-chevron-right"></i>
+    <span>이벤트 등록</span>
+  </div>
+  <div class="header-right">
+    <div class="header-user">
+      <div class="hu-avatar"><i class="fa-solid fa-user-tie"></i></div>
+      <span th:text="'관리자 ' + ${admin.name} + ' 님'">홍길동 관리자</span>
+      <i class="fa-solid fa-chevron-down hu-chevron"></i>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-content">
+
+  <div class="page-header">
+    <h1 class="page-title">이벤트 등록</h1>
+    <p class="page-subtitle">새로운 이벤트 정보를 입력하고 등록하세요.</p>
+  </div>
+
+  <form th:action="@{/admin/eventRegister}" method="post">
+
+    <!-- 기본 정보 -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fa-solid fa-circle-info"></i>
+        기본 정보
+      </div>
+
+      <div class="form-group">
+        <label>이벤트명 <span style="color:var(--primary)">*</span></label>
+        <div class="input-wrap">
+          <i class="fa-solid fa-tag"></i>
+          <input type="text" name="event_ttl" placeholder="이벤트명을 입력하세요" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>등록 관리자</label>
+        <div class="input-wrap">
+          <i class="fa-solid fa-user-pen"></i>
+          <input type="text" name="reg_admin" th:value="${admin.name}" readonly>
+        </div>
+      </div>
+    </div>
+
+    <!-- 이벤트 내용 -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fa-solid fa-align-left"></i>
+        이벤트 내용
+      </div>
+
+      <div class="form-group">
+        <label>내용 <span style="color:var(--primary)">*</span></label>
+        <div class="input-wrap textarea-wrap">
+          <i class="fa-solid fa-pen-clip"></i>
+          <textarea name="event_cont" placeholder="이벤트 내용을 입력하세요." required></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 하단 버튼 -->
+    <div class="form-actions">
+      <div class="left">
+        <a href="/admin/adminEventListPage" class="btn btn-ghost">
+          <i class="fa-solid fa-arrow-left"></i> 취소
+        </a>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg">
+        <i class="fa-solid fa-paper-plane"></i> 등록하기
+      </button>
+    </div>
+
+  </form>
+</div>
+
+<script>
+  document.querySelector('form').addEventListener('submit', function (e) {
+    if (!this.checkValidity()) {
+      e.preventDefault();
+      alert('필수 항목을 모두 입력해 주세요.');
+      this.reportValidity();
+    }
+  });
+</script>
+</body>
+</html>
