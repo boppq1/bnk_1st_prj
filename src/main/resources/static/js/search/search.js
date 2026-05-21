@@ -75,7 +75,7 @@ const BNKSearch = (() => {
 			            <i class="fa fa-times"></i>
 			        </button>
 			    </div>
-			    <button type="submit" class="bnk-search-submit" aria-label="검색">검색</button>
+			    <input type="submit" class="bnk-search-submit" aria-label="검색" value="검색"></input>
 			</form>
 			<button type="button" class="bnk-search-close" aria-label="검색창 닫기">
 			    <i class="fa fa-times"></i>
