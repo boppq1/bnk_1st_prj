@@ -58,29 +58,24 @@
                             @RequestParam("password") String password,
                             HttpServletResponse response) {
 
-            AdminDto dto = new AdminDto();
-            dto.setLogin_id(loginId);
-            dto.setPassword(password);
-
-            AdminDto admin = serv.login(dto);
+            AdminDto admin = serv.login(loginId, password);
 
             if (admin == null) {
                 return "redirect:/adminLogin?error=true";
             }
 
             Map<String,Object> claims = new HashMap<>();
-            claims.put("admin_id",   admin.getAdmin_id());
-            claims.put("login_id",   admin.getLogin_id());
+            claims.put("adminId",   admin.getAdmin_id());
+            claims.put("loginId",   admin.getLogin_id());
             claims.put("name",       admin.getName());
             claims.put("role",       admin.getAdminRole());
             claims.put("department", admin.getDepartment());
 
-            String token = jwt.generateToken(admin.getLogin_id(), claims);
+            String token = jwt.generateToken(admin.getName(), claims);
 
             Cookie cookie = new Cookie("accessToken", token);
             cookie.setHttpOnly(true);
             cookie.setPath("/");
-            cookie.setSecure(true);
             response.addCookie(cookie);
 
             return "redirect:/admin/adminMyPage";
@@ -88,32 +83,57 @@
 
 
         @GetMapping("/admin/adminMyPage")
-        public String myPage(HttpServletRequest request, Model model) {
-        	String role = "";
-        	// 쿠키는 기존에 어떤 정보가 있기때문에 내가 토큰 하나를 넣더라도
-        	// 배열로 받아야한다.
-        	Cookie[] cookies = request.getCookies();
-        	// 향샹된 for문으로 쿠키를 찾는다
-        	for(Cookie c : cookies) {
-        		// accessToken이 key에 있다면 value에서 값을 꺼낸다.        		
-        		if("accessToken".equals(c.getName())) {
-        			String token = c.getValue();
-        			role = jwt.getRole(token);
-        		}
-        	}
-        	
-
-            // 로그인 안 됨
-//            if(adminId == null) {return "redirect:/adminLogin";}
+        public String myPage(HttpServletRequest request, Model model, @CookieValue(value = "accessToken") String token ) {
+//        	String id = "";
+//        	// 쿠키는 기존에 어떤 정보가 있기때문에 내가 토큰 하나를 넣더라도
+//        	// 배열로 받아야한다.
+//        	Cookie[] cookies = request.getCookies();
+//        	// 향샹된 for문으로 쿠키를 찾는다
+//        	for(Cookie c : cookies) {
 //
-//            AdminDto dto = new AdminDto();
-//            dto.setAdmin_id(adminId);
-//            AdminDto admin = serv.selectMyPage(dto);
-//            model.addAttribute("admin", admin);
+//        		// accessToken이 key에 있다면 value에서 값을 꺼낸다.
+//        		if("accessToken".equals(c.getName())) {
+//        			String token = c.getValue();
+//        			id = jwt.getLoginId(token);
+//                    String name = jwt.getUsername(token);
+//                    System.out.println("name = " + token);
+//                    System.out.println("name = " + id);
+//                    System.out.println("name = " + name);
+//        		}
+//        	}
+            String id = jwt.getLoginId(token);
+            AdminDto dto = serv.selectMyPage(id);
 
+            if( dto ==  null ) {
+                return "redirect:/adminLogin?error=true";
+            }
+            model.addAttribute("admin", dto);
             return "admin/adminMyPage";
         }
 
+        @GetMapping("/admin/headMyPage")
+        public String headPage(HttpServletRequest request, Model model, @CookieValue(value = "accessToken") String token){
+            String id = jwt.getLoginId(token);
+            AdminDto dto = serv.selectMyPage(id);
+
+            if( dto ==  null ) {
+                return "redirect:/adminLogin?error=true";
+            }
+            model.addAttribute("admin", dto);
+            return "admin/headMyPage";
+        }
+
+        @GetMapping("/admin/executiveMyPage")
+        public String executivePage(HttpServletRequest request, Model model, @CookieValue(value = "accessToken") String token){
+            String id = jwt.getLoginId(token);
+            AdminDto dto = serv.selectMyPage(id);
+
+            if( dto ==  null ) {
+                return "redirect:/adminLogin?error=true";
+            }
+            model.addAttribute("admin", dto);
+            return "admin/executiveMyPage";
+        }
 
         @PostMapping("/admin/update")
         public String updateMyPage(@ModelAttribute AdminDto dto) {
@@ -141,8 +161,12 @@
         @GetMapping("/admin/logout")
         public String logout(HttpServletResponse response) {
             Cookie cookie = new Cookie("accessToken", null);
+
             cookie.setMaxAge(0);
             cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true);
+
             response.addCookie(cookie);
             return "redirect:/adminLogin";
         }
