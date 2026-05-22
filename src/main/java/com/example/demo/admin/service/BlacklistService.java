@@ -23,6 +23,10 @@ public class BlacklistService {
 		return dao.getBlacklist();
 	}
 	
+	public List<BlacklistDto> getBlacklistFive() {
+		return dao.getBlacklistFive();
+	}
+	
 	public void liftBlack(BlacklistDto dto) {
 		dao.liftBlack(dto);
 	}

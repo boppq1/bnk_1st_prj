@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.admin.dto.AdminDto;
 import com.example.demo.admin.dto.KeywordBanDto;
 import com.example.demo.admin.dto.NewsDto;
-import com.example.demo.admin.dto.SearchLogDto;
+import com.example.demo.admin.dto.SearchDto;
 import com.example.demo.admin.service.AdminService;
+import com.example.demo.admin.service.BlacklistService;
 import com.example.demo.company.dto.CompanyUserDTO;
 import com.example.demo.personal.dto.UserDTO;
 
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class AdminController {
 	
 	final AdminService as;
+	private final BlacklistService bs;
 	
 	@GetMapping("/adminMain")
 	public String adminMain() {
@@ -268,15 +270,9 @@ public class AdminController {
 				as.deletePersonalSuggestKeyword();
 			}
 			
-			SearchLogDto dto = as.getPersonalSearchLog(keyword);
+			SearchDto dto = as.getPersonalSearchLog(keyword);
 			
-			Long search_volume;
-			if(dto == null) {
-				search_volume = 0l;
-			} else {
-				search_volume = (long)Integer.parseInt(dto.getSearch_volume());
-			}
-			as.setSuggestKeyword(keyword, "ROLE_PERSONAL", search_volume);
+			as.setSuggestKeyword(keyword, "ROLE_PERSONAL", 0l);
 			return "redirect:/admin/searchManagementPage";
 		} else {
 			return "redirect:/admin/searchManagementPage";
@@ -300,14 +296,8 @@ public class AdminController {
 				as.deleteCompanySuggestKeyword();
 			}
 			
-			SearchLogDto dto = as.getCompanySearchLog(keyword);
-			Long search_volume;
-			if(dto == null) {
-				search_volume = 0l;
-			} else {
-				search_volume = (long)Integer.parseInt(dto.getSearch_volume());
-			}
-			as.setSuggestKeyword(keyword, "ROLE_COMPANY", search_volume);
+			
+			as.setSuggestKeyword(keyword, "ROLE_COMPANY", 0L);
 			return "redirect:/admin/searchManagementPage";
 		} else {
 			return "redirect:/admin/searchManagementPage";
@@ -371,6 +361,16 @@ public class AdminController {
 	public String deleteNews(@RequestParam("news_no") Long news_no) {
 		as.deleteNews(news_no);
 		return "redirect:/admin/newsPage";
+	}
+	
+	@GetMapping("/executiveDashboard")
+	public String executiveDashboard(Model m, HttpSession session) {
+		m.addAttribute("admin", (AdminDto) session.getAttribute("admin"));
+		m.addAttribute("approval", as.outstandingNumber());
+		m.addAttribute("adminLog", as.adminLogFive());
+		m.addAttribute("userLog", as.userLogFive());
+		m.addAttribute("black", bs.getBlacklistFive());
+		return "/admin/executiveDashboard";
 	}
 	
 }

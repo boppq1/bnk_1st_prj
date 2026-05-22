@@ -11,4 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface IAdminLogDao {
     List<AdminActionLogDto> adminLog();
     List<ApiLogDto> userLog();
+    List<AdminActionLogDto> adminLogFive();
+    List<ApiLogDto> userLogFive();
 }

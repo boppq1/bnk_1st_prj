@@ -13,10 +13,12 @@
 <script src="/js/fx/fxHome.js"></script>
 <body>
 	<div th:replace="~{header :: header}"></div>
+	<script th:src="@{/js/chat.js}"></script>
 	<div th:replace="~{fx/fx_body :: body}"></div>
 	<div th:replace="~{footer :: footer}"></div>
 
-	 <script th:src="@{/js/zoom.js}"></script>
-
+	<script th:src="@{/js/zoom.js}"></script>
+	
+	
 </body>
 </html>

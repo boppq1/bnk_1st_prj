@@ -19,6 +19,8 @@ public interface SearchDao {
      */
     List<SearchDto> selectByKeyword(@Param("query") String query);
     
-    int insertSearchKeyword(@Param("query") String query, @Param("searcher") String searcher,  @Param("role_type") String role_type);
+    SearchDto checkKeyword(@Param("keyword") String keyword);
+    int insertSearchKeyword(@Param("query") String query, @Param("role_type") String role_type);
+    
 }
  

@@ -32,8 +32,12 @@
 		ORDER BY SEARCH_VOLUME DESC
 	</select>
 	
+	<select id="ckeckKeyword">
+		select * from search_log where keyword = #{keyword}
+	</select>
+	
 	<insert id="insertSearchKeyword">
-		insert into search_log (search_no, searcher, role_type, keyword) values (SEQ_SEARCH_LOG.nextval, searcher, role_type, query)
+		insert into search_log (search_no, role_type, keyword) values (SEQ_SEARCH_LOG.nextval, #{role_type}, #{query})
 	</insert>
 
 </mapper>
