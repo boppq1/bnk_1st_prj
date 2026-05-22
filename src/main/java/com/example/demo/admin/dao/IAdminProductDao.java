@@ -1,64 +1,68 @@
 package com.example.demo.admin.dao;
 
 import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
-
-import com.example.demo.admin.dto.ProductDto;
 import org.apache.ibatis.annotations.Param;
+import com.example.demo.admin.dto.ProductDto;
+import com.example.demo.admin.dto.InterestRateDto;
+import com.example.demo.admin.dto.PrefRateDto;
 
 @Mapper
 public interface IAdminProductDao {
 
-	// 상품 등록
+	// ==================== PRODUCTS ====================
 	int insertPro(ProductDto dto);
-
-	// 현재 상품 번호 조회
 	Long selectCurrentProductNo();
-
-	// PDF 등록
 	int insertProPdf(ProductDto dto);
-
-	// 신청 등록
 	int insertProRequest(ProductDto dto);
 
-	// 상품 목록
-	List<ProductDto> listPro(@Param("offset") int offset, @Param("pageSize") int pageSize
-	);
-
+	List<ProductDto> listPro(@Param("offset") int offset, @Param("pageSize") int pageSize);
 	int getTotalCount();
 
-	// 상품 상세
-	ProductDto listDetail(Long product_no);
+	// 이 메서드는 resultMap을 통해 List들을 자동으로 채워줍니다.
+	ProductDto listDetail(Long product_id);
 
-	// 상태별 조회
 	List<ProductDto> selectByStatus(String approve_status);
-
-	// 상품 수정
-	int updatePro(ProductDto dto);
-
-	// PDF 수정
-	int updateProPdf(ProductDto dto);
-
-	// 판매 상태 변경
-	int updateProductStatus(ProductDto dto);
-
-	// PDF 삭제
-	int deleteProductPdf(Long product_no);
-
-	// 신청 삭제
-	int deleteProductRequest(Long product_no);
-
-	// 상품 삭제
-	int deletePro(Long product_no);
-
 	int saveProduct(ProductDto dto);
 	int submitProduct(ProductDto dto);
-
-	void submitProductRequest(long product_no);
-
-	// IAdminProductDao.java
+	void submitProductRequest(Long product_id);
+	int updateProPdf(ProductDto dto);
+	int deleteProductPdf(Long product_id);
+	int deleteProductRequest(Long product_id);
+	int deletePro(Long product_id);
 	int getCountByType(String product_type);
 	int getCountByStatus(String approve_status);
 
+
+	// ==================== INTEREST_RATES ====================
+	// 금리 등록 (InterestRateDto 사용)
+	int insertInterestRate(InterestRateDto dto);
+
+	Long selectCurrentRateNo();
+
+	// 리스트 반환 타입 수정
+	List<InterestRateDto> listInterestRates(Long product_id);
+
+	// 단건 반환 타입 수정
+	InterestRateDto selectInterestRate(Long rate_id);
+
+	// 수정 시 InterestRateDto 사용
+	int updateInterestRate(InterestRateDto dto);
+	int deleteInterestRate(Long rate_id);
+	int deleteInterestRatesByProduct(Long product_id);
+
+
+	// ==================== PREFERENTIAL_RATE_CONDITIONS ====================
+	// 우대 금리 등록 (PrefRateDto 사용)
+	int insertPrefRate(PrefRateDto dto);
+
+	// 리스트 반환 타입 수정
+	List<PrefRateDto> listPreRate(Long rate_id);
+
+	// 수정 시 PrefRateDto 사용
+	int updatePrefRate(PrefRateDto dto);
+
+	int deletePrefRate(Long pref_rate_id);
+	int deletePrefRateByProduct(Long product_id);
+	int deletePrefRateByRate(Long rate_id);
 }
