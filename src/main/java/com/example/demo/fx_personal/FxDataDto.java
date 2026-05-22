@@ -1,6 +1,6 @@
 package com.example.demo.fx_personal;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +16,6 @@ public class FxDataDto {
 	private Double ttb;
 	private Double tts;
 	private Double deal_bas_r;
-	private Date ntc_dt;
+	private LocalDate ntc_dt;
 
 }

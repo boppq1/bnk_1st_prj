@@ -1,15 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title></title>
+
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/search/search.css}">
+<link rel="stylesheet" th:href="@{/css/product/product.css}">
+<link rel="stylesheet" th:href="@{/css/fx/viewRate.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
-	<div class="main_container">
-		<div class="left_side">
-			<div class="select_form">
-				<form action="/view/rateTable" method="get">
-					<select name="cur_nm">
+
+	<div th:replace="~{header :: header}"></div>
+
+	<div class="product-layout">
+
+		<div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+		<div class="main_container">
+
+			<div class="left_side">
+
+				<!-- 조회 영역 타이틀 (기존 ::before 대체) -->
+				<div class="form_title">환율 조회</div>
+
+				<div class="select_form">
+					<select id="cur_nm" name="cur_nm">
 						<option value="USD">미국 달러</option>
 						<option value="JPY(100)">일본 엔</option>
 						<option value="CNH">중국 위안화</option>
@@ -32,30 +53,45 @@
 						<option value="SAR">사우디 리얄</option>
 						<option value="SEK">스웨덴 크로나</option>
 					</select>
-				</form>
+
+					<button type="button" id="searchBtn">조회</button>
+				</div>
+
 			</div>
-			<div></div>
-		</div>
-		<div class="view_rate_table">
-			<table border="1">
-				<tr>
-					<th>고지 시간</th>
-					<th>환율코드</th>
-					<th>통화이름</th>
-					<th>통화 살 때</th>
-					<th>통화 팔 때</th>
-					<th>기준 환율</th>
-				</tr>
-				<tr th:each="item : ${items}">
-					<td th:text="${item.id}"></td>
-					<td th:text="${item.id}"></td>
-					<td th:text="${item.id}"></td>
-					<td th:text="${item.id}"></td>
-					<td th:text="${item.id}"></td>
-					<td th:text="${item.id}"></td>
-				</tr>
-			</table>
+
+			<!-- 결과 영역 -->
+			<div class="view_rate_table">
+
+				<!-- 결과 헤더 추가 -->
+				<div class="table_header">
+					환율 조회 결과 <span class="sub_text">최근 기준 데이터 기준</span>
+				</div>
+
+				<table border="1">
+					<thead>
+						<tr>
+							<th>고지 시간</th>
+							<th>환율코드</th>
+							<th>통화이름</th>
+							<th>통화 살 때</th>
+							<th>통화 팔 때</th>
+							<th>기준 환율</th>
+						</tr>
+					</thead>
+
+					<tbody id="rateTableBody"></tbody>
+				</table>
+
+			</div>
+
 		</div>
 	</div>
+
+	<div th:replace="~{footer :: footer}"></div>
+
+	<script src="/js/fx/viewRate.js"></script>
+	<script th:src="@{/js/product/foreign.js}"></script>
+	<script th:src="@{/js/zoom.js}"></script>
+
 </body>
 </html>
