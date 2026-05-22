@@ -1,6 +1,7 @@
 package com.example.demo.admin.controller;
 
 import com.example.demo.admin.dto.AdminDto;
+import com.example.demo.admin.dto.InterestRateDto;
 import com.example.demo.admin.dto.ProductDto;
 import com.example.demo.admin.service.AdminMergeService;
 import com.example.demo.admin.service.AdminProductService;
@@ -22,22 +23,20 @@ public class ProductCRUDController {
     private final AdminProductService serv;
     private final AdminMergeService adminServ;
     private final FileProperties fileProperties;
+    private List<InterestRateDto> rates;
 
     // 상품 등록 페이지
     @GetMapping("/admin/productRegisterPage")
-    public String registerPage(Model model,
-                               HttpSession session) {
+    public String registerPage(Model model, HttpSession session) {
 
         Long adminId = (Long) session.getAttribute("adminId");
 
-        if(adminId == null) {
+        if (adminId == null) {
             return "redirect:/adminLogin";
         }
 
         AdminDto dto = new AdminDto();
         dto.setAdmin_id(adminId);
-
-
         AdminDto admin = adminServ.selectMyPage(dto);
 
         model.addAttribute("admin", admin);
@@ -55,55 +54,43 @@ public class ProductCRUDController {
             @RequestParam("specialTermsFile") MultipartFile specialTermsFile,
             @RequestParam("productGuideFile") MultipartFile productGuideFile,
             HttpSession session
-    ){
+    ) {
 
-        // 등록자 세팅
-        Long adminId = (Long) session.getAttribute("adminId");
-        String loginId = (String) session.getAttribute("loginId");
         String name = (String) session.getAttribute("name");
 
+        if (name == null || name.isEmpty()) {
+            return "redirect:/adminLogin";
+        }
 
+        // 등록자 세팅
         dto.setCreated_by(name);
         dto.setRequester_id(name);
 
+        // 파일 저장 및 경로 DTO 세팅
         dto.setBasic_terms_path(saveFile(basicTermsFile));
         dto.setCategory_terms_path(saveFile(categoryTermsFile));
         dto.setSpecial_terms_path(saveFile(specialTermsFile));
         dto.setProduct_guide_path(saveFile(productGuideFile));
 
-        System.out.println(dto.getBasic_terms_path());
-        System.out.println(dto.getCategory_terms_path());
-        System.out.println(dto.getSpecial_terms_path());
-        System.out.println(dto.getProduct_guide_path());
-
-        if(name == null || name.equals("")) {
-            return "redirect:/adminLogin";
-        }
-
+        // DB 등록 처리 (주석 해제)
         serv.registerProduct(dto);
+
         return "redirect:/admin/productListPage";
     }
 
+    // 공통 파일 저장 메서드
     private String saveFile(MultipartFile file) {
-
         if (file == null || file.isEmpty()) return null;
 
         try {
             String uploadDir = fileProperties.getUploadDir();
-
-            String fileName =
-                    System.currentTimeMillis()
-                            + "_" + file.getOriginalFilename();
-
-            java.nio.file.Path path =
-                    java.nio.file.Paths.get(uploadDir + fileName);
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            java.nio.file.Path path = java.nio.file.Paths.get(uploadDir + fileName);
 
             java.nio.file.Files.createDirectories(path.getParent());
-
             file.transferTo(path.toFile());
 
             return fileName;
-
         } catch (Exception e) {
             throw new RuntimeException("파일 저장 실패", e);
         }
@@ -111,10 +98,16 @@ public class ProductCRUDController {
 
     // 상품 목록 조회
     @GetMapping("/admin/productListPage")
-    public String listPro(HttpSession session, Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
+    public String listPro(HttpSession session, Model model,
+                          @RequestParam(value = "page", defaultValue = "1") int page) {
+
+        // 세션 체크
+        AdminDto admin = (AdminDto) session.getAttribute("admin");
+        if (admin == null) {
+            return "redirect:/adminLogin";
+        }
 
         // 페이지네이션
-
         int pageSize = 7;
         int offset = (page - 1) * pageSize;
         List<ProductDto> products = serv.getProductList(offset, pageSize);
@@ -122,19 +115,13 @@ public class ProductCRUDController {
         int totalCount = serv.getTotalCount();
         int totalPage = (int) Math.ceil((double) totalCount / pageSize);
 
-        AdminDto admin =
-                (AdminDto) session.getAttribute("admin");
-
-        if(admin == null) {
-            return "redirect:/adminLogin";
-        }
-
         model.addAttribute("admin", admin);
         model.addAttribute("products", products);
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalCount",   serv.getTotalCount());
+
+        // 카운트 통계
         model.addAttribute("depositCount", serv.getCountByType("DEPOSIT"));
         model.addAttribute("savingCount",  serv.getCountByType("SAVING"));
         model.addAttribute("pendingCount", serv.getCountByStatus("검토중"));
@@ -144,24 +131,20 @@ public class ProductCRUDController {
 
     // 상태별 조회
     @GetMapping("/admin/proStatus")
-    public String selectByStatus(@RequestParam("approve_status")
-                                 String approve_status,
+    public String selectByStatus(@RequestParam("approve_status") String approve_status,
                                  HttpSession session,
                                  Model model) {
 
         Long adminId = (Long) session.getAttribute("adminId");
-
-        if(adminId == null) {
+        if (adminId == null) {
             return "redirect:/adminLogin";
         }
 
         AdminDto dto = new AdminDto();
         dto.setAdmin_id(adminId);
-
         AdminDto admin = adminServ.selectMyPage(dto);
 
-        List<ProductDto> products =
-                serv.getProductByStatus(approve_status);
+        List<ProductDto> products = serv.getProductByStatus(approve_status);
 
         model.addAttribute("admin", admin);
         model.addAttribute("products", products);
@@ -173,75 +156,71 @@ public class ProductCRUDController {
     // 상품 상세 조회 (AJAX)
     @ResponseBody
     @GetMapping("/admin/product/detail/{product_id}")
-    public ProductDto productDetail(
-            @PathVariable("product_id")
-            Long product_id) {
-
+    public ProductDto productDetail(@PathVariable("product_id") Long product_id) {
+        // [참고] 현재 이 메서드는 Products와 PDF 정보만 리턴합니다.
+        // 금리 정보(Interest Rates, Pref Rates)도 함께 프론트에 전달해야 한다면 Service에서 조합하여 리턴해야 합니다.
         return serv.getProductDetail(product_id);
     }
 
     // 상품 상태 변경
     @PostMapping("/admin/status/update")
-    public String updateStatus(ProductDto dto,
-                               HttpSession session) {
-
-        String loginId =
-                (String) session.getAttribute("loginId");
+    public String updateStatus(ProductDto dto, HttpSession session) {
+        String loginId = (String) session.getAttribute("loginId");
+        if (loginId == null) {
+            return "redirect:/adminLogin";
+        }
 
         dto.setUpdated_by(loginId);
-
-        serv.updateProductStatus(dto);
+        serv.updateProductStatus(dto); // ※ DAO/XML에 해당 쿼리가 구현되어 있는지 꼭 확인하세요!
 
         return "redirect:/admin/productListPage";
     }
 
     // 상품 수정 페이지
     @GetMapping("/admin/updatePro/{product_id}")
-    public String updatePage(
-            @PathVariable("product_id")
-            Long product_id,
-            HttpSession session,
-            Model model) {
-        AdminDto admin =  (AdminDto) session.getAttribute("admin");
-        String loginId =
-                (String) session.getAttribute("loginId");
+    public String updatePage(@PathVariable("product_id") Long product_id,
+                             HttpSession session, Model model) {
 
-        if (loginId == null) {
-            return "redirect:/adminLogin";
-        }
+        Long adminId = (Long) session.getAttribute("adminId");
+        if (adminId == null) return "redirect:/adminLogin";
 
-        ProductDto proDto =
-                serv.getProductDetail(product_id);
+        AdminDto dto = new AdminDto();
+        dto.setAdmin_id(adminId);
+        AdminDto admin = adminServ.selectMyPage(dto);  // DB에서 직접 조회
+
+        ProductDto proDto = serv.getProductDetail(product_id);
+
         model.addAttribute("admin", admin);
         model.addAttribute("product", proDto);
-
         return "admin/productUpdatePage";
     }
 
-    // 상품 수정 저장/제출
+    // 수정
     @PostMapping("/admin/updateProWrite")
     public String updateProduct(
             ProductDto dto,
             @RequestParam("action") String action,
+            @RequestParam(value = "basicTermsFile",    required = false) MultipartFile basicTermsFile,
+            @RequestParam(value = "categoryTermsFile", required = false) MultipartFile categoryTermsFile,
+            @RequestParam(value = "specialTermsFile",  required = false) MultipartFile specialTermsFile,
+            @RequestParam(value = "productGuideFile",  required = false) MultipartFile productGuideFile,
             HttpSession session) {
 
-        String loginId =
-                (String) session.getAttribute("loginId");
+        Long adminId = (Long) session.getAttribute("adminId");
+        if (adminId == null) return "redirect:/adminLogin";
 
-        if (loginId == null) {
-            return "redirect:/adminLogin";
-        }
+        // 파일이 있을 때만 경로 세팅 (없으면 null → COALESCE로 기존값 유지됨)
+        dto.setBasic_terms_path(saveFile(basicTermsFile));
+        dto.setCategory_terms_path(saveFile(categoryTermsFile));
+        dto.setSpecial_terms_path(saveFile(specialTermsFile));
+        dto.setProduct_guide_path(saveFile(productGuideFile));
 
+        String loginId = (String) session.getAttribute("loginId");
         dto.setUpdated_by(loginId);
 
-        // 저장
         if ("save".equals(action)) {
-            dto.setApprove_status("SAVE");
             serv.saveProduct(dto);
-
-            // 제출
         } else if ("submit".equals(action)) {
-            dto.setApprove_status("SUBMIT");
             serv.submitProduct(dto);
         }
 
@@ -250,15 +229,9 @@ public class ProductCRUDController {
 
     // 상품 삭제
     @GetMapping("/deletePro/{product_id}")
-    public String deletePro(
-            @PathVariable("product_id")
-            Long product_id) {
-
+    public String deletePro(@PathVariable("product_id") Long product_id) {
         serv.deleteProduct(product_id);
-
         return "redirect:/admin/productListPage";
     }
-
-
 
 }
