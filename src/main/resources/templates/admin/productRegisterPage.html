@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
   <link rel="stylesheet" th:href="@{/css/admin/product/productRegisterPage.css}">
-
 </head>
 <body>
 
@@ -96,7 +95,7 @@
             <i class="fa-solid fa-layer-group"></i>
             <select name="product_type">
               <option value="DEPOSIT">예금</option>
-              <option value="SAVING">적금</option>
+              <option value="SAVINGS">적금</option>
               <option value="FOREIGN_DEP">외화 예금</option>
               <option value="FOREIGN_SAV">외화 적금</option>
               <option value="CORP_DEP">기업 예금</option>
@@ -192,9 +191,10 @@
           <div class="input-wrap">
             <i class="fa-solid fa-hand-holding-dollar"></i>
             <select name="interest_payment_type">
-              <option value="MATURITY_PAYMENT">만기일시지급</option>
-              <option value="MONTHLY_PAYMENT">월지급</option>
-              <option value="BOTH">둘다적용</option>
+              <option value="MATURITY">만기일시지급</option>
+              <option value="MONTHLY">월지급</option>
+              <option value="BOTH">만기일&월지급</option>
+              <option value="QUARTERLY">분기별</option>
             </select>
           </div>
         </div>
@@ -212,7 +212,7 @@
           </div>
         </div>
 
-      </div>  <!-- ← form-grid 여기서 닫기 -->
+      </div>
     </div>
 
     <!-- 대상 고객 -->
@@ -262,6 +262,109 @@
         <div class="input-wrap textarea-wrap">
           <i class="fa-solid fa-pen-clip"></i>
           <textarea name="product_desc" placeholder="상품에 대한 상세 설명을 입력하세요."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 금리 설정 -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fa-solid fa-percent"></i>
+        금리 설정
+      </div>
+
+      <div id="rate-list">
+        <div class="rate-item" data-index="0">
+          <div class="rate-item-header">
+            <span class="rate-item-title">금리 정보 입력</span>
+          </div>
+
+          <div class="form-grid col3">
+            <div class="form-group">
+              <label>통화 코드 <span style="color:var(--primary)">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-coins"></i>
+                <select name="rates[0].currency_code">
+                  <option value="KRW">KRW (원화)</option>
+                  <option value="USD">USD (달러)</option>
+                  <option value="EUR">EUR (유로)</option>
+                  <option value="JPY">JPY (엔화)</option>
+                  <option value="CNY">CNY (위안)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>금리 유형 <span style="color:var(--primary)">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-sliders"></i>
+                <select name="rates[0].rate_type">
+                  <option value="고정">고정</option>
+                  <option value="변동">변동</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>가입 기간 (개월)</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-calendar"></i>
+                <input type="number" name="rates[0].period_month" placeholder="예: 12">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>기본 금리 (%) <span style="color:var(--primary)">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+                <input type="number" step="0.01" name="rates[0].base_rate" placeholder="예: 3.50" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>만기 금리 (%)</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-flag-checkered"></i>
+                <input type="number" step="0.01" name="rates[0].maturity_rate" placeholder="예: 3.80">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>중도해지 금리 (%)</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-ban"></i>
+                <input type="number" step="0.01" name="rates[0].early_cancel_rate" placeholder="예: 1.00">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>금리 시작일 <span style="color:var(--primary)">*</span></label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-calendar-day"></i>
+                <input type="date" name="rates[0].rate_start_date" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>금리 종료일</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-calendar-xmark"></i>
+                <input type="date" name="rates[0].rate_end_date">
+              </div>
+            </div>
+          </div>
+
+          <!-- 우대금리 조건 -->
+          <div class="pref-section">
+            <div class="pref-header">
+              <span class="pref-title"><i class="fa-solid fa-star"></i> 우대금리 조건</span>
+              <button type="button" class="btn-pref-add" onclick="addPref()">
+                <i class="fa-solid fa-plus"></i> 조건 추가
+              </button>
+            </div>
+            <div class="pref-list" id="pref-list-container"></div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -353,34 +456,67 @@
   }
 
   document.querySelector("form").addEventListener("submit", function (e) {
-
     const form = e.target;
-
     if (!form.checkValidity()) {
       e.preventDefault();
       alert("필수 항목을 모두 입력해 주세요.");
-      form.reportValidity(); // 브라우저 기본 빨간 메시지 표시
+      form.reportValidity();
     }
-
   });
 
-    function bindAmountFormatter(inputId, displayId) {
-
+  function bindAmountFormatter(inputId, displayId) {
     const input = document.getElementById(inputId);
     const display = document.getElementById(displayId);
-
     input.addEventListener("input", function () {
-
-    const value = Number(this.value || 0);
-
-    display.textContent =
-    value.toLocaleString("ko-KR") + "원";
-
-  });
+      const value = Number(this.value || 0);
+      display.textContent = value.toLocaleString("ko-KR") + "원";
+    });
   }
 
-    bindAmountFormatter("min_amount", "min_amount_display");
-    bindAmountFormatter("max_amount", "max_amount_display");
+  bindAmountFormatter("min_amount", "min_amount_display");
+  bindAmountFormatter("max_amount", "max_amount_display");
+
+  function addPref() {
+    const prefList = document.getElementById('pref-list-container');
+    const index = prefList.querySelectorAll('.pref-item').length;
+
+    const html = `
+    <div class="pref-item">
+      <div class="input-wrap">
+        <i class="fa-solid fa-tag"></i>
+        <input type="text"
+               name="rates[0].prefRateConditions[${index}].condition_type"
+               placeholder="조건 유형 (예: 급여이체)">
+      </div>
+      <div class="input-wrap">
+        <i class="fa-solid fa-align-left"></i>
+        <input type="text"
+               name="rates[0].prefRateConditions[${index}].condition_desc"
+               placeholder="조건 설명">
+      </div>
+      <div class="input-wrap">
+        <i class="fa-solid fa-plus"></i>
+        <input type="number" step="0.01"
+               name="rates[0].prefRateConditions[${index}].preferential_rate"
+               placeholder="우대금리 (%)">
+      </div>
+      <button type="button" class="btn-pref-remove" onclick="removePref(this)">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>`;
+
+    prefList.insertAdjacentHTML('beforeend', html);
+  }
+
+  function removePref(btn) {
+    btn.closest('.pref-item').remove();
+    // 삭제 후 인덱스 재정렬
+    document.querySelectorAll('#pref-list-container .pref-item').forEach((item, i) => {
+      item.querySelectorAll('input').forEach(input => {
+        input.name = input.name.replace(/\[\d+\]\./, `[${i}].`);
+      });
+    });
+  }
 </script>
 </body>
 </html>
