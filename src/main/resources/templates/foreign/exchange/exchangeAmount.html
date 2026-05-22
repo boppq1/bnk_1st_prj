@@ -1,10 +1,207 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>환전가능금액</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/exchangeAmount.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="exchange-page">
+
+        <h1 class="main-title">환전가능금액</h1>
+
+        <!-- 안내 박스 -->
+        <div class="notice-box" id="noticeBox">
+            <button type="button" class="notice-title" id="noticeToggle">
+                <span class="notice-title-text">
+                    · 해외 여행자, 해외유학생 및 체재자, 북한지역 관광객, 보유목적으로 환전이 가능한 금액을 안내해드립니다.<br>
+                    · 현찰 환전이 가능한 금액과 신용카드 사용 가능한 금액, 송금 가능액을 안내해 드리며, 필요한 제출서류를 확인하시기 바랍니다.
+                </span>
+                <span class="notice-arrow">⌄</span>
+            </button>
+            <div class="notice-content">
+                <p>· 거래 목적에 따라 환전 가능 금액과 제출서류가 다를 수 있습니다.</p>
+                <p>· 자세한 사항은 가까운 영업점 또는 고객센터를 통해 확인하시기 바랍니다.</p>
+            </div>
+        </div>
+
+        <!-- 탭 버튼 -->
+        <div class="exchange-tabs">
+            <button type="button" class="exchange-tab active" data-tab="traveler">일반해외여행자</button>
+            <button type="button" class="exchange-tab" data-tab="student">해외유학생 및 체재자</button>
+            <button type="button" class="exchange-tab" data-tab="north">북한지역관광객</button>
+            <button type="button" class="exchange-tab" data-tab="purpose">보유목적환전</button>
+        </div>
+
+        <!-- 일반해외여행자 -->
+        <div class="tab-content active" id="traveler">
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">외화 현찰</h2>
+                <ul class="deposit-list">
+                    <li><strong>환전한도 :</strong> 제한 없음</li>
+                    <li><strong>제출서류 :</strong> 주민등록증, 여권 등 실명확인증표</li>
+                    <li>
+                        <strong>유의사항</strong>
+                        <ul class="ea-sub-list">
+                            <li>국민인 거주자가 미화 1만불 상당액을 초과하여 휴대 출국시에는 관할 세관에 신고하셔야 합니다.</li>
+                            <li>동일자, 동일인 기준 미화 1만불을 초과하는 경우 국세청 및 관세청에 통보됩니다.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">신용카드</h2>
+                <ul class="deposit-list">
+                    <li>
+                        <strong>국세청 통보</strong>
+                        <ul class="ea-sub-list">
+                            <li>신용카드나 직불카드 사용금액(외국에서의 외국통화 인출 실적 포함)이 연간 미화 1만불을 초과하는 경우</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>관세청 통보</strong>
+                        <ul class="ea-sub-list">
+                            <li>신용카드나 직불카드 사용금액(외국에서의 외국통화 인출 실적 포함)이 분기별 미화 5천불 이상인 경우</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">해외 송금(일반 여행경비 송금)</h2>
+                <ul class="deposit-list">
+                    <li><strong>송금대상 :</strong> 국외 연수생의 교육관련 실비, 치료비, 외국 소재 여행업자 등에 대한 지급</li>
+                    <li><strong>송금한도 :</strong> 입증서류 금액 범위내</li>
+                    <li>
+                        <strong>제출서류</strong>
+                        <ul class="ea-sub-list">
+                            <li>주민등록증, 여권 등 실명확인증표</li>
+                            <li>교육관련 경비, 치료비 또는 외국 여행업자 등 발행 해외여행경비 입증 서류</li>
+                            <li>건당 미화 1만불 초과 지급시 국세청 및 관세청에 통보됩니다.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+        </div>
+
+        <!-- 해외유학생 및 체재자 -->
+        <div class="tab-content" id="student">
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">해외유학생과 체재자의 구분</h2>
+                <ul class="deposit-list">
+                    <li><strong>해외 유학생 :</strong> 외국의 교육기관 · 연구기관 또는 연수기관에서 6개월 이상의 기간에 걸쳐 수학하거나 학문 기술을 연구 또는 연수할 목적으로 외국에 체재하는 자</li>
+                    <li><strong>해외체재자 :</strong> 상용, 문화, 공무, 국외 연수(6개월 미만)를 목적으로 30일을 초과하여 체재하는 자(해외기업체에 취업이 된 경우는 제외)</li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">외화현찰 환전</h2>
+                <ul class="deposit-list">
+                    <li><strong>환전 한도 :</strong> 제한 없음</li>
+                    <li><strong>국세청 통보 :</strong> 연간 해외여행경비 지급액(송금액과 외국환신고(확인)필증 발행금액의 합계)이 미화 10만불을 초과하는 경우에는 국세청에 통보됩니다.</li>
+                    <li>미화 1만불 상당액을 휴대하여 출국하는 경우에는 지정거래 외국환 은행이 발급한 외국환신고(확인)필증을 지참하여 세관에 신고하여야 합니다.</li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">제출서류</h2>
+                <ul class="deposit-list">
+                    <li><strong>유학생 :</strong> 여권, 당해 수학기관의 입학허가서 등 (최초 지정시)</li>
+                    <li><strong>체재자 :</strong> 여권, 소속 단체장의 출장·파견 증명서</li>
+                    <li>유학생의 경우 매년 재학 사실을 입증할 수 있는 재학증명서 또는 직전 학기 성적증명서 등을 제출해야 합니다.</li>
+                </ul>
+            </section>
+
+        </div>
+
+        <!-- 북한지역관광객 -->
+        <div class="tab-content" id="north">
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">외화현찰 환전</h2>
+                <ul class="deposit-list">
+                    <li><strong>환전한도 :</strong> 미화 2천불 이내</li>
+                    <li><strong>제출서류 :</strong> 여권, 북한지역관광 경비 지급 영수증</li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">유의사항</h2>
+                <ul class="deposit-list">
+                    <li>관광객은 북한에서 신용카드 및 직불카드를 이용한 관광경비를 지급 할 수 없습니다. 단, 북한지역 관광사업자에게 지급하는 경우는 가능합니다.</li>
+                    <li>관광객은 북한으로 왕래 시 기본 경비 미화 2천불 상당액을 제외하고는 외화 및 원화, 귀금속 또는 증권을 수출입할 수 없습니다.</li>
+                </ul>
+            </section>
+
+        </div>
+
+        <!-- 보유목적환전 -->
+        <div class="tab-content" id="purpose">
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">외화현찰 환전</h2>
+                <ul class="deposit-list">
+                    <li><strong>환전한도 :</strong> 제한 없음</li>
+                    <li><strong>제출서류 :</strong> 주민등록증 또는 운전면허증, 사업자등록증 등</li>
+                    <li><strong>대상자 :</strong> 국민인 개인 또는 법인 거주자 (외국인거주자, 비거주자는 보유 목적의 환전 불가능)</li>
+                </ul>
+            </section>
+
+            <section class="deposit-section">
+                <h2 class="deposit-section-title">유의사항</h2>
+                <ul class="deposit-list">
+                    <li>동일자, 동일인 기준 미화 1만불을 초과하는 경우 국세청 및 관세청에 통보됩니다.</li>
+                    <li>보유하고 있던 외화를 국민인 거주자가 미화 1만불 상당액을 초과하여 휴대 출국시에는 관할 세관에 신고하셔야 합니다.</li>
+                </ul>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
+<script th:src="@{/js/zoom.js}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".exchange-tab").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                document.querySelectorAll(".exchange-tab").forEach(function (b) { b.classList.remove("active"); });
+                document.querySelectorAll(".tab-content").forEach(function (c) { c.classList.remove("active"); });
+                btn.classList.add("active");
+                document.getElementById(btn.dataset.tab).classList.add("active");
+            });
+        });
+
+        var noticeBox    = document.getElementById("noticeBox");
+        var noticeToggle = document.getElementById("noticeToggle");
+        if (noticeBox && noticeToggle) {
+            noticeToggle.addEventListener("click", function () {
+                noticeBox.classList.toggle("open");
+            });
+        }
+    });
+</script>
 
 </body>
 </html>

@@ -5,12 +5,8 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" th:href="@{/css/header.css}">
 <link rel="stylesheet" th:href="@{/css/footer.css}">
-
-<title>PersonalmyPage</title>
-<link
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap"
-	rel="stylesheet" />
 <link rel="stylesheet" th:href="@{/css/personal/myPage.css}">
+<title>PersonalmyPage</title>
 </head>
 <body>
 	<div th:replace="~{header :: header}"></div>
@@ -56,7 +52,7 @@
 			</ul>
 
 			<div class="profile-links">
-				<a href="/personal/changeUserInfo">사용자정보변경</a> <a href="#">카드회원정보변경</a> <a href="#">스마트알림센터</a>
+				<a href="/personal/changeUserInfo">사용자정보변경</a> <a href="/changePassword">비밀번호변경</a>
 			</div>
 		</div>
 
@@ -118,7 +114,7 @@
 							<div class="account-top">
 								<span class="badge badge-foreign">외화</span> <span
 									class="account-name" th:text="${facnt.bank_nm}"></span>
-							</div> <button id="openFAcnt" class="account-number" th:text="|계좌번호 ${facnt.acnt_num}|"></button>
+							</div> <button id="openBtn" class="account-number" th:text="|계좌번호 ${facnt.acnt_num}|"></button>
 						</li>
 					</th:block>
 
@@ -132,7 +128,7 @@
 
 
 	
-	<button id="openBtn">상세보기 (모달 열기)</button>
+<!-- 	<button id="openBtn">상세보기 (모달 열기)</button> -->
 
 	<!-- 2. 겹쳐서 나올 모달 화면 정의 -->
 	<dialog id="myModal">
@@ -145,6 +141,7 @@
 	
 
 	<div th:replace="~{footer :: footer}"></div>
+	 <script th:src="@{/js/zoom.js}"></script>
 	<script>
   function switchTab(type) {
     // 클릭된 버튼을 event.target으로 가져옴

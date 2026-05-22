@@ -114,7 +114,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
           <div class="dropdown-column">
             <h4>외환</h4>
 
-			<a href="/product/foreign">외환상품몰</a>
+         <a href="/product/foreign">외환상품몰</a>
             <a href="/fx/viewRate">환율조회</a>
             <a href="#">환전</a>
             <a href="#">외화통장</a>
@@ -132,18 +132,18 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
             <a href="#">금융상품소개</a>
             <a href="#">외환</a>
           </div>
-		  <div>
-		  	<h4><a href="/myPage" style="color: black; text-decoration: none;"> 마이페이지</a></h4>
-		  </div>
+        <div>
+           <h4><a href="/myPage" style="color: black; text-decoration: none;"> 마이페이지</a></h4>
+        </div>
         </div>
 
       </div>
 
     </div>
-	
+   
     <!-- 오른쪽 -->
     <div class="header-right">
-	 <div id="user-info">
+    <div id="user-info">
       <!-- 로그인 드롭다운 -->
       <div class="login-area">
         <span class="login-text">로그인</span>
@@ -153,39 +153,48 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
           <a th:href="@{/loginPage}">기업뱅킹</a>
         </div>
       </div>
-	</div>
+   </div>
       <div class="header-icons">
         <button class="search-trigger" style="background:none; border:none; cursor:pointer;">
-   			<i class="fa-solid fa-magnifying-glass"></i>
-		</button>
+            <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
         <i class="fa-solid fa-bars"></i>
       </div>
     </div>
   </div>
+  <button type="button"
+        class="global-zoom-btn"
+        id="zoomToggleBtn"
+        title="화면 크게 보기"
+        aria-label="화면 크게 보기">
+    크게
+</button>
 <script>
-	const userinfo = document.querySelector("#user-info")
-	const username = localStorage.getItem("name");
-	const role = localStorage.getItem("role");
-	if(username){
-	    // 로그인 상태: 로그인 영역을 이름으로 교체
-	    userinfo.innerHTML = `
-	        <div class="login-area">
-	            <span class="login-text">${username}님</span> &nbsp
-	            <button id="logout-btn">로그아웃</button>
-	        </div>
-	    `;
+   const userinfo = document.querySelector("#user-info")
+   const username = localStorage.getItem("name");
+   const role = localStorage.getItem("role");
+   if(username){
+       // 로그인 상태: 로그인 영역을 이름으로 교체
+       userinfo.innerHTML = `
+           <div class="login-area">
+               <span class="login-text">${username}님</span> &nbsp
+               <button id="logout-btn">로그아웃</button>
+           </div>
+       `;
 
-	    // 로그아웃 처리
-	    document.querySelector("#logout-btn").addEventListener("click", function(e){
-	        e.preventDefault();
-	        localStorage.removeItem("name");
-	        localStorage.removeItem("role");
-	        location.href = "/logout";
-	    });
-	}
-	
+       // 로그아웃 처리
+       document.querySelector("#logout-btn").addEventListener("click", function(e){
+           e.preventDefault();
+           localStorage.removeItem("name");
+           localStorage.removeItem("role");
+           location.href = "/logout";
+       });
+   }
+   
 </script>
 <script th:src="@{/js/search/search.js}"></script>
+
 </header>
+
 </body>
 </html>

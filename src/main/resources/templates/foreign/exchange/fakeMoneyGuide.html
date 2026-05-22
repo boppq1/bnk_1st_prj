@@ -1,10 +1,88 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>BNK 부산은행 외환</title>
+    <title>위변조화폐식별요령</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
+
 <body>
+
+<div th:replace="~{header :: header}"></div>
+
+<div class="product-layout">
+
+    <div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+    <main class="product-main">
+
+        <div class="service-container">
+
+            <h1 class="main-title">위변조화폐식별요령</h1>
+
+            <section class="service-section">
+                <h2 class="section-title">변조화폐</h2>
+
+                <ul class="service-list">
+                    <li>
+                        <p>
+                            미화의 크기가 권종에 관계없이 동일하다는 점을 악용하여
+                            미화 1불 및 5불권 등 소액 지폐의 네 모퉁이 액면숫자를
+                            오리거나 탈색시켜 100 또는 50 달러로 변조시킨 지폐
+                        </p>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="service-section">
+                <h2 class="section-title">모조화폐</h2>
+
+                <ul class="service-list">
+                    <li>
+                        <p>
+                            법정통화로 통용되지 않는 고액권을 모조한 지폐로,
+                            언뜻보면 법정통화와 같은 느낌을 주기는 하나
+                            지폐 내에 “유통 불능(Non-Negotiable)”이라는 표기가 되어 있음
+                        </p>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="service-section">
+                <h2 class="section-title">위조화폐</h2>
+
+                <ul class="service-list">
+                    <li>
+                        <p>
+                            화폐발행권자가 아닌 자가 일반인이 진짜 화폐라고 오인할 수 있을 정도의
+                            가짜 화폐를 제조하여 유통시키는 지폐
+                        </p>
+                    </li>
+                </ul>
+            </section>
+
+            <div class="foreign-btn-wrap">
+			    <a href="https://www.bok.or.kr/museum/singl/crrncySearch/list.do?menuNo=700127"
+			       class="foreign-link-btn"
+			       target="_blank"
+			       rel="noopener noreferrer">
+			        국가별 외국통화 견양 바로가기
+			    </a>
+			</div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/product/foreign.js}"></script>
+<script th:src="@{/js/zoom.js}"></script>
 
 </body>
 </html>

@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" th:href="@{/css/header.css}">
 <link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/search/search.css}">
+<link rel="stylesheet" th:href="@{/css/body.css}">
 <!-- CSS 파일 연결 -->
 <link rel="stylesheet" type="text/css" th:href="@{/css/personal/personalRegisterPage.css}">
 <title>회원가입</title>
@@ -124,7 +126,8 @@
       </div>
     </div>
   </div>
-
+<div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/zoom.js}"></script>
 <script
 		src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js">
 	</script>
@@ -310,6 +313,6 @@
 		}
 	</script>
 
-  <div th:replace="~{footer :: footer}"></div>
+
 </body>
 </html>
