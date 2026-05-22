@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.example.demo.admin.dao.IBlacklistDao">
+    <insert id="insertBlacklist">
+       insert into BLACKLIST (cli_key, ip_addr, reason, reg_dt) values (#{clientKey}, #{ip_addr}, #{reason}, sysdate)
+    </insert>
+    <select id="getBlacklist" resultType="com.example.demo.admin.dto.BlacklistDto">
+    	select * from blacklist
+    </select>
+    <update id="liftBlack">
+    	update blacklist set status = 'INACTIVE', lift_adm_no = #{lift_adm_no}, lift_reason = #{lift_reason}, upd_dt = sysdate where cli_key = #{cli_key}
+    </update>
+</mapper>        

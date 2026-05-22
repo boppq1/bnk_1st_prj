@@ -5,9 +5,13 @@
     <meta charset="UTF-8">
     <title>해외송금e-mail서비스</title>
 
-    <link rel="stylesheet" th:href="@{/css/product/product.css}">
     <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{/css/footer.css}">
+	<link rel="stylesheet" th:href="@{/css/footer.css}">
+	<link rel="stylesheet" th:href="@{/css/body.css}">
+	<link rel="stylesheet" th:href="@{/css/search/search.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	
+    <link rel="stylesheet" th:href="@{/css/product/product.css}">
     <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 </head>
 
@@ -77,6 +81,7 @@
 </div>
 
 <div th:replace="~{footer :: footer}"></div>
+<script th:src="@{/js/zoom.js}"></script>
 <script th:src="@{/js/product/foreign.js}"></script>
 
 </body>

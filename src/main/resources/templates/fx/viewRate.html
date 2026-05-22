@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div class="main_container">
+		<div class="left_side">
+			<div class="select_form">
+				<form action="/view/rateTable" method="get">
+					<select name="cur_nm">
+						<option value="USD">미국 달러</option>
+						<option value="JPY(100)">일본 엔</option>
+						<option value="CNH">중국 위안화</option>
+						<option value="EUR">유로</option>
+						<option value="HKD">홍콩 달러</option>
+						<option value="SGD">싱가포르 달러</option>
+						<option value="THB">태국 바트</option>
+						<option value="AUD">호주 달러</option>
+						<option value="GBP">영국 파운드</option>
+						<option value="CAD">캐나다 달러</option>
+						<option value="MYR">말레이시아 링기트</option>
+						<option value="AED">아랍에미리트 디르함</option>
+						<option value="BHD">바레인 디나르</option>
+						<option value="CHF">스위스 프랑</option>
+						<option value="DKK">덴마크 크로네</option>
+						<option value="IDR(100)">인도네시아 루피아</option>
+						<option value="KWD">쿠웨이트 디나르</option>
+						<option value="NOK">노르웨이 크로네</option>
+						<option value="NZD">뉴질랜드 달러</option>
+						<option value="SAR">사우디 리얄</option>
+						<option value="SEK">스웨덴 크로나</option>
+					</select>
+				</form>
+			</div>
+			<div></div>
+		</div>
+		<div class="view_rate_table">
+			<table border="1">
+				<tr>
+					<th>고지 시간</th>
+					<th>환율코드</th>
+					<th>통화이름</th>
+					<th>통화 살 때</th>
+					<th>통화 팔 때</th>
+					<th>기준 환율</th>
+				</tr>
+				<tr th:each="item : ${items}">
+					<td th:text="${item.id}"></td>
+					<td th:text="${item.id}"></td>
+					<td th:text="${item.id}"></td>
+					<td th:text="${item.id}"></td>
+					<td th:text="${item.id}"></td>
+					<td th:text="${item.id}"></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

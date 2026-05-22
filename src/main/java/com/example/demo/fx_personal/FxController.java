@@ -44,4 +44,14 @@ public class FxController {
 		}
 
 	}
+	
+	@GetMapping("/viewRate")
+	public List<FxDataDto> viewRate(@RequestParam(name = "cur_nm") String cur_nm){
+		
+		FxDataDto fxData = fxService.getFxData(cur_nm);
+		
+		return (List<FxDataDto>) fxData;
+	}
+	
+	
 }

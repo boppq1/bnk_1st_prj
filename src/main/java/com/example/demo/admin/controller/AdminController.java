@@ -134,8 +134,6 @@ public class AdminController {
 		return "redirect:/admin/updateAdminPage?admin_id=" + dto.getAdmin_id() + "&result=true";
 	}
 	
-	
-	
 	// ========== 상품 승인 ========== 
 	
 	@GetMapping("/approvalPage")
