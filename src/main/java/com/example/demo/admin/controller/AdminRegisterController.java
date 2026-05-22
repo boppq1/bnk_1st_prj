@@ -87,6 +87,23 @@
         }
 
 
+//        @GetMapping("/admin/adminMyPage")
+//        public String myPage(HttpServletRequest request, Model model) {
+//
+//            String token = resolveToken(request);
+//
+//            // 로그인 안 됨
+//            if(adminId == null) {return "redirect:/adminLogin";}
+//
+//            AdminDto dto = new AdminDto();
+//            dto.setAdmin_id(adminId);
+//            AdminDto admin = serv.selectMyPage(dto);
+//            model.addAttribute("admin", admin);
+//
+//            return "admin/adminMyPage";
+//        }
+
+
         @PostMapping("/admin/update")
         public String updateMyPage(@ModelAttribute AdminDto dto) {
 
