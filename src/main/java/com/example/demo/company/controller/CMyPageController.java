@@ -38,13 +38,15 @@ public class CMyPageController {
 				String role = jwt.getRole(token);
 				log.debug("아이디 {} role {}", id, role);
 				Map<String, Object> info = service.getUserInfo(id);
-				model.addAttribute("userInfo", info.get("userInfo"));
-				model.addAttribute("userAcnt", info.get("userAcnt"));
-				model.addAttribute("userFAcnt", info.get("userFAcnt"));
-				
-				session.setAttribute("userInfo", info.get("userInfo"));
-				session.setAttribute("userAcnt", info.get("userAcnt"));
-				session.setAttribute("userFAcnt", info.get("userFAcnt"));
+				/*
+				 * model.addAttribute("userInfo", info.get("userInfo"));
+				 * model.addAttribute("userAcnt", info.get("userAcnt"));
+				 * model.addAttribute("userFAcnt", info.get("userFAcnt"));
+				 * 
+				 * session.setAttribute("userInfo", info.get("userInfo"));
+				 * session.setAttribute("userAcnt", info.get("userAcnt"));
+				 * session.setAttribute("userFAcnt", info.get("userFAcnt"));
+				 */
 			}
 		} 
 		log.info("개인마이페이지");
