@@ -70,26 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // ── 서브타이틀 클릭 (아코디언) ──
-    const subTitles = document.querySelectorAll(".foreign-sub-title");
-
-    subTitles.forEach(function (title) {
-
-        title.addEventListener("click", function () {
-
-            const parentGroup = title.closest(".foreign-dropdown-menu");
-            const subMenu = title.nextElementSibling;
-            const isAlreadyOpen = title.classList.contains("active");
-
-            parentGroup.querySelectorAll(".foreign-sub-title").forEach(t => t.classList.remove("active"));
-            parentGroup.querySelectorAll(".foreign-sub-menu").forEach(m => m.classList.remove("active"));
-
-            if (!isAlreadyOpen && subMenu) {
-                title.classList.add("active");
-                subMenu.classList.add("active");
-            }
-
-        });
-
-    });
+    
 
 });
