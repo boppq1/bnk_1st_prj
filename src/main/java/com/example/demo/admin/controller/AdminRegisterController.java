@@ -87,21 +87,32 @@
         }
 
 
-//        @GetMapping("/admin/adminMyPage")
-//        public String myPage(HttpServletRequest request, Model model) {
-//
-//            String token = resolveToken(request);
-//
-//            // 로그인 안 됨
+        @GetMapping("/admin/adminMyPage")
+        public String myPage(HttpServletRequest request, Model model) {
+        	String role = "";
+        	// 쿠키는 기존에 어떤 정보가 있기때문에 내가 토큰 하나를 넣더라도
+        	// 배열로 받아야한다.
+        	Cookie[] cookies = request.getCookies();
+        	// 향샹된 for문으로 쿠키를 찾는다
+        	for(Cookie c : cookies) {
+        		// accessToken이 key에 있다면 value에서 값을 꺼낸다.        		
+        		if("accessToken".equals(c.getName())) {
+        			String token = c.getValue();
+        			role = jwt.getRole(token);
+        		}
+        	}
+        	
+
+            // 로그인 안 됨
 //            if(adminId == null) {return "redirect:/adminLogin";}
 //
 //            AdminDto dto = new AdminDto();
 //            dto.setAdmin_id(adminId);
 //            AdminDto admin = serv.selectMyPage(dto);
 //            model.addAttribute("admin", admin);
-//
-//            return "admin/adminMyPage";
-//        }
+
+            return "admin/adminMyPage";
+        }
 
 
         @PostMapping("/admin/update")
