@@ -42,5 +42,11 @@ public class SearchService {
 		 * .collect(java.util.stream.Collectors.toList());
 		 */
 	}
+	
+	public void insertSearchKeyword(String role_type, String keyword) {
+		
+		searchDao.insertSearchKeyword(keyword, role_type);
+			
+	}
 
 }

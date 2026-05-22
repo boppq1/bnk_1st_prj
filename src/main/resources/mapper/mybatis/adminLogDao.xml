@@ -54,4 +54,12 @@
     	select * from admin_action_logs order by REG_DT desc
     </select>
     
+    <select id="userLogFive" resultMap="apiLogDtoMap">
+    	select * from api_logs order by REG_DT desc FETCH FIRST 5 ROWS ONLY
+    </select>
+    
+    <select id="adminLogFive" resultMap="adminActionLogDtoMap">
+    	select * from admin_action_logs order by REG_DT desc FETCH FIRST 5 ROWS ONLY
+    </select>
+    
 </mapper>

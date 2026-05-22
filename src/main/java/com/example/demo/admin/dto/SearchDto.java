@@ -14,8 +14,6 @@ import lombok.ToString;
 public class SearchDto {
 	Long search_no;
 	String search_time;
-	Long searcher;
 	String role_type;
 	String keyword;
-	Long search_volume;
 }
