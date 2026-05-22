@@ -53,17 +53,18 @@ public class AdminMergeService {
     // =========================
     // 로그인
     // =========================
-    public AdminDto login(AdminDto dto) {
+    public AdminDto login(String login_id, String password) {
 
         // 아이디 조회
-        AdminDto admin = dao.login(dto);
+        AdminDto admin = dao.login(login_id);
         System.out.println(admin);
 
         // 아이디 없음
         if(admin == null) {return null;}
 
+
         // 비밀번호 비교
-        boolean match = passwordDecryption(dto.getPassword(), admin.getPassword());
+        boolean match = passwordDecryption(password, admin.getPassword());
         System.out.println(match);
 
         // 로그인 성공
@@ -75,8 +76,8 @@ public class AdminMergeService {
     // =========================
     // 내 정보 조회
     // =========================
-    public AdminDto selectMyPage(AdminDto dto) {
-        return dao.selectMyPage(dto);
+    public AdminDto selectMyPage(String login_id) {
+        return dao.selectMyPage(login_id);
     }
 
     // =========================

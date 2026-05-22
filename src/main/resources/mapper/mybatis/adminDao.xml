@@ -63,7 +63,7 @@
 
         SELECT *
         FROM ADMIN_USERS
-        WHERE adm_no = #{admin_id}
+        WHERE lgn_id = #{login_id}
 
     </select>
 
