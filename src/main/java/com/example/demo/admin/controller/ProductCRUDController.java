@@ -179,42 +179,48 @@ public class ProductCRUDController {
     // 상품 수정 페이지
     @GetMapping("/admin/updatePro/{product_id}")
     public String updatePage(@PathVariable("product_id") Long product_id,
-                             HttpSession session,
-                             Model model) {
+                             HttpSession session, Model model) {
 
-        AdminDto admin = (AdminDto) session.getAttribute("admin");
-        String loginId = (String) session.getAttribute("loginId");
+        Long adminId = (Long) session.getAttribute("adminId");
+        if (adminId == null) return "redirect:/adminLogin";
 
-        if (loginId == null) {
-            return "redirect:/adminLogin";
-        }
+        AdminDto dto = new AdminDto();
+        dto.setAdmin_id(adminId);
+        AdminDto admin = adminServ.selectMyPage(dto);  // DB에서 직접 조회
 
         ProductDto proDto = serv.getProductDetail(product_id);
 
         model.addAttribute("admin", admin);
         model.addAttribute("product", proDto);
-
         return "admin/productUpdatePage";
     }
 
-    // 상품 수정 저장/제출
+    // 수정
     @PostMapping("/admin/updateProWrite")
-    public String updateProduct(ProductDto dto,
-                                @RequestParam("action") String action,
-                                HttpSession session) {
+    public String updateProduct(
+            ProductDto dto,
+            @RequestParam("action") String action,
+            @RequestParam(value = "basicTermsFile",    required = false) MultipartFile basicTermsFile,
+            @RequestParam(value = "categoryTermsFile", required = false) MultipartFile categoryTermsFile,
+            @RequestParam(value = "specialTermsFile",  required = false) MultipartFile specialTermsFile,
+            @RequestParam(value = "productGuideFile",  required = false) MultipartFile productGuideFile,
+            HttpSession session) {
+
+        Long adminId = (Long) session.getAttribute("adminId");
+        if (adminId == null) return "redirect:/adminLogin";
+
+        // 파일이 있을 때만 경로 세팅 (없으면 null → COALESCE로 기존값 유지됨)
+        dto.setBasic_terms_path(saveFile(basicTermsFile));
+        dto.setCategory_terms_path(saveFile(categoryTermsFile));
+        dto.setSpecial_terms_path(saveFile(specialTermsFile));
+        dto.setProduct_guide_path(saveFile(productGuideFile));
 
         String loginId = (String) session.getAttribute("loginId");
-        if (loginId == null) {
-            return "redirect:/adminLogin";
-        }
-
         dto.setUpdated_by(loginId);
 
         if ("save".equals(action)) {
-            dto.setApprove_status("SAVE");
             serv.saveProduct(dto);
         } else if ("submit".equals(action)) {
-            dto.setApprove_status("검토중"); // XML에는 '검토중'으로 하드코딩 되어 있으니 유의
             serv.submitProduct(dto);
         }
 

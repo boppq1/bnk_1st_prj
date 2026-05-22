@@ -73,12 +73,50 @@ public class AdminProductService {
     public void saveProduct(ProductDto dto) {
         productDao.saveProduct(dto);
         productDao.updateProPdf(dto);
+
+        // 금리/우대금리 재등록
+        if (dto.getRates() != null && !dto.getRates().isEmpty()) {
+            productDao.deletePrefRateByProduct(dto.getProduct_id());
+            productDao.deleteInterestRatesByProduct(dto.getProduct_id());
+
+            for (InterestRateDto rate : dto.getRates()) {
+                rate.setProduct_id(dto.getProduct_id());
+                productDao.insertInterestRate(rate);
+                Long rateId = productDao.selectCurrentRateNo();
+
+                if (rate.getPrefRateConditions() != null) {
+                    for (PrefRateDto pref : rate.getPrefRateConditions()) {
+                        pref.setRate_id(rateId);
+                        productDao.insertPrefRate(pref);
+                    }
+                }
+            }
+        }
     }
 
     @Transactional
     public void submitProduct(ProductDto dto) {
         productDao.submitProduct(dto);
         productDao.updateProPdf(dto);
+
+        // 금리/우대금리 재등록
+        if (dto.getRates() != null && !dto.getRates().isEmpty()) {
+            productDao.deletePrefRateByProduct(dto.getProduct_id());
+            productDao.deleteInterestRatesByProduct(dto.getProduct_id());
+
+            for (InterestRateDto rate : dto.getRates()) {
+                rate.setProduct_id(dto.getProduct_id());
+                productDao.insertInterestRate(rate);
+                Long rateId = productDao.selectCurrentRateNo();
+
+                if (rate.getPrefRateConditions() != null) {
+                    for (PrefRateDto pref : rate.getPrefRateConditions()) {
+                        pref.setRate_id(rateId);
+                        productDao.insertPrefRate(pref);
+                    }
+                }
+            }
+        }
     }
 
     // 관리자 수정 (복잡한 리스트 수정은 삭제 후 재등록이 가장 깔끔합니다)

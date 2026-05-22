@@ -85,10 +85,42 @@
 
     <select id="listDetail" parameterType="long" resultMap="productResultMap">
         SELECT
-            P.prod_no AS product_id, P.active, P.prod_nm AS product_name, P.prod_type, P.min_prd_mon AS min_period_month, P.max_prd_mon AS max_period_month, P.min_amt AS min_amount, P.max_amt AS max_amount, P.tgt_lrg AS target_large, P.tgt_dtl AS target_detail, P.prod_desc, P.int_pay_type, P.apld_exch_type, P.reg_dt AS create_date, P.update_dt, P.reg_by AS created_by, P.approver, P.apv_stat_cd AS approve_status, P.upd_by AS updated_by, P.app_start_dt AS app_start_date, P.app_end_dt AS app_end_date, P.rate_cat AS rate_category,
-            PDF.basic_terms_path, PDF.cat_terms_path, PDF.spec_terms_path, PDF.prod_guide_path,
-            R.rate_no AS rate_id, R.cur_cd AS currency_code, R.cust_type AS customer_type, R.res_type AS resident_type, R.prd_mon AS period_month, R.base_rate, R.mtr_rate, R.early_cxl_rate, R.rate_start_dt AS rate_start_date, R.rate_end_dt AS rate_end_date, R.rate_type,
-            PR.pref_rate_no AS pref_rate_id, PR.cond_type AS condition_type, PR.cond_desc AS condition_desc, PR.pref_rate AS preferential_rate
+            P.prod_no               AS product_id,
+            P.active,
+            P.prod_nm               AS product_name,
+            P.prod_type             AS product_type,
+            P.min_prd_mon           AS min_period_month,
+            P.max_prd_mon           AS max_period_month,
+            P.min_amt               AS min_amount,
+            P.max_amt               AS max_amount,
+            P.tgt_lrg               AS target_large,
+            P.tgt_dtl               AS target_detail,
+            P.apv_stat_cd           AS approve_status,
+            P.prod_desc             AS product_desc,
+            P.int_pay_type          AS interest_payment_type,
+            P.apld_exch_type        AS applied_exchange_rate_type,
+            P.rate_cat              AS rate_category,
+            P.reg_by                AS created_by,
+            P.update_dt             AS update_date,
+            PDF.basic_terms_path    AS basic_terms_path,
+            PDF.cat_terms_path      AS category_terms_path,
+            PDF.spec_terms_path     AS special_terms_path,
+            PDF.prod_guide_path     AS product_guide_path,
+            R.rate_no               AS rate_id,
+            R.cur_cd                AS currency_code,
+            R.cust_type             AS customer_type,
+            R.res_type              AS resident_type,
+            R.prd_mon               AS period_month,
+            R.base_rate             AS base_rate,
+            R.mtr_rate              AS maturity_rate,
+            R.early_cxl_rate        AS early_cancel_rate,
+            R.rate_start_dt         AS rate_start_date,
+            R.rate_end_dt           AS rate_end_date,
+            R.rate_type             AS rate_type,
+            PR.pref_rate_no         AS pref_rate_id,
+            PR.cond_type            AS condition_type,
+            PR.cond_desc            AS condition_desc,
+            PR.pref_rate            AS preferential_rate
         FROM PRODUCTS P
                  LEFT JOIN PRODUCT_PDFS PDF ON P.prod_no = PDF.prod_no
                  LEFT JOIN INTEREST_RATES R ON P.prod_no = R.prod_no
@@ -119,7 +151,7 @@
             <if test="rate_category != null">rate_cat = #{rate_category, jdbcType=VARCHAR},</if>
             apv_stat_cd = 'SAVE', update_dt = SYSDATE, upd_by = #{updated_by, jdbcType=VARCHAR}
         </set>
-        WHERE prod_no = #{product_id, jdbcType=NUMERIC} AND apv_stat_cd = 'SAVE'
+        WHERE prod_no = #{product_id, jdbcType=NUMERIC}
     </update>
 
     <update id="submitProduct" parameterType="com.example.demo.admin.dto.ProductDto">
@@ -127,7 +159,7 @@
         <set>
             apv_stat_cd = '검토중', update_dt = SYSDATE, upd_by = #{updated_by, jdbcType=VARCHAR}
         </set>
-        WHERE prod_no = #{product_id, jdbcType=NUMERIC} AND apv_stat_cd = 'SAVE'
+        WHERE prod_no = #{product_id, jdbcType=NUMERIC}
     </update>
 
     <update id="submitProductRequest" parameterType="long">
@@ -149,8 +181,8 @@
 
     <!-- ==================== INTEREST_RATES ==================== -->
     <insert id="insertInterestRate" parameterType="com.example.demo.admin.dto.InterestRateDto">
-        INSERT INTO INTEREST_RATES (rate_no, prod_no, cur_cd, cust_type, res_type, prd_mon, base_rate, mtr_rate, early_cxl_rate, rate_start_dt, rate_end_dt, rate_type, pref_rate)
-        VALUES (SEQ_INTEREST_RATES.NEXTVAL, #{product_id, jdbcType=NUMERIC}, #{currency_code, jdbcType=VARCHAR}, #{customer_type, jdbcType=VARCHAR}, #{resident_type, jdbcType=VARCHAR}, #{period_month, jdbcType=NUMERIC}, #{base_rate, jdbcType=NUMERIC}, #{maturity_rate, jdbcType=NUMERIC}, #{early_cancel_rate, jdbcType=NUMERIC}, #{rate_start_date, jdbcType=DATE}, #{rate_end_date, jdbcType=DATE}, #{rate_type, jdbcType=VARCHAR}, #{preferential_rate, jdbcType=NUMERIC})
+        INSERT INTO INTEREST_RATES (rate_no, prod_no, cur_cd, cust_type, res_type, prd_mon, base_rate, mtr_rate, early_cxl_rate, rate_start_dt, rate_end_dt, rate_type, pref_rate, reg_dt)
+        VALUES (SEQ_INTEREST_RATES.NEXTVAL, #{product_id, jdbcType=NUMERIC}, #{currency_code, jdbcType=VARCHAR}, #{customer_type, jdbcType=VARCHAR}, #{resident_type, jdbcType=VARCHAR}, #{period_month, jdbcType=NUMERIC}, #{base_rate, jdbcType=NUMERIC}, #{maturity_rate, jdbcType=NUMERIC}, #{early_cancel_rate, jdbcType=NUMERIC}, #{rate_start_date, jdbcType=DATE}, #{rate_end_date, jdbcType=DATE}, #{rate_type, jdbcType=VARCHAR}, #{preferential_rate, jdbcType=NUMERIC}, SYSDATE)
     </insert>
 
     <select id="selectCurrentRateNo" resultType="long"> SELECT MAX(rate_no) FROM INTEREST_RATES </select>

@@ -163,24 +163,30 @@
   <!-- 페이지 헤더 -->
   <div class="page-header">
     <div>
+      <div th:text="${product.approve_status}"></div>
       <h1 class="page-title" th:text="'[수정] ' + ${product.product_name}">상품 수정</h1>
       <p class="page-subtitle" th:text="'상품 ID : #' + ${product.product_id}">상품 정보를 수정합니다.</p>
     </div>
-    <span class="status-badge"
-          th:classappend="${product.approve_status == 'SAVE'}   ? 'save'   :
-                          (${product.approve_status == 'SUBMIT'} ? 'submit' :
-                          (${product.approve_status == 'APPROVE'} ? 'approve' : 'reject'))">
-      <i class="fa-solid fa-circle-dot"></i>
-      <span th:text="${product.approve_status == 'SAVE'}    ? '임시저장'   :
-                      (${product.approve_status == 'SUBMIT'}  ? '결재 대기중' :
-                      (${product.approve_status == 'APPROVE'} ? '승인됨'     : '반려됨'))">상태</span>
+    <<span th:class="'status-badge ' +
+    (${product.approve_status} == 'SAVE' ? 'save' :
+    (${product.approve_status} == '검토중' ? 'submit' :
+    (${product.approve_status} == '승인' ? 'approve' :
+    'reject')))">
+
+    <i class="fa-solid fa-circle-dot"></i>
+
+    <span th:text="
+        ${product.approve_status} == 'SAVE' ? '임시저장' :
+        (${product.approve_status} == '검토중' ? '결재 대기중' :
+        (${product.approve_status} == '승인' ? '승인됨' :
+        '반려됨'))">
     </span>
+
+</span>
   </div>
 
   <form th:action="@{/admin/updateProWrite}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="product_id"     th:value="${product.product_id}">
-    <input type="hidden" name="rate_id"        th:value="${product.rate_id}"> <!-- rate_id 수정 시 필요 -->
-    <input type="hidden" name="pref_rate_id"   th:value="${product.pref_rate_id}"> <!-- pref_rate_id 수정 시 필요 -->
     <input type="hidden" name="action" id="action_status" value="save">
 
     <!-- ── 기본 정보 ── -->
@@ -365,21 +371,21 @@
       </div>
     </div>
 
-    <!-- =========================
-     금리 설정 영역 (교체)
-========================= -->
+    <!-- ========================= 금리 설정 ========================= -->
     <div class="card">
       <div class="card-header">
         <i class="fa-solid fa-percent"></i>
         금리 설정
       </div>
 
-      <div id="rate-list">
+      <!-- rates가 있을 때 -->
+      <div id="rate-list"
+           th:with="hasRate=${product.rates != null && !#lists.isEmpty(product.rates)}">
 
         <!-- rate_id hidden -->
         <input type="hidden"
                name="rates[0].rate_id"
-               th:value="${product.rates != null ? product.rates[0].rate_id : ''}">
+               th:value="${hasRate ? product.rates[0].rate_id : ''}">
 
         <div class="rate-item" data-index="0">
           <div class="rate-item-header">
@@ -394,26 +400,11 @@
               <div class="input-wrap">
                 <i class="fa-solid fa-coins"></i>
                 <select name="rates[0].currency_code">
-                  <option value="KRW"
-                          th:selected="${product.rates != null && product.rates[0].currency_code == 'KRW'}">
-                    KRW (원화)
-                  </option>
-                  <option value="USD"
-                          th:selected="${product.rates != null && product.rates[0].currency_code == 'USD'}">
-                    USD (달러)
-                  </option>
-                  <option value="EUR"
-                          th:selected="${product.rates != null && product.rates[0].currency_code == 'EUR'}">
-                    EUR (유로)
-                  </option>
-                  <option value="JPY"
-                          th:selected="${product.rates != null && product.rates[0].currency_code == 'JPY'}">
-                    JPY (엔화)
-                  </option>
-                  <option value="CNY"
-                          th:selected="${product.rates != null && product.rates[0].currency_code == 'CNY'}">
-                    CNY (위안)
-                  </option>
+                  <option value="KRW" th:selected="${hasRate && product.rates[0].currency_code == 'KRW'}">KRW (원화)</option>
+                  <option value="USD" th:selected="${hasRate && product.rates[0].currency_code == 'USD'}">USD (달러)</option>
+                  <option value="EUR" th:selected="${hasRate && product.rates[0].currency_code == 'EUR'}">EUR (유로)</option>
+                  <option value="JPY" th:selected="${hasRate && product.rates[0].currency_code == 'JPY'}">JPY (엔화)</option>
+                  <option value="CNY" th:selected="${hasRate && product.rates[0].currency_code == 'CNY'}">CNY (위안)</option>
                 </select>
               </div>
             </div>
@@ -424,14 +415,8 @@
               <div class="input-wrap">
                 <i class="fa-solid fa-sliders"></i>
                 <select name="rates[0].rate_type">
-                  <option value="고정"
-                          th:selected="${product.rates != null && product.rates[0].rate_type == '고정'}">
-                    고정
-                  </option>
-                  <option value="변동"
-                          th:selected="${product.rates != null && product.rates[0].rate_type == '변동'}">
-                    변동
-                  </option>
+                  <option value="고정" th:selected="${hasRate && product.rates[0].rate_type == '고정'}">고정</option>
+                  <option value="변동" th:selected="${hasRate && product.rates[0].rate_type == '변동'}">변동</option>
                 </select>
               </div>
             </div>
@@ -443,7 +428,7 @@
                 <i class="fa-solid fa-calendar"></i>
                 <input type="number"
                        name="rates[0].period_month"
-                       th:value="${product.rates != null ? product.rates[0].period_month : ''}"
+                       th:value="${hasRate ? product.rates[0].period_month : ''}"
                        placeholder="예: 12">
               </div>
             </div>
@@ -453,10 +438,9 @@
               <label>기본 금리 (%) <span style="color:var(--primary)">*</span></label>
               <div class="input-wrap">
                 <i class="fa-solid fa-arrow-trend-up"></i>
-                <input type="number"
-                       step="0.01"
+                <input type="number" step="0.01"
                        name="rates[0].base_rate"
-                       th:value="${product.rates != null ? product.rates[0].base_rate : ''}"
+                       th:value="${hasRate ? product.rates[0].base_rate : ''}"
                        required>
               </div>
             </div>
@@ -466,10 +450,9 @@
               <label>만기 금리 (%)</label>
               <div class="input-wrap">
                 <i class="fa-solid fa-flag-checkered"></i>
-                <input type="number"
-                       step="0.01"
+                <input type="number" step="0.01"
                        name="rates[0].maturity_rate"
-                       th:value="${product.rates != null ? product.rates[0].maturity_rate : ''}">
+                       th:value="${hasRate ? product.rates[0].maturity_rate : ''}">
               </div>
             </div>
 
@@ -478,10 +461,9 @@
               <label>중도해지 금리 (%)</label>
               <div class="input-wrap">
                 <i class="fa-solid fa-ban"></i>
-                <input type="number"
-                       step="0.01"
+                <input type="number" step="0.01"
                        name="rates[0].early_cancel_rate"
-                       th:value="${product.rates != null ? product.rates[0].early_cancel_rate : ''}">
+                       th:value="${hasRate ? product.rates[0].early_cancel_rate : ''}">
               </div>
             </div>
 
@@ -490,7 +472,7 @@
               <label>금리 시작일 <span style="color:var(--primary)">*</span></label>
               <input type="date"
                      name="rates[0].rate_start_date"
-                     th:value="${product.rates != null ? product.rates[0].rate_start_date : ''}"
+                     th:value="${hasRate ? product.rates[0].rate_start_date : ''}"
                      required>
             </div>
 
@@ -499,82 +481,67 @@
               <label>금리 종료일</label>
               <input type="date"
                      name="rates[0].rate_end_date"
-                     th:value="${product.rates != null ? product.rates[0].rate_end_date : ''}">
+                     th:value="${hasRate ? product.rates[0].rate_end_date : ''}">
             </div>
 
           </div>
 
-          <!-- =========================
-               우대금리 조건
-          ========================= -->
+          <!-- ========================= 우대금리 조건 ========================= -->
           <div class="pref-section">
-
             <div class="pref-header">
           <span class="pref-title">
             <i class="fa-solid fa-star"></i>
             우대금리 조건
           </span>
-
-              <button type="button"
-                      class="btn-pref-add"
-                      onclick="addPref()">
-                <i class="fa-solid fa-plus"></i>
-                조건 추가
+              <button type="button" class="btn-pref-add" onclick="addPref()">
+                <i class="fa-solid fa-plus"></i> 조건 추가
               </button>
             </div>
 
-            <div class="pref-list" id="pref-list-container">
+            <div class="pref-list" id="pref-list-container"
+                 th:with="hasPref=${hasRate
+                               && product.rates[0].prefRateConditions != null
+                               && !#lists.isEmpty(product.rates[0].prefRateConditions)}">
 
-              <!-- 기존 데이터 출력 -->
               <div class="pref-item"
-                   th:each="pref, stat : ${product.rates[0].prefRateConditions}">
+                   th:each="pref, stat : ${hasPref ? product.rates[0].prefRateConditions : {}}">
 
-                <!-- pref_rate_id -->
                 <input type="hidden"
                        th:name="'rates[0].prefRateConditions[' + ${stat.index} + '].pref_rate_id'"
                        th:value="${pref.pref_rate_id}">
 
-                <!-- 조건유형 -->
                 <div class="input-wrap">
                   <i class="fa-solid fa-tag"></i>
-
                   <input type="text"
                          th:name="'rates[0].prefRateConditions[' + ${stat.index} + '].condition_type'"
                          th:value="${pref.condition_type}"
                          placeholder="조건 유형">
                 </div>
 
-                <!-- 조건설명 -->
                 <div class="input-wrap">
                   <i class="fa-solid fa-align-left"></i>
-
                   <input type="text"
                          th:name="'rates[0].prefRateConditions[' + ${stat.index} + '].condition_desc'"
                          th:value="${pref.condition_desc}"
                          placeholder="조건 설명">
                 </div>
 
-                <!-- 우대금리 -->
                 <div class="input-wrap">
                   <i class="fa-solid fa-plus"></i>
-
-                  <input type="number"
-                         step="0.01"
+                  <input type="number" step="0.01"
                          th:name="'rates[0].prefRateConditions[' + ${stat.index} + '].preferential_rate'"
                          th:value="${pref.preferential_rate}"
                          placeholder="우대금리 (%)">
                 </div>
 
-                <button type="button"
-                        class="btn-pref-remove"
-                        onclick="removePref(this)">
+                <button type="button" class="btn-pref-remove" onclick="removePref(this)">
                   <i class="fa-solid fa-xmark"></i>
                 </button>
 
               </div>
-
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -687,16 +654,34 @@
           <i class="fa-solid fa-arrow-left"></i> 취소
         </a>
       </div>
-      <button type="submit" class="btn btn-outline btn-lg"
-              onclick="document.getElementById('action_status').value='save'">
-        <i class="fa-solid fa-floppy-disk"></i> 임시 저장
-      </button>
-      <button type="submit" class="btn btn-primary btn-lg"
-              onclick="document.getElementById('action_status').value='submit'">
-        <i class="fa-solid fa-paper-plane"></i> 결재 제출
-      </button>
-    </div>
 
+      <th:block th:with="locked=${product.approve_status == '검토중' or product.approve_status == '승인' or product.approve_status == '반려'}">
+
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+          <div style="display:flex; gap:8px;">
+            <button type="submit" class="btn btn-outline btn-lg"
+                    th:disabled="${locked}"
+                    onclick="document.getElementById('action_status').value='save'">
+              <i class="fa-solid fa-floppy-disk"></i> 임시 저장
+            </button>
+            <button type="submit" class="btn btn-primary btn-lg"
+                    th:disabled="${locked}"
+                    onclick="document.getElementById('action_status').value='submit'">
+              <i class="fa-solid fa-paper-plane"></i> 결재 제출
+            </button>
+          </div>
+
+          <span th:if="${locked}"
+                style="color:#C2410C; font-size:13px; font-weight:600;">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span th:text="${product.approve_status == '검토중' ? '결재 검토중에는 수정할 수 없습니다.' :
+                        (product.approve_status == '승인' ? '승인된 상품은 수정할 수 없습니다.' :
+                        '반려된 상품은 수정할 수 없습니다.')}"></span>
+      </span>
+        </div>
+
+      </th:block>
+    </div>
   </form>
 </div>
 
