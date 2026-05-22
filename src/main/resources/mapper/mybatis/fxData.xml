@@ -21,7 +21,7 @@
 	
 	<select id="viewData">
 		
-		SELECT * FROM exchange_rates WHERE cur_nm = #{cur_nm}
+		SELECT * FROM exchange_rates WHERE cur_nm = #{cur_nm} ORDER BY ntc_dt DESC
 		
 	</select>
 	

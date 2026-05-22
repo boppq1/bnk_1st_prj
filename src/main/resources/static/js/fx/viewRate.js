@@ -1,7 +1,7 @@
 document.getElementById('searchBtn').addEventListener('click', function () {
-    const curNm = document.getElementById('cur_nm').value;
+    const cur_nm = document.getElementById('cur_nm').value;
 
-    fetch('/viewRate?cur_nm=' + encodeURIComponent(curNm))
+    fetch('/viewRate?cur_nm=' + encodeURIComponent(cur_nm))
         .then(response => {
             if (!response.ok) {
                 throw new Error('서버 응답 오류: ' + response.status);

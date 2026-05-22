@@ -56,7 +56,6 @@ public class FxController {
 	@GetMapping("/viewRate")
 	public List<FxDataDto> viewRate(@RequestParam(name = "cur_nm") String cur_nm){
 		
-		
 		return (List<FxDataDto>) fxService.getFxData(cur_nm);
 	}
 	

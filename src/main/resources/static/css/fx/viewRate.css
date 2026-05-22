@@ -1,0 +1,269 @@
+@charset "UTF-8";
+
+/* ===============================
+   환율 조회 페이지 (Banking UI)
+   scope: foreign exchange page
+================================= */
+
+.product-layout .main_container {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 48px 40px 70px;
+    box-sizing: border-box;
+}
+
+/* -------------------------------
+   조회 영역
+-------------------------------- */
+.product-layout .main_container .left_side {
+    width: 100%;
+}
+
+.product-layout .main_container .select_form {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 28px 32px;
+    background: #ffffff;
+    border: 1px solid #dde3ea;
+    border-radius: 10px;
+    box-shadow: 0 1px 6px rgba(15, 23, 42, 0.04);
+    position: relative;
+}
+
+
+
+/* select */
+.product-layout .main_container .select_form select#cur_nm {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    min-width: 260px;
+    height: 46px;
+    padding: 0 44px 0 16px;
+
+    border: 1px solid #cfd6df;
+    border-radius: 6px;
+    background-color: #fff;
+
+    font-size: 15px;
+    font-weight: 500;
+    color: #2c3642;
+    line-height: 46px;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+
+    background-image:
+        linear-gradient(45deg, transparent 50%, #667085 50%),
+        linear-gradient(135deg, #667085 50%, transparent 50%);
+    background-position:
+        calc(100% - 18px) calc(50% - 2px),
+        calc(100% - 12px) calc(50% - 2px);
+    background-size: 6px 6px;
+    background-repeat: no-repeat;
+}
+
+.product-layout .main_container .select_form select#cur_nm:hover {
+    border-color: #b7c2cf;
+}
+
+.product-layout .main_container .select_form select#cur_nm:focus {
+    outline: none;
+    border-color: #1e3a5f;
+    box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.08);
+}
+
+/* 조회 버튼 */
+.product-layout .main_container .select_form #searchBtn {
+    min-width: 110px;
+    height: 46px;
+    padding: 0 24px;
+
+    border: 1px solid #8f1d1d;
+    border-radius: 6px;
+    background: #9e2323;
+
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.product-layout .main_container .select_form #searchBtn:hover {
+    background: #861c1c;
+    border-color: #7b1818;
+}
+
+.product-layout .main_container .select_form #searchBtn:active {
+    background: #751616;
+}
+
+/* -------------------------------
+   테이블 카드 영역
+-------------------------------- */
+.product-layout .main_container .view_rate_table {
+    margin-top: 36px;
+    background: #ffffff;
+    border: 1px solid #dde3ea;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(15, 23, 42, 0.04);
+}
+
+/* table */
+.product-layout .main_container .view_rate_table table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
+    background: #ffffff;
+}
+
+/* thead */
+.product-layout .main_container .view_rate_table thead th {
+    background: #f4f6f8;
+    color: #2b3543;
+
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    vertical-align: middle;
+
+    padding: 18px 14px;
+    line-height: 1.5;
+
+    border-bottom: 1px solid #d8dee7;
+    border-right: 1px solid #e5eaf0;
+
+    word-break: keep-all;
+}
+
+.product-layout .main_container .view_rate_table thead th:last-child {
+    border-right: none;
+}
+
+/* tbody td */
+.product-layout .main_container .view_rate_table tbody td {
+    padding: 17px 16px;
+
+    font-size: 14px;
+    color: #374151;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 1.65;
+
+    border-bottom: 1px solid #edf1f5;
+    border-right: 1px solid #f1f4f7;
+
+    background: #ffffff;
+    transition: background-color 0.15s ease;
+}
+
+/* 숫자 컬럼 가독성 */
+.product-layout .main_container .view_rate_table tbody td:nth-child(4),
+.product-layout .main_container .view_rate_table tbody td:nth-child(5),
+.product-layout .main_container .view_rate_table tbody td:nth-child(6) {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.2px;
+}
+
+/* 마지막 border 제거 */
+.product-layout .main_container .view_rate_table tbody td:last-child {
+    border-right: none;
+}
+
+.product-layout .main_container .view_rate_table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* zebra striping */
+.product-layout .main_container .view_rate_table tbody tr:nth-child(even) td {
+    background: #fafbfd;
+}
+
+/* hover */
+.product-layout .main_container .view_rate_table tbody tr:hover td {
+    background: #f5f8fb;
+}
+
+/* 조회 결과 없음 */
+.product-layout .main_container .view_rate_table tbody tr td[colspan] {
+    padding: 44px 20px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 500;
+    background: #fcfcfd;
+}
+
+/* -------------------------------
+   반응형 (tablet 이하)
+-------------------------------- */
+@media (max-width: 1024px) {
+    .product-layout .main_container {
+        padding: 36px 24px 60px;
+    }
+
+    .product-layout .main_container .view_rate_table {
+        overflow-x: auto;
+    }
+
+    .product-layout .main_container .view_rate_table table {
+        min-width: 860px;
+    }
+}
+
+@media (max-width: 768px) {
+    .product-layout .main_container .select_form {
+        flex-wrap: wrap;
+        align-items: stretch;
+        padding: 22px;
+    }
+
+    .product-layout .main_container .select_form select#cur_nm,
+    .product-layout .main_container .select_form #searchBtn {
+        width: 100%;
+    }
+}
+
+/* -------------------------------
+   form title (기존 ::before 대체)
+-------------------------------- */
+.product-layout .main_container .form_title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e3a5f;
+    margin-bottom: 10px;
+}
+
+/* -------------------------------
+   결과 헤더
+-------------------------------- */
+.product-layout .main_container .view_rate_table .table_header {
+    padding: 16px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e3a5f;
+    background: #ffffff;
+    border-bottom: 1px solid #e5eaf0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 보조 텍스트 */
+.product-layout .main_container .view_rate_table .sub_text {
+    font-size: 12px;
+    font-weight: 400;
+    color: #6b7280;
+}
