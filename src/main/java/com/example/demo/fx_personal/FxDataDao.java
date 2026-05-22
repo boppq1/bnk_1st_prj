@@ -1,5 +1,7 @@
 package com.example.demo.fx_personal;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,7 +15,7 @@ public interface FxDataDao {
 			@Param("deal_bas_r") Double deal_bas_r
 			);
 	
-	FxDataDto viewData(
+	List<FxDataDto> viewData(
 			@Param("cur_nm") String cur_nm
 			);
 	

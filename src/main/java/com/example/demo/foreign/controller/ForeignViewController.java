@@ -377,12 +377,6 @@ public class ForeignViewController {
 	// 환전
 	// =========================
 
-	@GetMapping("/exchange/exchangeGuide")
-	public String exchangeGuide(Model model, HttpServletRequest request) {
-		setLoginName(model, request);
-		return "foreign/exchange/exchangeGuide";
-	}
-
 	@GetMapping("/exchange/exchangeCurrency")
 	public String exchangeCurrency(Model model, HttpServletRequest request) {
 		setLoginName(model, request);
@@ -547,34 +541,34 @@ public class ForeignViewController {
 	// 부가서비스
 	// =========================
 	
-	@GetMapping("/additionalService/foreignConsulting")
-    public String add_foreignConsulting(Model model, HttpServletRequest request) {
+	@GetMapping("/additionalService/exchangeRateSearch")
+    public String add_exchangeRateSearch(Model model, HttpServletRequest request) {
         setLoginName(model, request);
-        return "foreign/additionalService/foreignConsulting";
+        return "foreign/additionalService/exchangeRateSearch";
     }
 	
-	@GetMapping("/additionalService/foreignLaw")
-    public String add_foreignLaw(Model model, HttpServletRequest request) {
+	@GetMapping("/additionalService/foreignDepositRate")
+    public String foreignDepositRate(Model model, HttpServletRequest request) {
         setLoginName(model, request);
-        return "foreign/additionalService/foreignLaw";
+        return "foreign/additionalService/foreignDepositRate";
     }
 	
-	@GetMapping("/additionalService/exportImportFee")
-    public String add_exportImportFee(Model model, HttpServletRequest request) {
+	@GetMapping("/additionalService/foreignFormProgram")
+    public String foreignFormProgram(Model model, HttpServletRequest request) {
         setLoginName(model, request);
-        return "foreign/additionalService/exportImportFee";
+        return "foreign/additionalService/foreignFormProgram";
     }
 	
-	@GetMapping("/additionalService/exchangeRemittanceFee")
-    public String add_exchangeRemittanceFee(Model model, HttpServletRequest request) {
+	@GetMapping("/additionalService/overseasMarketRate")
+    public String overseasMarketRate(Model model, HttpServletRequest request) {
         setLoginName(model, request);
-        return "foreign/additionalService/exchangeRemittanceFee";
+        return "foreign/additionalService/overseasMarketRate";
     }
 	
-	@GetMapping("/additionalService/foreignFAQ")
-    public String add_foreignFAQ(Model model, HttpServletRequest request) {
+	@GetMapping("/additionalService/periodExchangeRate")
+    public String periodExchangeRate(Model model, HttpServletRequest request) {
         setLoginName(model, request);
-        return "foreign/additionalService/foreignFAQ";
+        return "foreign/additionalService/periodExchangeRate";
     }
 	
 
