@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class BlacklistController {
 	
 	private final BlacklistService bs;
-	private StringRedisTemplate stringRedisTemplate;
+	private final StringRedisTemplate stringRedisTemplate;
 	
 	public void insertBlacklist(String clientKey, String reason) {
 		String ip_addr = clientKey.split("_")[0];
@@ -36,6 +36,7 @@ public class BlacklistController {
 	public String liftBlack(BlacklistDto dto) {
 		bs.liftBlack(dto);
 		String redisKey = "blacklist:" + dto.getCli_key();
+		System.out.println(redisKey);
 		stringRedisTemplate.delete(redisKey);
 		return "redirect:/admin/adminBlacklist";
 	}
