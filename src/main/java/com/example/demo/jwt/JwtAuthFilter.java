@@ -47,8 +47,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 				}
 			}
 		}
-		
-		if(!jwtUtil.isValid(token) && uri.equals("/myPage")) {
+
+		if (!jwtUtil.isValid(token) && uri.equals("/myPage")) {
 			log.info("비로그인 사용자 마이페이지 이동");
 			response.sendRedirect("/loginPage");
 		}
