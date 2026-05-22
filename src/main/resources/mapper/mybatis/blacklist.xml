@@ -10,6 +10,9 @@
     <select id="getBlacklist" resultType="com.example.demo.admin.dto.BlacklistDto">
     	select * from blacklist
     </select>
+    <select id="getBlacklistFive" resultType="com.example.demo.admin.dto.BlacklistDto">
+    	select * from blacklist where status = 'ACTIVE' FETCH FIRST 5 ROWS ONLY
+    </select>
     <update id="liftBlack">
     	update blacklist set status = 'INACTIVE', lift_adm_no = #{lift_adm_no}, lift_reason = #{lift_reason}, upd_dt = sysdate where cli_key = #{cli_key}
     </update>

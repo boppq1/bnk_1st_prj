@@ -125,6 +125,7 @@
     border-bottom-left-radius: 4px;
     box-shadow: 0 2px 8px rgba(215,25,31,0.08);
     border: 1px solid var(--border);
+    white-space: pre-wrap; /* [수정] 백엔드에서 넘어오는 \n 기반 줄바꿈을 화면에 그대로 렌더링 */
   }
   .bubble.user {
     background: var(--bubble-user); color: #fff;
@@ -240,9 +241,7 @@
         </svg>
       </div>
       <div class="bubble-group">
-        <div class="bubble bot">
-          안녕하세요! 👋<br>BNK부산은행 AI 금융 도우미입니다.<br>궁금하신 사항을 편하게 물어보세요.
-        </div>
+        <div class="bubble bot">안녕하세요! 👋<br>BNK부산은행 AI 금융 도우미입니다.<br>궁금하신 사항을 편하게 물어보세요.</div>
         <div class="message-time" id="welcomeTime"></div>
       </div>
     </div>
@@ -268,10 +267,10 @@
 
   <!-- 빠른 질문 -->
   <div class="quick-chips" id="quickChips">
-    <button class="chip" onclick="quickAsk('공인인증서 등록 방법')">공인인증서 등록</button>
+    <button class="chip" onclick="quickAsk('외환 추천 상품')">외환 추천 상품</button>
     <button class="chip" onclick="quickAsk('이체 한도 조회')">이체 한도 조회</button>
-    <button class="chip" onclick="quickAsk('예금 금리 안내')">예금 금리 안내</button>
-    <button class="chip" onclick="quickAsk('대출 상품 문의')">대출 상품 문의</button>
+    <button class="chip" onclick="quickAsk('환율 확인 페이지')">환율 확인 페이지</button>
+    <button class="chip" onclick="quickAsk('보이스피싱')">보이스피싱</button>
   </div>
 
   <!-- 입력창 -->
@@ -325,7 +324,14 @@
     scrollToBottom();
   }
 
+  /* [수정] 봇 답변 생성 시 마크다운 볼드(**) 문법을 HTML 태그로 안전하게 변환하는 파서 적용 */
   function appendBotMessage(text) {
+    // 1. 보안을 위한 텍스트 이스케이프 처리
+    let parsedText = escapeHtml(text);
+    
+    // 2. 이스케이프된 문자열 내의 **강조**를 <strong> 태그로 변환
+    parsedText = parsedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
     const row = document.createElement('div');
     row.className = 'message-row';
     row.innerHTML = `
@@ -338,7 +344,7 @@
         </svg>
       </div>
       <div class="bubble-group">
-        <div class="bubble bot">${escapeHtml(text)}</div>
+        <div class="bubble bot">${parsedText}</div>
         <div class="message-time">${getTime()}</div>
       </div>`;
     chatMessages.insertBefore(row, typingIndicator);
