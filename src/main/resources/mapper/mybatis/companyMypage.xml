@@ -4,5 +4,15 @@
       
 <mapper namespace="com.example.demo.company.dao.ICompanyMyPage">
 	
+	<select id="">
+		select *FROM COMPANY_USERS where login_id=#{login_id}
+	</select>
 	
+	<select id="">
+		select *FROM ACCOUNTS_COMPANY where com_no = #{com_no}
+	</select>
+	
+	<select id="">
+		select *FROM FOREIGN_ACCOUNTS_COMPANY where usr_no = #{usr_no}
+	</select>
 </mapper>
