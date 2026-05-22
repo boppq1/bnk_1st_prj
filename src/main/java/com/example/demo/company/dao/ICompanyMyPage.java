@@ -6,13 +6,16 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.example.demo.company.dto.AccountsCompanyDTO;
+import com.example.demo.company.dto.CompaniesDTO;
 import com.example.demo.company.dto.CompanyUserDTO;
 import com.example.demo.company.dto.ForeignAccountsCompanyDTO;
 
 @Mapper
 public interface ICompanyMyPage {
-	CompanyUserDTO selectCUser(@Param("id")String id);
-	List<AccountsCompanyDTO> selectAcnt(@Param("id")String id);
-	List<ForeignAccountsCompanyDTO> selectFAnt(@Param("id")String id);
-	
+	CompanyUserDTO findCUser(@Param("login_id")String id);
+	// 국내계좌는 기업 pk 로 찾아야함
+	List<AccountsCompanyDTO> findAcnt(@Param("com_no")String id);
+	// 해외계좌는 유저 id로
+	List<ForeignAccountsCompanyDTO> findFAcnt(@Param("login_id")String id);
+	CompaniesDTO findCompany(@Param("com_no")int no);
 }
