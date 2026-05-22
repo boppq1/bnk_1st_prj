@@ -61,7 +61,7 @@ public class JwtUtil {
 	public String getRole(String token) {
 		return parseToken(token).get("role",String.class);			
 	}
-	
+	public String getAdminId(String token){return parseToken(token).get("admin_id",String.class);}
 	public String getCompanyName(String token) {
 		return parseToken(token).get("company_nm", String.class);
 	}

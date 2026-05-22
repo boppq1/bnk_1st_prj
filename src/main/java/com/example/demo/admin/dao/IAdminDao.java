@@ -14,13 +14,9 @@ public interface IAdminDao {
 
     void updateMyPage(AdminDto adminDto);
 
-    int updatePassword(
-            @Param("admin_id") Long admin_id,
-            @Param("password") String password
-    );
+    int updatePassword(@Param("admin_id") Long admin_id, @Param("password") String password);
 
-    int updateAdminPw(
-            @Param("admin_id") Long admin_id,
+    int updateAdminPw(@Param("admin_id") Long admin_id,
             @Param("admin_pw") String admin_pw
     );
 }

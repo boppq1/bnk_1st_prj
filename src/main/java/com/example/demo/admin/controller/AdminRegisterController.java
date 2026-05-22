@@ -5,13 +5,19 @@
     import com.example.demo.admin.dto.AdminActionLogDto;
     import com.example.demo.admin.dto.AdminDto;
     import com.example.demo.admin.service.AdminMergeService;
+    import com.example.demo.interceptor.JwtFilter;
+    import com.example.demo.jwt.JwtUtil;
+    import jakarta.servlet.http.Cookie;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
     import jakarta.servlet.http.HttpSession;
     import lombok.RequiredArgsConstructor;
-    import org.springframework.http.HttpStatus;
-    import org.springframework.http.ResponseEntity;
     import org.springframework.stereotype.Controller;
     import org.springframework.ui.Model;
     import org.springframework.web.bind.annotation.*;
+
+    import java.util.HashMap;
+    import java.util.Map;
 
     @Controller
     @RequiredArgsConstructor
@@ -20,8 +26,9 @@
         private final AdminMergeService serv;
         private final IAdminDao dao;
         private final IAdminActionDao actionDao;
+        private final JwtUtil jwt;
+        private final JwtFilter jwtFilter;
 
-        //private final JwtUtil jwtUtil;
         @GetMapping("/adminJoin")
         public String joinPage(Model model) {
             model.addAttribute("admin", new AdminDto());
@@ -30,13 +37,10 @@
 
         @PostMapping("/admin/join")
         public String join(AdminDto dto) {
-            int result = serv.join(dto);  // ✅ dao → serv 로 변경
+            int result = serv.join(dto);
 
             actionDao.insertActionLog(
-                    new AdminActionLogDto(
-                            "UPDATE_USER",
-                            "user_id=3"
-                    )
+                    new AdminActionLogDto("UPDATE_USER", "user_id=3")
             );
 
             System.out.println("result = " + result);
@@ -49,84 +53,56 @@
             return "admin/adminLogin";
         }
 
-    //    @PostMapping("/admin/login") // 로그인 엔드포인트
-    //    @ResponseBody
-    //    public ResponseEntity<?> login(@RequestBody AdminDto dto, HttpSession session) {
-    //        AdminDto result = serv.login(dto);
-    //
-    ////        if (result == null) {
-    ////            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-    ////                    .body("로그인에 실패했습니다. 아이디 또는 비밀번호를 확인해주세요.");
-    ////        }
-    ////
-    ////        String accessToken = jwtUtil.createAccessToken(result.getAdmin_id());
-    ////        String refreshToken = jwtUtil.createRefreshToken(result.getAdmin_id());
-    ////
-    ////        return ResponseEntity.ok(new TokenResponse(accessToken, refreshToken));
-    //
-    //            // 로그인 실패 시 응답
-    //            if (result == null) {
-    //                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-    //                        .body("아이디 또는 비밀번호가 올바르지 않습니다.");
-    //            }
-    //
-    //            // 로그인 성공 시 세션에 사용자 정보 저장
-    //            session.setAttribute("loginUser", result);
-    //            return ResponseEntity.ok("로그인 성공");
-    //    }
+        @PostMapping("/admin/login")
+        public String login(@RequestParam("login_id") String loginId,
+                            @RequestParam("password") String password,
+                            HttpServletResponse response) {
 
+            AdminDto dto = new AdminDto();
+            dto.setLogin_id(loginId);
+            dto.setPassword(password);
 
+            AdminDto admin = serv.login(dto);
 
-    @PostMapping("/admin/login")
-    public String login(@RequestParam("login_id") String loginId,
-                        @RequestParam("password") String password,
-                        HttpSession session) {
+            if (admin == null) {
+                return "redirect:/adminLogin?error=true";
+            }
 
-        AdminDto dto = new AdminDto();
-        dto.setLogin_id(loginId);
-        dto.setPassword(password);
+            Map<String,Object> claims = new HashMap<>();
+            claims.put("admin_id",   admin.getAdmin_id());
+            claims.put("login_id",   admin.getLogin_id());
+            claims.put("name",       admin.getName());
+            claims.put("role",       admin.getAdminRole());
+            claims.put("department", admin.getDepartment());
 
-        AdminDto admin = serv.login(dto);
+            String token = jwt.generateToken(admin.getLogin_id(), claims);
 
-        // 로그인 성공
-        if(admin != null) {
-            session.setAttribute("admin", admin);
-            session.setAttribute("adminId", admin.getAdmin_id());
-            session.setAttribute("loginId", admin.getLogin_id());
-            session.setAttribute("name", admin.getName());
-            session.setAttribute("role", admin.getAdmin_role());
-
-            System.out.println("Session ID: " + session.getId());
+            Cookie cookie = new Cookie("accessToken", token);
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");
+            cookie.setSecure(true);
+            response.addCookie(cookie);
 
             return "redirect:/admin/adminMyPage";
         }
 
-        // 로그인 실패
-        return "redirect:/adminLogin?error=true";
-    }
 
+//        @GetMapping("/admin/adminMyPage")
+//        public String myPage(HttpServletRequest request, Model model) {
+//
+//            String token = resolveToken(request);
+//
+//            // 로그인 안 됨
+//            if(adminId == null) {return "redirect:/adminLogin";}
+//
+//            AdminDto dto = new AdminDto();
+//            dto.setAdmin_id(adminId);
+//            AdminDto admin = serv.selectMyPage(dto);
+//            model.addAttribute("admin", admin);
+//
+//            return "admin/adminMyPage";
+//        }
 
-
-        @GetMapping("/admin/adminMyPage")
-        public String myPage(HttpSession session, Model model) {
-
-            Long adminId = (Long) session.getAttribute("adminId");
-            String loginId = (String) session.getAttribute("loginId");
-            String role = (String) session.getAttribute("role");
-            System.out.println(adminId);
-
-            // 로그인 안 됨
-            if(adminId == null) {return "redirect:/adminLogin";}
-
-            AdminDto dto = new AdminDto();
-            dto.setAdmin_id(adminId);
-            AdminDto admin = serv.selectMyPage(dto);
-            session.setAttribute("admin", admin);
-            model.addAttribute("admin", admin);
-            System.out.println("Admin Name: " + admin.getName());
-            System.out.println("Admin role: " + admin.getAdminRole());
-            return "admin/adminMyPage";
-        }
 
         @PostMapping("/admin/update")
         public String updateMyPage(@ModelAttribute AdminDto dto) {
@@ -152,12 +128,12 @@
 
 
         @GetMapping("/admin/logout")
-        public String logout(HttpSession session) {
-
-            // 세션 전체 제거
-            session.invalidate();
-
-            return "redirect:/admin/adminMain";
+        public String logout(HttpServletResponse response) {
+            Cookie cookie = new Cookie("accessToken", null);
+            cookie.setMaxAge(0);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+            return "redirect:/adminLogin";
         }
 
 

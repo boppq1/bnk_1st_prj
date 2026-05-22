@@ -3,39 +3,37 @@ package com.example.demo.admin.service;
 import com.example.demo.admin.dao.IAdminActionDao;
 import com.example.demo.admin.dao.IAdminDao;
 import com.example.demo.admin.dto.AdminDto;
+import com.example.demo.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AdminMergeService {
 
     private final IAdminDao dao;
     private final IAdminActionDao actionDao;
+    private final JwtUtil jwt;
+
 
     // =========================
     // 비밀번호 암호화
     // =========================
     public String passwordEncryption(String password) {
-
-        return org.mindrot.jbcrypt.BCrypt.hashpw(
-                password,
-                org.mindrot.jbcrypt.BCrypt.gensalt()
-        );
+        return org.mindrot.jbcrypt.BCrypt.hashpw(password, org.mindrot.jbcrypt.BCrypt.gensalt());
     }
 
     // =========================
     // 비밀번호 비교
     // =========================
-    public boolean passwordDecryption(String loginPassword,
-                                      String dbPassword) {
-
-        return org.mindrot.jbcrypt.BCrypt.checkpw(
-                loginPassword,
-                dbPassword
-        );
+    public boolean passwordDecryption(String loginPassword, String dbPassword) {
+        return org.mindrot.jbcrypt.BCrypt.checkpw(loginPassword, dbPassword);
     }
 
     // =========================
@@ -43,17 +41,12 @@ public class AdminMergeService {
     public int join(AdminDto dto) {
 
         // 비밀번호 암호화
-        String encodePw =
-                passwordEncryption(dto.getPassword());
-
+        String encodePw = passwordEncryption(dto.getPassword());
         dto.setPassword(encodePw);
 
         // 관리자 비밀번호 암호화
-        String encodeAdminPw =
-                passwordEncryption(dto.getAdmin_pw());
-
+        String encodeAdminPw = passwordEncryption(dto.getAdmin_pw());
         dto.setAdmin_pw(encodeAdminPw);
-
         return dao.join(dto);
     }
 
@@ -64,28 +57,17 @@ public class AdminMergeService {
 
         // 아이디 조회
         AdminDto admin = dao.login(dto);
-
         System.out.println(admin);
 
         // 아이디 없음
-        if(admin == null) {
-            return null;
-        }
+        if(admin == null) {return null;}
 
         // 비밀번호 비교
-        boolean match =
-                passwordDecryption(
-                        dto.getPassword(),
-                        admin.getPassword()
-                );
-
+        boolean match = passwordDecryption(dto.getPassword(), admin.getPassword());
         System.out.println(match);
 
         // 로그인 성공
-        if(match) {
-            return admin;
-        }
-
+        if(match) {return admin;}
         // 로그인 실패
         return null;
     }
@@ -101,7 +83,6 @@ public class AdminMergeService {
     // 내 정보 수정
     // =========================
     public void updateMyPage(AdminDto dto) {
-
         dao.updateMyPage(dto);
     }
 
@@ -109,31 +90,20 @@ public class AdminMergeService {
     // 내 비밀번호 수정
     // =========================
 
-    public int updatePassword(Long admin_id,
-                              String password) {
+    public int updatePassword(Long admin_id, String password) {
 
-        String encodedPw =
-                BCrypt.hashpw(password,
-                        BCrypt.gensalt());
-
-        return dao.updatePassword(admin_id,
-                encodedPw);
+        String encodedPw = BCrypt.hashpw(password, BCrypt.gensalt());
+        return dao.updatePassword(admin_id, encodedPw);
     }
 
     // =========================
     // 관리자 비밀번호 수정
     // =========================
 
-    public int updateAdminPw(Long admin_id,
-                             String admin_pw) {
-
+    public int updateAdminPw(Long admin_id, String admin_pw) {
         // 관리자 비밀번호 암호화
-        String encodedAdminPw =
-                BCrypt.hashpw(admin_pw,
-                        BCrypt.gensalt());
-
-        return dao.updateAdminPw(admin_id,
-                encodedAdminPw);
+        String encodedAdminPw = BCrypt.hashpw(admin_pw, BCrypt.gensalt());
+        return dao.updateAdminPw(admin_id, encodedAdminPw);
     }
 
 }
