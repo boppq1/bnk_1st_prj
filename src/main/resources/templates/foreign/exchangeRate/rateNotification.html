@@ -8,6 +8,7 @@
 <link rel="stylesheet" th:href="@{/css/search/search.css}">
 <link rel="stylesheet" th:href="@{/css/product/product.css}">
 <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/rateService.css}">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -15,7 +16,88 @@
 	<div th:replace="~{header :: header}"></div>
 	<div class="product-layout">
 		<div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
-		<main class="ae-page"></main>
+		<div class="page-wrap">
+
+			<h1 class="main-title">지정환율통지서비스</h1>
+
+			<!-- 서비스 개요 박스 -->
+			<div class="service-overview-box">
+				<p>고객이 등지를 원하는 환율을 신청하면 고객이 정한 기간 내에 당행 고시환율이 고객이 신청한 지정환율 또는 그
+					보다 낮거나 높은 수준에 도달하면 고객이 신청한 등지수단인 휴대폰으로 해당 환율을 등지해 주는 서비스입니다.</p>
+				<div class="overview-btn-wrap">
+					<a href="#" class="foreign-link-btn">지정환율통지서비스신청</a> <a href="#"
+						class="foreign-link-btn">신청조회 및 변경·취소</a>
+				</div>
+			</div>
+
+			<!-- 서비스신청 안내 -->
+			<div class="deposit-section">
+				<div class="section-title">서비스신청 안내</div>
+				<ul class="notify-list">
+					<li><span class="notify-label">인터넷을 통한 신청</span>
+						<p>위의 [지정환율등지서비스신청] 버튼을 클릭하여 신청하시면 됩니다.</p></li>
+					<li><span class="notify-label">영업점을 통한 신청</span>
+						<p>신분증을 지참하시고 부산은행 지점을 방문하시어 「지정환율 등지 서비스 이용 신청서」를 작성하시어 제출하시면
+							됩니다.</p></li>
+				</ul>
+			</div>
+
+			<!-- 등록가능 통화 및 환율 -->
+			<div class="deposit-section">
+				<div class="section-title">등록가능 통화 및 환율</div>
+				<table class="info-table">
+					<thead>
+						<tr>
+							<th style="width: 180px;">구분</th>
+							<th>내용</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th>등록가능 통화</th>
+							<td class="td-left">환율 고시 통화</td>
+						</tr>
+						<tr>
+							<th>등록가능 환율</th>
+							<td class="td-left">현찰 파실(사실)때, 송금 받으실(보내실)때, 기준환율</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- 이용시간 -->
+			<div class="deposit-section">
+				<div class="section-title">이용시간</div>
+				<ul class="time-list">
+					<li><span class="time-main-label">서비스 신청·변경 및 취소</span>
+						<ul class="time-sub-list">
+							<li>인터넷 : 평일 및 공휴일 00:05 ~ 23:55</li>
+							<li>영업점 : 은행영업시간 (09:00 ~ 16:00)</li>
+						</ul></li>
+					<li><span class="time-main-label">지정환율등지서비스 등지시간</span>
+						<ul class="time-sub-list">
+							<li>은행 영업 시간(09:00 ~ 16:00)</li>
+						</ul></li>
+				</ul>
+			</div>
+
+			<!-- 이용시 유의사항 -->
+			<div class="deposit-section">
+				<div class="section-title">이용시 유의사항</div>
+				<ul class="caution-list">
+					<li>신청일로부터 최대 90일 이내에서 고객님께서 정하신 날까지 지정환율이 등지 시점의 조건을 충족한 경우에
+						한하여 1회 등지됩니다.</li>
+					<li>환율은 실시간 변경되므로 등지된 환율과 실제 외환 거래시 적용된 환율은 달라질 수 있습니다.</li>
+					<li>환율의 등지는 고객님의 외환관련 은행 업무를 돕기 위한 정보로서 제공 되며, 고객님의 외환거래 결과에
+						대한 법적인 책임소재를 주장하는 증빙 자료로 사용될 수 없습니다.</li>
+					<li>천재지변, 장전, 화재, 동신장애, 동신회사의 업무착오, 일시적인 이용 폭주, 용량 초과 등 불가항력적인
+						사유로 서비스가 불가능하거나, 지면 등지될 수 있습니다. 이 경우 은행은 책임을 지지 않습니다.</li>
+					<li>부산은행은 본 서비스를 무료로 제공합니다. 그러나, 향후 동 서비스와 관련된 수수료를 받을 수 있으며,
+						이 경우에는 사전에 고객님께 알려 드리겠습니다.</li>
+				</ul>
+			</div>
+
+		</div>
 	</div>
 	<div th:replace="~{footer :: footer}"></div>
 	<script th:src="@{/js/product/foreign.js}"></script>

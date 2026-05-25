@@ -456,6 +456,19 @@ public class ForeignViewController {
 		setLoginName(model, request);
 		return "foreign/exchange/foreignCheckGuide";
 	}
+	
+	@GetMapping("/exchange/gimhaeAirport")
+	public String gimhaeAirport(Model model, HttpServletRequest request) {
+		setLoginName(model, request);
+		return "foreign/exchange/gimhaeAirport";
+	}
+	
+	@GetMapping("/exchange/busanTerminal")
+	public String busanTerminal(Model model, HttpServletRequest request) {
+		setLoginName(model, request);
+		return "foreign/exchange/busanTerminal";
+	}
+	
 
 	// =========================
 	// 환율

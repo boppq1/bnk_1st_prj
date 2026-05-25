@@ -1,0 +1,307 @@
+@charset "UTF-8";
+
+/* =========================================================
+   환전 계산기 스타일
+   - BNK 부산은행 레드 톤(#e8231a 계열)
+   - 사이드바를 고려해 max-width 축소 (컴팩트)
+   - 헤더/푸터 스타일은 기존 파일에 있다고 가정하고 미포함
+   ========================================================= */
+
+:root {
+  --bnk-red: #e8231a;
+  --bnk-red-dark: #c41810;
+  --bnk-red-soft: #fdeceb;
+  --line: #e3e3e3;
+  --line-dark: #cfcfcf;
+  --text: #333;
+  --text-sub: #777;
+  --bg-soft: #f7f7f7;
+  --radius: 10px;
+}
+
+/* 전체 래퍼: 사이드바 옆에 들어가는 메인 콘텐츠 */
+.exchange-wrap {
+  max-width: 760px;        /* 기존보다 컴팩트하게 */
+  margin: 28px auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+  font-family: "Malgun Gothic", "맑은 고딕", system-ui, sans-serif;
+  color: var(--text);
+}
+.exchange-wrap *,
+.exchange-wrap *::before,
+.exchange-wrap *::after { box-sizing: border-box; }
+
+/* ===================== 계산기 박스 ===================== */
+.calc-box {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 20px rgba(0,0,0,.06);
+  padding: 22px 24px;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1fr 230px;  /* 좌측 입력 / 우측 통화목록 */
+  gap: 22px;
+}
+
+/* ---------- 폼 행 공통 ---------- */
+.form-row {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--bg-soft);
+}
+.form-row:last-child { border-bottom: none; }
+
+.row-label {
+  flex: 0 0 78px;
+  font-weight: 700;
+  font-size: 14px;
+  padding-top: 4px;
+}
+.row-field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.row-field.column {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+/* ---------- 라디오 ---------- */
+.radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.radio.sm { font-size: 13px; }
+.radio input[type="radio"] { accent-color: var(--bnk-red); width: 15px; height: 15px; }
+
+/* ---------- 고시환율 세부 블록 ---------- */
+.sub-block {
+  background: var(--bg-soft);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sub-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sub-label {
+  flex: 0 0 64px;
+  font-size: 13px;
+  color: var(--text-sub);
+}
+.date-time { display: flex; align-items: center; gap: 6px; }
+
+/* ---------- 인풋 공통 ---------- */
+.inp {
+  height: 32px;
+  border: 1px solid var(--line-dark);
+  border-radius: 6px;
+  padding: 0 8px;
+  font-size: 13px;
+  background: #fff;
+  color: var(--text);
+}
+.inp:focus { outline: none; border-color: var(--bnk-red); }
+.inp-date { width: 130px; font-weight: 700; }
+.inp-time { width: 92px; }
+.inp-select { width: 96px; }
+.inp-small  { width: 90px; }
+.inp-xsmall { width: 56px; }
+.inp:disabled { background: #f0f0f0; color: #aaa; }
+
+.cal-btn {
+  width: 32px; height: 32px;
+  border: 1px solid var(--line-dark);
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+.cal-btn:hover { background: var(--bnk-red-soft); }
+
+/* ---------- 환전금액 ---------- */
+.range-line { width: 100%; }
+.range {
+  width: 100%;
+  accent-color: var(--bnk-red);
+  height: 4px;
+}
+.amount-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.inp-amount {
+  height: 36px;
+  width: 180px;
+  text-align: right;
+  font-size: 16px;
+  font-weight: 700;
+}
+.amount-unit { font-size: 13px; color: var(--text-sub); min-width: 34px; }
+
+.quick-btns {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+.qbtn {
+  min-width: 48px;
+  height: 30px;
+  border: 1px solid var(--line-dark);
+  border-radius: 5px;
+  background: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: .15s;
+}
+.qbtn:hover { border-color: var(--bnk-red); color: var(--bnk-red); }
+.qbtn-reset { background: #6b6b6b; color: #fff; border-color: #6b6b6b; }
+.qbtn-reset:hover { background: #555; color: #fff; }
+
+/* ===================== 통화 목록 ===================== */
+.currency-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 290px;
+}
+.currency-head {
+  display: flex;
+  gap: 14px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  background: #fafafa;
+}
+.currency-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+}
+.cur-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f1f1;
+}
+.cur-item:hover { background: var(--bnk-red-soft); }
+.cur-item.selected { background: #ededed; font-weight: 700; }
+.flag { font-size: 16px; }
+.cur-name { flex: 1; }
+.cur-code { color: var(--text-sub); font-weight: 700; }
+
+/* ===================== 조회 버튼 ===================== */
+.calc-action {
+  margin-top: 18px;
+  text-align: center;
+}
+.search-btn {
+  min-width: 160px;
+  height: 44px;
+  background: var(--bnk-red);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .15s;
+}
+.search-btn:hover { background: var(--bnk-red-dark); }
+
+/* ===================== 조회 결과 ===================== */
+.result-box {
+  margin-top: 22px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 20px rgba(0,0,0,.06);
+  padding: 22px 24px;
+}
+.result-title {
+  margin: 0 0 16px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--bnk-red);
+  border-left: 4px solid var(--bnk-red);
+  padding-left: 10px;
+}
+
+/* 요약 카드 */
+.result-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.sum-item {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+}
+.sum-item.highlight {
+  background: var(--bnk-red-soft);
+  border-color: var(--bnk-red);
+}
+.sum-label { display: block; font-size: 12px; color: var(--text-sub); margin-bottom: 6px; }
+.sum-value { display: block; font-size: 18px; font-weight: 700; }
+.sum-item.highlight .sum-value { color: var(--bnk-red); }
+
+/* 상세 표 */
+.result-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.result-table th,
+.result-table td {
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  text-align: left;
+}
+.result-table th {
+  background: var(--bg-soft);
+  width: 130px;
+  font-weight: 700;
+  color: #555;
+}
+.result-table td { color: var(--text); }
+
+.result-note {
+  margin: 14px 0 0;
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.5;
+}
+
+/* ===================== 반응형 ===================== */
+@media (max-width: 680px) {
+  .calc-grid { grid-template-columns: 1fr; }
+  .currency-panel { max-height: 220px; }
+  .result-summary { grid-template-columns: 1fr; }
+  .row-label { flex-basis: 64px; }
+}

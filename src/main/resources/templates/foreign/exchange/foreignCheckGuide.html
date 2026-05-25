@@ -6,6 +6,7 @@
 <link rel="stylesheet" th:href="@{/css/header.css}">
 <link rel="stylesheet" th:href="@{/css/footer.css}">
 <link rel="stylesheet" th:href="@{/css/search/search.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/fCheckGuide.css}">
 <link rel="stylesheet" th:href="@{/css/product/product.css}">
 <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
 <link rel="stylesheet"
@@ -15,7 +16,98 @@
 	<div th:replace="~{header :: header}"></div>
 	<div class="product-layout">
 		<div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
-		<main class="ae-page"></main>
+		<div class="page-wrap">
+
+			<h1 class="main-title">외화수표매입안내</h1>
+
+			<!-- 외화수표 매입이란? -->
+			<div class="deposit-section">
+				<div class="section-title">외화수표 매입이란?</div>
+				<div class="intro-text-box">고객님께서 저희 은행 창구에서 직접 서명(COUNTER
+					SIGNATURE)하여 제시하는 여행자수표(T/C) 및 환거래은행이나 외국 정부기관 등 공공기관이 발행한 수표를 매입
+					또는 추심 의뢰를 받아 외국의 지급은행에 보내어 수표 대금을 받아 지급하여 드립니다.</div>
+			</div>
+
+			<!-- 외화수표의 종류 -->
+			<div class="deposit-section">
+				<div class="section-title">외화수표의 종류</div>
+				<table class="info-table">
+					<thead>
+						<tr>
+							<th style="width: 220px;">종류</th>
+							<th>내용</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th>은행수표<br> <span class="th-sub">(Banker's
+									Check, Cashier's Check)</span></th>
+							<td class="td-left">우리 나라의 자기앞수표에 해당되며, 은행의 서명권자가 서명한 수표입니다.</td>
+						</tr>
+						<tr>
+							<th>개인수표<br> <span class="th-sub">(Personal
+									Check)</span></th>
+							<td class="td-left">은행의 예금계좌를 가지고 있는 예금주가 은행을 지급인으로 하여 발행한
+								수표입니다. 우리나라의 일반당좌수표도 는 기계 수표에 해당됩니다. 개인수표의 매입은 매입의뢰 고객의 신원이 확실하고
+								신용 및 거래 상태가 양호하거나 담보제공 등을 감안, 부도시에도 대금회수가 무난하다고 인정되는 경우에 한하여
+								취급합니다.</td>
+						</tr>
+						<tr>
+							<th>환거래은행이 보증한 수표<br> <span class="th-sub">(Bank
+									Certified Personal Check)</span></th>
+							<td class="td-left">개인수표상에 은행이 보증한 수표로서 수표 표면에 서명과 함께
+								"Certified" 또는 "Accepted"란 표시가 스탬프로 찍혀 있는 수표입니다.</td>
+						</tr>
+						<tr>
+							<th>여행자수표<br> <span class="th-sub">(Traveler's
+									Check)</span></th>
+							<td class="td-left">여행자의 현금 휴대에서 오는 불편과 위험을 방지하기 위하여 발행된
+								수표입니다. 여행자수표는 구매자가 구입할 때 통상 상단 서명란에 서명하고 여행지의 은행 등에서 매입을 의뢰할 때
+								면전에서 Counter Signature란에 서명함으로 실 본인을 확인할 수 있도록 되어 있습니다.</td>
+						</tr>
+						<tr>
+							<th>지급지시서<br> <span class="th-sub">(Money Order)</span></th>
+							<td class="td-left">은행 예금계정의 보유와 관계없이 누구나 수표 금액에 해당하는 금액과 수표
+								수수료를 은행에 입금하면 이에 해당하는 수표를 내어주는 데 이 때 서명란에 은행의 서명권자가 서명을 해서 내주는
+								것이 Bank Money Order이며, 서명란 공간으로 해서 수표 위에 고객 자신이 서명하는 것을 Personal
+								Money Order이라고 합니다. Personal Money Order는 은행 매입시 개인수표에 준해 매입처리하여
+								드립니다.</td>
+						</tr>
+						<tr>
+							<th>국고수표<br> <span class="th-sub">(Treasury
+									Check)</span></th>
+							<td class="td-left">미국 정부기관 국고지출관이 발행한 수표로서 은행수표에 준하여 매입
+								처리하여 드립니다.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- 매입 및 추심금지 대상 수표 -->
+			<div class="deposit-section">
+				<div class="section-title">매입 및 추심금지 대상 수표</div>
+				<ul class="check-list">
+					<li>제시기간을 경과하여 제시하는 경우
+						<ul class="check-sub-list">
+							<li>제시기간 : 개인수표 3개월, 은행수표 6개월, 국고수표 : 12개월</li>
+						</ul>
+					</li>
+					<li>U.S. Postal Money Order 중에서 "United States International
+						Postal Money Order" 또는 "Negotiable only in the U.S. and
+						Possessions" 라고 명시된 경우</li>
+					<li>일본의 "소절수(小切手)"는 일본에서만 통용되는 수표로서 매입 불가함.</li>
+				</ul>
+			</div>
+
+			<!-- 유의사항 -->
+			<div class="deposit-section">
+				<div class="section-title">유의사항</div>
+				<div class="notice-desc-box">미국의 통일상법전(UCC Uniform Commercial
+					Code)에 의하여 수표 앞면 위 변조의 경우에는 결제후 1년까지 배서 위조의 경우에는 결제 후 3년까지 언제라도 부도
+					반환이 가능하게 되어 있습니다.</div>
+			</div>
+
+		</div>
 	</div>
 	<div th:replace="~{footer :: footer}"></div>
 	<script th:src="@{/js/product/foreign.js}"></script>
