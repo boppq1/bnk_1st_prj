@@ -61,11 +61,11 @@ public class JwtUtil {
 	public String getRole(String token) {
 		return parseToken(token).get("role",String.class);			
 	}
-	
+	public String getAdminId(String token){return parseToken(token).get("adminId",String.class);}
 	public String getCompanyName(String token) {
 		return parseToken(token).get("company_nm", String.class);
 	}
 	public String getLoginId(String token) {
-		return parseToken(token).get("login_id", String.class);
+		return parseToken(token).get("loginId", String.class);
 	}
 }

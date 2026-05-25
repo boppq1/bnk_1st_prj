@@ -11,5 +11,6 @@ import com.example.demo.admin.dto.BlacklistDto;
 public interface IBlacklistDao {
 	int insertBlacklist(@Param("clientKey") String clientKey, @Param("ip_addr") String ip_addr, @Param("reason") String reason);
 	List<BlacklistDto> getBlacklist();
+	List<BlacklistDto> getBlacklistFive();
 	int liftBlack(BlacklistDto dto);
 }

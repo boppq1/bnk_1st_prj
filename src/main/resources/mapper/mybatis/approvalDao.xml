@@ -156,6 +156,11 @@
             APPROVER    = #{admin_id}  
         WHERE PROD_NO   = #{product_id}
     </update>
+    
+    <select id="getOutstandingApproval">
+    SELECT count(*) FROM PRODUCT_REQUESTS where req_stat_cd = '검토중'
+    
+</select>
 	
 </mapper>
 

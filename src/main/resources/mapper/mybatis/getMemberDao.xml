@@ -166,16 +166,16 @@
 	
 	
 
-	<select id="getSearchPersonalLog" resultType="com.example.demo.admin.dto.SearchLogDto">
-		select * from search_log where role_type = 'ROLE_PERSONAL' order by search_volume desc
+	<select id="getSearchPersonalLog" resultType="com.example.demo.admin.dto.SearchDto">
+		select * from search_log where role_type = 'ROLE_PERSONAL'
 	</select>
 	
 	<select id="getSuggestPersonalSearch" resultType="com.example.demo.admin.dto.SuggestedSearchDto">
 		select * from suggested_search where role_type = 'ROLE_PERSONAL' order by search_volume desc
 	</select>
 	
-	<select id="getSearchCompanyLog" resultType="com.example.demo.admin.dto.SearchLogDto">
-		select * from search_log where role_type = 'ROLE_COMPANY' order by search_volume desc
+	<select id="getSearchCompanyLog" resultType="com.example.demo.admin.dto.SearchDto">
+		select * from search_log where role_type = 'ROLE_COMPANY'
 	</select>
 	
 	<select id="getSuggestCompanySearch" resultType="com.example.demo.admin.dto.SuggestedSearchDto">
@@ -256,21 +256,26 @@
 	
 	<insert id="updateSuggestKeyword">
     INSERT INTO suggested_search (SUGGESTED_NO, ROLE_TYPE, KEYWORD, SEARCH_VOLUME)
-    SELECT 
-        SEQ_SUGGESTED_SEARCH.NEXTVAL,  role_type,                 keyword,                   search_volume              FROM ( 
-        SELECT 
-            role_type, 
-            keyword, 
-            search_volume, 
-            ROW_NUMBER() OVER (PARTITION BY role_type ORDER BY search_volume DESC) as rnum
-        FROM search_log SL 
-        WHERE role_type IN ('ROLE_COMPANY', 'ROLE_PERSONAL') 
-          AND NOT EXISTS ( 
-              SELECT 1  
-              FROM keyword_ban KB 
-              WHERE KB.keyword = SL.keyword
-          )
-    ) 
-    WHERE rnum &lt;= 5
+	SELECT 
+	    SEQ_SUGGESTED_SEARCH.NEXTVAL,
+	    role_type,
+	    keyword,
+	    search_volume
+	FROM ( 
+	    SELECT 
+	        role_type, 
+	        keyword, 
+	        COUNT(*) as search_volume,
+	        ROW_NUMBER() OVER (PARTITION BY role_type ORDER BY COUNT(*) DESC) as rnum
+	    FROM search_log SL 
+	    WHERE role_type IN ('ROLE_COMPANY', 'ROLE_PERSONAL') 
+	      AND NOT EXISTS ( 
+	          SELECT 1  
+	          FROM keyword_ban KB 
+	          WHERE KB.keyword = SL.keyword
+	      )
+	    GROUP BY role_type, keyword
+	) 
+	WHERE rnum &lt;= 5
 </insert>
 </mapper>
