@@ -294,8 +294,8 @@ body {
 
   <!-- 액션 버튼 제어 영역 -->
   <div class="btn-area">
-    <a href="#" onclick="history.back(); return false;" class="btn btn-secondary">
-      <i class="fa-solid fa-arrow-left"></i> 이전 화면으로
+    <a th:href="@{/admin/newsPage}"  class="btn btn-secondary">
+      <i class="fa-solid fa-arrow-left"></i> 목록으로
     </a>
     <a th:href="@{/admin/updateNewsPage(news_no=${news.news_no})}" class="btn btn-primary">
       <i class="fa-solid fa-pen-to-square"></i> 공지사항 수정

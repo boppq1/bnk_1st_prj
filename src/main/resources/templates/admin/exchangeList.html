@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>BNK Busan Bank - 환전 거래 내역 관리</title>
-  <!-- Font Awesome & Pretendard -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
   
@@ -222,7 +221,6 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
 </head>
 <body>
 
-<!-- ===== SIDEBAR ===== -->
 <div class="sidebar">
   <div class="sidebar-logo">
     <img src="/images/BNKlogo.png" alt="BNK 부산은행">
@@ -256,7 +254,6 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
   </div>
 </div>
 
-<!-- ===== HEADER ===== -->
 <div class="header">
   <div class="header-title">업무지원 시스템 > 외환 관리 센터</div>
   <div class="header-breadcrumb">
@@ -272,10 +269,8 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
   </div>
 </div>
 
-<!-- ===== MAIN CONTENT ===== -->
 <div class="main-content">
 
-  <!-- 페이지 헤더 -->
   <div class="page-header">
     <div>
       <h1 class="page-title">환전 요청 내역 조회</h1>
@@ -283,7 +278,6 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
     </div>
   </div>
 
-  <!-- 통계 카드 -->
   <div class="stat-grid">
     <div class="stat-card">
       <div class="stat-icon red"><i class="fa-solid fa-comments-dollar"></i></div>
@@ -296,14 +290,14 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
       <div class="stat-icon blue"><i class="fa-solid fa-chart-line"></i></div>
       <div>
         <div class="stat-label">주요 거래 통화</div>
-        <div class="stat-value">USD</div>
+        <div class="stat-value" id="majorCurrencyValue">-</div>
       </div>
     </div>
     <div class="stat-card">
       <div class="stat-icon purple"><i class="fa-solid fa-building-columns"></i></div>
       <div>
         <div class="stat-label">환전 주거래 유형</div>
-        <div class="stat-value">개인고객</div>
+        <div class="stat-value" id="majorUserTypeValue">-</div>
       </div>
     </div>
     <div class="stat-card">
@@ -315,7 +309,6 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
     </div>
   </div>
 
-  <!-- 필터 바 -->
   <div class="filter-bar">
     <div class="filter-search">
       <i class="fa-solid fa-magnifying-glass"></i>
@@ -344,7 +337,6 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
     </div>
   </div>
 
-  <!-- 테이블 카드 -->
   <div class="table-card">
     <div class="table-wrap">
       <table id="exchangeTable">
@@ -423,6 +415,61 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
   const exchangeType   = document.getElementById('exchangeTypeFilter');
   const currencyFilter = document.getElementById('currencyFilter');
 
+  /* ───── DOM 로드 시 실시간 통계 연산 ───── */
+  window.addEventListener('DOMContentLoaded', function() {
+    const rows = document.querySelectorAll('#exchangeTable tbody tr[data-id]');
+    
+    if (rows.length === 0) {
+      document.getElementById('majorCurrencyValue').innerText = '-';
+      document.getElementById('majorUserTypeValue').innerText = '-';
+      return;
+    }
+
+    const currencyMap = {};
+    let personalCount = 0;
+    let corporateCount = 0;
+
+    rows.forEach(row => {
+      // 1. 회원 유형 추출 및 집계
+      const type = row.getAttribute('data-type');
+      if (type === 'ROLE_COMPANY') {
+        corporateCount++;
+      } else {
+        personalCount++;
+      }
+
+      // 2. 통화 정보 추출 및 최빈값 집계 (From, To 통화 모두 수집)
+      const fromCur = row.getAttribute('data-from-cur');
+      const toCur = row.getAttribute('data-to-cur');
+      
+      if (fromCur && fromCur !== 'KRW') currencyMap[fromCur] = (currencyMap[fromCur] || 0) + 1;
+      if (toCur && toCur !== 'KRW') currencyMap[toCur] = (currencyMap[toCur] || 0) + 1;
+    });
+
+    // 3. 주요 거래 통화 산출 (KRW를 제외한 외화 중 가장 빈도가 높은 통화 선정, 없으면 'USD')
+    let majorCurrency = 'USD';
+    let maxCurrencyCount = 0;
+    for (const cur in currencyMap) {
+      if (currencyMap[cur] > maxCurrencyCount) {
+        maxCurrencyCount = currencyMap[cur];
+        majorCurrency = cur;
+      }
+    }
+
+    // 4. 주거래 유형 산출
+    let majorUserType = '개인고객';
+    if (corporateCount > personalCount) {
+      majorUserType = '기업고객';
+    } else if (corporateCount === personalCount && corporateCount > 0) {
+      majorUserType = '개인/기업';
+    }
+
+    // 5. DOM 반영
+    document.getElementById('majorCurrencyValue').innerText = majorCurrency;
+    document.getElementById('majorUserTypeValue').innerText = majorUserType;
+  });
+
+  /* ───── 실시간 프론트엔드 리스트 필터링 ───── */
   function filterExchanges() {
     const kw = exchangeSearch.value.toLowerCase().trim();
     const ty = exchangeType.value;

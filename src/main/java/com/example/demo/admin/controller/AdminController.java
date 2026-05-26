@@ -2,6 +2,7 @@ package com.example.demo.admin.controller;
 
 import java.util.List;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -14,10 +15,12 @@ import com.example.demo.admin.dto.AdminDto;
 import com.example.demo.admin.dto.KeywordBanDto;
 import com.example.demo.admin.dto.NewsDto;
 import com.example.demo.admin.dto.SearchDto;
+import com.example.demo.admin.service.AdminEventService;
 import com.example.demo.admin.service.AdminMergeService;
 import com.example.demo.admin.service.AdminService;
 import com.example.demo.admin.service.BlacklistService;
 import com.example.demo.company.dto.CompanyUserDTO;
+import com.example.demo.interceptor.AdminLog;
 import com.example.demo.jwt.JwtUtil;
 import com.example.demo.personal.dto.UserDTO;
 
@@ -43,8 +46,6 @@ public class AdminController {
 	
 	@GetMapping("/memberList")
 	public String memberListPage(Model m, @CookieValue(value = "accessToken") String token) {
-		
-		
 		String id = jwt.getLoginId(token);
         AdminDto dto = mergeServ.selectMyPage(id);
 		m.addAttribute("admin", dto);
@@ -65,6 +66,7 @@ public class AdminController {
 		return "admin/updateMember";
 	}
 	
+	@AdminLog(action="개인 회원 수정")
 	@PostMapping("/updateMember")
 	public String updateMember(UserDTO dto, Model m) {
 		
@@ -73,7 +75,7 @@ public class AdminController {
 		if(dto.getPassword() == null || dto.getPassword().trim().isEmpty()) {
 			dto.setPassword(existingUser.getPassword());
 		} else {
-			// 나중에 여기서 비번 암호화 해야함
+			dto.setPassword(BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt()));
 		}
 		
 		as.updateUser(dto);
@@ -93,20 +95,20 @@ public class AdminController {
 		return "admin/updateCompanyMember";
 	}
 	
+	@AdminLog(action="기업 회원 수정")
 	@PostMapping("/updateCompanyMember")
 	public String updateCompanyMember(CompanyUserDTO dto, Model m) {
 		CompanyUserDTO existingUser = as.getCompanyUser(dto.getCompany_user_id());
 		if(dto.getPassword() == null || dto.getPassword().trim().isEmpty()) {
 			dto.setPassword(existingUser.getPassword());
 		} else {
-			// 나중에 여기서 비번 암호화 해야함
+			dto.setPassword(BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt()));
 		}
 		as.updateCompanyUser(dto);
 		return "redirect:/admin/updateCompanyMemberPage?company_user_id=" + dto.getCompany_user_id() + "&result=true";
 	}
 	
 	// ========== 관리자 승인 ==========
-	
 	@GetMapping("/adminList")
 	public String adminListPage(@CookieValue(value = "accessToken") String token, Model m) {
 		String id = jwt.getLoginId(token);
@@ -128,6 +130,7 @@ public class AdminController {
 		return "admin/updateAdmin";
 	}
 	
+	@AdminLog(action="관리자 회원 수정")
 	@PostMapping("/updateAdmin")
 	public String updateAdmin(AdminDto dto, Model m) {
 		
@@ -135,13 +138,13 @@ public class AdminController {
 		if(dto.getPassword() == null || dto.getPassword().trim().isEmpty()) {
 			dto.setPassword(existingUser.getPassword());
 		} else {
-			// 나중에 여기서 비번 암호화 해야함
+			dto.setPassword(BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt()));
 		}
 		
 		if(dto.getAdmin_pw() == null || dto.getAdmin_pw().trim().isEmpty()) {
 			dto.setAdmin_pw(existingUser.getAdmin_pw());
 		} else {
-			// 나중에 여기서 비번 암호화 해야함
+			dto.setPassword(BCrypt.hashpw(dto.getAdmin_pw(), BCrypt.gensalt()));
 		}
 		
 		as.updateAdmin(dto);
@@ -149,7 +152,6 @@ public class AdminController {
 	}
 	
 	// ========== 상품 승인 ========== 
-	
 	@GetMapping("/approvalPage")
 	public String approvalPage(@CookieValue(value = "accessToken") String token, Model m) {
 		String id = jwt.getLoginId(token);
@@ -168,12 +170,14 @@ public class AdminController {
 		return "admin/approvalDetailPage";
 	}
 	
+	@AdminLog(action="상품 승인")
 	@GetMapping("/approved")
 	public String approved(Model m, @RequestParam("product_id") Long product_id) {
 		as.approvedStatus(product_id, "승인");
 		return "redirect:/admin/approvalPage";
 	}
 	
+	@AdminLog(action="상품 반려")
 	@GetMapping("/rejected")
 	public String rejected(Model m, @RequestParam("product_id") Long product_id, @RequestParam("rej_reason") String rej_reason) {
 		as.rejectApprove(product_id, "반려", rej_reason);
@@ -249,6 +253,7 @@ public class AdminController {
 		return "/admin/searchManagement";
 	}
 	
+	@AdminLog(action="검색어 차단")
 	@GetMapping("/keywordBan")
 	public String keywordBan(@RequestParam("keyword") String keyword, @CookieValue(value = "accessToken") String token) {
 		String id = jwt.getLoginId(token);
@@ -262,18 +267,21 @@ public class AdminController {
 		}
 	}
 	
+	@AdminLog(action="추천 검색어 목록 리프레쉬")
 	@GetMapping("/updateSuggestKeyword")
 	public String updateSuggestKeyword() {
 		as.updateSuggestKeyword();
 		return "redirect:/admin/searchManagementPage";
 	}
 	
+	@AdminLog(action="차단 검색어 삭제")
 	@GetMapping("/deleteBanKeyword")
 	public String deleteBanKeyword(@RequestParam("keyword") String keyword) {
 		as.deleteBanKeyword(keyword);
 		return "redirect:/admin/searchManagementPage";
 	}
 	
+	@AdminLog(action="개인 추천 검색어 추가")
 	@GetMapping("/setSuggestPersonalKeyword")
 	public String setSuggestPersonalKeyword(@RequestParam("keyword") String keyword) {
 		List<KeywordBanDto> keywordBanList = as.getKeywordBanList();
@@ -301,6 +309,7 @@ public class AdminController {
 		
 	}
 	
+	@AdminLog(action="기업 추천 검색어 추가")
 	@GetMapping("/setSuggestCompanyKeyword")
 	public String setSuggestCompanyKeyword(@RequestParam("keyword") String keyword) {
 		List<KeywordBanDto> keywordBanList = as.getKeywordBanList();
@@ -332,7 +341,6 @@ public class AdminController {
 	}
 	
 	// ========== 공지사항 ==========
-	
 	@GetMapping("/newsPage")
 	public String newsPage(@CookieValue(value = "accessToken") String token, Model m) {
 		String id = jwt.getLoginId(token);
@@ -359,6 +367,7 @@ public class AdminController {
 		return "/admin/getOneNewsPage";
 	}
 	
+	@AdminLog(action="공지사항 생성")
 	@PostMapping("/makeNews")
 	public String makeNews(NewsDto dto, @CookieValue(value = "accessToken") String token) {
 		String id = jwt.getLoginId(token);
@@ -378,12 +387,14 @@ public class AdminController {
 		return "admin/updateNewsPage";
 	}
 	
+	@AdminLog(action="공지사항 수정")
 	@PostMapping("/updateNews")
 	public String updateNews(NewsDto dto) {
 		as.updateNews(dto);
 		return "redirect:/admin/getOneNews?news_no=" + dto.getNews_no();
 	}
 	
+	@AdminLog(action="공지사항 삭제")
 	@GetMapping("/deleteNews")
 	public String deleteNews(@RequestParam("news_no") Long news_no) {
 		as.deleteNews(news_no);
@@ -400,6 +411,20 @@ public class AdminController {
 		m.addAttribute("userLog", as.userLogFive());
 		m.addAttribute("black", bs.getBlacklistFive());
 		return "/admin/executiveDashboard";
+	}
+	
+	private final AdminEventService serv;
+	
+	@GetMapping("/chiefDashboard")
+	public String chiefDashboard(Model m, @CookieValue(value = "accessToken") String token) {
+		String id = jwt.getLoginId(token);
+		AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
+		m.addAttribute("exchange", as.exchangeList());
+		m.addAttribute("news", as.getNews());
+		m.addAttribute("event", serv.countEvents());
+		
+		return "/admin/chiefDashboard";
 	}
 	
 }

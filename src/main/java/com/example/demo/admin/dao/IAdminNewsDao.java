@@ -12,6 +12,6 @@ public interface IAdminNewsDao {
 	List<NewsDto> getNews();
 	int makeNews(@Param("news_ttl") String news_ttl, @Param("news_cont") String news_cont, @Param("news_wtr_no") Long news_wtr_no);
 	NewsDto getOneNews(@Param("news_no") Long news_no);
-	int updateNews(@Param("news_ttl") String news_ttl, @Param("news_cont") String news_cont);
+	int updateNews(@Param("news_ttl") String news_ttl, @Param("news_cont") String news_cont, @Param("news_no") Long news_no);
 	int deleteNews(@Param("news_no") Long news_no);
 }

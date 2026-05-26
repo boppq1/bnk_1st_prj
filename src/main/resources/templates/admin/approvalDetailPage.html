@@ -362,7 +362,7 @@
     <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
     <li><a href="/admin/productListPage"     class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
     <li class="menu-section-title">업무</li>
-    <li><a href="/admin/approval" class="menu-item active"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
+    <li><a href="/admin/approvalPage" class="menu-item active"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
     <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
     <li><a href="/admin/account"  class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
     <li class="menu-section-title">관리</li>
@@ -630,7 +630,7 @@
 
     <!-- 고정 하단 액션바 (최종 의사결정) -->
     <div class="bottom-action-bar">
-      <a href="/admin/approval" class="btn-action btn-list">
+      <a href="/admin/approvalPage" class="btn-action btn-list">
         <i class="fa-solid fa-list"></i> 목록으로
       </a>
       <form th:action="@{/admin/approved}" method="get" style="display: inline-block;">
