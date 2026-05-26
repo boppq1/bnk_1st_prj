@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.commonLogin.dao.ILoginDAO;
+import com.example.demo.commonLogin.dto.CompanyLoginDTO;
 import com.example.demo.commonLogin.dto.UserLoginDTO;
 import com.example.demo.jwt.JwtUtil;
 import com.example.demo.personal.service.LoginAndRegisterService;
@@ -42,6 +43,9 @@ public class LoginService {
 					log.debug("로그인 pk 못차아서 실패");
 					return Map.of("result", "fail");
 				}
+				if(getUserDTO.getAcnt_stat_cd().equals("INACTIVE")) {
+					return Map.of("result", "fail");
+				}
 				log.info("로그인시간 {}", nowStrDate);
 				Map<String, Object> info = new HashMap<>();
 				info.put("usr_nm", getUserDTO.getUsr_nm());
@@ -59,7 +63,7 @@ public class LoginService {
 			return Map.of("result", "fail");
 		}
 
-		UserLoginDTO getComUserDTO = loginDAO.selectCompanyUser(dto.getLogin_id());
+		CompanyLoginDTO getComUserDTO = loginDAO.selectCompanyUser(dto.getLogin_id());
 
 		if (getComUserDTO != null) {
 
@@ -68,6 +72,9 @@ public class LoginService {
 				String nowStrDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 				if(loginDAO.updateCompanyLoginTime(getComUserDTO.getLogin_id(), nowStrDate) != 1) {
 					log.debug("기업 로그인 시간 실패");
+					return Map.of("result", "fail");
+				}
+				if(getComUserDTO.getStatus().equals("INACTIVE")) {
 					return Map.of("result", "fail");
 				}
 				Map<String, Object> info = new HashMap<>();

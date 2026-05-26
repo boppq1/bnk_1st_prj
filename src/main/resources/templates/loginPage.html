@@ -29,9 +29,8 @@
 			</div>
 
 			<!-- 에러 시 표시 (Thymeleaf) -->
-			<div class="error-alert" th:if="${param.error}">
-				<i class="fa-solid fa-circle-exclamation"></i> 아이디 또는 비밀번호를 다시 확인해
-				주세요.
+			<div class="error-alert">
+				<p class="fa-solid fa-circle-exclamation" id="error"></p> 
 			</div>
 
 
@@ -103,6 +102,7 @@
 						window.location.href="/company/companyMain"						
 					}
 				}else{
+					document.querySelector("#error").innerHTML = '아이디 또는 비밀번호를 다시 확인해주세요.'
 					window.location.href="/loginPage"
 				}
 			})

@@ -42,7 +42,7 @@ public class LoginAndRegisterService {
             }
             account.setAccount_no(accountNumber);
             account.setAccount_no(accountNumber);
-            account.setAccount_status("정상");
+            account.setAccount_status("ACTIVE");
             account.setCurrency("KRW");
             account.setBalance((long) 0);
             account.setLimit_one_time((long) 100);

@@ -10,5 +10,5 @@ public class CompanyLoginDTO {
 	private String role;
 	private String com_nm;
 	private int com_no;
-	
+	private String status;
 }
