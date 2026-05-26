@@ -29,9 +29,8 @@
 			</div>
 
 			<!-- 에러 시 표시 (Thymeleaf) -->
-			<div class="error-alert" th:if="${param.error}">
-				<i class="fa-solid fa-circle-exclamation"></i> 아이디 또는 비밀번호를 다시 확인해
-				주세요.
+			<div class="error-alert" id="error" style="display:none;">
+				
 			</div>
 
 
@@ -103,7 +102,14 @@
 						window.location.href="/company/companyMain"						
 					}
 				}else{
-					window.location.href="/loginPage"
+					// 에러 알림창 요소를 찾아서 변수에 저장합니다.
+					const errorAlert = document.querySelector("#error");
+
+					// 1. 알림창 안에 텍스트를 삽입합니다.
+					errorAlert.innerHTML = '아이디 또는 비밀번호를 다시 확인해주세요.';
+
+					// 2. display: none을 block으로 바꿔서 화면에 보여줍니다.
+					errorAlert.style.display = "block";
 				}
 			})
 		}
