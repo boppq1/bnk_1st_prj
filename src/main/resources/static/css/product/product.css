@@ -1124,12 +1124,18 @@ a { text-decoration: none; color: inherit; }
 
 /* ── 드롭다운 패널 ── */
 .foreign-dropdown-menu {
-    display: none;
-    padding: 4px 8px 8px 8px;
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 8px;
+    transition: max-height 260ms ease, padding 260ms ease, opacity 260ms ease;
+    opacity: 0;
 }
 
 .foreign-dropdown-menu.active {
-    display: block;
+    max-height: 1000px;
+    padding: 4px 8px 8px 8px;
+    opacity: 1;
 }
 
 /* ── 그룹 (서브타이틀 + 링크 묶음) ── */
@@ -1171,21 +1177,28 @@ a { text-decoration: none; color: inherit; }
 
 /* ── 3단계 링크 묶음 박스 ── */
 .foreign-sub-menu {
-    display: none;
+    display: flex;
     flex-direction: column;
     gap: 0;
-    margin: 2px 0 6px 8px;
-    padding: 6px 8px;
+    margin: 2px 0 0 8px;
+    padding: 0 8px;
     background: var(--gray-50);
     border-left: 2px solid var(--gray-200);
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     list-style: none;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 200ms ease, padding 200ms ease, opacity 200ms ease;
 }
 
-/* 서브타이틀 있는 구조: .active 클래스로 열림 */
-.foreign-sub-menu.active {
-    display: flex;
+.foreign-sub-menu.active,
+.foreign-dropdown-menu.active > .foreign-sub-menu {
+    max-height: 600px;
+    padding: 6px 8px;
+    opacity: 1;
     border-left-color: var(--red-mid);
+    margin-bottom: 6px;
 }
 
 /* 서브타이틀 없는 구조: 드롭다운 메뉴 바로 아래 sub-menu는 항상 보임 */
