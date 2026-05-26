@@ -2,21 +2,23 @@ package com.example.demo.admin.controller;
 
 import java.util.List;
 
-import com.example.demo.admin.service.AdminMergeService;
-import com.example.demo.interceptor.JwtFilter;
-import com.example.demo.jwt.JwtUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.admin.dto.AdminDto;
 import com.example.demo.admin.dto.KeywordBanDto;
 import com.example.demo.admin.dto.NewsDto;
 import com.example.demo.admin.dto.SearchDto;
+import com.example.demo.admin.service.AdminMergeService;
 import com.example.demo.admin.service.AdminService;
 import com.example.demo.admin.service.BlacklistService;
 import com.example.demo.company.dto.CompanyUserDTO;
+import com.example.demo.jwt.JwtUtil;
 import com.example.demo.personal.dto.UserDTO;
 
 import jakarta.servlet.http.HttpSession;
@@ -30,7 +32,7 @@ public class AdminController {
 	final AdminService as;
 	private final BlacklistService bs;
 	private final JwtUtil jwt;
-	private final AdminMergeService as2;
+	private final AdminMergeService mergeServ;
 	
 	@GetMapping("/adminMain")
 	public String adminMain() {
@@ -40,29 +42,22 @@ public class AdminController {
 	// ========== 멤버 ==========
 	
 	@GetMapping("/memberList")
-	public String memberListPage(HttpServletRequest request, Model m, @CookieValue(value = "accessToken") String token) {
+	public String memberListPage(Model m, @CookieValue(value = "accessToken") String token) {
+		
+		
 		String id = jwt.getLoginId(token);
-		AdminDto admin = as2.selectMyPage(id);
-
-		if( admin ==  null ) {
-			return "redirect:/adminLogin?error=true";
-		}
-		m.addAttribute("admin", admin);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		m.addAttribute("userList", as.getUserList());
 		m.addAttribute("companyList", as.getCompanyUserList());
 		return "admin/memberList";
 	}
 	
 	@GetMapping("/updateMemberPage")
-	public String updateMemberPage(HttpServletRequest request, @CookieValue(value = "accessToken") String token,
-								   @RequestParam("user_id") Long user_id, Model m, @RequestParam(required=false, name="result") String result) {
+	public String updateMemberPage(@CookieValue(value = "accessToken") String token, @RequestParam("user_id") Long user_id, Model m, @RequestParam(required=false, name="result") String result) {
 		String id = jwt.getLoginId(token);
-		AdminDto admin = as2.selectMyPage(id);
-
-		if( admin ==  null ) {
-			return "redirect:/adminLogin?error=true";
-		}
-		m.addAttribute("admin", admin);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		m.addAttribute("user", as.getUser(user_id));
 		if(result != null) {
 			m.addAttribute("result", result);
@@ -86,17 +81,11 @@ public class AdminController {
 	}
 	
 	@GetMapping("/updateCompanyMemberPage")
-	public String updateCompanyMemberPage(HttpServletRequest request, @CookieValue(value = "accessToken") String token,
-										  @RequestParam("company_user_id") Long company_user_id, Model m, @RequestParam(required=false, name="result") String result) {
-
-		String id = jwt.getLoginId(token);
-		AdminDto admin = as2.selectMyPage(id);
-
-		if( admin ==  null ) {
-			return "redirect:/adminLogin?error=true";
-		}
+	public String updateCompanyMemberPage(@CookieValue(value = "accessToken") String token, @RequestParam("company_user_id") Long company_user_id, Model m, @RequestParam(required=false, name="result") String result) {
 		m.addAttribute("company", as.getCompanyUser(company_user_id));
-		m.addAttribute("admin", admin);
+		String id = jwt.getLoginId(token);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		if(result != null) {
 			m.addAttribute("result", result);
 			System.out.println("있다");
@@ -119,27 +108,19 @@ public class AdminController {
 	// ========== 관리자 승인 ==========
 	
 	@GetMapping("/adminList")
-	public String adminListPage(HttpServletRequest request, @CookieValue(value = "accessToken") String token, Model m) {
+	public String adminListPage(@CookieValue(value = "accessToken") String token, Model m) {
 		String id = jwt.getLoginId(token);
-		AdminDto admin = as2.selectMyPage(id);
-
-		if( admin ==  null ) {
-			return "redirect:/adminLogin?error=true";
-		}
-		m.addAttribute("admin", admin);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		m.addAttribute("adminList", as.getAdminList());
 		return "admin/adminList";
 	}
 	
 	@GetMapping("/updateAdminPage")
-	public String updateAdminPage(HttpServletRequest request, @CookieValue(value = "accessToken") String token,
-								  @RequestParam("admin_id") Long admin_id, Model m, @RequestParam(required=false, name="result") String result) {
+	public String updateAdminPage(@CookieValue(value = "accessToken") String token, @RequestParam("admin_id") Long admin_id, Model m, @RequestParam(required=false, name="result") String result) {
 		String id = jwt.getLoginId(token);
-		AdminDto admin = as2.selectMyPage(id);
-		if( admin ==  null ) {
-			return "redirect:/adminLogin?error=true";
-		}
-		m.addAttribute("admin", admin);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		m.addAttribute("admin", as.getAdmin(admin_id));
 		if(result != null) {
 			m.addAttribute("result", result);
@@ -170,29 +151,19 @@ public class AdminController {
 	// ========== 상품 승인 ========== 
 	
 	@GetMapping("/approvalPage")
-	public String approvalPage(HttpServletRequest request, @CookieValue(value = "accessToken") String token, Model m) {
+	public String approvalPage(@CookieValue(value = "accessToken") String token, Model m) {
 		String id = jwt.getLoginId(token);
-		AdminDto admin = as2.selectMyPage(id);
-
-		if( admin ==  null ) {
-			return "redirect:/adminLogin?error=true";
-		}
-		m.addAttribute("admin", admin);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		m.addAttribute("approvalList", as.getApprovals());
 		return "admin/approvalPage";
 	}
 	
 	@GetMapping("/approvalDetailPage")
-	public String approvalDetailPage(HttpServletRequest request, @CookieValue(value = "accessToken") String token,
-									 Model m,
-									 @RequestParam("product_id") Long product_id) {
+	public String approvalDetailPage(@CookieValue(value = "accessToken") String token, Model m, @RequestParam("product_id") Long product_id) {
 		String id = jwt.getLoginId(token);
-		AdminDto admin = as2.selectMyPage(id);
-
-		if( admin ==  null ) {
-			return "redirect:/adminLogin?error=true";
-		}
-		m.addAttribute("admin", admin);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		m.addAttribute("approvalList", as.getApproval(product_id));
 		return "admin/approvalDetailPage";
 	}
@@ -211,9 +182,10 @@ public class AdminController {
 	
 	// ========== 로그 관련 ==========
 	@GetMapping("/adminLogPage")
-	public String adminLogPage(HttpSession session, Model m) {
-		AdminDto admin = (AdminDto) session.getAttribute("admin");
-		m.addAttribute("admin", admin);
+	public String adminLogPage(@CookieValue(value = "accessToken") String token,  Model m) {
+		String id = jwt.getLoginId(token);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		m.addAttribute("adminLogList", as.adminLog());
 		m.addAttribute("userLogList", as.userLog());
 		return "/admin/adminLog";
@@ -221,18 +193,20 @@ public class AdminController {
 	
 	// ========== 환전 내역 관련 ==========
 	@GetMapping("/exchangeListPage")
-	public String exchangeListPage(HttpSession session, Model m) {
-		AdminDto admin = (AdminDto) session.getAttribute("admin");
-		m.addAttribute("admin", admin);
+	public String exchangeListPage(@CookieValue(value = "accessToken") String token,  Model m) {
+		String id = jwt.getLoginId(token);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		m.addAttribute("exchangeList", as.exchangeList());
 		return "/admin/exchangeList";
 	}
 	
 	// ========== 계좌 리스트 관련 ==========
 	@GetMapping("/adminAccountPage")
-	public String adminAccountPage(HttpSession session, Model m) {
-		AdminDto admin = (AdminDto) session.getAttribute("admin");
-		m.addAttribute("admin", admin);
+	public String adminAccountPage(@CookieValue(value = "accessToken") String token, Model m) {
+		String id = jwt.getLoginId(token);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		m.addAttribute("user", as.getUserList());
 		System.out.println("크기 : " + as.getUserList().size());
 		m.addAttribute("company", as.getCompanies());
@@ -241,18 +215,20 @@ public class AdminController {
 	}
 	
 	@GetMapping("/getCompanyAccounts")
-	public String getCompanyAccounts(HttpSession session, Model m, @RequestParam("company_id") Long company_id) {
-		AdminDto admin = (AdminDto) session.getAttribute("admin");
-		m.addAttribute("admin", admin);
+	public String getCompanyAccounts(@CookieValue(value = "accessToken") String token, Model m, @RequestParam("company_id") Long company_id) {
+		String id = jwt.getLoginId(token);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		m.addAttribute("domestic", as.getCompanyDomesticAccount(company_id));
 		m.addAttribute("foreign", as.getCompanyForeignAccount(company_id));
 		return "/admin/companyAccount";
 	}
 	
 	@GetMapping("/getPersonalAccounts")
-	public String getPersonalAccounts(HttpSession session, Model m, @RequestParam("user_id") Long user_id) {
-		AdminDto admin = (AdminDto) session.getAttribute("admin");
-		m.addAttribute("admin", admin);
+	public String getPersonalAccounts(@CookieValue(value = "accessToken") String token, Model m, @RequestParam("user_id") Long user_id) {
+		String id = jwt.getLoginId(token);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		m.addAttribute("domestic", as.getPersonalDomesticAccount(user_id));
 		m.addAttribute("foreign", as.getPersonalForeignAccount(user_id));
 		return "/admin/personalAccount";
@@ -260,17 +236,10 @@ public class AdminController {
 	
 	// ========== 검색어 관리 ==========
 	@GetMapping("/searchManagementPage")
-	public String searchManagementPage(HttpServletRequest request, Model m,
-									   @CookieValue(value = "accessToken") String token,
-									   @RequestParam(value = "warning", required = false) String warning) {
-
+	public String searchManagementPage(@CookieValue(value = "accessToken") String token, Model m, @RequestParam(value = "warning", required = false) String warning) {
 		String id = jwt.getLoginId(token);
-		AdminDto admin = as2.selectMyPage(id);
-
-		if( admin ==  null ) {
-			return "redirect:/adminLogin?error=true";
-		}
-		m.addAttribute("admin", admin);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		m.addAttribute("warning", warning);
 		m.addAttribute("search_per", as.getSearchPersonal());
 		m.addAttribute("suggest_per", as.getSuggestPersonal());
@@ -281,17 +250,12 @@ public class AdminController {
 	}
 	
 	@GetMapping("/keywordBan")
-	public String keywordBan(@RequestParam("keyword") String keyword,
-	                         HttpServletRequest request, @CookieValue(value = "accessToken") String token) {
+	public String keywordBan(@RequestParam("keyword") String keyword, @CookieValue(value = "accessToken") String token) {
 		String id = jwt.getLoginId(token);
-		AdminDto admin = as2.selectMyPage(id);
-
-		if( admin ==  null ) {
-			return "redirect:/adminLogin?error=true";
-		}
+        AdminDto dto = mergeServ.selectMyPage(id);
 		
 		if(as.checkKeywordExist(keyword)) {
-			as.keywordBan(keyword, admin.getAdmin_id());
+			as.keywordBan(keyword, dto.getAdmin_id());
 			return "redirect:/admin/searchManagementPage";
 		} else {
 			return "redirect:/admin/searchManagementPage";
@@ -370,40 +334,46 @@ public class AdminController {
 	// ========== 공지사항 ==========
 	
 	@GetMapping("/newsPage")
-	public String newsPage(HttpSession session, Model m) {
-		AdminDto admin = (AdminDto) session.getAttribute("admin");
-		m.addAttribute("admin", admin);
+	public String newsPage(@CookieValue(value = "accessToken") String token, Model m) {
+		String id = jwt.getLoginId(token);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		m.addAttribute("news", as.getNews());
 		return "/admin/newsPage";
 	}
 	
 	@GetMapping("/makeNewsPage")
-	public String makeNewsPage(HttpSession session, Model m) {
-		AdminDto admin = (AdminDto) session.getAttribute("admin");
-		m.addAttribute("admin", admin);
+	public String makeNewsPage(@CookieValue(value = "accessToken") String token, Model m) {
+		String id = jwt.getLoginId(token);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		return "/admin/makeNewsPage";
 	}
 	
 	@GetMapping("/getOneNews")
-	public String getOneNewsPage(HttpSession session, Model m, @RequestParam("news_no") Long news_no) {
-		AdminDto admin = (AdminDto) session.getAttribute("admin");
-		m.addAttribute("admin", admin);
+	public String getOneNewsPage(@CookieValue(value = "accessToken") String token, Model m, @RequestParam("news_no") Long news_no) {
+		String id = jwt.getLoginId(token);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		m.addAttribute("news", as.getOneNews(news_no));
 		return "/admin/getOneNewsPage";
 	}
 	
 	@PostMapping("/makeNews")
-	public String makeNews(NewsDto dto, HttpSession session) {
-		AdminDto admin = (AdminDto) session.getAttribute("admin");
+	public String makeNews(NewsDto dto, @CookieValue(value = "accessToken") String token) {
+		String id = jwt.getLoginId(token);
+        AdminDto admin = mergeServ.selectMyPage(id);
+		
 		dto.setNews_wtr_no(admin.getAdmin_id());
 		as.makeNews(dto);
 		return "redirect:/admin/newsPage";
 	}
 	
 	@GetMapping("/updateNewsPage")
-	public String updateNewsPage(@RequestParam("news_no") Long news_no, Model m, HttpSession session) {
-		AdminDto admin = (AdminDto) session.getAttribute("admin");
-		m.addAttribute("admin", admin);
+	public String updateNewsPage(@RequestParam("news_no") Long news_no, Model m, @CookieValue(value = "accessToken") String token) {
+		String id = jwt.getLoginId(token);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		m.addAttribute("news", as.getOneNews(news_no));
 		return "admin/updateNewsPage";
 	}
@@ -421,8 +391,10 @@ public class AdminController {
 	}
 	
 	@GetMapping("/executiveDashboard")
-	public String executiveDashboard(Model m, HttpSession session) {
-		m.addAttribute("admin", (AdminDto) session.getAttribute("admin"));
+	public String executiveDashboard(Model m, @CookieValue(value = "accessToken") String token) {
+		String id = jwt.getLoginId(token);
+        AdminDto dto = mergeServ.selectMyPage(id);
+		m.addAttribute("admin", dto);
 		m.addAttribute("approval", as.outstandingNumber());
 		m.addAttribute("adminLog", as.adminLogFive());
 		m.addAttribute("userLog", as.userLogFive());

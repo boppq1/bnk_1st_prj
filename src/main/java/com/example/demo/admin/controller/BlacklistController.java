@@ -3,11 +3,14 @@ package com.example.demo.admin.controller;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.demo.admin.dto.AdminDto;
 import com.example.demo.admin.dto.BlacklistDto;
+import com.example.demo.admin.service.AdminMergeService;
 import com.example.demo.admin.service.BlacklistService;
+import com.example.demo.jwt.JwtUtil;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,8 @@ public class BlacklistController {
 	
 	private final BlacklistService bs;
 	private final StringRedisTemplate stringRedisTemplate;
+	private final JwtUtil jwt;
+	private final AdminMergeService mergeServ;
 	
 	public void insertBlacklist(String clientKey, String reason) {
 		String ip_addr = clientKey.split("_")[0];
@@ -25,8 +30,9 @@ public class BlacklistController {
 	}
 	
 	@GetMapping("/admin/adminBlacklist")
-	public String adminBlackListPage(HttpSession session, Model m) {
-		AdminDto dto = (AdminDto) session.getAttribute("admin");
+	public String adminBlackListPage(@CookieValue(value = "accessToken") String token, Model m) {
+		String id = jwt.getLoginId(token);
+        AdminDto dto = mergeServ.selectMyPage(id);
 		m.addAttribute("admin", dto);
 		m.addAttribute("black", bs.getBlacklist());
 		return "/admin/adminBlacklist";
