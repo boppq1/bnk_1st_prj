@@ -8,6 +8,7 @@
 <link rel="stylesheet" th:href="@{/css/search/search.css}">
 <link rel="stylesheet" th:href="@{/css/product/product.css}">
 <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/ExchangeRisk.css}">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -15,10 +16,316 @@
 	<div th:replace="~{header :: header}"></div>
 	<div class="product-layout">
 		<div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
-		<main class="ae-page"></main>
+		<div class="page-wrap">
+ 
+            <h1 class="main-title">환리스크관리</h1>
+ 
+            <!-- 탭 메뉴 -->
+            <div class="tab-menu">
+                <button class="tab-btn active" data-tab="tab-overview">환리스크관리의 개요</button>
+                <button class="tab-btn" data-tab="tab-method">환리스크관리방법</button>
+                <button class="tab-btn" data-tab="tab-derivative">파생상품</button>
+                <button class="tab-btn" data-tab="tab-support">환리스크관리지원서비스</button>
+            </div>
+ 
+            <!-- ========================
+                 탭1: 환리스크관리의 개요
+            ========================= -->
+            <div id="tab-overview" class="tab-content active">
+ 
+                <!-- 환리스크란? -->
+                <div class="deposit-section">
+                    <div class="section-title">환리스크란?</div>
+                    <div class="intro-text-box">
+                        외국통화로 표시된 자산이나 부채 또는 손익의 현금흐름을 보유하고 있을 때 미래의 환율변동으로 인하여 이들 가치가 변동하게 될 위험을 환리스크라 합니다.
+                    </div>
+                </div>
+ 
+                <!-- 환노출이란? -->
+                <div class="deposit-section">
+                    <div class="section-title">환노출이란?</div>
+                    <div class="intro-text-box">
+                        환율변동이 기업가치에 얼마만큼 변화를 주게 될지 사전에 측정하여 계량화한 것으로서 외화표시 자산과 부채 및 현금흐름을 보유하고 있는 상태를 의미합니다.
+                    </div>
+                </div>
+ 
+                <!-- 환리스크 크기의 결정요인 -->
+                <div class="deposit-section">
+                    <div class="section-title">환리스크 크기의 결정요인</div>
+                    <div class="risk-factor-grid">
+                        <div class="risk-factor-card">
+                            <div class="risk-factor-title">외환포지션</div>
+                            <p>일정시점에서 기업이 보유하고 있는 외화 자산과 부채의 차이를 의미하며, 외환 포지션이 클수록 환리스크도 증가합니다.</p>
+                        </div>
+                        <div class="risk-factor-card">
+                            <div class="risk-factor-title">외환 익스포저 보유기간</div>
+                            <p>익스포저 보유기간이 길수록 기간 중 환율 변동 가능성이 커지므로 환리스크도 증가합니다.</p>
+                        </div>
+                        <div class="risk-factor-card">
+                            <div class="risk-factor-title">환율 변동성</div>
+                            <p>환율 변동성이 크면 외화 자산(부채)의 가치가 더 큰 폭으로 변할 수 있으므로 환리스크가 증가합니다.</p>
+                        </div>
+                    </div>
+                </div>
+ 
+                <!-- 환리스크관리의 목적 -->
+                <div class="deposit-section">
+                    <div class="section-title">환리스크관리의 목적</div>
+                    <div class="intro-text-box">
+                        환리스크 관리는 금융상품을 이용하여 위험을 적극적으로 관리하고 헤지라는 행위를 통하여 환율변동에 따른 미래에 대한 불확실성을 제거하여 기업가치를 높이는데 그 목적이 있습니다.
+                    </div>
+                </div>
+ 
+            </div>
+ 
+            <!-- ========================
+                 탭2: 환리스크관리방법
+            ========================= -->
+            <div id="tab-method" class="tab-content">
+ 
+                <!-- 기업 내부적인 관리방법 -->
+                <div class="deposit-section">
+                    <div class="section-title">기업 내부적인 관리방법</div>
+                    <div class="method-list">
+                        <div class="method-item">
+                            <div class="method-name">매칭_Matching</div>
+                            <p>외화자금의 유입과 지출을 통화별, 만기별로 일치</p>
+                        </div>
+                        <div class="method-item">
+                            <div class="method-name">리딩_Leading 및 래깅_Lagging</div>
+                            <p>결제시기를 의도적으로 앞당기거나 늦추는 방법</p>
+                        </div>
+                        <div class="method-item">
+                            <div class="method-name">상계_Netting</div>
+                            <p>채권·채무 관계를 개별적으로 결제하지 않고 상계한 뒤 잔액만 결제</p>
+                        </div>
+                        <div class="method-item">
+                            <div class="method-name">가격정책_Pricing Policy</div>
+                            <p>환율변동에 따른 환차손을 가격에 반영</p>
+                        </div>
+                        <div class="method-item">
+                            <div class="method-name">자산/부채관리_ALM</div>
+                            <p>기업이 보유하고 있는 자산·부채의 포지션을 조정하는 방법</p>
+                        </div>
+                    </div>
+                </div>
+ 
+                <!-- 내부적 관리방법의 한계 -->
+                <div class="deposit-section">
+                    <div class="limit-notice-box">
+                        <div class="limit-notice-title">내부적 관리방법의 한계</div>
+                        <ul class="caution-list">
+                            <li>기업이 수입(외화부채 보유) 또는 수출(외화자산 보유)만 하는 업체인 경우에는 내부적 기법 적용에 한계가 있습니다.</li>
+                            <li>리딩 및 래깅 기법은 미래의 환율 예측에 기초한 방법이므로 예측이 틀리면 오히려 손실이 발생할 수도 있습니다.</li>
+                            <li>따라서 내부적 기법과 함께 파생상품 거래를 적절히 활용한다면 더욱 효과적으로 환리스크를 관리 할 수 있습니다.</li>
+                        </ul>
+                    </div>
+                </div>
+ 
+                <!-- 은행 등을 통한 외부적인 관리방법 -->
+                <div class="deposit-section">
+                    <div class="section-title">은행 등을 통한 외부적인 관리방법</div>
+ 
+                    <!-- 선물환 -->
+                    <div class="external-method-card">
+                        <div class="external-method-header">
+                            <div class="external-method-icon">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <div class="external-method-info">
+                                <div class="external-method-name">선물환 <span>Forwards</span></div>
+                                <p class="external-method-desc">미래 특정 시점(만기일)에 미리 약정한 환율로 결제</p>
+                            </div>
+                        </div>
+                        <div class="external-method-body">
+                            <div class="case-label">사례</div>
+                            <p class="case-text">수출, 외화예금, 해외투자자의 경우 환율하락 리스크를 헤지하기 위한 선물환 매도</p>
+                            <ul class="case-detail-list">
+                                <li>현재환율 : 1,100 원</li>
+                                <li>만기 1년 스왑포인트(선물환 마진) : -10원</li>
+                                <li>만기 1년 선물환율 : 1,090원</li>
+                                <li>만기환율에 상관없이 1,090원에 달러매도</li>
+                            </ul>
+                            <p class="case-note">* 수입 및 외화대출업체의 경우 선물환 매수</p>
+                        </div>
+                    </div>
+ 
+                    <!-- 옵션 -->
+                    <div class="external-method-card">
+                        <div class="external-method-header">
+                            <div class="external-method-icon">
+                                <i class="fa-solid fa-scale-balanced"></i>
+                            </div>
+                            <div class="external-method-info">
+                                <div class="external-method-name">옵션 <span>Options</span></div>
+                                <p class="external-method-desc">특정통화를 미리 정해진 환율로 매입하거나 매도할 수 있는 권리를 매매</p>
+                            </div>
+                        </div>
+                        <div class="external-method-body">
+                            <div class="case-label">사례</div>
+                            <p class="case-text">수출, 외화예금, 해외투자자의 경우 환율하락 리스크를 헤지하기 위한 달러 풋옵션 매수</p>
+                            <ul class="case-detail-list">
+                                <li>현재환율 : 1,100원</li>
+                                <li>만기 1년 스왑포인트(선물환 마진) : -10원</li>
+                                <li>옵션 프리미엄(매수자가 매도자에게 지급하는 금액) : 5원</li>
+                                <li>행사가격 : 1,085원</li>
+                                <li>만기환율이 1,085원(행사가격) 이상 : 옵션행사 포기</li>
+                                <li>만기환율이 1,085원(행사가격) 미만 : 옵션행사</li>
+                            </ul>
+                            <p class="case-note">* 수입 및 외화대출업체의 경우 콜옵션 매수</p>
+                        </div>
+                    </div>
+ 
+                    <!-- 스왑 -->
+                    <div class="external-method-card">
+                        <div class="external-method-header">
+                            <div class="external-method-icon">
+                                <i class="fa-solid fa-arrows-rotate"></i>
+                            </div>
+                            <div class="external-method-info">
+                                <div class="external-method-name">스왑 <span>Swap</span></div>
+                                <p class="external-method-desc">특정통화를 다른 통화와 상호 교환하는 계약</p>
+                            </div>
+                        </div>
+                        <div class="external-method-body">
+                            <div class="case-label">사례</div>
+                            <p class="case-text">수입과 수출을 동시에 하는 업체의 경우 달러 Buy &amp; Sell Swap 거래</p>
+                            <ul class="case-detail-list">
+                                <li>현재환율 : 1,100원</li>
+                                <li>만기 1년 스왑포인트(선물환 마진) : -10원</li>
+                                <li>거래초기 : 달러를 1,100원에 매수</li>
+                                <li>거래만기 : 달러를 1,090원에 매도</li>
+                                <li>만기환율과 상관없이 환율은 최초 거래시 확정</li>
+                            </ul>
+                        </div>
+                    </div>
+ 
+                    <!-- 기타 -->
+                    <div class="external-method-card">
+                        <div class="external-method-header">
+                            <div class="external-method-icon">
+                                <i class="fa-solid fa-ellipsis"></i>
+                            </div>
+                            <div class="external-method-info">
+                                <div class="external-method-name">기타 <span>Etc</span></div>
+                            </div>
+                        </div>
+                        <div class="external-method-body">
+                            <ul class="etc-list">
+                                <li>
+                                    <span class="etc-label">통화선물(Futures)</span>
+                                    <span>선물회사 등을 통한 거래</span>
+                                </li>
+                                <li>
+                                    <span class="etc-label">환변동보험</span>
+                                    <span>한국무역보험공사를 통한 거래</span>
+                                </li>
+                                <li>
+                                    <span class="etc-label">복합파생상품</span>
+                                    <span>타겟 포워드, 레인지 포워드 등</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+ 
+                </div>
+            </div>
+ 
+            <!-- ========================
+                 탭3: 파생상품
+            ========================= -->
+            <div id="tab-derivative" class="tab-content">
+ 
+                <!-- 선물환(Forward) -->
+                <div class="deposit-section">
+                    <div class="section-title">선물환(Forward)</div>
+                    <div class="derivative-desc-box">
+                        <ul class="caution-list">
+                            <li>선물환이란 미래의 일정 시점(만기일)에 현재 약정한 환율(선물환율)로 특정 외화를 매입 또는 매도하기로 약정하는 거래입니다.</li>
+                            <li>선물환율은 현재 환율(현물환율)에 양 통화간의 이자율 차이인 스왑포인트를 더하여 결정됩니다.</li>
+                            <li>만기일에는 현물환율과 관계없이 미리 약정한 선물환율로 거래됩니다.</li>
+                        </ul>
+                        <p class="derivative-note">* 선물환 만기일에는 약정원금의 100%를 약정환율로 거래하여야 합니다.</p>
+                    </div>
+                    <div class="graph-grid">
+                        <div class="graph-item">
+                            <img src="https://www.busanbank.co.kr/resource/img/bg/fpm/img_exc_gr01.png" alt="선물환 매도 손익구조">
+                        </div>
+                        <div class="graph-item">
+                            <img src="https://www.busanbank.co.kr/resource/img/bg/fpm/img_exc_gr02.png" alt="선물환 매수 손익구조">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 외환스왑(FXSwap) -->
+                <div class="deposit-section">
+                    <div class="section-title">외환스왑(FXSwap)</div>
+                    <div class="derivative-desc-box">
+                        <ul class="caution-list">
+                            <li>외환스왑이란 거래 당사자들이 현재의 계약환율에 따라 서로 다른 통화를 교환하고, 일정기간 후 최초 계약시 정한 선물환율에 따라 원금을 재교환하기로 하는 거래입니다.</li>
+                            <li>외환스왑은 현물환거래(Spot)와 선물환거래(Forward)를 동시에 체결하거나 만기가 서로 다른 두 개의 선물환거래를 동시에 체결하는 방식으로 이루어집니다.</li>
+                        </ul>
+                        <p class="derivative-note">* 스왑 만기일에는 약정원금의 100%를 약정환율로 거래하여야 합니다.</p>
+                    </div>
+                    <div class="graph-grid">
+                        <div class="graph-item">
+                            <img src="https://www.busanbank.co.kr/resource/img/bg/fpm/img_exc_gr03.png" alt="외환스왑 Buy&Sell 손익구조">
+                        </div>
+                        <div class="graph-item">
+                            <img src="https://www.busanbank.co.kr/resource/img/bg/fpm/img_exc_gr04.png" alt="외환스왑 Sell&Buy 손익구조">
+                        </div>
+                    </div>
+                </div>
+ 
+            </div>
+ 
+            <!-- ========================
+                 탭4: 환리스크관리지원서비스
+            ========================= -->
+            <div id="tab-support" class="tab-content">
+ 
+                <div class="deposit-section">
+                    <div class="section-title">환리스크 관리 지원 부서 및 문의처</div>
+ 
+                    <!-- 지원부서 업무내용 -->
+                    <div class="support-info-box">
+                        <div class="support-info-label">
+                            <i class="fa-solid fa-circle-dot"></i>
+                            환리스크관리 지원부서 업무내용
+                        </div>
+                        <ul class="caution-list">
+                            <li>현물환, 선물환, 스왑, 옵션, 복합파생상품, IRS 및 CRS 등 외환파생상품 거래</li>
+                            <li>환리스크 관리 컨설팅 제공, 환율전망 세미나 개최</li>
+                            <li>외환거래처 마케팅 및 영업점 접점 지원</li>
+                            <li>환율정보 제공 서비스 [E-MAIL, SMS 서비스(DAILY, WEEKLY, MONTHLY)]</li>
+                        </ul>
+                    </div>
+                </div>
+ 
+                <!-- 담당자 -->
+                <div class="deposit-section">
+                    <div class="section-title">담당자</div>
+                    <div class="contact-grid">
+                        <div class="contact-card">
+                            <div class="contact-title">환리스크관리 전담반</div>
+                            <p>자금운용부 부부장 백호권</p>
+                            <p>[E. Hokwon_Back@busanbank.co.kr T. 02-758-6321]</p>
+                        </div>
+                        <div class="contact-card">
+                            <div class="contact-title">부옥경 파생상품 데스크</div>
+                            <p>자금운용부 팀장 문명관</p>
+                            <p>[E. mhyun@busanbank.co.kr T. 051-661-4658]</p>
+                        </div>
+                    </div>
+                </div>
+ 
+            </div>
+ 
+        </div>
 	</div>
 	<div th:replace="~{footer :: footer}"></div>
 	<script th:src="@{/js/product/foreign.js}"></script>
+	<script th:src="@{/js/fx/riskManagement.js}"></script>
 	<script th:src="@{/js/zoom.js}"></script>
 </body>
 </html>
