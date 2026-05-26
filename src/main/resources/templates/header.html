@@ -1,55 +1,49 @@
 <!DOCTYPE html>
-<html lang="ko"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BNK 부산은행</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BNK 부산은행</title>
 
-  <!-- 아이콘 -->
- <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<!-- 아이콘 -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-  <!-- css -->
-  <link rel="stylesheet" th:href="@{/css/header.css}">
-  <link rel="stylesheet" th:href="@{/css/search/search.css}">
+<!-- css -->
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/search/search.css}">
 </head>
 
 <body>
 
-<header class="main-header"
-        th:fragment="header">
+	<header class="main-header" th:fragment="header">
 
-  <!-- 헤더 -->
-  <div class="header-inner">
+		<!-- 헤더 -->
+		<div class="header-inner">
 
-    <!-- 왼쪽 -->
-    <div class="header-left">
+			<!-- 왼쪽 -->
+			<div class="header-left">
 
-      <!-- 로고 -->
-      <div class="header-logo">
-        <a th:href="@{/}"><img th:src="@{/images/BNKlogo.png}" alt="BNK 로고"></a>
-      </div>
+				<!-- 로고 -->
+				<div class="header-logo">
+					<a th:href="@{/}"><img th:src="@{/images/BNKlogo.png}"
+						alt="BNK 로고"></a>
+				</div>
 
-      <!-- 개인 / 기업 -->
-      <div class="bank-type">
+				<!-- 개인 / 기업 -->
+				<div class="bank-type">
 
-        <!-- 메인 -->
-      <!--   <th:block th:if="${mode == 'main'}"> -->
+					<!-- 메인 -->
+					<!--   <th:block th:if="${mode == 'main'}"> -->
 
-          <a th:href="@{/index}">
-            개인뱅킹
-          </a>
+					<a th:href="@{/index}"> 개인뱅킹 </a> <a
+						th:href="@{/company/companyMain}"> 기업뱅킹 </a>
 
-          <a th:href="@{/company/companyMain}">
-            기업뱅킹
-          </a>
+					</th:block>
 
-        </th:block>
-
-        <!-- 개인 -->
- <!--        <th:block th:if="${mode == 'personal'}">
+					<!-- 개인 -->
+					<!--        <th:block th:if="${mode == 'personal'}">
 
           <a th:href="@{/}"
              class="active-bank">
@@ -68,108 +62,107 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 
         </th:block> -->
 
-      </div>
+				</div>
 
-    </div>
+			</div>
 
-    <!-- 메뉴 영역 -->
-    <div class="menu-area">
+			<!-- 메뉴 영역 -->
+			<div class="menu-area">
 
-      <!-- 메뉴 -->
-      <nav class="nav-menu">
+				<!-- 메뉴 -->
+				<nav class="nav-menu">
 
-        <ul>
-          <li><a href = "#">조회</a></li>
-          <li><a href = "#">이체</a></li>
-          <li><a href = "/fx_home">외환</a></li>
-          <li><a href = "/product/personal">금융상품</a></li>
-        </ul>
+					<ul>
+						<li><a href="#">조회</a></li>
+						<li><a href="#">이체</a></li>
+						<li><a href="/fx_home">외환</a></li>
+						<li><a href="/product/personal">금융상품</a></li>
+					</ul>
 
-      </nav>
+				</nav>
 
-      <!-- 드롭다운 -->
-      <div class="full-dropdown">
+				<!-- 드롭다운 -->
+				<div class="full-dropdown">
 
-        <div class="dropdown-inner">
+					<div class="dropdown-inner">
 
-          <!-- 조회 -->
-          <div class="dropdown-column">
-            <h4>조회</h4>
+						<!-- 조회 -->
+						<div class="dropdown-column">
+							<h4>조회</h4>
 
-            <a href="#">전체계좌조회</a>
-            <a href="#">거래내역조회</a>
-            <a href="#">휴면계좌조회</a>
-          </div>
+							<a href="#">전체계좌조회</a> <a href="#">거래내역조회</a> <a href="#">휴면계좌조회</a>
+						</div>
 
-          <!-- 송금 -->
-          <div class="dropdown-column">
-            <h4>송금</h4>
+						<!-- 송금 -->
+						<div class="dropdown-column">
+							<h4>송금</h4>
 
-            <a href="#">즉시송금</a>
-            <a href="#">예약송금</a>
-            <a href="#">자동송금</a>
-          </div>
+							<a href="#">즉시송금</a> <a href="#">예약송금</a> <a href="#">자동송금</a>
+						</div>
 
-          <!-- 외환 -->
-          <div class="dropdown-column">
-            <h4>외환</h4>
+						<!-- 외환 -->
+						<div class="dropdown-column">
+							<h4>외환</h4>
+
 
          <a href="/product/foreign">외환상품몰</a>
             <a href="/view/rateTable">환율조회</a>
             <a href="#">환전</a>
             <a href="#">외화통장</a>
-            <a href="#">환전계산기</a>
+            <a href="/foreign/exchange/exchangeCalculator">환전계산기</a>
             <a href="#">외화송금</a>
             <a href="#">지정환율자동송금</a>
             <a href="#">정기예약송금</a>
             <a href="#">외화대량송금</a>
           </div>
 
-          <!-- 금융상품 -->
-          <div class="dropdown-column">
-            <h4>금융상품</h4>
 
-            <a href="#">금융상품소개</a>
-            <a href="#">외환</a>
-          </div>
-        <div>
-           <h4><a href="/myPage" style="color: black; text-decoration: none;"> 마이페이지</a></h4>
-        </div>
-        </div>
+						<!-- 금융상품 -->
+						<div class="dropdown-column">
+							<h4>금융상품</h4>
 
-      </div>
+							<a href="#">금융상품소개</a> <a href="#">외환</a>
+						</div>
+						<div>
+							<h4>
+								<a href="/myPage" style="color: black; text-decoration: none;">
+									마이페이지</a>
+							</h4>
+						</div>
+					</div>
 
-    </div>
-   
-    <!-- 오른쪽 -->
-    <div class="header-right">
-    <div id="user-info">
-      <!-- 로그인 드롭다운 -->
-      <div class="login-area">
-        <span class="login-text">로그인</span>
-        <!-- 드롭다운 -->
-        <div class="login-dropdown">
+				</div>
+
+			</div>
+
+			<!-- 오른쪽 -->
+			<div class="header-right">
+				<div id="user-info">
+					<!-- 로그인 드롭다운 -->
+					<div class="login-area">
+						<a th:href="@{/loginPage}"
+							style="color: inherit; text-decoration: none;"> <span
+							class="login-text">로그인</span>
+						</a>
+						<!-- 드롭다운 -->
+						<!-- <div class="login-dropdown">
           <a th:href="@{/loginPage}">개인뱅킹</a>
           <a th:href="@{/loginPage}">기업뱅킹</a>
-        </div>
-      </div>
-   </div>
-      <div class="header-icons">
-        <button class="search-trigger" style="background:none; border:none; cursor:pointer;">
-            <i class="fa-solid fa-magnifying-glass"></i>
-      </button>
-        <i class="fa-solid fa-bars"></i>
-      </div>
-    </div>
-  </div>
-  <button type="button"
-        class="global-zoom-btn"
-        id="zoomToggleBtn"
-        title="화면 크게 보기"
-        aria-label="화면 크게 보기">
-    크게
-</button>
-<script>
+        </div> -->
+					</div>
+				</div>
+				<div class="header-icons">
+					<button class="search-trigger"
+						style="background: none; border: none; cursor: pointer;">
+						<i class="fa-solid fa-magnifying-glass"></i>
+					</button>
+					<i class="fa-solid fa-bars"></i>
+				</div>
+			</div>
+		</div>
+		<button type="button" class="global-zoom-btn" id="zoomToggleBtn"
+			title="화면 크게 보기" aria-label="화면 크게 보기">크게</button>
+		<script>
    const userinfo = document.querySelector("#user-info")
    const username = localStorage.getItem("name");
    const role = localStorage.getItem("role");
@@ -192,9 +185,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
    }
    
 </script>
-<script th:src="@{/js/search/search.js}"></script>
+		<script th:src="@{/js/search/search.js}"></script>
 
-</header>
+	</header>
 
 </body>
 </html>
