@@ -11,7 +11,7 @@ import com.example.demo.admin.dto.CompaniesDto;
 import com.example.demo.admin.dto.KeywordBanDto;
 import com.example.demo.admin.dto.ProductApprovalDto;
 import com.example.demo.admin.dto.SearchDto;
-//import com.example.demo.admin.dto.SearchLogDto;
+import com.example.demo.admin.dto.SearchLogDto;
 import com.example.demo.admin.dto.SuggestedSearchDto;
 import com.example.demo.company.dto.AccountsCompanyDTO;
 import com.example.demo.company.dto.CompanyUserDTO;
