@@ -168,7 +168,6 @@ body {
 .tab-panel { display: none; padding: 28px; }
 .tab-panel.active { display: block; }
 
-/* ───── STREAMING_CHUNK:기능별 폼 및 카드 스타일 설정... ───── */
 /* ───── FORMS & CARDS ───── */
 .action-grid {
   display: grid;
@@ -283,7 +282,6 @@ body {
 .filter-count { font-size: 13px; color: var(--text-muted); white-space: nowrap; margin-left: auto; }
 .filter-count strong { color: var(--text); font-weight: 700; }
 
-/* ───── STREAMING_CHUNK:테이블 및 그리드 레이아웃 설정... ───── */
 /* ───── TABLE CARD ───── */
 .table-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #FFFFFF; }
 .table-wrap { overflow-x: auto; }
@@ -332,6 +330,14 @@ tbody td:last-child  { padding-right: 20px; }
 .empty-title { font-size: 14px; font-weight: 700; color: var(--text-sub); margin-bottom: 4px; }
 .empty-desc  { font-size: 12px; color: var(--text-muted); }
 
+/* ───── EMPTY ROW (인라인 빈 상태) ───── */
+.empty-row {
+  text-align: center;
+  padding: 32px 20px !important;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
 /* ───── CONFIRM MODAL ───── */
 .modal-overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -357,33 +363,30 @@ tbody td:last-child  { padding-right: 20px; }
 <!-- ===== SIDEBAR ===== -->
 <div class="sidebar">
   <div class="sidebar-logo">
-    <img src="/images/BNKlogo.png" alt="BNK 부산은행">
+    <img th:src="@{/images/BNKlogo.png}" alt="BNK 부산은행">
   </div>
   <div class="sidebar-profile">
     <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
     <div class="sp-info">
       <div class="sp-name" th:text="${admin.name} + ' 관리자'">홍길동 관리자</div>
-      <span class="sp-role" th:text="${admin.admin_role != null ? admin.admin_role : 'chief'}">chief</span>
+      <span class="sp-role" th:text="${admin.adminRole}">HEAD</span>
     </div>
   </div>
   <ul class="sidebar-menu">
     <li class="menu-section-title">메인</li>
-    <li><a href="/admin/dashboard"   class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+    <li><a href="/admin/headDashboard" class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
     <li><a href="/admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
-    <li class="menu-section-title">상품 관리</li>
+    <li class="menu-section-title">회원/관리자</li>
+    <li><a href="/admin/memberList" class="menu-item"><i class="fa-solid fa-users"></i> 회원 관리</a></li>
+    <li><a href="/admin/adminList" class="menu-item active"><i class="fa-solid fa-users-gear"></i> 관리자 관리</a></li>
+    <li class="menu-section-title">상품</li>
     <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
-    <li><a href="/admin/productListPage"     class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
-    <li class="menu-section-title">업무</li>
-    <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
-    <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
-    <li><a href="/admin/account"  class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
-    <li class="menu-section-title">관리</li>
-    <li><a href="/admin/members"   class="menu-item"><i class="fa-solid fa-users-gear"></i> 회원/관리자 관리</a></li>
-    <li><a href="/admin/logs"      class="menu-item active"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
-    <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
+    <li><a href="/admin/productListPage" class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
+    <li class="menu-section-title">검색어</li>
+    <li><a href="/admin/searchManagementPage" class="menu-item active"><i class="fa-solid fa-magnifying-glass-chart"></i> 검색어 관리</a></li>
   </ul>
   <div class="sidebar-footer">
-    <p>&copy; 2025 BNK Busan Bank</p>
+    <p>2024 BNK Busan Bank</p>
     <p>IT Strategy Team</p>
   </div>
 </div>
@@ -448,9 +451,7 @@ tbody td:last-child  { padding-right: 20px; }
     </div>
   </div>
 
-  <!-- ══════════════════════════════
-       업무 제어 탭 패널 구조 설계
-  ══════════════════════════════ -->
+  <!-- 탭 패널 구조 -->
   <div class="tab-wrapper">
     <div class="tab-header">
       <button type="button" class="tab-btn active" onclick="switchTab(event, 'suggestControlTab')">
@@ -467,9 +468,7 @@ tbody td:last-child  { padding-right: 20px; }
       </button>
     </div>
 
-    <!-- ───────────────────────────────────────
-         [탭 패널 1] 검색어 제어 및 밴 차단 관리
-    ─────────────────────────────────────── -->
+    <!-- [탭 패널 1] 검색어 제어 및 밴 차단 관리 -->
     <div id="suggestControlTab" class="tab-panel active">
       <div class="action-grid">
         <!-- 검색어 벤 설정 -->
@@ -526,7 +525,7 @@ tbody td:last-child  { padding-right: 20px; }
                 <td><span class="td-time" th:text="${bann.ban_dt}"></span></td>
                 <td class="td-user" th:text="'#' + ${bann.adm_no}"></td>
                 <td style="text-align: center; padding-right: 20px;">
-                  <button type="button" class="act-btn-del" th:onclick="confirmDeleteBan([[${bann.keyword}]])" title="차단 해제">
+                  <button type="button" class="act-btn-del" th:data-keyword="${bann.keyword}" onclick="confirmDeleteBan(this.getAttribute('data-keyword'))" title="차단 해제">
                     <i class="fa-solid fa-trash-can"></i>
                   </button>
                 </td>
@@ -546,9 +545,7 @@ tbody td:last-child  { padding-right: 20px; }
       </div>
     </div>
 
-    <!-- ───────────────────────────────────────
-         [탭 패널 2] 개인 고객 검색 로그 및 추천 검색어
-    ─────────────────────────────────────── -->
+    <!-- [탭 패널 2] 개인 고객 검색 로그 및 추천 검색어 -->
     <div id="personalTab" class="tab-panel">
       <!-- 개인 추천 검색어 수동 지정 폼 -->
       <div class="action-card" style="margin-bottom: 28px;">
@@ -580,23 +577,19 @@ tbody td:last-child  { padding-right: 20px; }
                   <tr>
                     <th style="padding-left: 16px;">로그번호</th>
                     <th>검색어</th>
-                    <th>검색자 ID</th>
                     <th>타입</th>
-                    <th>검색 횟수</th>
                     <th style="padding-right: 16px;">검색시간</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr th:each="searchh : ${search_per}" th:attr="data-keyword=${searchh.keyword}, data-user=${searchh.searcher}">
+                  <tr th:each="searchh : ${search_per}" th:attr="data-keyword=${searchh.keyword}">
                     <td style="padding-left: 16px;"><span class="td-id" th:text="${searchh.search_no}"></span></td>
                     <td><strong th:text="${searchh.keyword}"></strong></td>
-                    <td class="td-user" th:text="${searchh.searcher}"></td>
                     <td><span class="badge badge-blue" th:text="${searchh.role_type}"></span></td>
-                    <td style="font-weight: 700; font-family: monospace;" th:text="${searchh.search_volume}"></td>
                     <td style="padding-right: 16px;"><span class="td-time" th:text="${searchh.search_time}"></span></td>
                   </tr>
                   <tr th:if="${search_per == null or search_per.empty}">
-                    <td colspan="6" class="empty-row">개인 검색 트래픽 이력이 존재하지 않습니다.</td>
+                    <td colspan="4" class="empty-row">개인 검색 트래픽 이력이 존재하지 않습니다.</td>
                   </tr>
                 </tbody>
               </table>
@@ -641,9 +634,7 @@ tbody td:last-child  { padding-right: 20px; }
       </div>
     </div>
 
-    <!-- ───────────────────────────────────────
-         [탭 패널 3] 기업 고객 검색 로그 및 추천 검색어
-    ─────────────────────────────────────── -->
+    <!-- [탭 패널 3] 기업 고객 검색 로그 및 추천 검색어 -->
     <div id="corporateTab" class="tab-panel">
       <!-- 기업 추천 검색어 수동 지정 폼 -->
       <div class="action-card" style="margin-bottom: 28px;">
@@ -675,23 +666,19 @@ tbody td:last-child  { padding-right: 20px; }
                   <tr>
                     <th style="padding-left: 16px;">로그번호</th>
                     <th>검색어</th>
-                    <th>검색자 ID</th>
                     <th>타입</th>
-                    <th>검색 횟수</th>
                     <th style="padding-right: 16px;">검색시간</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr th:each="searchh : ${search_com}" th:attr="data-keyword=${searchh.keyword}, data-user=${searchh.searcher}">
+                  <tr th:each="searchh : ${search_com}" th:attr="data-keyword=${searchh.keyword}">
                     <td style="padding-left: 16px;"><span class="td-id" th:text="${searchh.search_no}"></span></td>
                     <td><strong th:text="${searchh.keyword}"></strong></td>
-                    <td class="td-user" th:text="${searchh.searcher}"></td>
                     <td><span class="badge badge-purple" th:text="${searchh.role_type}"></span></td>
-                    <td style="font-weight: 700; font-family: monospace;" th:text="${searchh.search_volume}"></td>
                     <td style="padding-right: 16px;"><span class="td-time" th:text="${searchh.search_time}"></span></td>
                   </tr>
                   <tr th:if="${search_com == null or search_com.empty}">
-                    <td colspan="6" class="empty-row">기업 검색 트래픽 이력이 존재하지 않습니다.</td>
+                    <td colspan="4" class="empty-row">기업 검색 트래픽 이력이 존재하지 않습니다.</td>
                   </tr>
                 </tbody>
               </table>
@@ -747,7 +734,7 @@ tbody td:last-child  { padding-right: 20px; }
     </div>
     <div class="modal-title">키워드 차단 해제</div>
     <div class="modal-desc">
-      정말로 '<strong id="targetKeyword" style="color: var(--primary);"></strong>' 키워드의 차단 정책을 해제하시겠습니까? 
+      정말로 '<strong id="targetKeyword" style="color: var(--primary);"></strong>' 키워드의 차단 정책을 해제하시겠습니까?
       해제 시 해당 단어는 검색 인덱싱에 다시 유효하게 유입될 수 있습니다.
     </div>
     <div class="modal-actions">
@@ -758,34 +745,39 @@ tbody td:last-child  { padding-right: 20px; }
 </div>
 
 
+<!--
+  ★ 핵심 수정 포인트 ★
+  1. <script th:inline="javascript"> 선언 추가
+     → Thymeleaf가 JS 블록 안의 표현식을 안전하게 이스케이프 처리함
+  2. /*[[${warning}]]*/ null  문법 사용
+     → 값이 있으면 Thymeleaf가 주입, 없으면 JS 기본값 null로 폴백
+     → 값에 따옴표·특수문자가 있어도 자동 이스케이프되어 JS 파싱 오류 없음
+-->
 <script th:inline="javascript">
+  /* ───── 금지어 경고 알림 ───── */
+  const serverWarning = /*[[${warning}]]*/ null;
+  if (serverWarning) {
+    alert("금지된 단어입니다.");
+  }
 
-if([[${warning}]] != null) {
-	alert("금지된 단어입니다.");	
-}
-
-
-  /* ───── 탭 활성화 제어 스크립트 ───── */
+  /* ───── 탭 활성화 제어 ───── */
   function switchTab(event, tabId) {
-    document.querySelectorAll('.tab-panel').forEach(panel => {
+    document.querySelectorAll('.tab-panel').forEach(function(panel) {
       panel.classList.remove('active');
     });
-    document.querySelectorAll('.tab-btn').forEach(btn => {
+    document.querySelectorAll('.tab-btn').forEach(function(btn) {
       btn.classList.remove('active');
     });
-
     document.getElementById(tabId).classList.add('active');
     event.currentTarget.classList.add('active');
   }
 
   /* ───── 벤 키워드 삭제 확인 모달 ───── */
   function confirmDeleteBan(keyword) {
+    if (!keyword) return;
     document.getElementById('targetKeyword').innerText = keyword;
-    
-    // 오리지널 th:href 구조와 완벽히 융합되도록 연산 처리된 링크 구성 전달
     const targetUrl = "/admin/deleteBanKeyword?keyword=" + encodeURIComponent(keyword);
     document.getElementById('modalConfirmBtn').setAttribute('href', targetUrl);
-    
     document.getElementById('deleteModal').classList.add('show');
   }
 
@@ -795,35 +787,39 @@ if([[${warning}]] != null) {
 
   /* ───── [필터 1] 벤 키워드 테이블 실시간 필터 ───── */
   const banSearch = document.getElementById('banSearchInput');
-  banSearch.addEventListener('input', function() {
-    const kw = banSearch.value.toLowerCase().trim();
-    document.querySelectorAll('#banTable tbody tr[data-keyword]').forEach(row => {
-      const keyword = (row.getAttribute('data-keyword') || '').toLowerCase();
-      row.style.display = (!kw || keyword.includes(kw)) ? '' : 'none';
+  if (banSearch) {
+    banSearch.addEventListener('input', function() {
+      const kw = banSearch.value.toLowerCase().trim();
+      document.querySelectorAll('#banTable tbody tr[data-keyword]').forEach(function(row) {
+        const keyword = (row.getAttribute('data-keyword') || '').toLowerCase();
+        row.style.display = (!kw || keyword.includes(kw)) ? '' : 'none';
+      });
     });
-  });
+  }
 
   /* ───── [필터 2] 개인 검색 로그 실시간 필터 ───── */
   const perSearch = document.getElementById('perSearchLogInput');
-  perSearch.addEventListener('input', function() {
-    const kw = perSearch.value.toLowerCase().trim();
-    document.querySelectorAll('#perSearchTable tbody tr[data-keyword]').forEach(row => {
-      const keyword = (row.getAttribute('data-keyword') || '').toLowerCase();
-      const user    = (row.getAttribute('data-user') || '').toLowerCase();
-      row.style.display = (!kw || keyword.includes(kw) || user.includes(kw)) ? '' : 'none';
+  if (perSearch) {
+    perSearch.addEventListener('input', function() {
+      const kw = perSearch.value.toLowerCase().trim();
+      document.querySelectorAll('#perSearchTable tbody tr[data-keyword]').forEach(function(row) {
+        const keyword = (row.getAttribute('data-keyword') || '').toLowerCase();
+        row.style.display = (!kw || keyword.includes(kw)) ? '' : 'none';
+      });
     });
-  });
+  }
 
   /* ───── [필터 3] 기업 검색 로그 실시간 필터 ───── */
   const comSearch = document.getElementById('comSearchLogInput');
-  comSearch.addEventListener('input', function() {
-    const kw = comSearch.value.toLowerCase().trim();
-    document.querySelectorAll('#comSearchTable tbody tr[data-keyword]').forEach(row => {
-      const keyword = (row.getAttribute('data-keyword') || '').toLowerCase();
-      const user    = (row.getAttribute('data-user') || '').toLowerCase();
-      row.style.display = (!kw || keyword.includes(kw) || user.includes(kw)) ? '' : 'none';
+  if (comSearch) {
+    comSearch.addEventListener('input', function() {
+      const kw = comSearch.value.toLowerCase().trim();
+      document.querySelectorAll('#comSearchTable tbody tr[data-keyword]').forEach(function(row) {
+        const keyword = (row.getAttribute('data-keyword') || '').toLowerCase();
+        row.style.display = (!kw || keyword.includes(kw)) ? '' : 'none';
+      });
     });
-  });
+  }
 </script>
 </body>
 </html>

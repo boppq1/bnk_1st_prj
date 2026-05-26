@@ -46,6 +46,7 @@ public class ProductFavoriteApiController {
         String loginId = jwtUtil.getLoginId(token);
 
         if (role == null || loginId == null) {
+        	System.out.println("확인중--------------------"+role+loginId);
             return new ProductFavoriteResponseDto(
                     false,
                     false,

@@ -6,12 +6,11 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface IAdminDao {
-    AdminDto login(AdminDto adminDto);
+    AdminDto login(@Param("login_id") String login_id);
 
     int join(AdminDto adminDto);
 
-    AdminDto selectMyPage(AdminDto adminDto);
-
+    AdminDto selectMyPage(@Param("login_id") String login_id);
     void updateMyPage(AdminDto adminDto);
 
     int updatePassword(@Param("admin_id") Long admin_id, @Param("password") String password);

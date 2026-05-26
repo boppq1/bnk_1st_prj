@@ -10,7 +10,7 @@ import com.example.demo.admin.dto.ApprovalDto;
 import com.example.demo.admin.dto.CompaniesDto;
 import com.example.demo.admin.dto.KeywordBanDto;
 import com.example.demo.admin.dto.ProductApprovalDto;
-import com.example.demo.admin.dto.SearchLogDto;
+import com.example.demo.admin.dto.SearchDto;
 import com.example.demo.admin.dto.SuggestedSearchDto;
 import com.example.demo.company.dto.AccountsCompanyDTO;
 import com.example.demo.company.dto.CompanyUserDTO;
@@ -40,19 +40,19 @@ public interface IListDao {
 	List<ForeignAccountsCompanyDTO> getCompanyForeignAccount(@Param("company_id") Long company_id);
 	List<Accounts_personalDTO> getPersonalDomesticAccount(@Param("user_id") Long user_id);
 	List<Foreign_accounts_personal> getPersonalForeignAccount(@Param("user_id") Long user_id);
-	List<SearchLogDto> getSearchPersonalLog();
+	List<SearchDto> getSearchPersonalLog();
 	List<SuggestedSearchDto> getSuggestPersonalSearch();
-	List<SearchLogDto> getSearchCompanyLog();
+	List<SearchDto> getSearchCompanyLog();
 	List<SuggestedSearchDto> getSuggestCompanySearch();
 	List<KeywordBanDto> getKeywordBanList();
 	int keywordBan(@Param("keyword") String keyword, @Param("adm_no") Long adm_no);
 	KeywordBanDto getKeywordBan(@Param("keyword") String keyword);
-	SearchLogDto getCompanyKeyword(@Param("keyword") String keyword);
-	SearchLogDto getPersonalKeyword(@Param("keyword") String keyword);
+	SearchDto getCompanyKeyword(@Param("keyword") String keyword);
+	SearchDto getPersonalKeyword(@Param("keyword") String keyword);
 	int deleteBanKeyword(@Param("keyword") String keyword);
 	int setSuggestKeyword(@Param("keyword") String keyword, @Param("role") String role, @Param("search_volume") Long search_volume);
-	SearchLogDto getCompanySearchLog(@Param("keyword") String keyword);
-	SearchLogDto getPersonalSearchLog(@Param("keyword") String keyword);
+	SearchDto getCompanySearchLog(@Param("keyword") String keyword);
+	SearchDto getPersonalSearchLog(@Param("keyword") String keyword);
 	SuggestedSearchDto getPersonalSuggestKeyword(@Param("keyword") String keyword);
 	SuggestedSearchDto getCompanySuggestKeyword(@Param("keyword") String keyword);
 	List<SuggestedSearchDto> getCompanySuggestKeywords();
@@ -61,4 +61,6 @@ public interface IListDao {
 	int deleteCompanySuggestKeyword();
 	void truncateSuggestSearch();
 	void updateSuggestKeyword();
+	int getOutstandingApproval();
+	
 }

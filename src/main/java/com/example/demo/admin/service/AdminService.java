@@ -9,7 +9,6 @@ import com.example.demo.admin.dao.IListDao;
 import com.example.demo.admin.dao.IAdminExchangeDao;
 import com.example.demo.admin.dao.IAdminLogDao;
 import com.example.demo.admin.dao.IAdminNewsDao;
-import com.example.demo.admin.dao.IAdminProductDao;
 import com.example.demo.admin.dto.AdminActionLogDto;
 import com.example.demo.admin.dto.AdminDto;
 import com.example.demo.admin.dto.ApiLogDto;
@@ -19,8 +18,7 @@ import com.example.demo.admin.dto.ExchangeRequestDto;
 import com.example.demo.admin.dto.KeywordBanDto;
 import com.example.demo.admin.dto.NewsDto;
 import com.example.demo.admin.dto.ProductApprovalDto;
-import com.example.demo.admin.dto.ProductDto;
-import com.example.demo.admin.dto.SearchLogDto;
+import com.example.demo.admin.dto.SearchDto;
 import com.example.demo.admin.dto.SuggestedSearchDto;
 import com.example.demo.company.dto.AccountsCompanyDTO;
 import com.example.demo.company.dto.CompanyUserDTO;
@@ -35,7 +33,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminService {
 	
-	final IAdminProductDao productDao;
 	final IListDao listDao;
 	final IAdminLogDao logDao;
 	final IAdminExchangeDao exchangeDao;
@@ -102,8 +99,16 @@ public class AdminService {
 		return logDao.adminLog();
 	}
 	
+	public List<AdminActionLogDto> adminLogFive() {
+		return logDao.adminLogFive();
+	}
+	
 	public List<ApiLogDto> userLog() {
 		return logDao.userLog();
+	}
+	
+	public List<ApiLogDto> userLogFive() {
+		return logDao.userLogFive();
 	}
 	
 	public List<ExchangeRequestDto> exchangeList() {
@@ -130,7 +135,7 @@ public class AdminService {
 		return listDao.getPersonalForeignAccount(user_id);
 	}
 	
-	public List<SearchLogDto> getSearchPersonal() {
+	public List<SearchDto> getSearchPersonal() {
 		return listDao.getSearchPersonalLog();
 	}
 	
@@ -138,7 +143,7 @@ public class AdminService {
 		return listDao.getSuggestPersonalSearch();
 	}
 	
-	public List<SearchLogDto> getSearchCompany() {
+	public List<SearchDto> getSearchCompany() {
 		return listDao.getSearchCompanyLog();
 	}
 	
@@ -173,11 +178,11 @@ public class AdminService {
 		listDao.setSuggestKeyword(keyword, role, search_volume);
 	}
 	
-	public SearchLogDto getCompanySearchLog(String keyword) {
+	public SearchDto getCompanySearchLog(String keyword) {
 		return listDao.getCompanyKeyword(keyword);
 	}
 	
-	public SearchLogDto getPersonalSearchLog(String keyword) {
+	public SearchDto getPersonalSearchLog(String keyword) {
 		return listDao.getPersonalKeyword(keyword);
 	}
 	
@@ -228,6 +233,10 @@ public class AdminService {
 	
 	public void deleteNews(Long news_no) {
 		newsDao.deleteNews(news_no);
+	}
+	
+	public int outstandingNumber() {
+		return listDao.getOutstandingApproval();
 	}
 	
 }

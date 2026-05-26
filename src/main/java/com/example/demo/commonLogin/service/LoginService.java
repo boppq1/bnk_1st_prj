@@ -47,10 +47,11 @@ public class LoginService {
 				info.put("usr_nm", getUserDTO.getUsr_nm());
 				info.put("role", "user");
 				info.put("login_id",dto.getLogin_id());
-				
+				System.out.println(dto.getLogin_id());
 				String token = jwt.generateToken(getUserDTO.getUsr_nm(), info);
 				log.info("개인 회원 로그인 서비스 성공");
 				log.info("유저 정보 {}", jwt.getUsername(token));
+				System.out.println("야호ㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗ:"+jwt.getLoginId(token));
 				return Map.of("token", token);
 			}
 			log.error("입력받은 비밀번호 {}, 데이터베이스 비밀번호 {} 매치확인 비밀번호", dto.getSecu_pw(), getUserDTO.getSecu_pw(), service.matchesPassword(dto.getSecu_pw(), getUserDTO.getSecu_pw()));
