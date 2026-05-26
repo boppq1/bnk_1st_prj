@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>BNK 부산은행 외환</title>
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/gimhae.css}">
+<link rel="stylesheet" th:href="@{/css/search/search.css}">
+<link rel="stylesheet" th:href="@{/css/product/product.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+	<div th:replace="~{header :: header}"></div>
+	<div class="product-layout">
+		<div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+		<div class="page-wrap">
+
+			<h1 class="main-title">김해국제공항지점</h1>
+
+			<!-- 위치안내 -->
+			<div class="deposit-section">
+				<div class="section-title">위치안내</div>
+
+				<div class="location-address-box">
+					<p>부산광역시 강서구 공항진입로 108 부산은행김해공항지점(대저2동, 김해&middot;국제공항건물)</p>
+					<p>전화번호 : 051-971-2643 &nbsp;|&nbsp; 팩스번호 : 051-973-7323</p>
+				</div>
+
+				<!-- 1F 지도 -->
+				<div class="map-image-wrap">
+					<img
+						src="https://www.busanbank.co.kr/resource/img/etc/fpm/img_frxmap1.gif"
+						alt="김해국제공항 영업점 1층 위치 안내도">
+				</div>
+				<p class="map-caption">[ 영업점 위치 1층 ]</p>
+
+				<!-- 2F 지도 -->
+				<div class="map-image-wrap">
+					<img
+						src="https://www.busanbank.co.kr/resource/img/etc/fpm/img_frxmap2.gif"
+						alt="김해국제공항 영업점 2층 위치 안내도">
+				</div>
+				<p class="map-caption">[ 영업점 위치 2층 ]</p>
+			</div>
+
+			<!-- 취급업무 -->
+			<div class="deposit-section">
+				<div class="section-title">취급업무</div>
+				<ul class="deposit-list">
+					<li>외국통화 매매, 여행자수표 매입, 외화송금, 수출입업무 등</li>
+				</ul>
+			</div>
+
+			<!-- 취급대상 통화 -->
+			<div class="deposit-section">
+				<div class="section-title">취급대상 통화</div>
+				<table class="info-table">
+					<thead>
+						<tr>
+							<th style="width: 110px;">구분</th>
+							<th>대상통화</th>
+							<th style="width: 160px;">비고</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th>외화지폐</th>
+							<td>뉴질랜드 달러(NZD), 대만 달러(TWD), 미국 달러(USD), 베트남 동(VND), 스위스
+								프랑(CHF), 싱가포르 달러(SGD), 영국 파운드(GBP), 유럽연합 유로(EUR), 인도네시아
+								루피아(IDR), 일본 엔(JPY), 중국 위안(CNY), 캐나다 달러(CAD), 태국 바트(THB), 필리핀
+								페소(PHP), 호주 달러(AUD), 홍콩 달러(HKD)</td>
+							<td>고객님이 파실때는<br>모든 고시통화 가능
+							</td>
+						</tr>
+						<tr>
+							<th>외화동전</th>
+							<td>일본 엔(JPY)</td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>여행자수표</th>
+							<td>미국달러(USD), 유럽연합 유로(EUR), 일본엔(JPY), 캐나다달러(CAD), 호주달러(AUD)</td>
+							<td><span class="highlight-red">매입만 가능</span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- 근무시간 -->
+			<div class="deposit-section">
+				<div class="section-title">근무시간</div>
+				<ul class="workhour-list">
+					<li><span class="workhour-label">지점</span> <span>06:00
+							∼ 21:00 &nbsp;<span style="color: #888; font-size: 12px;">(토요일,
+								일요일 및 공휴일 동일)</span>
+					</span></li>
+					<li><span class="workhour-label">환전소</span> <span>06:00
+							∼ 21:00 &nbsp;<span style="color: #888; font-size: 12px;">(토요일,
+								일요일 및 공휴일 동일)</span>
+					</span></li>
+				</ul>
+			</div>
+
+		</div>
+	</div>
+	<div th:replace="~{footer :: footer}"></div>
+	<script th:src="@{/js/product/foreign.js}"></script>
+	<script th:src="@{/js/zoom.js}"></script>
+</body>
+</html>

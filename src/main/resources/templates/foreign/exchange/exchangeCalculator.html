@@ -5,6 +5,7 @@
 <title>BNK 부산은행 외환</title>
 <link rel="stylesheet" th:href="@{/css/header.css}">
 <link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/calculator.css}">
 <link rel="stylesheet" th:href="@{/css/search/search.css}">
 <link rel="stylesheet" th:href="@{/css/product/product.css}">
 <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
@@ -15,10 +16,241 @@
 	<div th:replace="~{header :: header}"></div>
 	<div class="product-layout">
 		<div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
-		<main class="ae-page"></main>
+		<!-- =========================================================
+		    환전 계산기 (메인 박스 + 조회 결과 영역)
+		     - 헤더/푸터는 기존 작업물 사용, 여기서는 제외
+		     - 왼쪽 사이드바 자리를 고려해 박스를 컴팩트하게 구성
+		     - 계산 로직은 exchange.js 안의 표시 함수에 직접 작성
+	     ========================================================= -->
+		<div class="exchange-wrap">
+
+			<!-- ===================== 환전 계산기 박스 ===================== -->
+			<section class="calc-box">
+
+				<!-- 좌측: 입력 영역 / 우측: 통화 목록 -->
+				<div class="calc-grid">
+
+					<!-- ---------- 좌측 입력 ---------- -->
+					<div class="calc-form">
+
+						<!-- 환전기준 -->
+						<div class="form-row">
+							<span class="row-label">환전기준</span>
+							<div class="row-field">
+								<label class="radio"> <input type="radio" name="convStd"
+									value="foreign" checked> <span>외화기준</span>
+								</label> <label class="radio"> <input type="radio"
+									name="convStd" value="krw"> <span>원화기준</span>
+								</label>
+							</div>
+						</div>
+
+						<!-- 환율기준 -->
+						<div class="form-row">
+							<span class="row-label">환율기준</span>
+							<div class="row-field column">
+								<label class="radio"> <input type="radio" name="rateStd"
+									value="notice" checked> <span>고시환율적용</span>
+								</label>
+
+								<!-- 고시환율 세부 (기준일시 / 우대율) -->
+								<div class="sub-block">
+									<div class="sub-row">
+										<span class="sub-label">기준일시</span>
+										<div class="date-time">
+											<input type="text" id="baseDate" class="inp inp-date"
+												value="2026.05.06" readonly>
+											<button type="button" class="cal-btn" id="calBtn"
+												aria-label="달력 열기">📅</button>
+										</div>
+									</div>
+
+									<div class="sub-row">
+										<span class="sub-label">환율 우대율</span> <select id="preferRate"
+											class="inp inp-select">
+											<option value="0">없음</option>
+											<option value="30">30%</option>
+											<option value="50">50%</option>
+											<option value="70">70%</option>
+											<option value="80">80%</option>
+											<option value="90">90%</option>
+										</select>
+									</div>
+								</div>
+
+								<!-- 적용환율 직접입력 -->
+								<label class="radio"> <input type="radio" name="rateStd"
+									value="manual"> <span>적용환율입력</span> <input type="text"
+									id="manualRate" class="inp inp-small" disabled> . <input
+									type="text" id="manualRateUnit" class="inp inp-xsmall" disabled>
+								</label>
+							</div>
+						</div>
+
+						<!-- 외화종류 -->
+						<div class="form-row">
+							<span class="row-label">외화종류</span>
+							<div class="row-field">
+								<label class="radio"> <input type="radio"
+									name="cashType" value="cash" checked> <span>외화현찰</span>
+								</label>
+							</div>
+						</div>
+
+						<!-- 환전금액 -->
+						<div class="form-row">
+							<span class="row-label">환전금액</span>
+							<div class="row-field column">
+								<div class="range-line">
+									<input type="range" id="amountRange" class="range" min="0"
+										max="100000" step="10" value="0">
+								</div>
+								<div class="amount-line">
+									<input type="text" id="amountInput" class="inp inp-amount"
+										value="0" inputmode="numeric"> <span
+										class="amount-unit" id="amountUnit">USD</span>
+								</div>
+								<div class="quick-btns">
+									<button type="button" class="qbtn" data-add="10">10</button>
+									<button type="button" class="qbtn" data-add="100">100</button>
+									<button type="button" class="qbtn" data-add="500">500</button>
+									<button type="button" class="qbtn" data-add="1000">1000</button>
+									<button type="button" class="qbtn qbtn-reset" id="resetBtn">정정</button>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<!-- /.calc-form -->
+
+					<!-- ---------- 우측 통화 목록 ---------- -->
+					<aside class="currency-panel">
+						<div class="currency-head">
+							<label class="radio sm"> <input type="radio"
+								name="buySell" value="buy" checked> <span>외화 살 때</span>
+							</label> <label class="radio sm"> <input type="radio"
+								name="buySell" value="sell"> <span>외화 팔 때</span>
+							</label>
+						</div>
+
+						<ul class="currency-list" id="currencyList">
+							<!-- data-code / data-name 으로 JS에서 선택값 활용 -->
+							<li class="cur-item selected" data-code="USD" data-name="미국 달러">
+								<span class="flag">🇺🇸</span><span class="cur-name">미국
+									달러</span><span class="cur-code">USD</span>
+							</li>
+							<li class="cur-item" data-code="JPY" data-name="일본 엔화"><span
+								class="flag">🇯🇵</span><span class="cur-name">일본 엔화</span><span
+								class="cur-code">JPY</span></li>
+							<li class="cur-item" data-code="EUR" data-name="유럽 유로"><span
+								class="flag">🇪🇺</span><span class="cur-name">유럽 유로</span><span
+								class="cur-code">EUR</span></li>
+							<li class="cur-item" data-code="AUD" data-name="호주 달러"><span
+								class="flag">🇦🇺</span><span class="cur-name">호주 달러</span><span
+								class="cur-code">AUD</span></li>
+							<li class="cur-item" data-code="BHD" data-name="바레인 디나르"><span
+								class="flag">🇧🇭</span><span class="cur-name">바레인 디나르</span><span
+								class="cur-code">BHD</span></li>
+							<li class="cur-item" data-code="CAD" data-name="캐나다 달러"><span
+								class="flag">🇨🇦</span><span class="cur-name">캐나다 달러</span><span
+								class="cur-code">CAD</span></li>
+							<li class="cur-item" data-code="CHF" data-name="스위스 프랑"><span
+								class="flag">🇨🇭</span><span class="cur-name">스위스 프랑</span><span
+								class="cur-code">CHF</span></li>
+							<li class="cur-item" data-code="CNY" data-name="중국 위안화"><span
+								class="flag">🇨🇳</span><span class="cur-name">중국 위안화</span><span
+								class="cur-code">CNY</span></li>
+						</ul>
+					</aside>
+
+				</div>
+				<!-- /.calc-grid -->
+
+				<!-- 조회 버튼 -->
+				<div class="calc-action">
+					<button type="button" class="search-btn" id="searchBtn">조회</button>
+				</div>
+			</section>
+
+			<!-- ===================== 조회 결과 영역 ===================== -->
+			<!-- 기본 hidden, 조회 시 JS가 채우고 노출 -->
+			<section class="result-box" id="resultBox" hidden>
+				<h3 class="result-title">환전 예상 정보</h3>
+
+				<!-- 요약: 핵심 결과 -->
+				<div class="result-summary">
+					<div class="sum-item">
+						<span class="sum-label">선택 통화</span> <span class="sum-value"
+							id="r_currency">-</span>
+					</div>
+					<div class="sum-item">
+						<span class="sum-label">거래 구분</span> <span class="sum-value"
+							id="r_buySell">-</span>
+					</div>
+					<div class="sum-item highlight">
+						<span class="sum-label">환전 예상 금액</span> <span class="sum-value"
+							id="r_total">-</span>
+					</div>
+				</div>
+
+				<!-- 상세 표 -->
+				<table class="result-table">
+					<tbody>
+						<tr>
+							<th>환전기준</th>
+							<td id="r_convStd">-</td>
+							<th>외화종류</th>
+							<td id="r_cashType">-</td>
+						</tr>
+						<tr>
+							<th>기준일시</th>
+							<td id="r_baseDate">-</td>
+							<th>환율 우대율</th>
+							<td id="r_prefer">-</td>
+						</tr>
+						<tr>
+							<th>매매기준율</th>
+							<td id="r_marketRate">-</td>
+							<th>고시환율</th>
+							<td id="r_noticeRate">-</td>
+						</tr>
+						<tr>
+							<th>적용환율</th>
+							<td id="r_appliedRate">-</td>
+							<th>우대 적용환율</th>
+							<td id="r_preferredRate">-</td>
+						</tr>
+						<tr>
+							<th>입력 금액</th>
+							<td id="r_inputAmount">-</td>
+							<th>환율 우대 절감액</th>
+							<td id="r_saved">-</td>
+						</tr>
+						<tr>
+							<th>지급 통화</th>
+							<td id="r_payCurrency">-</td>
+							<th>수취 통화</th>
+							<td id="r_recvCurrency">-</td>
+						</tr>
+						<tr>
+							<th>지급 금액</th>
+							<td id="r_payAmount">-</td>
+							<th>수취 금액</th>
+							<td id="r_recvAmount">-</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<p class="result-note" id="r_note">※ 본 계산 결과는 고시환율 기준 예상 금액이며 실제
+					거래 시점의 환율에 따라 달라질 수 있습니다.</p>
+			</section>
+
+		</div>
+		<!-- /.exchange-wrap -->
 	</div>
 	<div th:replace="~{footer :: footer}"></div>
 	<script th:src="@{/js/product/foreign.js}"></script>
+	<script th:src="@{/js/fx/calculator.js}"></script>
 	<script th:src="@{/js/zoom.js}"></script>
 </body>
 </html>
