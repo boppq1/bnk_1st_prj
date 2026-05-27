@@ -18,7 +18,7 @@
 		#{phone},
 		#{birth},
 		#{email},
-		'정상',
+		'ACTIVE',
 		#{gender},
 		#{e_name},
 		#{postal_code},

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.commonLogin.dao.ILoginDAO;
+import com.example.demo.commonLogin.dto.CompanyLoginDTO;
 import com.example.demo.commonLogin.dto.UserLoginDTO;
 import com.example.demo.jwt.JwtUtil;
 import com.example.demo.personal.service.LoginAndRegisterService;
@@ -42,15 +43,19 @@ public class LoginService {
 					log.debug("로그인 pk 못차아서 실패");
 					return Map.of("result", "fail");
 				}
+				if(getUserDTO.getAcnt_stat_cd().equals("INACTIVE")) {
+					return Map.of("result", "fail");
+				}
 				log.info("로그인시간 {}", nowStrDate);
 				Map<String, Object> info = new HashMap<>();
 				info.put("usr_nm", getUserDTO.getUsr_nm());
 				info.put("role", "user");
 				info.put("login_id",dto.getLogin_id());
-				
+				System.out.println(dto.getLogin_id());
 				String token = jwt.generateToken(getUserDTO.getUsr_nm(), info);
 				log.info("개인 회원 로그인 서비스 성공");
 				log.info("유저 정보 {}", jwt.getUsername(token));
+				System.out.println("야호ㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗ:"+jwt.getLoginId(token));
 				return Map.of("token", token);
 			}
 			log.error("입력받은 비밀번호 {}, 데이터베이스 비밀번호 {} 매치확인 비밀번호", dto.getSecu_pw(), getUserDTO.getSecu_pw(), service.matchesPassword(dto.getSecu_pw(), getUserDTO.getSecu_pw()));
@@ -58,7 +63,7 @@ public class LoginService {
 			return Map.of("result", "fail");
 		}
 
-		UserLoginDTO getComUserDTO = loginDAO.selectCompanyUser(dto.getLogin_id());
+		CompanyLoginDTO getComUserDTO = loginDAO.selectCompanyUser(dto.getLogin_id());
 
 		if (getComUserDTO != null) {
 
@@ -67,6 +72,9 @@ public class LoginService {
 				String nowStrDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 				if(loginDAO.updateCompanyLoginTime(getComUserDTO.getLogin_id(), nowStrDate) != 1) {
 					log.debug("기업 로그인 시간 실패");
+					return Map.of("result", "fail");
+				}
+				if(getComUserDTO.getStatus().equals("INACTIVE")) {
 					return Map.of("result", "fail");
 				}
 				Map<String, Object> info = new HashMap<>();

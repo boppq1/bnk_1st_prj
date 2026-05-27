@@ -14,4 +14,5 @@ public class UserLoginDTO {
 	private String com_nm;
 	private int com_no;
     private String last_login;
+    private String acnt_stat_cd;
 }

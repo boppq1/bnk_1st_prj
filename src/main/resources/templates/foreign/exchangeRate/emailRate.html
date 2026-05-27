@@ -8,6 +8,7 @@
 <link rel="stylesheet" th:href="@{/css/search/search.css}">
 <link rel="stylesheet" th:href="@{/css/product/product.css}">
 <link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/rateService.css}">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -15,7 +16,55 @@
 	<div th:replace="~{header :: header}"></div>
 	<div class="product-layout">
 		<div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
-		<main class="ae-page"></main>
+		<div class="page-wrap">
+
+			<h1 class="main-title">이메일환율통지서비스</h1>
+
+			<!-- 서비스 개요 박스 -->
+			<div class="service-overview-box">
+				<p>부산은행에서 고시하는 2회차 고시 환율을 e-mail을 통하여 은행 영업일마다 받아볼 수 있는 서비스입니다.</p>
+			</div>
+
+			<!-- 서비스신청 안내 -->
+			<div class="deposit-section">
+				<div class="section-title">서비스신청 안내</div>
+				<ul class="notify-list">
+					<li><span class="notify-label">인터넷을 통한 신청</span>
+						<p>[이메일환율통지서비스신청] 버튼을 클릭하여 신청하시면 됩니다.</p></li>
+				</ul>
+			</div>
+
+			<!-- 이용시간 -->
+			<div class="deposit-section">
+				<div class="section-title">이용시간</div>
+				<ul class="time-list">
+					<li><span class="time-main-label">이용신청</span> <span
+						class="time-value">: 평일 및 공휴일 00:05 ~ 23:55</span></li>
+					<li><span class="time-main-label">e-mail수신</span> <span
+						class="time-value">: 은행 영업일 오전 (09:00 ~ 12:00)</span></li>
+				</ul>
+			</div>
+
+			<!-- 제공정보 -->
+			<div class="deposit-section">
+				<div class="section-title">제공정보</div>
+				<div class="info-desc-box">은행 매 영업일 고시 2회차 환율</div>
+			</div>
+
+			<!-- 이용시 유의사항 -->
+			<div class="deposit-section">
+				<div class="section-title">이용시 유의사항</div>
+				<div class="notice-desc-box">부산은행은 본 서비스를 무료로 제공합니다. 그러나 향후 동
+					서비스와 관련된 수수료를 받을 수 있으며, 이 경우에는 사전에 고객님께 알려 드리겠습니다.</div>
+			</div>
+
+			<!-- 하단 버튼 -->
+			<div class="foreign-btn-wrap">
+				<a href="#" class="foreign-link-btn foreign-link-btn--fill">서비스신청(개인)</a>
+				<a href="#" class="foreign-link-btn foreign-link-btn--fill">서비스신청(기업)</a>
+			</div>
+
+		</div>
 	</div>
 	<div th:replace="~{footer :: footer}"></div>
 	<script th:src="@{/js/product/foreign.js}"></script>

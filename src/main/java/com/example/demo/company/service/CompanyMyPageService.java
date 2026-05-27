@@ -25,16 +25,19 @@
 //	
 //	public Map<String, Object> getUserInfo(String id) {
 //		
-//		
-//		log.debug("마이페이지 유저 정보 {}",userInfo);
-//		log.debug("마이페이지 유저 계좌 정보 {}", userAcnt);
-//		log.debug("마이페이지 유저 해외 계좌 정보 {} ", userFAcnt);
-//		Map<String, Object> map = new HashMap<>();
+//		CompanyUserDTO companyDTO = dao.findCUser(id);
+//		dao.findCompany(companyDTO.getCompany_id());
+////		dao.findAcnt(companyDTO.getCompany_id())
+////		dao.
+////		log.debug("마이페이지 유저 정보 {}",userInfo);
+////		log.debug("마이페이지 유저 계좌 정보 {}", userAcnt);
+////		log.debug("마이페이지 유저 해외 계좌 정보 {} ", userFAcnt);
+////		Map<String, Object> map = new HashMap<>();
+////
+////		map.put("userInfo", userInfo);
+////		map.put("userAcnt", userAcnt);
+////		map.put("userFAcnt", userFAcnt);
 //
-//		map.put("userInfo", userInfo);
-//		map.put("userAcnt", userAcnt);
-//		map.put("userFAcnt", userFAcnt);
-//
-//		return map;	
+////		return map;	
 //	}
 //}
