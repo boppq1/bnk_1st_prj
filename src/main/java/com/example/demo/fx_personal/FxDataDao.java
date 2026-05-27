@@ -1,6 +1,7 @@
 package com.example.demo.fx_personal;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -19,6 +20,10 @@ public interface FxDataDao {
 			@Param("cur_nm") String cur_nm
 			);
 	
+	CalculatorDto selectRate(
+			@Param("cur_nm") String curNm, 
+			@Param("date") String date
+			);
 	
 	
 }

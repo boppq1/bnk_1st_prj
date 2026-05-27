@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>BNK 부산은행 외환</title>
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/search/search.css}">
+<link rel="stylesheet" th:href="@{/css/product/product.css}">
+<link rel="stylesheet" th:href="@{/css/foreign/studyAbroad.css}">
+<link rel="stylesheet" th:href="@{/css/fx/exchange.css}">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+	<div th:replace="~{header :: header}"></div>
+	<div class="product-layout">
+		<div th:replace="~{fragments/foreignSidebar :: foreignSidebar}"></div>
+
+		<main class="ae-page fx-page">
+
+			<!-- 페이지 헤더 -->
+			<header class="fx-head">
+				<div class="fx-head-icon">
+					<i class="fa-solid fa-right-left"></i>
+				</div>
+				<div class="fx-head-txt">
+					<h1>외화 환전</h1>
+					<p>원화 ↔ 외화 실시간 환전 서비스</p>
+				</div>
+				<span class="fx-head-date" id="fxRateDate">고시일 –</span>
+			</header>
+
+			<div class="fx-grid">
+
+				<!-- ───────── 좌측: 환전 입력 패널 ───────── -->
+				<section class="fx-card fx-main-card">
+
+					<!-- 거래 구분 탭 (외화 살 때 / 팔 때) -->
+					<div class="fx-deal-tabs" role="tablist">
+						<button class="fx-deal-tab active" data-deal="BUY" role="tab">
+							<i class="fa-solid fa-arrow-down-long"></i> 외화 살 때
+						</button>
+						<button class="fx-deal-tab" data-deal="SELL" role="tab">
+							<i class="fa-solid fa-arrow-up-long"></i> 외화 팔 때
+						</button>
+					</div>
+
+					<!-- 안내 라인 -->
+					<p class="fx-deal-desc" id="fxDealDesc">원화로 외화를 구매합니다.
+						매수(전신환매도율) 환율이 적용됩니다.</p>
+
+					<!-- 통화 선택 -->
+					<div class="fx-field">
+						<label class="fx-label">환전 통화</label>
+						<div class="fx-select-box">
+							<span class="fx-flag" id="fxFlag">🇺🇸</span>
+							<div class="fx-select-wrap">
+								<select id="fxCurrency"></select>
+								<div class="fx-cur-name" id="fxCurName">미국 달러</div>
+							</div>
+							<i class="fa-solid fa-chevron-down fx-arrow"></i>
+						</div>
+					</div>
+
+					<!-- 금액 입력 (외화 기준) -->
+					<div class="fx-field">
+						<label class="fx-label" id="fxAmountLabel">환전 금액 (외화 기준)</label>
+						<div class="fx-amount-box">
+							<input type="number" id="fxAmount" placeholder="0" min="0"
+								inputmode="decimal" /> <span class="fx-unit" id="fxUnit">USD</span>
+						</div>
+						<div class="fx-quick">
+							<button type="button" data-q="10">10</button>
+							<button type="button" data-q="100">100</button>
+							<button type="button" data-q="500">500</button>
+							<button type="button" data-q="1000">1,000</button>
+							<button type="button" data-q="5000">5,000</button>
+						</div>
+					</div>
+
+					<!-- 환율 / 예상 금액 정보 -->
+					<div class="fx-rate-info">
+						<div class="fx-rate-row">
+							<span class="fx-rate-badge" id="fxRateBadge">매수 환율</span> <span
+								class="fx-rate-val" id="fxRateVal">1 USD = – KRW</span>
+						</div>
+						<div class="fx-estimate">
+							<span class="fx-est-label" id="fxEstLabel">필요 원화</span> <span
+								class="fx-est-val" id="fxEstVal">– KRW</span>
+						</div>
+					</div>
+
+					<!-- 보유 잔액 안내 -->
+					<div class="fx-balance" id="fxBalanceWrap" hidden>
+						<i class="fa-solid fa-wallet"></i> <span id="fxBalanceTxt">보유
+							잔액 조회 중…</span>
+					</div>
+
+					<!-- 환전 신청 버튼 -->
+					<button class="fx-submit" id="fxSubmit" disabled>
+						<i class="fa-solid fa-right-left"></i> 환전 신청
+					</button>
+				</section>
+
+				<!-- ───────── 우측: 통화 리스트 + 결과 ───────── -->
+				<aside class="fx-side">
+
+					<!-- 통화 빠른 선택 리스트 -->
+					<section class="fx-card fx-cur-list-card">
+						<h2 class="fx-side-title">통화 선택</h2>
+						<ul class="fx-cur-list" id="fxCurList">
+							<!-- JS 렌더링 -->
+						</ul>
+					</section>
+
+					<!-- 결과 카드 -->
+					<section class="fx-card fx-result-card" id="fxResultCard" hidden>
+						<div class="fx-result-head">
+							<div class="fx-result-check">
+								<i class="fa-solid fa-circle-check"></i>
+							</div>
+							<div>
+								<h3>환전 완료</h3>
+								<p id="fxResultSub">계좌에 잔액이 반영되었습니다</p>
+							</div>
+							<span class="fx-result-time" id="fxResultTime"></span>
+						</div>
+						<div class="fx-result-body">
+							<div class="fx-result-hl">
+								<div class="fx-hl-block">
+									<span class="fx-hl-label">출금</span> <span
+										class="fx-hl-val deduct" id="fxResFrom">–</span>
+								</div>
+								<div class="fx-hl-arrow">
+									<i class="fa-solid fa-arrow-right"></i>
+								</div>
+								<div class="fx-hl-block right">
+									<span class="fx-hl-label">입금</span> <span
+										class="fx-hl-val gain" id="fxResTo">–</span>
+								</div>
+							</div>
+							<div class="fx-result-grid">
+								<div class="fx-ri">
+									<span>적용 환율</span><b id="fxResRate">–</b>
+								</div>
+								<div class="fx-ri">
+									<span>거래 구분</span><b id="fxResType">–</b>
+								</div>
+							</div>
+						</div>
+					</section>
+				</aside>
+
+			</div>
+
+			<!-- ───────── 환전 확인 모달 ───────── -->
+			<div class="fx-modal-overlay" id="fxModal" hidden>
+				<div class="fx-modal" role="dialog" aria-modal="true">
+					<div class="fx-modal-icon">
+						<i class="fa-solid fa-circle-question"></i>
+					</div>
+					<h3 class="fx-modal-title">환전 신청 확인</h3>
+					<p class="fx-modal-msg" id="fxModalMsg"></p>
+					<div class="fx-modal-detail" id="fxModalDetail"></div>
+					<div class="fx-modal-btns">
+						<button class="fx-btn-cancel" id="fxModalCancel">취소</button>
+						<button class="fx-btn-confirm" id="fxModalConfirm">환전하기</button>
+					</div>
+				</div>
+			</div>
+
+		</main>
+
+	</div>
+	<div th:replace="~{footer :: footer}"></div>
+	<script th:src="@{/js/product/foreign.js}"></script>
+	<script th:src="@{/js/zoom.js}"></script>
+	<script th:src="@{/js/fx/exchangeJs.js}"></script>
+</body>
+</html>

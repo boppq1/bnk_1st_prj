@@ -31,6 +31,12 @@ public class FxController {
 
 		return "fx/fx_body";
 	}
+	
+	@GetMapping("/fx/exchange")
+	public String exchange() {
+		
+		return "fx/exchange";
+	}
 
 	@ResponseBody
 	@GetMapping("/api/exchange")
@@ -58,6 +64,7 @@ public class FxController {
 		
 		return (List<FxDataDto>) fxService.getFxData(cur_nm);
 	}
+	
 	
 	
 }
