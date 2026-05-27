@@ -17,11 +17,9 @@ public class FilterConfig {
 	@Bean
 	public FilterRegistrationBean<Filter> rateLimitFilterRegistration(RateLimitFilter rateLimitFilter) {
 		FilterRegistrationBean<Filter> bean = new FilterRegistrationBean<>();
-		
 		bean.setFilter(rateLimitFilter);
 		bean.setOrder(2);
 		bean.addUrlPatterns("/*");
-		
 		return bean;
 	}
 	
@@ -31,7 +29,6 @@ public class FilterConfig {
 		bean.setFilter(filter);
 		bean.setOrder(1);
 		bean.addUrlPatterns("/*");
-		
 		return bean;
 	}
 
