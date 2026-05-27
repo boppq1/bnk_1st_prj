@@ -335,11 +335,7 @@ public class AdminController {
 		}
 	}
 	
-	// ========== 챗봇 ==========
-	@GetMapping("/chatPage")
-	public String chatPage() {
-		return "/common/chatPage";
-	}
+	
 	
 	// ========== 공지사항 ==========
 	@GetMapping("/newsPage")

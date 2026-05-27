@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 4. 버튼 클릭 시 정중앙 팝업창(챗봇 화면) 띄우기
-    const targetUrl = "/admin/chatPage";
+    const targetUrl = "/chatPage";
     
     linkBtn.addEventListener("click", function () {
         const popupWidth = 480;
