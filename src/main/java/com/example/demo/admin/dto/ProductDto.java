@@ -46,4 +46,7 @@ public class ProductDto {
 
 	// 핵심: 금리 리스트 포함
 	private List<InterestRateDto> rates;
+
+	private List<ProductCurrencyDto> currencies;
+
 }

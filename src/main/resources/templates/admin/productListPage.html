@@ -6,6 +6,20 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
   <link rel="stylesheet" th:href="@{/css/admin/product/productListPage.css}">
+  <style>
+    .cur-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #fff0f0;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+      letter-spacing: 0.3px;
+    }
+  </style>
 </head>
 <body>
 
@@ -200,7 +214,8 @@
       data-exchange-rate=${p.applied_exchange_rate_type},
       data-min-amount=${p.min_amount},
       data-max-amount=${p.max_amount},
-      data-desc=${p.product_desc != null ? p.product_desc : ''}
+      data-desc=${p.product_desc != null ? p.product_desc : ''},
+      data-currencies=${p.currencies != null && !#lists.isEmpty(p.currencies) ? #strings.listJoin(p.currencies.![cur_cd + ':' + cur_nm], '|') : ''}
 ">
 
           <!-- ID -->
@@ -410,247 +425,272 @@
 
     </div>
 
-</div><!-- /main-content -->
+  </div><!-- /main-content -->
 
 
-<!-- ═══════════════════════════════════════
-     PRODUCT DETAIL MODAL
-═══════════════════════════════════════ -->
-<div class="modal-backdrop" id="productModal" onclick="handleBackdropClick(event)">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalProductName">
+  <!-- ═══════════════════════════════════════
+       PRODUCT DETAIL MODAL
+  ═══════════════════════════════════════ -->
+  <div class="modal-backdrop" id="productModal" onclick="handleBackdropClick(event)">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalProductName">
 
-    <!-- Modal Header -->
-    <div class="modal-header">
-      <div class="modal-header-icon" id="modalHeaderIcon">
-        <i id="modalHeaderIconI" class="fa-solid fa-piggy-bank"></i>
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="modal-header-icon" id="modalHeaderIcon">
+          <i id="modalHeaderIconI" class="fa-solid fa-piggy-bank"></i>
+        </div>
+        <div class="modal-header-text">
+          <div class="modal-product-id" id="modalProductId">#001</div>
+          <div class="modal-product-name" id="modalProductName">상품명</div>
+          <div class="modal-type-label" id="modalTypeLabel"></div>
+        </div>
+        <button class="modal-close" onclick="closeModal()" aria-label="닫기">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
-      <div class="modal-header-text">
-        <div class="modal-product-id" id="modalProductId">#001</div>
-        <div class="modal-product-name" id="modalProductName">상품명</div>
-        <div class="modal-type-label" id="modalTypeLabel"></div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+
+        <!-- 결재 상태 -->
+        <div class="modal-section">
+          <div class="modal-section-title"><i class="fa-solid fa-file-contract"></i> 결재 상태</div>
+          <div class="modal-status-banner" id="modalStatusBanner">
+            <div class="modal-status-icon-wrap"><i id="modalStatusIcon" class="fa-solid fa-circle-check"></i></div>
+            <div class="modal-status-text">
+              <div class="modal-status-label">현재 결재 상태</div>
+              <div class="modal-status-value" id="modalStatusValue">승인</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 기본 정보 -->
+        <div class="modal-section">
+          <div class="modal-section-title"><i class="fa-solid fa-circle-info"></i> 기본 정보</div>
+          <div class="modal-info-grid">
+            <div class="modal-info-item">
+              <div class="modal-info-label"><i class="fa-solid fa-layer-group"></i> 상품 타입</div>
+              <div class="modal-info-value" id="modalType">-</div>
+            </div>
+            <div class="modal-info-item">
+              <div class="modal-info-label"><i class="fa-solid fa-users"></i> 대상 고객</div>
+              <div class="modal-info-value" id="modalTarget">-</div>
+            </div>
+            <div class="modal-info-item">
+              <div class="modal-info-label"><i class="fa-solid fa-user-tag"></i> 고객 세분류</div>
+              <div class="modal-info-value" id="modalTargetDetail">-</div>
+            </div>
+            <div class="modal-info-item">
+              <div class="modal-info-label"><i class="fa-solid fa-percent"></i> 금리 분류</div>
+              <div class="modal-info-value" id="modalRateCategory">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 금액 / 기간 -->
+        <div class="modal-section">
+          <div class="modal-section-title"><i class="fa-solid fa-won-sign"></i> 금액 / 기간</div>
+          <div class="modal-info-grid">
+            <div class="modal-info-item">
+              <div class="modal-info-label"><i class="fa-solid fa-circle-arrow-down"></i> 최소 가입 금액</div>
+              <div class="modal-info-value" id="modalMinAmount">-</div>
+            </div>
+            <div class="modal-info-item">
+              <div class="modal-info-label"><i class="fa-solid fa-circle-arrow-up"></i> 최대 가입 금액</div>
+              <div class="modal-info-value" id="modalMaxAmount">-</div>
+            </div>
+            <div class="modal-info-item">
+              <div class="modal-info-label"><i class="fa-solid fa-calendar-range"></i> 가입 기간</div>
+              <div class="modal-info-value" id="modalPeriod">-</div>
+            </div>
+            <div class="modal-info-item">
+              <div class="modal-info-label"><i class="fa-solid fa-hand-holding-dollar"></i> 이자 지급 방식</div>
+              <div class="modal-info-value" id="modalInterestPay">-</div>
+            </div>
+            <div class="modal-info-item">
+              <div class="modal-info-label"><i class="fa-solid fa-arrow-right-arrow-left"></i> 환율 적용 기준</div>
+              <div class="modal-info-value" id="modalExchangeRate">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 취급 통화 -->
+        <div class="modal-section" id="modalCurrencySection">
+          <div class="modal-section-title"><i class="fa-solid fa-coins"></i> 취급 통화</div>
+          <div id="modalCurrencyList" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;"></div>
+        </div>
+
+        <!-- 상품 설명 -->
+        <div class="modal-section" id="modalDescSection">
+          <div class="modal-section-title"><i class="fa-solid fa-align-left"></i> 상품 설명</div>
+          <div class="modal-desc" id="modalDesc"></div>
+        </div>
+
+      </div><!-- /modal-body -->
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button type="button" class="modal-btn modal-btn-close" onclick="closeModal()">
+          <i class="fa-solid fa-xmark"></i> 닫기
+        </button>
+        <a href="#" class="modal-btn modal-btn-edit" id="modalEditBtn">
+          <i class="fa-solid fa-pen"></i> 수정하기
+        </a>
       </div>
-      <button class="modal-close" onclick="closeModal()" aria-label="닫기">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
+
     </div>
-
-    <!-- Modal Body -->
-    <div class="modal-body">
-
-      <!-- 결재 상태 -->
-      <div class="modal-section">
-        <div class="modal-section-title"><i class="fa-solid fa-file-contract"></i> 결재 상태</div>
-        <div class="modal-status-banner" id="modalStatusBanner">
-          <div class="modal-status-icon-wrap"><i id="modalStatusIcon" class="fa-solid fa-circle-check"></i></div>
-          <div class="modal-status-text">
-            <div class="modal-status-label">현재 결재 상태</div>
-            <div class="modal-status-value" id="modalStatusValue">승인</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 기본 정보 -->
-      <div class="modal-section">
-        <div class="modal-section-title"><i class="fa-solid fa-circle-info"></i> 기본 정보</div>
-        <div class="modal-info-grid">
-          <div class="modal-info-item">
-            <div class="modal-info-label"><i class="fa-solid fa-layer-group"></i> 상품 타입</div>
-            <div class="modal-info-value" id="modalType">-</div>
-          </div>
-          <div class="modal-info-item">
-            <div class="modal-info-label"><i class="fa-solid fa-users"></i> 대상 고객</div>
-            <div class="modal-info-value" id="modalTarget">-</div>
-          </div>
-          <div class="modal-info-item">
-            <div class="modal-info-label"><i class="fa-solid fa-user-tag"></i> 고객 세분류</div>
-            <div class="modal-info-value" id="modalTargetDetail">-</div>
-          </div>
-          <div class="modal-info-item">
-            <div class="modal-info-label"><i class="fa-solid fa-percent"></i> 금리 분류</div>
-            <div class="modal-info-value" id="modalRateCategory">-</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 금액 / 기간 -->
-      <div class="modal-section">
-        <div class="modal-section-title"><i class="fa-solid fa-won-sign"></i> 금액 / 기간</div>
-        <div class="modal-info-grid">
-          <div class="modal-info-item">
-            <div class="modal-info-label"><i class="fa-solid fa-circle-arrow-down"></i> 최소 가입 금액</div>
-            <div class="modal-info-value" id="modalMinAmount">-</div>
-          </div>
-          <div class="modal-info-item">
-            <div class="modal-info-label"><i class="fa-solid fa-circle-arrow-up"></i> 최대 가입 금액</div>
-            <div class="modal-info-value" id="modalMaxAmount">-</div>
-          </div>
-          <div class="modal-info-item">
-            <div class="modal-info-label"><i class="fa-solid fa-calendar-range"></i> 가입 기간</div>
-            <div class="modal-info-value" id="modalPeriod">-</div>
-          </div>
-          <div class="modal-info-item">
-            <div class="modal-info-label"><i class="fa-solid fa-hand-holding-dollar"></i> 이자 지급 방식</div>
-            <div class="modal-info-value" id="modalInterestPay">-</div>
-          </div>
-          <div class="modal-info-item">
-            <div class="modal-info-label"><i class="fa-solid fa-arrow-right-arrow-left"></i> 환율 적용 기준</div>
-            <div class="modal-info-value" id="modalExchangeRate">-</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 상품 설명 -->
-      <div class="modal-section" id="modalDescSection">
-        <div class="modal-section-title"><i class="fa-solid fa-align-left"></i> 상품 설명</div>
-        <div class="modal-desc" id="modalDesc"></div>
-      </div>
-
-    </div><!-- /modal-body -->
-
-    <!-- Modal Footer -->
-    <div class="modal-footer">
-      <button type="button" class="modal-btn modal-btn-close" onclick="closeModal()">
-        <i class="fa-solid fa-xmark"></i> 닫기
-      </button>
-      <a href="#" class="modal-btn modal-btn-edit" id="modalEditBtn">
-        <i class="fa-solid fa-pen"></i> 수정하기
-      </a>
-    </div>
-
   </div>
-</div>
 
 
-<script>
+  <script>
 
-  /* ─── 삭제 ─── */
-  function confirmDelete(id) {
-    if (confirm('상품 #' + id + ' 을(를) 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) {
-      window.location.href = '/deletePro/' + id;
-    }
-  }
-
-  /* ─── 상수 맵 ─── */
-  const TYPE_MAP = {
-
-    'DEPOSIT': {label: '예금', icon: 'fa-piggy-bank', colorClass: 'type-deposit'},
-    'SAVING': {label: '적금', icon: 'fa-sack-dollar', colorClass: 'type-saving'},
-    'FOREIGN_DEP': {label: '외화 예금', icon: 'fa-earth-asia', colorClass: 'type-foreign'},
-    'FOREIGN_SAV': {label: '외화 적금', icon: 'fa-coins', colorClass: 'type-foreign'},
-    'CORP_DEP': {label: '기업 예금', icon: 'fa-building-columns', colorClass: 'type-corp'},
-    'CORP_SAV': {label: '기업 적금', icon: 'fa-briefcase', colorClass: 'type-corp'}
-  };
-
-  const STATUS_MAP = {
-    '승인':   { cls: 'status-approve', icon: 'fa-circle-check',  label: '승인 완료' },
-    '검토중': { cls: 'status-submit',  icon: 'fa-clock',         label: '결재 검토 중' },
-    '반려':   { cls: 'status-reject',  icon: 'fa-circle-xmark',  label: '반려' },
-    'SAVE':   { cls: 'status-save',    icon: 'fa-floppy-disk',   label: '임시 저장' }
-  };
-
-  const TARGET_MAP = {
-    'ALL': '전체', 'PERSONAL': '개인', 'COMPANY': '기업'
-  };
-  const TARGET_DETAIL_MAP = {
-    '': '없음', 'ALL': '전체', 'YOUTH': '청년', 'SENIOR': '시니어',
-    'STARTUP': '스타트업', 'SME': '소상공인 및 자영업자', 'PUBLIC': '공공기관 및 지자체'
-  };
-  const RATE_MAP = {
-    'FIXED': '고정 금리', 'PREFERENTIAL': '우대 금리', 'CORP': '변동 금리'
-  };
-  const INTEREST_MAP = {
-    'MATURITY':  '만기일시지급',
-    'MONTHLY':   '월지급',
-    'BOTH':      '만기일 + 월지급',
-    'QUARTERLY': '분기별 지급'
-  };
-  const EXCHANGE_MAP = {
-    '': '해당 없음', 'CLOSING_RATE': '전일 종가', 'REALTIME_RATE': '실시간 환율'
-  };
-
-  /* ─── 금액 포맷 ─── */
-  function fmtAmount(val) {
-    const n = Number(val);
-    if (!val || isNaN(n)) return '-';
-    return n.toLocaleString('ko-KR') + '원';
-  }
-
-  /* ─── 모달 열기 ─── */
-  function openModal(row) {
-    const id           = row.getAttribute('data-id')            || '-';
-    const name         = row.getAttribute('data-name')          || '-';
-    const type         = row.getAttribute('data-type')          || '';
-    const status       = row.getAttribute('data-status')        || '';
-    const target       = row.getAttribute('data-target')        || '';
-    const targetDetail = row.getAttribute('data-target-detail') || '';
-    const rateCategory = row.getAttribute('data-rate-category') || '';
-    const minPeriod    = row.getAttribute('data-min-period')    || '-';
-    const maxPeriod    = row.getAttribute('data-max-period')    || '';
-    const interest     = row.getAttribute('data-interest')      || '';
-    const exchangeRate = row.getAttribute('data-exchange-rate') || '';
-    const minAmount    = row.getAttribute('data-min-amount')    || '';
-    const maxAmount    = row.getAttribute('data-max-amount')    || '';
-    const desc         = row.getAttribute('data-desc')          || '';
-
-    /* 헤더 */
-    document.getElementById('modalProductId').textContent   = '#' + id;
-    document.getElementById('modalProductName').textContent = name;
-
-    const typeInfo = TYPE_MAP[type] || { label: type || '-', icon: 'fa-box', colorClass: 'type-deposit' };
-    document.getElementById('modalHeaderIcon').className    = 'modal-header-icon ' + typeInfo.colorClass;
-    document.getElementById('modalHeaderIconI').className   = 'fa-solid ' + typeInfo.icon;
-    document.getElementById('modalTypeLabel').textContent   = typeInfo.label;
-
-    /* 결재 상태 */
-    const stInfo = STATUS_MAP[status] || { cls: 'status-save', icon: 'fa-question', label: status || '-' };
-    document.getElementById('modalStatusBanner').className  = 'modal-status-banner ' + stInfo.cls;
-    document.getElementById('modalStatusIcon').className    = 'fa-solid ' + stInfo.icon;
-    document.getElementById('modalStatusValue').textContent = stInfo.label;
-
-    /* 기본 정보 */
-    document.getElementById('modalType').textContent         = typeInfo.label;
-    document.getElementById('modalTarget').textContent       = TARGET_MAP[target]       || target       || '-';
-    document.getElementById('modalTargetDetail').textContent = TARGET_DETAIL_MAP[targetDetail] || targetDetail || '없음';
-    document.getElementById('modalRateCategory').textContent = RATE_MAP[rateCategory]   || rateCategory || '-';
-
-    /* 금액 / 기간 */
-    document.getElementById('modalMinAmount').textContent   = fmtAmount(minAmount);
-    document.getElementById('modalMaxAmount').textContent   = fmtAmount(maxAmount);
-
-    const periodText = maxPeriod === '0' || maxPeriod === ''
-            ? minPeriod + '개월 ~ 무기한'
-            : minPeriod + ' ~ ' + maxPeriod + '개월';
-    document.getElementById('modalPeriod').textContent      = periodText;
-    document.getElementById('modalInterestPay').textContent = INTEREST_MAP[interest]    || interest    || '-';
-    document.getElementById('modalExchangeRate').textContent= EXCHANGE_MAP[exchangeRate] !== undefined
-            ? EXCHANGE_MAP[exchangeRate] : (exchangeRate || '해당 없음');
-
-    /* 상품 설명 */
-    const descEl      = document.getElementById('modalDesc');
-    const descSection = document.getElementById('modalDescSection');
-    if (desc && desc.trim()) {
-      descEl.textContent  = desc;
-      descSection.style.display = '';
-    } else {
-      descSection.style.display = 'none';
+    /* ─── 삭제 ─── */
+    function confirmDelete(id) {
+      if (confirm('상품 #' + id + ' 을(를) 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) {
+        window.location.href = '/deletePro/' + id;
+      }
     }
 
-    /* 수정 버튼 */
-    document.getElementById('modalEditBtn').href = '/admin/updatePro/' + id;
+    /* ─── 상수 맵 ─── */
+    const TYPE_MAP = {
 
-    /* 오픈 */
-    document.getElementById('productModal').classList.add('is-open');
-    document.body.style.overflow = 'hidden';
-  }
+      'DEPOSIT': {label: '예금', icon: 'fa-piggy-bank', colorClass: 'type-deposit'},
+      'SAVING': {label: '적금', icon: 'fa-sack-dollar', colorClass: 'type-saving'},
+      'FOREIGN_DEP': {label: '외화 예금', icon: 'fa-earth-asia', colorClass: 'type-foreign'},
+      'FOREIGN_SAV': {label: '외화 적금', icon: 'fa-coins', colorClass: 'type-foreign'},
+      'CORP_DEP': {label: '기업 예금', icon: 'fa-building-columns', colorClass: 'type-corp'},
+      'CORP_SAV': {label: '기업 적금', icon: 'fa-briefcase', colorClass: 'type-corp'}
+    };
 
-  function closeModal() {
-    document.getElementById('productModal').classList.remove('is-open');
-    document.body.style.overflow = '';
-  }
-  function handleBackdropClick(e) {
-    if (e.target === document.getElementById('productModal')) closeModal();
-  }
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-</script>
+    const STATUS_MAP = {
+      '승인':   { cls: 'status-approve', icon: 'fa-circle-check',  label: '승인 완료' },
+      '검토중': { cls: 'status-submit',  icon: 'fa-clock',         label: '결재 검토 중' },
+      '반려':   { cls: 'status-reject',  icon: 'fa-circle-xmark',  label: '반려' },
+      'SAVE':   { cls: 'status-save',    icon: 'fa-floppy-disk',   label: '임시 저장' }
+    };
+
+    const TARGET_MAP = {
+      'ALL': '전체', 'PERSONAL': '개인', 'COMPANY': '기업'
+    };
+    const TARGET_DETAIL_MAP = {
+      '': '없음', 'ALL': '전체', 'YOUTH': '청년', 'SENIOR': '시니어',
+      'STARTUP': '스타트업', 'SME': '소상공인 및 자영업자', 'PUBLIC': '공공기관 및 지자체'
+    };
+    const RATE_MAP = {
+      'FIXED': '고정 금리', 'PREFERENTIAL': '우대 금리', 'CORP': '변동 금리'
+    };
+    const INTEREST_MAP = {
+      'MATURITY':  '만기일시지급',
+      'MONTHLY':   '월지급',
+      'BOTH':      '만기일 + 월지급',
+      'QUARTERLY': '분기별 지급'
+    };
+    const EXCHANGE_MAP = {
+      '': '해당 없음', 'CLOSING_RATE': '전일 종가', 'REALTIME_RATE': '실시간 환율'
+    };
+
+    /* ─── 금액 포맷 ─── */
+    function fmtAmount(val) {
+      const n = Number(val);
+      if (!val || isNaN(n)) return '-';
+      return n.toLocaleString('ko-KR') + '원';
+    }
+
+    /* ─── 모달 열기 ─── */
+    function openModal(row) {
+      const id           = row.getAttribute('data-id')            || '-';
+      const name         = row.getAttribute('data-name')          || '-';
+      const type         = row.getAttribute('data-type')          || '';
+      const status       = row.getAttribute('data-status')        || '';
+      const target       = row.getAttribute('data-target')        || '';
+      const targetDetail = row.getAttribute('data-target-detail') || '';
+      const rateCategory = row.getAttribute('data-rate-category') || '';
+      const minPeriod    = row.getAttribute('data-min-period')    || '-';
+      const maxPeriod    = row.getAttribute('data-max-period')    || '';
+      const interest     = row.getAttribute('data-interest')      || '';
+      const exchangeRate = row.getAttribute('data-exchange-rate') || '';
+      const minAmount    = row.getAttribute('data-min-amount')    || '';
+      const maxAmount    = row.getAttribute('data-max-amount')    || '';
+      const desc         = row.getAttribute('data-desc')          || '';
+      const currencies   = row.getAttribute('data-currencies')    || '';
+
+      /* 헤더 */
+      document.getElementById('modalProductId').textContent   = '#' + id;
+      document.getElementById('modalProductName').textContent = name;
+
+      const typeInfo = TYPE_MAP[type] || { label: type || '-', icon: 'fa-box', colorClass: 'type-deposit' };
+      document.getElementById('modalHeaderIcon').className    = 'modal-header-icon ' + typeInfo.colorClass;
+      document.getElementById('modalHeaderIconI').className   = 'fa-solid ' + typeInfo.icon;
+      document.getElementById('modalTypeLabel').textContent   = typeInfo.label;
+
+      /* 결재 상태 */
+      const stInfo = STATUS_MAP[status] || { cls: 'status-save', icon: 'fa-question', label: status || '-' };
+      document.getElementById('modalStatusBanner').className  = 'modal-status-banner ' + stInfo.cls;
+      document.getElementById('modalStatusIcon').className    = 'fa-solid ' + stInfo.icon;
+      document.getElementById('modalStatusValue').textContent = stInfo.label;
+
+      /* 기본 정보 */
+      document.getElementById('modalType').textContent         = typeInfo.label;
+      document.getElementById('modalTarget').textContent       = TARGET_MAP[target]       || target       || '-';
+      document.getElementById('modalTargetDetail').textContent = TARGET_DETAIL_MAP[targetDetail] || targetDetail || '없음';
+      document.getElementById('modalRateCategory').textContent = RATE_MAP[rateCategory]   || rateCategory || '-';
+
+      /* 금액 / 기간 */
+      document.getElementById('modalMinAmount').textContent   = fmtAmount(minAmount);
+      document.getElementById('modalMaxAmount').textContent   = fmtAmount(maxAmount);
+
+      const periodText = maxPeriod === '0' || maxPeriod === ''
+              ? minPeriod + '개월 ~ 무기한'
+              : minPeriod + ' ~ ' + maxPeriod + '개월';
+      document.getElementById('modalPeriod').textContent      = periodText;
+      document.getElementById('modalInterestPay').textContent = INTEREST_MAP[interest]    || interest    || '-';
+      document.getElementById('modalExchangeRate').textContent= EXCHANGE_MAP[exchangeRate] !== undefined
+              ? EXCHANGE_MAP[exchangeRate] : (exchangeRate || '해당 없음');
+
+      /* 상품 설명 */
+      const descEl      = document.getElementById('modalDesc');
+      const descSection = document.getElementById('modalDescSection');
+      if (desc && desc.trim()) {
+        descEl.textContent  = desc;
+        descSection.style.display = '';
+      } else {
+        descSection.style.display = 'none';
+      }
+
+      /* 취급 통화 */
+      const curSection = document.getElementById('modalCurrencySection');
+      const curList    = document.getElementById('modalCurrencyList');
+      curList.innerHTML = '';
+      if (currencies && currencies.trim()) {
+        currencies.split('|').forEach(pair => {
+          const [cd, nm] = pair.split(':');
+          if (!cd) return;
+          const tag = document.createElement('span');
+          tag.className = 'cur-tag';
+          tag.textContent = cd + (nm ? ' · ' + nm : '');
+          curList.appendChild(tag);
+        });
+        curSection.style.display = '';
+      } else {
+        curSection.style.display = 'none';
+      }
+
+      /* 수정 버튼 */
+      document.getElementById('modalEditBtn').href = '/admin/updatePro/' + id;
+
+      /* 오픈 */
+      document.getElementById('productModal').classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('productModal').classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+    function handleBackdropClick(e) {
+      if (e.target === document.getElementById('productModal')) closeModal();
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  </script>
 </body>
 </html>
