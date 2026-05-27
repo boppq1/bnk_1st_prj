@@ -67,7 +67,7 @@ public class AdminService {
 	}
 	
 	public void updateUser(UserDTO dto) {
-		listDao.updateUser(dto.getUser_id(), dto.getPassword(), dto.getName(), dto.getPhone(), dto.getBirth(), dto.getEmail(), dto.getGender(), dto.getE_name(), dto.getPostal_code(), dto.getAddress(), dto.getAddress_detail());
+		listDao.updateUser(dto.getUser_id(), dto.getPassword(), dto.getStatus(), dto.getName(), dto.getPhone(), dto.getBirth(), dto.getEmail(), dto.getGender(), dto.getE_name(), dto.getPostal_code(), dto.getAddress(), dto.getAddress_detail());
 	}
 	
 	public void updateCompanyUser(CompanyUserDTO dto) {
@@ -228,7 +228,7 @@ public class AdminService {
 	}
 	
 	public void updateNews(NewsDto dto) {
-		newsDao.updateNews(dto.getNews_ttl(), dto.getNews_cont());
+		newsDao.updateNews(dto.getNews_ttl(), dto.getNews_cont(), dto.getNews_no());
 	}
 	
 	public void deleteNews(Long news_no) {

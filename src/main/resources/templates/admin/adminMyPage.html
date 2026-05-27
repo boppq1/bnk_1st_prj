@@ -23,24 +23,16 @@
     </div>
     <ul class="sidebar-menu">
         <li class="menu-section-title">메인</li>
-        <li><a href="/admin/dashboard" class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+        <li><a href="/admin/chiefDashboard" class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
         <li><a href="/admin/adminMyPage" class="menu-item active"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
-        <li class="menu-section-title">상품 관리</li>
-        <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
-        <li><a href="/admin/productListPage" class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
         <li class="menu-section-title">콘텐츠 관리</li>
-        <li><a href="/admin/noticeListPage" class="menu-item"><i class="fa-solid fa-bullhorn"></i> 공지사항 목록</a></li>
-        <li><a href="/admin/noticeRegisterPage" class="menu-item"><i class="fa-solid fa-pen-to-square"></i> 공지사항 등록</a></li>
+        <li><a href="/admin/newsPage" class="menu-item"><i class="fa-solid fa-bullhorn"></i> 공지사항 목록</a></li>
+        <li><a href="/admin/makeNewsPage" class="menu-item"><i class="fa-solid fa-pen-to-square"></i> 공지사항 등록</a></li>
         <li><a href="/admin/adminEventListPage" class="menu-item"><i class="fa-solid fa-calendar-days"></i> 이벤트 목록</a></li>
         <li><a href="/admin/adminEventPage" class="menu-item"><i class="fa-solid fa-circle-plus"></i> 이벤트 등록</a></li>
         <li class="menu-section-title">업무</li>
-        <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
-        <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
-        <li><a href="/admin/account" class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
-        <li class="menu-section-title">관리</li>
-        <li><a href="/admin/members" class="menu-item"><i class="fa-solid fa-users-gear"></i> 회원/관리자 관리</a></li>
-        <li><a href="/admin/logs" class="menu-item"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
-        <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
+        <li><a href="/admin/exchangeListPage" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
+        <li><a href="/admin/adminAccountPage" class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
     </ul>
     <div class="sidebar-footer">
         <p>2024 BNK Busan Bank</p>
@@ -231,6 +223,104 @@
 
     passwordPopup.addEventListener("click", e => { if (e.target === passwordPopup) closePasswordPopup(); });
     adminPwPopup.addEventListener("click",  e => { if (e.target === adminPwPopup)  closeAdminPwPopup(); });
+
+    $(document).ready(function(){
+        //마우스 우측 버튼 사용 막기.
+        if (window.addEventListener) {
+            window.addEventListener('contextmenu', function(e) {
+                try {
+                    if (typeof e != 'undefined') {
+                        e.preventDefault(); return false;
+                    } else {
+                        return false;
+                    }
+                } catch(e) {}
+            } , false);
+        } else {
+            window.attachEvent('oncontextmenu', function(e) {
+                try {
+                    if (typeof e != 'undefined') {
+                        e.preventDefault(); return false;
+                    } else {
+                        return false;
+                    }
+                } catch(e) {}
+            } );
+        }
+        var handlemouseEvent = function(e) {
+            try {
+                if (typeof e == 'undefined') {
+                    if (window.event.button && window.event.button == "2") {
+                        return false;
+                    }
+                } else if ((e.which && e.which == 3) || (e.button && e.button == 2)) {
+                    e.preventDefault();
+                    return false;
+                }
+
+            } catch (e) {}
+        };
+        window.onkeydown = handlemouseEvent;
+        window.onkeyup = handlemouseEvent;
+
+        //로그아웃 시켜버릴 임시 form 생성
+        var logOutFrom = document.createElement('form');
+        logOutFrom.name= "logOutFrom";
+        logOutFrom.id= "logOutFrom";
+        logOutFrom.action = ctx+"/admin/logout";
+        logOutFrom.method= "POST";
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = '${_csrf.parameterName}';
+        input.value = '${_csrf.token}';
+        logOutFrom.appendChild(input);
+        document.body.appendChild(logOutFrom);
+
+        //개발자도구 실행 감지.
+        console.log(Object.defineProperties(new Error, {
+            toString: {
+                value() {
+                    (new Error).stack.includes('toString@') && alert('Safari devtools')
+                }
+            },
+            message: {
+                get() {
+                    //개발자도구를 감지하면 그냥 홬 로갓 키겨 버리자.
+                    logOutFrom.submit()
+                }
+            },
+        }));
+
+    });
+
+    // Detect Key Shortcuts f12 및 특수키 조합 막기
+    window.addEventListener('keydown', function(e) {
+        if (
+            // CMD + Alt + I (Chrome, Firefox, Safari)
+            e.metaKey == true && e.altKey == true && e.keyCode == 73 ||
+            // CMD + Alt + J (Chrome)
+            e.metaKey == true && e.altKey == true && e.keyCode == 74 ||
+            // CMD + Alt + C (Chrome)
+            e.metaKey == true && e.altKey == true && e.keyCode == 67 ||
+            // CMD + Shift + C (Chrome)
+            e.metaKey == true && e.shiftKey == true && e.keyCode == 67 ||
+            // Ctrl + Shift + I (Chrome, Firefox, Safari, Edge)
+            e.ctrlKey == true && e.shiftKey == true && e.keyCode == 73 ||
+            // Ctrl + Shift + J (Chrome, Edge)
+            e.ctrlKey == true && e.shiftKey == true && e.keyCode == 74 ||
+            // Ctrl + Shift + C (Chrome, Edge)
+            e.ctrlKey == true && e.shiftKey == true && e.keyCode == 67 ||
+            // F12 (Chome, Firefox, Edge)
+            e.keyCode == 123 ||
+            // CMD + Alt + U, Ctrl + U (View source: Chrome, Firefox, Safari, Edge)
+            e.metaKey == true && e.altKey == true && e.keyCode == 85 ||
+            e.ctrlKey == true && e.keyCode == 85
+        ) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
 </script>
 </body>
 </html>

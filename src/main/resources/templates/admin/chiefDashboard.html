@@ -2,12 +2,12 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>BNK Busan Bank - Executive 대시보드</title>
+  <title>BNK Busan Bank - Chief 대시보드</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
   <style>
 /* ───────────────────────────────────────
-   ROOT & RESET (표준 템플릿 가이드라인 준수)
+   ROOT & RESET (기존 템플릿 가이드라인 준수)
 ─────────────────────────────────────── */
 :root {
   --primary:        #ED1C24;
@@ -32,7 +32,7 @@ body {
   overflow: hidden;
 }
 
-/* ───── SIDEBAR (요구사항: 결재, 로그, 블랙리스트, 마이페이지만 표시) ───── */
+/* ───── SIDEBAR ───── */
 .sidebar {
   width: var(--sidebar-w); height: 100vh;
   background: #FFFFFF; border-right: 1px solid var(--border);
@@ -115,7 +115,7 @@ body {
 .page-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
 .page-subtitle { font-size: 14px; color: var(--text-sub); }
 
-/* ───── STAT CARDS (미결재 현황 연동) ───── */
+/* ───── STAT CARDS GRID ───── */
 .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
 .stat-card {
   background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius);
@@ -129,11 +129,12 @@ body {
 .stat-icon.green  { background: #F0FDF4; color: #16A34A; }
 .stat-label { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
 .stat-value { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1; }
+.stat-subtext { font-size: 13px; font-weight: 600; color: var(--text-sub); margin-top: 4px; }
 
 /* ───── SECTION LAYOUT ───── */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 3fr 2fr;
   gap: 20px;
   align-items: start;
 }
@@ -142,7 +143,6 @@ body {
 .section-header { margin-bottom: 12px; }
 .section-title-text { font-size: 15px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 8px; }
 
-/* 테이블 카드 및 스크롤 바 최소화 */
 .table-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
 .table-wrap { overflow-x: auto; }
 .table-wrap::-webkit-scrollbar { height: 4px; }
@@ -165,6 +165,7 @@ tbody td:first-child { padding-left: 18px; font-size: 11.5px; color: var(--text-
 </head>
 <body>
 
+<!-- ───── SIDEBAR ───── -->
 <div class="sidebar">
   <div class="sidebar-logo">
     <img th:src="@{/images/BNKlogo.png}" src="/images/BNKlogo.png" alt="BNK 부산은행">
@@ -172,18 +173,22 @@ tbody td:first-child { padding-left: 18px; font-size: 11.5px; color: var(--text-
   <div class="sidebar-profile">
     <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
     <div class="sp-info">
-      <div class="sp-name" th:text="${admin != null ? admin.name : '실무'} + ' 관리자'">홍길동 관리자</div>
-      <span class="sp-role" th:text="${admin != null ? admin.admin_role : 'executive'}">executive</span>
+      <div class="sp-name" th:text="${admin != null ? admin.name : '최고'} + ' 관리자'">홍길동 관리자</div>
+      <span class="sp-role" th:text="${admin != null ? admin.admin_role : 'chief'}">chief</span>
     </div>
   </div>
   <ul class="sidebar-menu">
-    <li class="menu-section-title">워크스페이스</li>
-    <li><a href="#" class="menu-item active"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
-    <li><a href="#" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
-    <li><a href="#" class="menu-item"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
-    <li><a href="#" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
-    <li class="menu-section-title">설정</li>
-    <li><a href="#" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
+    <li class="menu-section-title">메인</li>
+    <li><a href="/admin/chiefDashboard" class="menu-item active"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+    <li><a href="/admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
+    <li class="menu-section-title">콘텐츠 관리</li>
+    <li><a href="/admin/newsPage" class="menu-item"><i class="fa-solid fa-bullhorn"></i> 공지사항 목록</a></li>
+    <li><a href="/admin/makeNewsPage" class="menu-item"><i class="fa-solid fa-pen-to-square"></i> 공지사항 등록</a></li>
+    <li><a href="/admin/adminEventListPage" class="menu-item"><i class="fa-solid fa-calendar-days"></i> 이벤트 목록</a></li>
+    <li><a href="/admin/adminEventPage" class="menu-item"><i class="fa-solid fa-circle-plus"></i> 이벤트 등록</a></li>
+    <li class="menu-section-title">업무</li>
+    <li><a href="/admin/exchangeListPage" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
+    <li><a href="/admin/adminAccountPage" class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
   </ul>
   <div class="sidebar-footer">
     <p>&copy; 2026 BNK Busan Bank</p>
@@ -191,6 +196,7 @@ tbody td:first-child { padding-left: 18px; font-size: 11.5px; color: var(--text-
   </div>
 </div>
 
+<!-- ───── HEADER ───── -->
 <div class="header">
   <div class="header-title">관리자 대시보드</div>
   <div class="header-breadcrumb">
@@ -206,69 +212,87 @@ tbody td:first-child { padding-left: 18px; font-size: 11.5px; color: var(--text-
   </div>
 </div>
 
+<!-- ───── MAIN CONTENT ───── -->
 <div class="main-content">
 
   <div class="page-header">
     <div>
-      <h1 class="page-title">관리자 대시보드</h1>
-      <p class="page-subtitle">시스템 통합 로그 및 블랙리스트 탐지 현황을 실시간으로 교차 모니터링합니다.</p>
+      <h1 class="page-title">Chief 대시보드</h1>
+      <p class="page-subtitle">대고객 금융 서비스 및 플랫폼 운영 현황을 종합적으로 모니터링합니다.</p>
     </div>
   </div>
 
+  <!-- ───── STAT CARDS GRID ───── -->
   <div class="stat-grid">
     <div class="stat-card">
-      <div class="stat-icon red"><i class="fa-solid fa-folder-open"></i></div>
+      <div class="stat-icon red"><i class="fa-solid fa-hand-holding-dollar"></i></div>
       <div>
-        <div class="stat-label">미결재 개수</div>
-        <div class="stat-value" th:text="${approval}">0</div>
+        <div class="stat-label">오늘 환전 수</div>
+        <div class="stat-value" th:text="${exchange != null ? exchange.size() : 0}">0</div>
       </div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon blue"><i class="fa-solid fa-server"></i></div>
+      <div class="stat-icon blue"><i class="fa-solid fa-earth-asia"></i></div>
       <div>
-        <div class="stat-label">시스템 상태</div>
-        <div class="stat-value" style="font-size: 20px; padding-top: 4px; color: #2563EB;">안정 (OK)</div>
+        <div class="stat-label">주거래 통화</div>
+        <div class="stat-value" style="font-size: 22px; color: #2563EB; font-weight: 800;">USD <span class="stat-subtext">(미국)</span></div>
       </div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon purple"><i class="fa-solid fa-terminal"></i></div>
+      <div class="stat-icon purple"><i class="fa-solid fa-gift"></i></div>
       <div>
-        <div class="stat-label">로그 수집</div>
-        <div class="stat-value" style="font-size: 20px; padding-top: 4px; color: #7C3AED;">추적 중</div>
+        <div class="stat-label">총 이벤트 개수</div>
+        <div class="stat-value" th:text="${event}">0</div>
       </div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon green"><i class="fa-solid fa-shield-check"></i></div>
+      <div class="stat-icon green"><i class="fa-solid fa-circle-exclamation"></i></div>
       <div>
-        <div class="stat-label">보안 상태</div>
-        <div class="stat-value" style="font-size: 20px; padding-top: 4px; color: #16A34A;">정상 가동</div>
+        <div class="stat-label">총 공지사항 개수</div>
+        <div class="stat-value" th:text="${news != null ? news.size() : 0}">0</div>
       </div>
     </div>
   </div>
 
+  <!-- ───── DATA TABLES GRID ───── -->
   <div class="dashboard-grid">
 
+    <!-- 실시간 환전 신청 현황 (ExchangeRequestDto 기반 필드명 전면 수정) -->
     <div class="table-section">
       <div class="section-header">
-        <div class="section-title-text"><i class="fa-solid fa-user-shield" style="color: #2563EB;"></i> 관리자 로그</div>
+        <div class="section-title-text"><i class="fa-solid fa-money-bill-transfer" style="color: #2563EB;"></i> 실시간 환전 신청 현황</div>
       </div>
       <div class="table-card">
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>번호</th>
-                <th>액션</th>
-                <th>타겟</th>
-                <th>시간</th>
+                <th>ID</th>
+                <th>유형</th>
+                <th>환전 통화 (From → To)</th>
+                <th>환전 금액 (From → To)</th>
+                <th>적용 환율</th>
               </tr>
             </thead>
             <tbody>
-              <tr th:each="admin : adminLog">
-                <td th:text="admin.log_no"></td>
-                <td th:text="admin.action" style="font-weight: 700;"></td>
-                <td th:text="admin.target"></td>
-                <td th:text="admin.reg_dt"></td>
+              <!-- ⚠️ ExchangeRequestDto 변수명 완벽 매핑 완료 -->
+              <tr th:each="ex : ${exchange}">
+                <td th:text="${ex.exchange_id}">1001</td>
+                <td th:text="${ex.type}" style="font-weight: 700; color: var(--text-sub);">일반환전</td>
+                <td>
+                  <span th:text="${ex.from_currency}" style="font-weight: 700;">KRW</span> 
+                  <i class="fa-solid fa-arrow-right-long" style="font-size: 11px; margin: 0 4px; color: var(--text-muted);"></i> 
+                  <span th:text="${ex.to_currency}" style="font-weight: 700; color: #2563EB;">USD</span>
+                </td>
+                <td>
+                  <span th:text="${#numbers.formatInteger(ex.from_amount, 0, 'COMMA')}">1,350,000</span>
+                  <i class="fa-solid fa-arrow-right-long" style="font-size: 11px; margin: 0 4px; color: var(--text-muted);"></i> 
+                  <span th:text="${#numbers.formatInteger(ex.to_amount, 0, 'COMMA')}" style="font-weight: 600;">1,000</span>
+                </td>
+                <td th:text="${ex.applied_rate != null ? #numbers.formatInteger(ex.applied_rate, 0, 'COMMA') : '-'}">1,350</td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(exchange)}">
+                <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 25px;">당일 환전 신청 내역이 없습니다.</td>
               </tr>
             </tbody>
           </table>
@@ -276,9 +300,10 @@ tbody td:first-child { padding-left: 18px; font-size: 11.5px; color: var(--text-
       </div>
     </div>
 
+    <!-- 최근 공지사항 목록 (기존 유지) -->
     <div class="table-section">
       <div class="section-header">
-        <div class="section-title-text"><i class="fa-solid fa-laptop-code" style="color: #7C3AED;"></i> 사용자 로그</div>
+        <div class="section-title-text"><i class="fa-solid fa-list-check" style="color: #7C3AED;"></i> 최근 공지사항</div>
       </div>
       <div class="table-card">
         <div class="table-wrap">
@@ -286,17 +311,16 @@ tbody td:first-child { padding-left: 18px; font-size: 11.5px; color: var(--text-
             <thead>
               <tr>
                 <th>번호</th>
-                <th>url</th>
-                <th>메서드</th>
-                <th>시간</th>
+                <th>제목</th>
               </tr>
             </thead>
             <tbody>
-              <tr th:each="user : userLog">
-                <td th:text="user.log_no"></td>
-                <td th:text="user.url" style="font-family: monospace; color: var(--text-sub);"></td>
-                <td th:text="user.method"></td>
-                <td th:text="user.elap_ms"></td>
+              <tr th:each="n : ${news}">
+                <td th:text="${n.news_no}">1</td>
+                <td th:text="${n.news_ttl}" style="max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500;">시스템 점검 안내</td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(news)}">
+                <td colspan="2" style="text-align: center; color: var(--text-muted); padding: 25px;">등록된 공지사항이 없습니다.</td>
               </tr>
             </tbody>
           </table>
@@ -304,37 +328,8 @@ tbody td:first-child { padding-left: 18px; font-size: 11.5px; color: var(--text-
       </div>
     </div>
 
-    <div class="table-section">
-      <div class="section-header">
-        <div class="section-title-text"><i class="fa-solid fa-ban" style="color: var(--primary);"></i> 블랙리스트</div>
-      </div>
-      <div class="table-card">
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>번호</th>
-                <th>식별키</th>
-                <th>IP 주소</th>
-                <th>차단 사유</th>
-                <th>상태</th>
-                <th>차단 일시</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr th:each="blacks : ${black}">
-                <td th:text="${blacks.blk_no}"></td>
-                <td th:text="${blacks.cli_key}" style="font-family: monospace;"></td>
-                <td th:text="${blacks.ip_addr}" style="font-weight: 600;"></td>
-                <td th:text="${blacks.reason}"></td>
-                <td th:text="${blacks.status}"></td>
-                <td th:text="${blacks.reg_dt}"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+  </div>
+</div>
 
-  </div></div></body>
+</body>
 </html>

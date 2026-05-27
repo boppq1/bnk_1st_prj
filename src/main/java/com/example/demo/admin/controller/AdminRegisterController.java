@@ -39,10 +39,6 @@
         public String join(AdminDto dto) {
             int result = serv.join(dto);
 
-            actionDao.insertActionLog(
-                    new AdminActionLogDto("UPDATE_USER", "user_id=3")
-            );
-
             System.out.println("result = " + result);
             return "redirect:/adminLogin"; // 가입 후 로그인 페이지로 리다이렉트
         }
@@ -66,7 +62,7 @@
 
             Map<String,Object> claims = new HashMap<>();
             claims.put("adminId",   admin.getAdmin_id());
-            claims.put("loginId",   admin.getLogin_id());
+            claims.put("login_id",   admin.getLogin_id());
             claims.put("name",       admin.getName());
             claims.put("role",       admin.getAdminRole());
             claims.put("department", admin.getDepartment());

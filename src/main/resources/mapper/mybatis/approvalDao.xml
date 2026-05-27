@@ -47,7 +47,7 @@
     <result property="pref_rate_id" column="pref_rate_no"/>
     <result property="condition_type" column="cond_type"/>
     <result property="condition_desc" column="cond_desc" jdbcType="CLOB"/>
-    <!-- ⚠️ 주의: SQL 쿼리문 최하단에서 prc.pref_rate AS PREF_RATE_DETAL 로 별칭을 주어야 매핑이 꼬이지 않습니다 -->
+    <!-- SQL 쿼리문 최하단에서 prc.pref_rate AS PREF_RATE_DETAL 로 별칭을 주어야 매핑이 꼬이지 않음 -->
     <result property="pref_rate" column="PREF_RATE_DETAL"/> 
 </resultMap>
 
@@ -128,6 +128,7 @@
     LEFT JOIN PRODUCTS p ON r.prod_no = p.prod_no
     LEFT JOIN ADMIN_USERS u1 ON r.req_usr_no = u1.lgn_id
     LEFT JOIN ADMIN_USERS u2 ON r.apv_usr_no = u2.lgn_id
+    ORDER BY req_no desc
     
 </select>
 	
