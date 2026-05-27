@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>BNK Busan Bank - Chief 대시보드</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
+  <style>
+/* ───────────────────────────────────────
+   ROOT & RESET (기존 템플릿 가이드라인 준수)
+─────────────────────────────────────── */
+:root {
+  --primary:        #ED1C24;
+  --primary-light:  #FFF2F2;
+  --primary-border: #FFCDD0;
+  --bg:             #F4F6F9;
+  --card:           #FFFFFF;
+  --border:         #E2E8F0;
+  --text:           #1E293B;
+  --text-sub:       #64748B;
+  --text-muted:     #94A3B8;
+  --sidebar-w:      260px;
+  --header-h:       68px;
+  --radius:         12px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Pretendard', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  overflow: hidden;
+}
+
+/* ───── SIDEBAR ───── */
+.sidebar {
+  width: var(--sidebar-w); height: 100vh;
+  background: #FFFFFF; border-right: 1px solid var(--border);
+  position: fixed; left: 0; top: 0;
+  display: flex; flex-direction: column;
+  z-index: 100; overflow: hidden;
+}
+.sidebar-logo { padding: 22px 24px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.sidebar-logo img { height: 28px; width: auto; display: block; }
+.sidebar-profile {
+  padding: 18px 24px;
+  display: flex; align-items: center; gap: 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0; background: #FAFBFC;
+}
+.sp-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--primary-light); border: 2px solid var(--primary-border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--primary); font-size: 16px; flex-shrink: 0;
+}
+.sp-info { min-width: 0; }
+.sp-name { font-size: 14px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sp-role {
+  font-size: 11px; color: var(--primary); font-weight: 600;
+  background: var(--primary-light); border: 1px solid var(--primary-border);
+  border-radius: 20px; padding: 1px 8px; display: inline-block; margin-top: 3px;
+}
+.sidebar-menu { list-style: none; flex: 1; overflow-y: auto; padding: 8px 0; }
+.menu-section-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-muted); padding: 16px 24px 6px;
+}
+.menu-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 24px; color: var(--text-sub); text-decoration: none;
+  font-size: 14px; font-weight: 500; transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.menu-item i { width: 18px; text-align: center; font-size: 14px; color: var(--text-muted); transition: color 0.15s; flex-shrink: 0; }
+.menu-item:hover { background: var(--primary-light); color: var(--primary); }
+.menu-item:hover i { color: var(--primary); }
+.menu-item.active { background: var(--primary-light); color: var(--primary); font-weight: 700; border-left-color: var(--primary); }
+.menu-item.active i { color: var(--primary); }
+.sidebar-footer { padding: 14px 24px; border-top: 1px solid var(--border); flex-shrink: 0; }
+.sidebar-footer p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+/* ───── HEADER ───── */
+.header {
+  position: fixed; top: 0; left: var(--sidebar-w);
+  width: calc(100% - var(--sidebar-w)); height: var(--header-h);
+  background: #FFFFFF; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 36px; z-index: 90; gap: 16px;
+}
+.header-title { font-size: 18px; font-weight: 800; color: var(--text); }
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.header-user {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 14px 6px 8px; border-radius: 40px; border: 1px solid var(--border);
+  cursor: pointer; transition: all 0.15s; font-size: 13px; font-weight: 600; color: var(--text);
+}
+.header-user:hover { background: var(--bg); }
+.hu-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 13px; }
+.hu-chevron { color: var(--text-muted); font-size: 11px; }
+.header-breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-muted); margin-left: 4px; }
+.header-breadcrumb i { font-size: 10px; }
+.header-breadcrumb span:last-child { color: var(--text-sub); font-weight: 500; }
+
+/* ───── MAIN ───── */
+.main-content {
+  margin-left: var(--sidebar-w); margin-top: var(--header-h);
+  width: calc(100% - var(--sidebar-w)); height: calc(100vh - var(--header-h));
+  overflow-y: auto; padding: 36px 40px;
+}
+.main-content::-webkit-scrollbar { width: 6px; }
+.main-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* ───── PAGE HEADER ───── */
+.page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; }
+.page-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.page-subtitle { font-size: 14px; color: var(--text-sub); }
+
+/* ───── STAT CARDS GRID ───── */
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+.stat-card {
+  background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 20px 24px; display: flex; align-items: center; gap: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.stat-icon.red    { background: var(--primary-light); color: var(--primary); }
+.stat-icon.blue   { background: #EFF6FF; color: #2563EB; }
+.stat-icon.purple { background: #FAF5FF; color: #7C3AED; }
+.stat-icon.green  { background: #F0FDF4; color: #16A34A; }
+.stat-label { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+.stat-value { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1; }
+.stat-subtext { font-size: 13px; font-weight: 600; color: var(--text-sub); margin-top: 4px; }
+
+/* ───── SECTION LAYOUT ───── */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.table-section { margin-bottom: 0; min-width: 0; }
+.section-header { margin-bottom: 12px; }
+.section-title-text { font-size: 15px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 8px; }
+
+.table-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.table-wrap { overflow-x: auto; }
+.table-wrap::-webkit-scrollbar { height: 4px; }
+.table-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+table { width: 100%; border-collapse: collapse; }
+thead tr { background: #F8FAFC; border-bottom: 2px solid var(--border); }
+thead th {
+  padding: 12px 14px; font-size: 12px; font-weight: 700;
+  color: var(--text-muted); text-align: left;
+  white-space: nowrap; letter-spacing: 0.03em; text-transform: uppercase;
+}
+thead th:first-child { padding-left: 18px; }
+tbody tr { border-bottom: 1px solid #F1F5F9; }
+tbody tr:last-child  { border-bottom: none; }
+tbody tr:hover { background: #FAFBFC; }
+tbody td { padding: 12px 14px; font-size: 13.5px; color: var(--text); vertical-align: middle; white-space: nowrap; }
+tbody td:first-child { padding-left: 18px; font-size: 11.5px; color: var(--text-muted); font-weight: 600; font-family: monospace; }
+  </style>
+</head>
+<body>
+
+<!-- ───── SIDEBAR ───── -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <img th:src="@{/images/BNKlogo.png}" src="/images/BNKlogo.png" alt="BNK 부산은행">
+  </div>
+  <div class="sidebar-profile">
+    <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
+    <div class="sp-info">
+      <div class="sp-name" th:text="${admin != null ? admin.name : '최고'} + ' 관리자'">홍길동 관리자</div>
+      <span class="sp-role" th:text="${admin != null ? admin.admin_role : 'chief'}">chief</span>
+    </div>
+  </div>
+  <ul class="sidebar-menu">
+    <li class="menu-section-title">메인</li>
+    <li><a href="/admin/chiefDashboard" class="menu-item active"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+    <li><a href="/admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
+    <li class="menu-section-title">콘텐츠 관리</li>
+    <li><a href="/admin/newsPage" class="menu-item"><i class="fa-solid fa-bullhorn"></i> 공지사항 목록</a></li>
+    <li><a href="/admin/makeNewsPage" class="menu-item"><i class="fa-solid fa-pen-to-square"></i> 공지사항 등록</a></li>
+    <li><a href="/admin/adminEventListPage" class="menu-item"><i class="fa-solid fa-calendar-days"></i> 이벤트 목록</a></li>
+    <li><a href="/admin/adminEventPage" class="menu-item"><i class="fa-solid fa-circle-plus"></i> 이벤트 등록</a></li>
+    <li class="menu-section-title">업무</li>
+    <li><a href="/admin/exchangeListPage" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
+    <li><a href="/admin/adminAccountPage" class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
+  </ul>
+  <div class="sidebar-footer">
+    <p>&copy; 2026 BNK Busan Bank</p>
+    <p>IT Strategy Team</p>
+  </div>
+</div>
+
+<!-- ───── HEADER ───── -->
+<div class="header">
+  <div class="header-title">관리자 대시보드</div>
+  <div class="header-breadcrumb">
+    <i class="fa-solid fa-chevron-right"></i><span>메인</span>
+    <i class="fa-solid fa-chevron-right"></i><span>대시보드</span>
+  </div>
+  <div class="header-right">
+    <div class="header-user">
+      <div class="hu-avatar"><i class="fa-solid fa-user-tie"></i></div>
+      <span th:text="'관리자 ' + ${admin.name} + ' 님'">홍길동 관리자</span>
+      <i class="fa-solid fa-chevron-down hu-chevron"></i>
+    </div>
+  </div>
+</div>
+
+<!-- ───── MAIN CONTENT ───── -->
+<div class="main-content">
+
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Chief 대시보드</h1>
+      <p class="page-subtitle">대고객 금융 서비스 및 플랫폼 운영 현황을 종합적으로 모니터링합니다.</p>
+    </div>
+  </div>
+
+  <!-- ───── STAT CARDS GRID ───── -->
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-icon red"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+      <div>
+        <div class="stat-label">오늘 환전 수</div>
+        <div class="stat-value" th:text="${exchange != null ? exchange.size() : 0}">0</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon blue"><i class="fa-solid fa-earth-asia"></i></div>
+      <div>
+        <div class="stat-label">주거래 통화</div>
+        <div class="stat-value" style="font-size: 22px; color: #2563EB; font-weight: 800;">USD <span class="stat-subtext">(미국)</span></div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon purple"><i class="fa-solid fa-gift"></i></div>
+      <div>
+        <div class="stat-label">총 이벤트 개수</div>
+        <div class="stat-value" th:text="${event}">0</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green"><i class="fa-solid fa-circle-exclamation"></i></div>
+      <div>
+        <div class="stat-label">총 공지사항 개수</div>
+        <div class="stat-value" th:text="${news != null ? news.size() : 0}">0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───── DATA TABLES GRID ───── -->
+  <div class="dashboard-grid">
+
+    <!-- 실시간 환전 신청 현황 (ExchangeRequestDto 기반 필드명 전면 수정) -->
+    <div class="table-section">
+      <div class="section-header">
+        <div class="section-title-text"><i class="fa-solid fa-money-bill-transfer" style="color: #2563EB;"></i> 실시간 환전 신청 현황</div>
+      </div>
+      <div class="table-card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>유형</th>
+                <th>환전 통화 (From → To)</th>
+                <th>환전 금액 (From → To)</th>
+                <th>적용 환율</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- ⚠️ ExchangeRequestDto 변수명 완벽 매핑 완료 -->
+              <tr th:each="ex : ${exchange}">
+                <td th:text="${ex.exchange_id}">1001</td>
+                <td th:text="${ex.type}" style="font-weight: 700; color: var(--text-sub);">일반환전</td>
+                <td>
+                  <span th:text="${ex.from_currency}" style="font-weight: 700;">KRW</span> 
+                  <i class="fa-solid fa-arrow-right-long" style="font-size: 11px; margin: 0 4px; color: var(--text-muted);"></i> 
+                  <span th:text="${ex.to_currency}" style="font-weight: 700; color: #2563EB;">USD</span>
+                </td>
+                <td>
+                  <span th:text="${#numbers.formatInteger(ex.from_amount, 0, 'COMMA')}">1,350,000</span>
+                  <i class="fa-solid fa-arrow-right-long" style="font-size: 11px; margin: 0 4px; color: var(--text-muted);"></i> 
+                  <span th:text="${#numbers.formatInteger(ex.to_amount, 0, 'COMMA')}" style="font-weight: 600;">1,000</span>
+                </td>
+                <td th:text="${ex.applied_rate != null ? #numbers.formatInteger(ex.applied_rate, 0, 'COMMA') : '-'}">1,350</td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(exchange)}">
+                <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 25px;">당일 환전 신청 내역이 없습니다.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 최근 공지사항 목록 (기존 유지) -->
+    <div class="table-section">
+      <div class="section-header">
+        <div class="section-title-text"><i class="fa-solid fa-list-check" style="color: #7C3AED;"></i> 최근 공지사항</div>
+      </div>
+      <div class="table-card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>번호</th>
+                <th>제목</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="n : ${news}">
+                <td th:text="${n.news_no}">1</td>
+                <td th:text="${n.news_ttl}" style="max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500;">시스템 점검 안내</td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(news)}">
+                <td colspan="2" style="text-align: center; color: var(--text-muted); padding: 25px;">등록된 공지사항이 없습니다.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

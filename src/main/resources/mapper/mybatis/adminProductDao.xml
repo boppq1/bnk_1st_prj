@@ -61,8 +61,25 @@
     <!-- ==================== PRODUCTS ==================== -->
 
     <insert id="insertPro" parameterType="com.example.demo.admin.dto.ProductDto">
-        INSERT INTO PRODUCTS (prod_no, prod_nm, prod_type, min_prd_mon, max_prd_mon, min_amt, max_amt, tgt_lrg, tgt_dtl, prod_desc, int_pay_type, apld_exch_type, reg_dt, reg_by, rate_cat, apv_stat_cd)
-        VALUES (SEQ_PRODUCTS.NEXTVAL, #{product_name, jdbcType=VARCHAR}, #{product_type, jdbcType=VARCHAR}, #{min_period_month, jdbcType=NUMERIC}, #{max_period_month, jdbcType=NUMERIC}, #{min_amount, jdbcType=NUMERIC}, #{max_amount, jdbcType=NUMERIC}, #{target_large, jdbcType=VARCHAR}, #{target_detail, jdbcType=VARCHAR}, #{product_desc, jdbcType=VARCHAR}, #{interest_payment_type, jdbcType=VARCHAR}, #{applied_exchange_rate_type, jdbcType=VARCHAR}, SYSDATE, #{created_by, jdbcType=VARCHAR}, #{rate_category, jdbcType=VARCHAR}, #{approve_status, jdbcType=VARCHAR})
+        <selectKey keyProperty="product_id" resultType="long" order="BEFORE">
+            SELECT SEQ_PRODUCTS.NEXTVAL FROM DUAL
+        </selectKey>
+
+        INSERT INTO PRODUCTS (
+        prod_no, prod_nm, prod_type, min_prd_mon, max_prd_mon, min_amt, max_amt,
+        tgt_lrg, tgt_dtl, prod_desc, int_pay_type, apld_exch_type, reg_dt, reg_by,
+        rate_cat, apv_stat_cd
+        )
+        VALUES (
+        #{product_id}, #{product_name, jdbcType=VARCHAR}, #{product_type, jdbcType=VARCHAR},
+        #{min_period_month, jdbcType=NUMERIC}, #{max_period_month, jdbcType=NUMERIC},
+        #{min_amount, jdbcType=NUMERIC}, #{max_amount, jdbcType=NUMERIC},
+        #{target_large, jdbcType=VARCHAR}, #{target_detail, jdbcType=VARCHAR},
+        #{product_desc, jdbcType=VARCHAR}, #{interest_payment_type, jdbcType=VARCHAR},
+        #{applied_exchange_rate_type, jdbcType=VARCHAR}, SYSDATE,
+        #{created_by, jdbcType=VARCHAR}, #{rate_category, jdbcType=VARCHAR},
+        #{approve_status, jdbcType=VARCHAR}
+        )
     </insert>
 
     <insert id="insertProPdf" parameterType="com.example.demo.admin.dto.ProductDto">
@@ -181,8 +198,22 @@
 
     <!-- ==================== INTEREST_RATES ==================== -->
     <insert id="insertInterestRate" parameterType="com.example.demo.admin.dto.InterestRateDto">
-        INSERT INTO INTEREST_RATES (rate_no, prod_no, cur_cd, cust_type, res_type, prd_mon, base_rate, mtr_rate, early_cxl_rate, rate_start_dt, rate_end_dt, rate_type, pref_rate, reg_dt)
-        VALUES (SEQ_INTEREST_RATES.NEXTVAL, #{product_id, jdbcType=NUMERIC}, #{currency_code, jdbcType=VARCHAR}, #{customer_type, jdbcType=VARCHAR}, #{resident_type, jdbcType=VARCHAR}, #{period_month, jdbcType=NUMERIC}, #{base_rate, jdbcType=NUMERIC}, #{maturity_rate, jdbcType=NUMERIC}, #{early_cancel_rate, jdbcType=NUMERIC}, #{rate_start_date, jdbcType=DATE}, #{rate_end_date, jdbcType=DATE}, #{rate_type, jdbcType=VARCHAR}, #{preferential_rate, jdbcType=NUMERIC}, SYSDATE)
+        <selectKey keyProperty="rate_id" resultType="long" order="BEFORE">
+            SELECT SEQ_INTEREST_RATES.NEXTVAL FROM DUAL
+        </selectKey>
+
+        INSERT INTO INTEREST_RATES (
+        rate_no, prod_no, cur_cd, cust_type, res_type, prd_mon, base_rate,
+        mtr_rate, early_cxl_rate, rate_start_dt, rate_end_dt, rate_type, pref_rate, reg_dt
+        )
+        VALUES (
+        #{rate_id}, #{product_id, jdbcType=NUMERIC}, #{currency_code, jdbcType=VARCHAR},
+        #{customer_type, jdbcType=VARCHAR}, #{resident_type, jdbcType=VARCHAR},
+        #{period_month, jdbcType=NUMERIC}, #{base_rate, jdbcType=NUMERIC},
+        #{maturity_rate, jdbcType=NUMERIC}, #{early_cancel_rate, jdbcType=NUMERIC},
+        #{rate_start_date, jdbcType=DATE}, #{rate_end_date, jdbcType=DATE},
+        #{rate_type, jdbcType=VARCHAR}, #{preferential_rate, jdbcType=NUMERIC}, SYSDATE
+        )
     </insert>
 
     <select id="selectCurrentRateNo" resultType="long"> SELECT MAX(rate_no) FROM INTEREST_RATES </select>
@@ -220,4 +251,149 @@
     <delete id="deletePrefRateByProduct" parameterType="long"> DELETE FROM PREFERENTIAL_RATE_CONDITIONS WHERE rate_no IN (SELECT rate_no FROM INTEREST_RATES WHERE prod_no = #{product_id, jdbcType=NUMERIC}) </delete>
     <delete id="deletePrefRateByRate" parameterType="long"> DELETE FROM PREFERENTIAL_RATE_CONDITIONS WHERE rate_no = #{rate_id, jdbcType=NUMERIC} </delete>
 
+
+    <select id="selectRatesByProduct" resultType="com.example.demo.admin.dto.InterestRateDto">
+        SELECT * FROM interest_rates WHERE prod_no = #{product_id}
+    </select>
+
+
+    <!-- ==================== PRODUCT_CURRENCIES ==================== -->
+
+    <insert id="insertProductCurrency" parameterType="com.example.demo.admin.dto.ProductCurrencyDto">
+        INSERT INTO PRODUCT_CURRENCIES (prod_cur_no, prod_no, cur_cd, cur_nm, is_avail, reg_dt)
+        VALUES (SEQ_PRODUCT_CURRENCIES.NEXTVAL, #{product_id, jdbcType=NUMERIC}, #{cur_cd, jdbcType=VARCHAR}, #{cur_nm, jdbcType=VARCHAR}, 'Y', SYSDATE)
+    </insert>
+
+    <delete id="deleteProductCurrenciesByProduct" parameterType="long">
+        DELETE FROM PRODUCT_CURRENCIES WHERE prod_no = #{product_id, jdbcType=NUMERIC}
+    </delete>
+
+    <select id="listProductCurrencies" parameterType="long" resultType="com.example.demo.admin.dto.ProductCurrencyDto">
+        SELECT prod_cur_no, prod_no AS product_id, cur_cd, cur_nm, is_avail AS avail
+        FROM PRODUCT_CURRENCIES
+        WHERE prod_no = #{product_id, jdbcType=NUMERIC}
+        ORDER BY cur_cd
+    </select>
+
+    <update id="disableProductCurrency" parameterType="long">
+        UPDATE PRODUCT_CURRENCIES SET is_avail = 'N' WHERE prod_cur_no = #{prod_cur_no, jdbcType=NUMERIC}
+    </update>
+
+    <!-- 목록 페이지용 — 통화 포함 resultMap -->
+    <resultMap id="productListResultMap" type="com.example.demo.admin.dto.ProductDto">
+        <id  property="product_id"                   column="product_id"/>
+        <result property="product_name"               column="product_name"/>
+        <result property="active"                     column="active"/>
+        <result property="product_type"               column="product_type"/>
+        <result property="approve_status"             column="approve_status"/>
+        <result property="create_date"                column="create_date"/>
+        <result property="created_by"                 column="created_by"/>
+        <result property="target_large"               column="target_large"/>
+        <result property="target_detail"              column="target_detail"/>
+        <result property="rate_category"              column="rate_category"/>
+        <result property="min_period_month"           column="min_period_month"/>
+        <result property="max_period_month"           column="max_period_month"/>
+        <result property="min_amount"                 column="min_amount"/>
+        <result property="max_amount"                 column="max_amount"/>
+        <result property="product_desc"               column="product_desc"/>
+        <result property="interest_payment_type"      column="interest_payment_type"/>
+        <result property="applied_exchange_rate_type" column="applied_exchange_rate_type"/>
+        <collection property="currencies" ofType="com.example.demo.admin.dto.ProductCurrencyDto">
+            <id  property="prod_cur_no" column="prod_cur_no"/>
+            <result property="cur_cd"   column="cur_cd"/>
+            <result property="cur_nm"   column="cur_nm"/>
+            <result property="avail"    column="avail"/>
+        </collection>
+    </resultMap>
+
+    <!-- listPro 는 기존 단순 쿼리 유지, 목록+통화가 필요한 경우 이 쿼리 사용 -->
+    <select id="listProWithCurrencies" resultMap="productListResultMap">
+        SELECT
+            P.prod_no        AS product_id,
+            P.prod_nm        AS product_name,
+            P.active,
+            P.prod_type      AS product_type,
+            P.min_amt        AS min_amount,
+            P.max_amt        AS max_amount,
+            P.min_prd_mon    AS min_period_month,
+            P.max_prd_mon    AS max_period_month,
+            P.apv_stat_cd    AS approve_status,
+            P.reg_dt         AS create_date,
+            P.reg_by         AS created_by,
+            P.tgt_lrg        AS target_large,
+            P.tgt_dtl        AS target_detail,
+            P.rate_cat       AS rate_category,
+            P.prod_desc      AS product_desc,
+            P.int_pay_type   AS interest_payment_type,
+            P.apld_exch_type AS applied_exchange_rate_type,
+            C.prod_cur_no,
+            C.cur_cd,
+            C.cur_nm,
+            C.is_avail       AS avail
+        FROM PRODUCTS P
+                 LEFT JOIN PRODUCT_CURRENCIES C ON P.prod_no = C.prod_no AND C.is_avail = 'Y'
+        ORDER BY P.prod_no DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{pageSize} ROWS ONLY
+    </select>
+
+    <select id="searchProducts" parameterType="map" resultMap="productListResultMap">
+        SELECT
+        P.prod_no        AS product_id,
+        P.prod_nm        AS product_name,
+        P.prod_type      AS product_type,
+        P.apv_stat_cd    AS approve_status,
+        P.reg_dt         AS create_date,
+        P.reg_by         AS created_by,
+        P.tgt_lrg        AS target_large,
+        P.tgt_dtl        AS target_detail,
+        P.rate_cat       AS rate_category,
+        P.min_prd_mon    AS min_period_month,
+        P.max_prd_mon    AS max_period_month,
+        P.min_amt        AS min_amount,
+        P.max_amt        AS max_amount,
+        P.prod_desc      AS product_desc,
+        P.int_pay_type   AS interest_payment_type,
+        P.apld_exch_type AS applied_exchange_rate_type,
+        C.prod_cur_no,
+        C.cur_cd,
+        C.cur_nm,
+        C.is_avail       AS avail
+        FROM PRODUCTS P
+        LEFT JOIN PRODUCT_CURRENCIES C ON P.prod_no = C.prod_no AND C.is_avail = 'Y'
+        WHERE 1=1
+        <if test="keyword != null and keyword != ''">
+            AND P.prod_nm LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="type != null and type != ''">
+            AND P.prod_type = #{type}
+        </if>
+        <if test="status != null and status != ''">
+            AND P.apv_stat_cd = #{status}
+        </if>
+        ORDER BY P.prod_no DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{pageSize} ROWS ONLY
+    </select>
+
+
+    <select id="searchProductCount"
+            parameterType="map"
+            resultType="int">
+
+        SELECT COUNT(*)
+        FROM products
+        WHERE 1=1
+
+        <if test="keyword != null and keyword != ''">
+            AND prod_nm LIKE '%' || #{keyword} || '%'
+        </if>
+
+        <if test="type != null and type != ''">
+            AND prod_type = #{type}
+        </if>
+
+        <if test="status != null and status != ''">
+            AND apv_stat_cd = #{status}
+        </if>
+
+    </select>
 </mapper>

@@ -267,6 +267,41 @@ body {
 .toast-btn:hover {
   background: #D1141B;
 }
+
+/* ───── SUBMIT AREA MODIFIED ───── */
+.submit-area {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center; /* 버튼 높이 정렬 */
+  gap: 12px;           /* 버튼 사이의 간격 */
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+
+/* 새로 추가된 목록으로 버튼 스타일 */
+.submit-area .cancel-btn {
+  background: #FFFFFF;
+  color: var(--text-sub);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Pretendard', sans-serif;
+  text-decoration: none; /* A 태그 밑줄 제거 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;              /* 아이콘과 텍스트 사이 간격 */
+  transition: all 0.15s;
+  height: 45px;          /* 우측 변경 완료 버튼과 높이 균형 맞춤 */
+}
+
+.submit-area .cancel-btn:hover {
+  background: var(--bg);
+  color: var(--text);
+  border-color: var(--text-muted);
+}
   </style>
 </head>
 <body>
@@ -295,7 +330,7 @@ body {
     <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
     <li><a href="/admin/account"  class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
     <li class="menu-section-title">관리</li>
-    <li><a href="/admin/members"   class="menu-item active"><i class="fa-solid fa-users-gear"></i> 회원/관리자 관리</a></li>
+    <li><a href="/admin/memberList"   class="menu-item active"><i class="fa-solid fa-users-gear"></i> 회원/관리자 관리</a></li>
     <li><a href="/admin/logs"      class="menu-item"><i class="fa-solid fa-receipt"></i> 로그 관리</a></li>
     <li><a href="/admin/blacklist" class="menu-item"><i class="fa-solid fa-ban"></i> 블랙리스트</a></li>
   </ul>
@@ -381,6 +416,9 @@ body {
       </div>
 
       <div class="submit-area">
+      	<a th:href="@{/admin/memberList}" class="cancel-btn">
+          <i class="fa-solid fa-arrow-left"></i> 목록으로
+        </a>
         <button type="submit">
           <i class="fa-solid fa-floppy-disk"></i> 기업 정보 변경 완료
         </button>

@@ -46,7 +46,7 @@ public class RegisterCompanyService {
 	        }
 
 	        dto.setCompany_id(companyInfo.getCompany_id()); 
-	        dto.setStatus("정상");
+	        dto.setStatus("ACTIVE");
 	        companyDAO.insertCompanyUser(dto);
 
 	        // 국내계좌
@@ -64,7 +64,7 @@ public class RegisterCompanyService {
 	        newAC.setCompany_id((long) companyInfo.getCompany_id()); 
 	        newAC.setBalance(0L);
 	        newAC.setCurrency("KRW");
-	        newAC.setAccount_status("정상");
+	        newAC.setAccount_status("ACTIVE");
 	        newAC.setLimit_one_time(500000000L);
 	        newAC.setLimit_daily(1000000000L);
 
@@ -83,7 +83,7 @@ public class RegisterCompanyService {
 	        }
 	        newFAC.setAccount_no(newAcc);
 	        newFAC.setCompany_id((long) companyInfo.getCompany_id()); 
-	        newFAC.setAccount_status("정상");
+	        newFAC.setAccount_status("ACTIVE");
 	        newFAC.setLimit_one_time(500000000L);
 	        newFAC.setLimit_daily(1000000000L);
 

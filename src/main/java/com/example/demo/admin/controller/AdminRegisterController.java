@@ -5,7 +5,7 @@
     import com.example.demo.admin.dto.AdminActionLogDto;
     import com.example.demo.admin.dto.AdminDto;
     import com.example.demo.admin.service.AdminMergeService;
-    import com.example.demo.interceptor.JwtFilter;
+    import com.example.demo.jwt.JwtAuthFilter;
     import com.example.demo.jwt.JwtUtil;
     import jakarta.servlet.http.Cookie;
     import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +27,7 @@
         private final IAdminDao dao;
         private final IAdminActionDao actionDao;
         private final JwtUtil jwt;
-        private final JwtFilter jwtFilter;
+        private final JwtAuthFilter jwtFilter;
 
         @GetMapping("/adminJoin")
         public String joinPage(Model model) {
@@ -38,10 +38,6 @@
         @PostMapping("/admin/join")
         public String join(AdminDto dto) {
             int result = serv.join(dto);
-
-            actionDao.insertActionLog(
-                    new AdminActionLogDto("UPDATE_USER", "user_id=3")
-            );
 
             System.out.println("result = " + result);
             return "redirect:/adminLogin"; // 가입 후 로그인 페이지로 리다이렉트
@@ -66,18 +62,23 @@
 
             Map<String,Object> claims = new HashMap<>();
             claims.put("adminId",   admin.getAdmin_id());
-            claims.put("loginId",   admin.getLogin_id());
+            claims.put("login_id",   admin.getLogin_id());
             claims.put("name",       admin.getName());
             claims.put("role",       admin.getAdminRole());
             claims.put("department", admin.getDepartment());
 
             String token = jwt.generateToken(admin.getName(), claims);
-
+            
             Cookie cookie = new Cookie("accessToken", token);
             cookie.setHttpOnly(true);
             cookie.setPath("/");
             response.addCookie(cookie);
-
+            String role = admin.getAdminRole();
+            if(role.equals("head")) {
+            	return "redirect:/admin/headMyPage";            	
+            }else if( role.equals("executive")) {
+            	return "redirect:/admin/executiveMyPage";            	            	
+            }
             return "redirect:/admin/adminMyPage";
         }
 
@@ -169,6 +170,12 @@
 
             response.addCookie(cookie);
             return "redirect:/adminLogin";
+        }
+
+        @GetMapping("/admin/access-denied")
+        public String denied(HttpServletResponse response) {
+            
+            return "/admin/access-denied";
         }
 
 

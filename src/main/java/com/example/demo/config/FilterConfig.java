@@ -7,6 +7,7 @@ import com.example.demo.interceptor.GuestIdentifierFilter;
 //import com.example.demo.interceptor.JwtFilter;
 import com.example.demo.interceptor.RateLimitFilter;
 //import com.example.demo.jwt.JwtUtil;
+import com.example.demo.jwt.JwtAuthFilter;
 
 import jakarta.servlet.Filter;
 
@@ -17,11 +18,9 @@ public class FilterConfig {
 	@Bean
 	public FilterRegistrationBean<Filter> rateLimitFilterRegistration(RateLimitFilter rateLimitFilter) {
 		FilterRegistrationBean<Filter> bean = new FilterRegistrationBean<>();
-		
 		bean.setFilter(rateLimitFilter);
 		bean.setOrder(2);
 		bean.addUrlPatterns("/*");
-		
 		return bean;
 	}
 	
@@ -31,22 +30,17 @@ public class FilterConfig {
 		bean.setFilter(filter);
 		bean.setOrder(1);
 		bean.addUrlPatterns("/*");
-		
 		return bean;
 	}
 
-//    @Bean
-//    public FilterRegistrationBean<JwtFilter> jwtFilter(JwtUtil jwtUtil) {
-//
-//        FilterRegistrationBean<JwtFilter> bean =
-//                new FilterRegistrationBean<>();
-//
-//        bean.setFilter(new JwtFilter(jwtUtil)); // 🔥 직접 생성
-//        bean.setOrder(3);
-//
-//        return bean;
-//    }
-
+	@Bean
+	public FilterRegistrationBean<Filter> jwtAuthFilterRegistration(JwtAuthFilter filter) {
+		FilterRegistrationBean<Filter> bean = new FilterRegistrationBean<>();
+		bean.setFilter(filter);
+		bean.setOrder(3);
+		bean.addUrlPatterns("/*");
+		return bean;
+	}
 }
 
 

@@ -213,7 +213,6 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
 </head>
 <body>
 
-<!-- ===== SIDEBAR ===== -->
 <div class="sidebar">
   <div class="sidebar-logo">
     <img src="/images/BNKlogo.png" alt="BNK 부산은행">
@@ -247,7 +246,6 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
   </div>
 </div>
 
-<!-- ===== HEADER ===== -->
 <div class="header">
   <div class="header-title">관리자 승인 센터</div>
   <div class="header-breadcrumb">
@@ -263,10 +261,8 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
   </div>
 </div>
 
-<!-- ===== MAIN CONTENT ===== -->
 <div class="main-content">
 
-  <!-- 페이지 헤더 -->
   <div class="page-header">
     <div>
       <h1 class="page-title">결재 신청 목록</h1>
@@ -274,7 +270,6 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
     </div>
   </div>
 
-  <!-- 통계 카드 -->
   <div class="stat-grid">
     <div class="stat-card">
       <div class="stat-icon red"><i class="fa-solid fa-folder-tree"></i></div>
@@ -287,26 +282,25 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
       <div class="stat-icon amber"><i class="fa-solid fa-clock-rotate-left"></i></div>
       <div>
         <div class="stat-label">심사 대기</div>
-        <div class="stat-value">-</div>
+        <div class="stat-value" id="pendingCount">0</div>
       </div>
     </div>
     <div class="stat-card">
       <div class="stat-icon blue"><i class="fa-solid fa-square-check"></i></div>
       <div>
         <div class="stat-label">승인 완료</div>
-        <div class="stat-value">-</div>
+        <div class="stat-value" id="approvedCount">0</div>
       </div>
     </div>
     <div class="stat-card">
       <div class="stat-icon purple"><i class="fa-solid fa-circle-plus"></i></div>
       <div>
         <div class="stat-label">금월 신규 등록 건</div>
-        <div class="stat-value">-</div>
+        <div class="stat-value" id="monthRegisterCount">0</div>
       </div>
     </div>
   </div>
 
-  <!-- 필터 바 -->
   <div class="filter-bar">
     <div class="filter-search">
       <i class="fa-solid fa-magnifying-glass"></i>
@@ -333,7 +327,6 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
     </div>
   </div>
 
-  <!-- 테이블 카드 -->
   <div class="table-card">
     <div class="table-wrap">
       <table id="approvalTable">
@@ -350,12 +343,8 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
           </tr>
         </thead>
         <tbody th:if="${approvalList != null and !#lists.isEmpty(approvalList)}">
-          <!-- 
-            Thymeleaf 변수 중첩 및 세션 오염을 방지하기 위해 
-            반복 변수명을 'approvalItem'으로 안전하게 매핑합니다. 
-          -->
           <tr th:each="approvalItem : ${approvalList}"
-              th:attr="data-pname=${approvalItem.product_name}, data-requester=${approvalItem.requester_name}, data-status=${approvalItem.request_status}, data-type=${approvalItem.request_type}">
+              th:attr="data-pname=${approvalItem.product_name}, data-requester=${approvalItem.requester_name}, data-status=${approvalItem.request_status}, data-type=${approvalItem.request_type}, data-date=${approvalItem.requested_at}">
             <td><span class="td-id" th:text="'#' + ${approvalItem.request_id}">#001</span></td>
             <td th:text="${approvalItem.product_id}"></td>
             <td><span class="td-name" th:text="${approvalItem.product_name}">상품명</span></td>
@@ -398,13 +387,50 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
     </div>
   </div>
 
-</div><!-- /main-content -->
-
-<script>
+</div><script>
   const approvalSearch = document.getElementById('approvalSearchInput');
   const approvalStatus = document.getElementById('approvalStatusFilter');
   const approvalType   = document.getElementById('approvalTypeFilter');
 
+  /* ───── DOM 로드 시 상단 통계 카드 데이터 실시간 연산 ───── */
+  window.addEventListener('DOMContentLoaded', function() {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const currentMonthStr = `${yyyy}-${mm}`; // "YYYY-MM" 형식
+
+    let pendingCount = 0;
+    let approvedCount = 0;
+    let monthRegisterCount = 0;
+
+    // 테이블 행들을 순회하면서 카운트 집계
+    document.querySelectorAll('#approvalTable tbody tr[data-status]').forEach(row => {
+      const status = row.getAttribute('data-status') || '';
+      const type = row.getAttribute('data-type') || '';
+      const date = row.getAttribute('data-date') || '';
+
+      // 1. 심사 대기 (검토중) 카운트
+      if (status === '검토중') {
+        pendingCount++;
+      }
+      // 2. 승인 완료 (승인) 카운트
+      else if (status === '승인') {
+        approvedCount++;
+      }
+
+      // 3. 금월 신규 등록 건 카운트 (구분이 REGISTER 이면서 이번 달 날짜로 시작할 때)
+      if (type === 'REGISTER' && date.trim().startsWith(currentMonthStr)) {
+        monthRegisterCount++;
+      }
+    });
+
+    // 화면 상단 엘리먼트에 동적 반영
+    document.getElementById('pendingCount').innerText = pendingCount;
+    document.getElementById('approvedCount').innerText = approvedCount;
+    document.getElementById('monthRegisterCount').innerText = monthRegisterCount;
+  });
+
+  /* ───── 실시간 프론트엔드 목록 필터 필터링 모듈 ───── */
   function filterApprovals() {
     const kw = approvalSearch.value.toLowerCase().trim();
     const st = approvalStatus.value;
