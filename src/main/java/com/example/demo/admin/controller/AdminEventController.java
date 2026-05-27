@@ -3,13 +3,12 @@ package com.example.demo.admin.controller;
 import com.example.demo.admin.dto.AdminEventDto;
 import com.example.demo.admin.service.AdminMergeService;
 import com.example.demo.interceptor.AdminLog;
-import com.example.demo.interceptor.JwtFilter;
+import com.example.demo.jwt.JwtAuthFilter;
 import com.example.demo.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
 import com.example.demo.admin.dto.AdminDto;
 import com.example.demo.admin.service.AdminEventService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -26,7 +25,7 @@ public class AdminEventController {
     private final AdminEventService serv;
     private final AdminMergeService adminServ;
     private final JwtUtil jwt;
-    private final JwtFilter jwtFilter;
+    private final JwtAuthFilter jwtFilter;
     private final AdminMergeService mergeServ;
 
     @GetMapping("/admin/adminEventPage")

@@ -224,102 +224,31 @@
     passwordPopup.addEventListener("click", e => { if (e.target === passwordPopup) closePasswordPopup(); });
     adminPwPopup.addEventListener("click",  e => { if (e.target === adminPwPopup)  closeAdminPwPopup(); });
 
-    $(document).ready(function(){
-        //마우스 우측 버튼 사용 막기.
-        if (window.addEventListener) {
-            window.addEventListener('contextmenu', function(e) {
-                try {
-                    if (typeof e != 'undefined') {
-                        e.preventDefault(); return false;
-                    } else {
-                        return false;
-                    }
-                } catch(e) {}
-            } , false);
-        } else {
-            window.attachEvent('oncontextmenu', function(e) {
-                try {
-                    if (typeof e != 'undefined') {
-                        e.preventDefault(); return false;
-                    } else {
-                        return false;
-                    }
-                } catch(e) {}
-            } );
+    (function() {
+        function detectDevTool() {
+            // 성능 측정 시작
+            const start = Date.now();
+
+            // 개발자 도구가 열려있을 때 브레이크 포인트 역할을 함
+            debugger;
+
+            // 성능 측정 종료
+            const end = Date.now();
+
+            // 시간이 지연되었다면 개발자 도구가 실행 중임을 의미
+            if (end - start > 100) {
+                alert('개발자 도구가 감지되었습니다!');
+                // 감지 시 수행할 추가 동작 (예: 화면 비우기)
+                // document.body.innerHTML = '<h1>보안 정책상 접근할 수 없습니다.</h1>';
+            }
         }
-        var handlemouseEvent = function(e) {
-            try {
-                if (typeof e == 'undefined') {
-                    if (window.event.button && window.event.button == "2") {
-                        return false;
-                    }
-                } else if ((e.which && e.which == 3) || (e.button && e.button == 2)) {
-                    e.preventDefault();
-                    return false;
-                }
 
-            } catch (e) {}
-        };
-        window.onkeydown = handlemouseEvent;
-        window.onkeyup = handlemouseEvent;
-
-        //로그아웃 시켜버릴 임시 form 생성
-        var logOutFrom = document.createElement('form');
-        logOutFrom.name= "logOutFrom";
-        logOutFrom.id= "logOutFrom";
-        logOutFrom.action = ctx+"/admin/logout";
-        logOutFrom.method= "POST";
-        var input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = '${_csrf.parameterName}';
-        input.value = '${_csrf.token}';
-        logOutFrom.appendChild(input);
-        document.body.appendChild(logOutFrom);
-
-        //개발자도구 실행 감지.
-        console.log(Object.defineProperties(new Error, {
-            toString: {
-                value() {
-                    (new Error).stack.includes('toString@') && alert('Safari devtools')
-                }
-            },
-            message: {
-                get() {
-                    //개발자도구를 감지하면 그냥 홬 로갓 키겨 버리자.
-                    logOutFrom.submit()
-                }
-            },
-        }));
-
-    });
-
-    // Detect Key Shortcuts f12 및 특수키 조합 막기
-    window.addEventListener('keydown', function(e) {
-        if (
-            // CMD + Alt + I (Chrome, Firefox, Safari)
-            e.metaKey == true && e.altKey == true && e.keyCode == 73 ||
-            // CMD + Alt + J (Chrome)
-            e.metaKey == true && e.altKey == true && e.keyCode == 74 ||
-            // CMD + Alt + C (Chrome)
-            e.metaKey == true && e.altKey == true && e.keyCode == 67 ||
-            // CMD + Shift + C (Chrome)
-            e.metaKey == true && e.shiftKey == true && e.keyCode == 67 ||
-            // Ctrl + Shift + I (Chrome, Firefox, Safari, Edge)
-            e.ctrlKey == true && e.shiftKey == true && e.keyCode == 73 ||
-            // Ctrl + Shift + J (Chrome, Edge)
-            e.ctrlKey == true && e.shiftKey == true && e.keyCode == 74 ||
-            // Ctrl + Shift + C (Chrome, Edge)
-            e.ctrlKey == true && e.shiftKey == true && e.keyCode == 67 ||
-            // F12 (Chome, Firefox, Edge)
-            e.keyCode == 123 ||
-            // CMD + Alt + U, Ctrl + U (View source: Chrome, Firefox, Safari, Edge)
-            e.metaKey == true && e.altKey == true && e.keyCode == 85 ||
-            e.ctrlKey == true && e.keyCode == 85
-        ) {
-            e.preventDefault();
-            return false;
-        }
-    });
+        // 주요 이벤트에 감지 함수 등록
+        const events = ['resize', 'mousemove', 'focus', 'blur', 'load'];
+        events.forEach(event => {
+            window.addEventListener(event, detectDevTool);
+        });
+    })();
 
 </script>
 </body>
