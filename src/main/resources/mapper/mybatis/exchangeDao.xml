@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.exchange.dao.ExchangeDao">
+
+    <select id="selectLatestRateByCurrencyCode"
+        resultType="com.example.demo.exchange.dto.response.ExchangeRateResponseDto">
+
+		    SELECT *
+		    FROM (
+		        SELECT
+		            rate_no AS rateNo,
+		            cur_nm AS currencyCode,
+		
+		            CASE
+		                WHEN cur_nm LIKE '%(100)' THEN REPLACE(cur_nm, '(100)', '')
+		                ELSE cur_nm
+		            END AS displayCurrencyCode,
+		
+		            ttb AS ttb,
+		            tts AS tts,
+		            deal_bas_r AS dealBaseRate,
+		
+		            CASE
+		                WHEN cur_nm LIKE '%(100)' THEN 100
+		                ELSE 1
+		            END AS currencyUnit,
+		
+		            ntc_dt AS noticeDate
+		        FROM exchange_rates
+		        WHERE cur_nm = #{currencyCode}
+		        ORDER BY ntc_dt DESC
+		    )
+		    WHERE ROWNUM = 1
+		
+		</select>
+
+</mapper>
