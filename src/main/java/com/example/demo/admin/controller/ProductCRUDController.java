@@ -8,7 +8,8 @@ import com.example.demo.admin.service.AdminProductService;
 import com.example.demo.config.FileProperties;
 
 import com.example.demo.interceptor.AdminLog;
-import com.example.demo.interceptor.JwtFilter;
+
+import com.example.demo.jwt.JwtAuthFilter;
 import com.example.demo.jwt.JwtUtil;
 import com.example.demo.product.dao.ProductDao;
 import com.example.demo.search.SearchDao;
@@ -36,7 +37,7 @@ public class ProductCRUDController {
     private final FileProperties fileProperties;
     private List<InterestRateDto> rates;
     private final JwtUtil jwt;
-    private final JwtFilter jwtFilter;
+    private final JwtAuthFilter jwtFilter;
     private final AdminMergeService mergeServ;
     private final IListDao iListDao;
     private final SearchDao searchDao;
