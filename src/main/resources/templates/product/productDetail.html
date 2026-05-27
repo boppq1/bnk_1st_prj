@@ -6,6 +6,7 @@
 
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <link rel="stylesheet" th:href="@{/css/product/product.css}">
+    <link rel="stylesheet" th:href="@{/css/search/search.css}">
     <link rel="stylesheet" th:href="@{/css/footer.css}">
 </head>
 
@@ -14,7 +15,7 @@
 <div th:replace="~{header :: header}"></div>
 
 <div class="detail-page">
-	
+
     <section class="detail-hero">
 
         <p class="detail-label" th:switch="${product.productType}">
@@ -152,7 +153,6 @@
     </section>
 
     <!-- 금리 안내 -->
-
     <section class="detail-section">
 
         <h2>금리 안내</h2>
@@ -160,7 +160,6 @@
         <table class="product-table detail-table">
 
             <thead>
-
             <tr>
                 <th>통화</th>
                 <th>기간</th>
@@ -168,51 +167,47 @@
                 <th>우대금리</th>
                 <th>최고금리</th>
             </tr>
-
             </thead>
 
             <tbody>
 
-				<tr th:if="${#lists.isEmpty(product.rates)}">
-				
-				    <td colspan="5">
-				        등록된 금리 정보가 없습니다.
-				    </td>
-				
-				</tr>
-				
-				<tr th:each="rate : ${product.rates}">
-				
-				    <td th:text="${rate.currencyCode}">
-				        KRW
-				    </td>
-				
-				    <td>
-				        <span th:text="${rate.periodMonth}">12</span>개월
-				    </td>
-				
-				    <td>
-				        <span th:text="${rate.baseRate}">3.5</span>%
-				    </td>
-				
-				    <td>
-				        <span th:text="${rate.preferentialRate}">0.5</span>%
-				    </td>
-				
-				    <td>
-				        <span th:text="${rate.maxRate}">4.0</span>%
-				    </td>
-				
-				</tr>
-				
-				</tbody>
+            <tr th:if="${#lists.isEmpty(product.rates)}">
+                <td colspan="5">
+                    등록된 금리 정보가 없습니다.
+                </td>
+            </tr>
+
+            <tr th:each="rate : ${product.rates}">
+
+                <td th:text="${rate.currencyCode}">
+                    KRW
+                </td>
+
+                <td>
+                    <span th:text="${rate.periodMonth}">12</span>개월
+                </td>
+
+                <td>
+                    <span th:text="${rate.baseRate}">3.5</span>%
+                </td>
+
+                <td>
+                    <span th:text="${rate.preferentialRate}">0.5</span>%
+                </td>
+
+                <td>
+                    <span th:text="${rate.maxRate}">4.0</span>%
+                </td>
+
+            </tr>
+
+            </tbody>
 
         </table>
 
     </section>
 
     <!-- 우대금리 조건 -->
-
     <section class="detail-section">
 
         <h2>우대금리 조건</h2>
@@ -239,67 +234,97 @@
         </div>
 
     </section>
-	<!-- 만기 이자 계산기 -->
 
-	<section class="detail-section detail-text-section">
-	
-	    <h2>만기 이자 계산기</h2>
-	
-	    <div class="interest-calculator-box">
-	
-	        <div class="calculator-input-group">
-	
-	            <label>예치 금액</label>
-	
-	            <input type="number"
-	                   id="detailAmount"
-	                   placeholder="예: 1000000">
-	
-	        </div>
-	
-	        <div class="calculator-input-group">
-	
-	            <label>가입 기간 (개월)</label>
-	
-	            <input type="number"
-	                   id="detailPeriod"
-	                   th:value="${product.minPeriodMonth}">
-	
-	        </div>
-	
-	        <div class="calculator-input-group">
-	
-	            <label>적용 금리 (%)</label>
-	
-	            <input type="number"
-			       id="detailRate"
-			       step="0.01"
-			       th:value="${#lists.isEmpty(product.rates) ? 0 : product.rates[0].maxRate}">
-	
-	        </div>
-	
-	        <button type="button"
-	                id="detailCalcBtn"
-	                class="interest-calc-btn">
-	
-	            계산하기
-	
-	        </button>
-	
-	        <div id="detailCalcResult"
-	             class="detail-calc-result">
-	
-	        </div>
-	
-	        <p class="interest-notice">
-	            ※ 단리 및 일반과세 15.4% 기준 예상 금액입니다.
-	        </p>
-	
-	    </div>
-	
-	</section>
+    <!-- 만기 이자 계산기 -->
+    <section class="detail-section detail-text-section">
+
+        <h2>만기 이자 계산기</h2>
+
+        <div class="interest-calculator-box">
+
+            <!-- JS 계산에 필요한 상품 기본 정보 -->
+            <input type="hidden"
+                   id="detailProductId"
+                   th:value="${product.productId}">
+
+            <input type="hidden"
+                   id="detailProductType"
+                   th:value="${product.productType}">
+
+            <div class="calculator-input-group">
+
+                <label>예치 금액</label>
+
+                <input type="number"
+                       id="detailAmount"
+                       placeholder="예: 1000000">
+
+            </div>
+
+            <div class="calculator-input-group">
+
+                <label>가입 기간 (개월)</label>
+
+                <input type="number"
+                       id="detailPeriod"
+                       th:value="${product.minPeriodMonth}"
+                       placeholder="예: 12">
+
+            </div>
+
+            <div class="calculator-input-group">
+
+                <label>적용 금리 (%)</label>
+
+                <input type="number"
+                       id="detailRate"
+                       step="0.01"
+                       th:value="${#lists.isEmpty(product.rates) ? 0 : product.rates[0].maxRate}"
+                       placeholder="예: 3.5">
+
+            </div>
+
+            <!-- 외화상품일 때만 통화 선택 표시 -->
+            <div class="calculator-input-group"
+                 th:if="${product.productType == 'FOREIGN_DEP' or product.productType == 'FOREIGN_SAV'}">
+
+                <label>외화 통화</label>
+
+                <select id="detailCurrencyCode">
+                    <option value="">통화 선택</option>
+
+                    <option th:each="rate : ${product.rates}"
+                            th:value="${rate.currencyCode}"
+                            th:text="${rate.currencyCode}"
+                            th:data-rate="${rate.maxRate}">
+                        USD
+                    </option>
+                </select>
+
+            </div>
+
+            <button type="button"
+                    id="detailCalcBtn"
+                    class="interest-calc-btn">
+                계산하기
+            </button>
+
+            <div id="detailCalcResult"
+                 class="detail-calc-result">
+            </div>
+
+            <p class="interest-notice"
+               th:if="${product.productType != 'FOREIGN_DEP' and product.productType != 'FOREIGN_SAV'}">
+                ※ 단리 및 일반과세 15.4% 기준 예상 금액입니다.
+            </p>
+
+           
+
+        </div>
+
+    </section>
+
     <!-- 상품 기본 안내 -->
-
     <section class="detail-section detail-text-section">
 
         <h2>상품 안내</h2>
@@ -337,7 +362,6 @@
     </section>
 
     <!-- 상품 약관 및 설명서 -->
-
     <section class="detail-section detail-text-section"
              th:if="${pdf != null}">
 
@@ -395,7 +419,9 @@
 </div>
 
 <div th:replace="~{footer :: footer}"></div>
+
 <script th:src="@{/js/zoom.js}"></script>
 <script th:src="@{/js/product/productInterestCalculator.js}"></script>
+
 </body>
 </html>

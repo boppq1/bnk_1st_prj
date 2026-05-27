@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BNK Busan Bank - 접근 제한</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <style>
+        :root {
+            --primary: #ED1C24;
+            --primary-light: #FFF2F2;
+            --primary-border: #FFCDD0;
+            --bg: #F4F6F9;
+            --border: #E2E8F0;
+            --text: #1E293B;
+            --text-sub: #64748B;
+            --text-muted: #94A3B8;
+            --radius: 12px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .wrap {
+            width: 100%;
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        /* 로고 */
+        .logo {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        /* 아이콘 */
+        .icon-ring {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            border: 2px solid var(--primary-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: var(--primary);
+            position: relative;
+            animation: pulse 2.4s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(237,28,36,0.15); }
+            50%       { box-shadow: 0 0 0 12px rgba(237,28,36,0); }
+        }
+        .icon-ring .sub-badge {
+            position: absolute;
+            bottom: 2px; right: 2px;
+            width: 26px; height: 26px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff;
+            font-size: 11px;
+            border: 2px solid var(--bg);
+        }
+
+        /* 카드 */
+        .card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 36px 40px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .code-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--primary);
+            background: var(--primary-light);
+            border: 1px solid var(--primary-border);
+            border-radius: 20px;
+            padding: 3px 14px;
+            margin-bottom: 18px;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: var(--text-sub);
+            line-height: 1.75;
+            margin-bottom: 28px;
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: var(--border);
+            margin-bottom: 24px;
+        }
+
+        /* 버튼 */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .btn {
+            height: 44px;
+            padding: 0 20px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            text-decoration: none;
+            font-family: 'Pretendard', sans-serif;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(237,28,36,0.2);
+        }
+        .btn-primary:hover { background: #D01920; }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-sub);
+        }
+        .btn-outline:hover { background: var(--bg); color: var(--text); }
+
+        .help-text {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+        .help-text a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .help-text a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="wrap">
+
+    <!-- 로고 -->
+    <div class="logo">BNK 부산은행</div>
+
+    <!-- 아이콘 -->
+    <div class="icon-ring">
+        <i class="fa-solid fa-shield-halved"></i>
+        <div class="sub-badge"><i class="fa-solid fa-lock"></i></div>
+    </div>
+
+    <!-- 카드 -->
+    <div class="card">
+        <div class="code-badge">403 · Access Denied</div>
+        <div class="card-title">접근 권한이 없습니다</div>
+        <div class="card-desc">
+            현재 계정은 이 페이지에 접근할 수 있는 권한이 없습니다.<br>
+            권한 관련 문의는 IT 전략팀 또는 최고 관리자에게 요청해 주세요.
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline" onclick="history.back()">
+                <i class="fa-solid fa-arrow-left"></i> 이전 페이지
+            </button>
+        </div>
+    </div>
+
+    <p class="help-text">
+        문제가 계속된다면 <a href="/admin/logout">로그아웃</a> 후 다시 시도해 주세요.
+    </p>
+
+</div>
+
+</body>
+</html>

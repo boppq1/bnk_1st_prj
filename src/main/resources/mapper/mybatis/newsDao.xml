@@ -17,7 +17,7 @@
 	</select>
 	
 	<update id="updateNews">
-		update news set news_ttl = #{news_ttl}, news_cont = #{news_cont}
+		update news set news_ttl = #{news_ttl}, news_cont = #{news_cont} where news_no = #{news_no}
 	</update>
 	
 	<delete id="deleteNews">

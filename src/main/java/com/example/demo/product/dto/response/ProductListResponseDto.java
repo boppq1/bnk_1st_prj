@@ -38,4 +38,8 @@ public class ProductListResponseDto {
     private LocalDate appStartDate; // 신청 시작일
 
     private LocalDate appEndDate; // 신청 마감일
+
+    private String currencyCode; // 외화상품 통화코드: USD, JPY, EUR 등
+    
+    private String currencyCodes;
 }

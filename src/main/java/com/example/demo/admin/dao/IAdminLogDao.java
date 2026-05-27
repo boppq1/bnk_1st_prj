@@ -13,4 +13,5 @@ public interface IAdminLogDao {
     List<ApiLogDto> userLog();
     List<AdminActionLogDto> adminLogFive();
     List<ApiLogDto> userLogFive();
+    int insertAdminLog(AdminActionLogDto dto);
 }

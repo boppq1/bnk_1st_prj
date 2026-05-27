@@ -62,4 +62,8 @@
     	select * from admin_action_logs order by REG_DT desc FETCH FIRST 5 ROWS ONLY
     </select>
     
+    <insert id="insertAdminLog">
+    	insert into admin_action_logs values (SEQ_ADMIN_ACTION_LOGS.nextval, #{action}, #{target}, sysdate)
+    </insert>
+    
 </mapper>

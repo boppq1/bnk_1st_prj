@@ -10,6 +10,7 @@ import com.example.demo.admin.dto.AdminDto;
 import com.example.demo.admin.dto.BlacklistDto;
 import com.example.demo.admin.service.AdminMergeService;
 import com.example.demo.admin.service.BlacklistService;
+import com.example.demo.interceptor.AdminLog;
 import com.example.demo.jwt.JwtUtil;
 
 import jakarta.servlet.http.HttpSession;
@@ -24,11 +25,13 @@ public class BlacklistController {
 	private final JwtUtil jwt;
 	private final AdminMergeService mergeServ;
 	
+	
 	public void insertBlacklist(String clientKey, String reason) {
 		String ip_addr = clientKey.split("_")[0];
 		bs.insertBlacklist(clientKey, ip_addr, reason);
 	}
 	
+	@AdminLog(action="블랙리스트 확인")
 	@GetMapping("/admin/adminBlacklist")
 	public String adminBlackListPage(@CookieValue(value = "accessToken") String token, Model m) {
 		String id = jwt.getLoginId(token);
@@ -38,6 +41,7 @@ public class BlacklistController {
 		return "/admin/adminBlacklist";
 	}
 	
+	@AdminLog(action="블랙리스트 제거")
 	@GetMapping("/admin/liftBlack")
 	public String liftBlack(BlacklistDto dto) {
 		bs.liftBlack(dto);
