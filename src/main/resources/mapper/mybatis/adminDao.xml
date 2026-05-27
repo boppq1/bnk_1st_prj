@@ -51,7 +51,7 @@
 
         SELECT *
         FROM ADMIN_USERS
-        WHERE lgn_id = #{login_id}
+        WHERE lgn_id = #{login_id, jdbcType=VARCHAR}
 
     </select>
 
@@ -63,7 +63,7 @@
 
         SELECT *
         FROM ADMIN_USERS
-        WHERE lgn_id = #{login_id}
+        WHERE lgn_id = #{login_id, jdbcType=VARCHAR}
 
     </select>
 
