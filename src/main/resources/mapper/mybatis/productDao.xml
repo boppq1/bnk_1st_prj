@@ -29,12 +29,31 @@
                     p.max_amt AS maxAmount,
                     p.app_start_dt AS appStartDate,
                     p.app_end_dt AS appEndDate,
+
                     NVL(MIN(r.base_rate), 0) AS minRate,
-                    NVL(MAX(r.base_rate + NVL(r.pref_rate, 0)), 0) AS maxRate
+                    NVL(MAX(r.base_rate + NVL(r.pref_rate, 0)), 0) AS maxRate,
+
+                    pc.currencyCode AS currencyCode,
+                    pc.currencyCodes AS currencyCodes
+
                 FROM products p
+
                 LEFT JOIN interest_rates r
                     ON p.prod_no = r.prod_no
                    AND r.is_active = 'Y'
+
+                LEFT JOIN (
+                    SELECT
+                        prod_no,
+                        MIN(cur_cd) AS currencyCode,
+                        LISTAGG(cur_cd, ',') WITHIN GROUP (ORDER BY cur_cd) AS currencyCodes
+                    FROM product_currencies
+                    WHERE is_avail = 'Y'
+                      AND cur_cd <![CDATA[<>]]> 'KRW'
+                    GROUP BY prod_no
+                ) pc
+                    ON p.prod_no = pc.prod_no
+
                 WHERE 1=1
                   AND p.active = 'Y'
                   AND p.apv_stat_cd = '승인'
@@ -87,7 +106,9 @@
                     p.min_amt,
                     p.max_amt,
                     p.app_start_dt,
-                    p.app_end_dt
+                    p.app_end_dt,
+                    pc.currencyCode,
+                    pc.currencyCodes
 
                 <choose>
                     <when test="sort == 'rate'">
@@ -106,6 +127,7 @@
         WHERE rn <![CDATA[>=]]> #{startRow}
 
     </select>
+
 
     <select id="getProductCount"
             parameterType="com.example.demo.product.dto.request.ProductListRequestDto"
@@ -152,6 +174,7 @@
 
     </select>
 
+
     <select id="getRecommendProducts"
             parameterType="com.example.demo.product.dto.request.ProductListRequestDto"
             resultType="com.example.demo.product.dto.response.ProductListResponseDto">
@@ -172,12 +195,31 @@
                 p.max_amt AS maxAmount,
                 p.app_start_dt AS appStartDate,
                 p.app_end_dt AS appEndDate,
+
                 NVL(MIN(r.base_rate), 0) AS minRate,
-                NVL(MAX(r.base_rate + NVL(r.pref_rate, 0)), 0) AS maxRate
+                NVL(MAX(r.base_rate + NVL(r.pref_rate, 0)), 0) AS maxRate,
+
+                pc.currencyCode AS currencyCode,
+                pc.currencyCodes AS currencyCodes
+
             FROM products p
+
             LEFT JOIN interest_rates r
                 ON p.prod_no = r.prod_no
                AND r.is_active = 'Y'
+
+            LEFT JOIN (
+                SELECT
+                    prod_no,
+                    MIN(cur_cd) AS currencyCode,
+                    LISTAGG(cur_cd, ',') WITHIN GROUP (ORDER BY cur_cd) AS currencyCodes
+                FROM product_currencies
+                WHERE is_avail = 'Y'
+                  AND cur_cd <![CDATA[<>]]> 'KRW'
+                GROUP BY prod_no
+            ) pc
+                ON p.prod_no = pc.prod_no
+
             WHERE p.active = 'Y'
               AND p.apv_stat_cd = '승인'
 
@@ -216,12 +258,16 @@
                 p.min_amt,
                 p.max_amt,
                 p.app_start_dt,
-                p.app_end_dt
+                p.app_end_dt,
+                pc.currencyCode,
+                pc.currencyCodes
+
             ORDER BY maxRate DESC
         )
         WHERE ROWNUM <![CDATA[<=]]> 3
 
     </select>
+
 
     <select id="getProductDetail"
             parameterType="long"
@@ -252,6 +298,7 @@
 
     </select>
 
+
     <select id="getCurrencies"
             parameterType="long"
             resultType="com.example.demo.product.dto.response.ProductCurrencyResponseDto">
@@ -268,6 +315,7 @@
         ORDER BY cur_cd
 
     </select>
+
 
     <select id="getRates"
             parameterType="long"
@@ -295,6 +343,7 @@
         ORDER BY cur_cd, prd_mon ASC
 
     </select>
+
 
     <select id="getPreferentialRates"
             parameterType="long"

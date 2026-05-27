@@ -187,25 +187,26 @@
                     <td>
                         연 <span th:text="${item.maxRate}">0</span>%
                     </td>
-
+					
                     <td th:text="${item.productDesc}">상품설명</td>
 
                     <td>
-                        <input type="checkbox"
-                               class="compare-check"
-                               onclick="event.stopPropagation();"
-                               th:data-id="${item.productId}"
-                               th:data-name="${item.productName}"
-                               th:data-type="${item.productType}"
-                               th:data-target="${item.targetLarge}"
-                               th:data-target-detail="${item.targetDetail}"
-                               th:data-rate="${item.maxRate}"
-                               th:data-desc="${item.productDesc}"
-                               th:data-min-period="${item.minPeriodMonth}"
-                               th:data-max-period="${item.maxPeriodMonth}"
-                               th:data-min-amount="${item.minAmount}"
-                               th:data-max-amount="${item.maxAmount}">
-                    </td>
+                    <input type="checkbox"
+					       class="compare-check"
+					       onclick="event.stopPropagation();"
+					       th:data-id="${item.productId}"
+					       th:data-name="${item.productName}"
+					       th:data-type="${item.productType}"
+					       th:data-target="${item.targetLarge}"
+					       th:data-target-detail="${item.targetDetail}"
+					       th:data-rate="${item.maxRate}"
+					       th:data-desc="${item.productDesc}"
+					       th:data-min-period="${item.minPeriodMonth}"
+					       th:data-max-period="${item.maxPeriodMonth}"
+					       th:data-min-amount="${item.minAmount}"
+					       th:data-max-amount="${item.maxAmount}"
+					       th:data-currency-code="${item.currencyCode}"
+					       th:data-currency-codes="${item.currencyCodes}">
                     <td>
 					    <button type="button"
 					            class="favorite-btn"
@@ -249,38 +250,61 @@
     <div class="compare-modal-box">
         <div class="compare-modal-head">
             <div>
-                <h2>맞춤 상품 비교</h2>
-                <p class="compare-sub-title">
-                    내 조건에 맞는 상품을 비교하고 추천 결과를 확인해보세요
-                </p>
+                <h2>상품 조건 비교</h2>
+				<p class="compare-sub-title">
+				    가입조건, 예상 이자, 만기 예상 수령액을 기준으로 비교해보세요
+				</p>
             </div>
             <button type="button" id="compareCloseBtn">×</button>
         </div>
 
         <div class="compare-user-input">
-            <label>
-                가입대상
-                <select id="compareTarget">
-                    <option value="PERSONAL">개인</option>
-                    <option value="COMPANY" selected>기업</option>
-                </select>
-            </label>
 
-            <label>
-                예치 예정 금액
-                <input type="number" id="compareAmount" placeholder="예: 10000000">
-            </label>
-
-            <label>
-                희망 가입기간
-                <input type="number" id="comparePeriod" placeholder="예: 12">
-            </label>
-
-            <label>
-                나이
-                <input type="number" id="compareAge" placeholder="예: 25">
-            </label>
-        </div>
+		    <label>
+		        가입대상
+		        <select id="compareTarget">
+		            <option value="PERSONAL" selected>개인</option>
+		            <option value="COMPANY">기업</option>
+		        </select>
+		    </label>
+		
+		    <label>
+		        예치 예정 금액
+		        <input type="number" id="compareAmount" placeholder="예: 10000000">
+		    </label>
+		
+		    <label>
+		        희망 가입기간
+		        <input type="number" id="comparePeriod" placeholder="예: 12">
+		    </label>
+		
+		    <label>
+		        나이
+		        <input type="number" id="compareAge" placeholder="예: 25">
+		    </label>
+		
+		    <label>
+			    외화 비교 통화
+			    <select id="compareCurrencyCode">
+			        <option value="">상품 통화 기준</option>
+			        <option value="USD">미국 달러 USD</option>
+			        <option value="JPY">일본 엔 JPY</option>
+			        <option value="EUR">유로 EUR</option>
+			        <option value="CNY">중국 위안 CNY</option>
+			        <option value="GBP">영국 파운드 GBP</option>
+			        <option value="AUD">호주 달러 AUD</option>
+			        <option value="CAD">캐나다 달러 CAD</option>
+			        <option value="HKD">홍콩 달러 HKD</option>
+			        <option value="SGD">싱가포르 달러 SGD</option>
+			        <option value="THB">태국 바트 THB</option>
+			        <option value="IDR">인도네시아 루피아 IDR</option>
+			        <option value="MYR">말레이시아 링깃 MYR</option>
+			        <option value="CHF">스위스 프랑 CHF</option>
+			        <option value="NZD">뉴질랜드 달러 NZD</option>
+			    </select>
+			</label>
+		
+		</div>
 
         <div class="compare-result-box" id="compareResultBox">
             비교할 상품을 선택해주세요.
