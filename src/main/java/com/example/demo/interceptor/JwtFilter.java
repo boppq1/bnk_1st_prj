@@ -44,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if(jwtUtil.isValid(token) && uri.equals("/admin/adminMyPage")){
             if(jwtUtil.getRole(token).equals("chief")){
-                response.sendRedirect("/admin/adminPage");
+                response.sendRedirect("/admin/adminMyPage");
             }else if(jwtUtil.getRole(token).equals("executive")){
                 response.sendRedirect("/admin/executiveMyPage");
             }else if(jwtUtil.getRole(token).equals("head")){

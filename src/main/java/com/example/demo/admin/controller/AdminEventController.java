@@ -2,6 +2,7 @@ package com.example.demo.admin.controller;
 
 import com.example.demo.admin.dto.AdminEventDto;
 import com.example.demo.admin.service.AdminMergeService;
+import com.example.demo.interceptor.AdminLog;
 import org.springframework.ui.Model;
 import com.example.demo.admin.dto.AdminDto;
 import com.example.demo.admin.service.AdminEventService;
@@ -30,6 +31,7 @@ public class AdminEventController {
         return "admin/adminEventPage"; // 실제 뷰 경로
     }
 
+    @AdminLog(action="관리자 이벤트 등록")
     @PostMapping("/admin/eventRegister")
     public String adminEventRegister(AdminEventDto dto, HttpSession session) {
         AdminDto admin = (AdminDto) session.getAttribute("admin");
@@ -56,6 +58,7 @@ public class AdminEventController {
         return "admin/adminEventListPage";
     }
 
+    @AdminLog(action="관리자 이벤트 수정")
     @PostMapping("/admin/updateEvent/{no}")
     public String eventUpdate(@PathVariable("no") Long event_no, AdminEventDto dto) {
         dto.setEvent_no(event_no);
@@ -63,6 +66,8 @@ public class AdminEventController {
         return "redirect:/admin/adminEventListPage";
     }
 
+
+    @AdminLog(action="관리자 이벤트 삭제")
     @GetMapping("/admin/deleteEvent/{no}")
     public String eventDelete(@PathVariable("no") Long event_no) {
         serv.deleteEvent(event_no);

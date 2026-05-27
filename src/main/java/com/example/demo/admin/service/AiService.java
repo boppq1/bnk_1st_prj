@@ -10,7 +10,7 @@ import org.springframework.web.client.RestClient;
 import com.example.demo.admin.dto.AiAnswerResponse;
 import com.example.demo.admin.dto.AiQuestionRequest;
 
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class AiService {
@@ -29,20 +29,26 @@ public class AiService {
 				.requestFactory(requestFactory)
 				.build();
 	}
-	
+
 	public String askToAi(String userQuestion) {
-		
+
 		AiQuestionRequest requestBody = new AiQuestionRequest(userQuestion);
-		
+
 		String response = restClient.post()
 				.uri("/ai/ask")
 				.contentType(MediaType.APPLICATION_JSON)
 				.body(requestBody)
 				.retrieve()
 				.body(String.class);
+
 		System.out.println(response);
-		AiAnswerResponse aiResponse = om.readValue(response, AiAnswerResponse.class);
-		System.out.println(aiResponse.answer());
-		return aiResponse.answer();
+
+		try {
+			AiAnswerResponse aiResponse = om.readValue(response, AiAnswerResponse.class);
+			System.out.println(aiResponse.answer());
+			return aiResponse.answer();
+		} catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+			throw new RuntimeException("AI 응답 JSON 파싱 실패: " + e.getMessage(), e);
+		}
 	}
 }

@@ -7,6 +7,7 @@ import com.example.demo.admin.service.AdminMergeService;
 import com.example.demo.admin.service.AdminProductService;
 import com.example.demo.config.FileProperties;
 
+import com.example.demo.interceptor.AdminLog;
 import com.example.demo.interceptor.JwtFilter;
 import com.example.demo.jwt.JwtUtil;
 import com.example.demo.product.dao.ProductDao;
@@ -42,6 +43,7 @@ public class ProductCRUDController {
     private final IAdminProductDao productDao;
 
     // 상품 등록 페이지
+
     @GetMapping("/admin/productRegisterPage")
     public String registerPage(HttpServletRequest request, Model model, @CookieValue(value = "accessToken") String token) {
         String id = jwt.getLoginId(token);
@@ -53,6 +55,7 @@ public class ProductCRUDController {
     }
 
     // 상품 등록
+    @AdminLog(action="관리자 상품 등록")
     @PostMapping("/admin/productRegister")
     public String registerProduct(
             ProductDto dto,
@@ -206,6 +209,7 @@ public class ProductCRUDController {
     }
 
     // 수정
+    @AdminLog(action="관리자 상품 수정")
     @PostMapping("/admin/updateProWrite")
     public String updateProduct(
             ProductDto dto,
@@ -237,6 +241,7 @@ public class ProductCRUDController {
     }
 
     // 상품 삭제
+    @AdminLog(action="관리자 상품 삭제")
     @GetMapping("/deletePro/{product_id}")
     public String deletePro(@PathVariable("product_id") Long product_id) {
         serv.deleteProduct(product_id);
