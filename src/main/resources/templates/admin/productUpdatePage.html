@@ -538,6 +538,97 @@
       </div>
     </div>
 
+    <!-- ── 통화 설정 ── -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fa-solid fa-coins"></i>
+        통화 설정
+        <span style="font-size:12px;font-weight:400;color:#94a3b8;margin-left:8px;">취급 가능한 통화를 선택하세요 (복수 선택 가능)</span>
+      </div>
+
+      <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <button type="button" onclick="selectAllCurrencies(true)"
+                style="padding:5px 12px;font-size:12px;border-radius:6px;border:1px solid #e2e8f0;background:#f8fafc;cursor:pointer;font-weight:600;">
+          <i class="fa-solid fa-check-double"></i> 전체 선택
+        </button>
+        <button type="button" onclick="selectAllCurrencies(false)"
+                style="padding:5px 12px;font-size:12px;border-radius:6px;border:1px solid #e2e8f0;background:#f8fafc;cursor:pointer;font-weight:600;">
+          <i class="fa-solid fa-xmark"></i> 전체 해제
+        </button>
+        <span id="curSelectedCount" style="font-size:12px;color:#64748b;margin-left:4px;">0개 선택됨</span>
+      </div>
+
+      <!-- 기존 currencies 데이터를 JS 배열로 넘기기 위한 Thymeleaf 처리 -->
+      <div id="existing-currencies"
+           th:attr="data-codes=${product.currencies != null ? #strings.listJoin(product.currencies.![cur_cd], ',') : ''}">
+      </div>
+
+      <div id="currency-checkbox-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;">
+
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="USD" data-nm="미국 달러" onchange="syncCurrencies()"><span class="cur-flag">🇺🇸</span> USD · 미국 달러</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="JPY" data-nm="일본 엔" onchange="syncCurrencies()"><span class="cur-flag">🇯🇵</span> JPY · 일본 엔</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="EUR" data-nm="유로" onchange="syncCurrencies()"><span class="cur-flag">🇪🇺</span> EUR · 유로</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="CNY" data-nm="중국 위안" onchange="syncCurrencies()"><span class="cur-flag">🇨🇳</span> CNY · 중국 위안</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="HKD" data-nm="홍콩 달러" onchange="syncCurrencies()"><span class="cur-flag">🇭🇰</span> HKD · 홍콩 달러</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="THB" data-nm="태국 바트" onchange="syncCurrencies()"><span class="cur-flag">🇹🇭</span> THB · 태국 바트</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="TWD" data-nm="대만 달러" onchange="syncCurrencies()"><span class="cur-flag">🇹🇼</span> TWD · 대만 달러</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="PHP" data-nm="필리핀 페소" onchange="syncCurrencies()"><span class="cur-flag">🇵🇭</span> PHP · 필리핀 페소</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="SGD" data-nm="싱가포르 달러" onchange="syncCurrencies()"><span class="cur-flag">🇸🇬</span> SGD · 싱가포르 달러</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="AUD" data-nm="호주 달러" onchange="syncCurrencies()"><span class="cur-flag">🇦🇺</span> AUD · 호주 달러</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="VND" data-nm="베트남 동" onchange="syncCurrencies()"><span class="cur-flag">🇻🇳</span> VND · 베트남 동</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="GBP" data-nm="영국 파운드" onchange="syncCurrencies()"><span class="cur-flag">🇬🇧</span> GBP · 영국 파운드</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="CAD" data-nm="캐나다 달러" onchange="syncCurrencies()"><span class="cur-flag">🇨🇦</span> CAD · 캐나다 달러</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="MYR" data-nm="말레이시아 링깃" onchange="syncCurrencies()"><span class="cur-flag">🇲🇾</span> MYR · 말레이시아 링깃</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="RUB" data-nm="러시아 루블" onchange="syncCurrencies()"><span class="cur-flag">🇷🇺</span> RUB · 러시아 루블</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="ZAR" data-nm="남아프리카 랜드" onchange="syncCurrencies()"><span class="cur-flag">🇿🇦</span> ZAR · 남아프리카 랜드</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="NOK" data-nm="노르웨이 크로네" onchange="syncCurrencies()"><span class="cur-flag">🇳🇴</span> NOK · 노르웨이 크로네</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="NZD" data-nm="뉴질랜드 달러" onchange="syncCurrencies()"><span class="cur-flag">🇳🇿</span> NZD · 뉴질랜드 달러</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="DKK" data-nm="덴마크 크로네" onchange="syncCurrencies()"><span class="cur-flag">🇩🇰</span> DKK · 덴마크 크로네</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="MXN" data-nm="멕시코 페소" onchange="syncCurrencies()"><span class="cur-flag">🇲🇽</span> MXN · 멕시코 페소</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="MNT" data-nm="몽골 투그릭" onchange="syncCurrencies()"><span class="cur-flag">🇲🇳</span> MNT · 몽골 투그릭</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="BHD" data-nm="바레인 디나르" onchange="syncCurrencies()"><span class="cur-flag">🇧🇭</span> BHD · 바레인 디나르</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="BDT" data-nm="방글라데시 타카" onchange="syncCurrencies()"><span class="cur-flag">🇧🇩</span> BDT · 방글라데시 타카</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="BRL" data-nm="브라질 헤알" onchange="syncCurrencies()"><span class="cur-flag">🇧🇷</span> BRL · 브라질 헤알</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="BND" data-nm="브루나이 달러" onchange="syncCurrencies()"><span class="cur-flag">🇧🇳</span> BND · 브루나이 달러</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="SAR" data-nm="사우디 리얄" onchange="syncCurrencies()"><span class="cur-flag">🇸🇦</span> SAR · 사우디 리얄</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="LKR" data-nm="스리랑카 루피" onchange="syncCurrencies()"><span class="cur-flag">🇱🇰</span> LKR · 스리랑카 루피</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="SEK" data-nm="스웨덴 크로나" onchange="syncCurrencies()"><span class="cur-flag">🇸🇪</span> SEK · 스웨덴 크로나</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="CHF" data-nm="스위스 프랑" onchange="syncCurrencies()"><span class="cur-flag">🇨🇭</span> CHF · 스위스 프랑</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="AED" data-nm="아랍에미리트 디르함" onchange="syncCurrencies()"><span class="cur-flag">🇦🇪</span> AED · 아랍에미리트 디르함</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="DZD" data-nm="알제리 디나르" onchange="syncCurrencies()"><span class="cur-flag">🇩🇿</span> DZD · 알제리 디나르</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="OMR" data-nm="오만 리얄" onchange="syncCurrencies()"><span class="cur-flag">🇴🇲</span> OMR · 오만 리얄</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="JOD" data-nm="요르단 디나르" onchange="syncCurrencies()"><span class="cur-flag">🇯🇴</span> JOD · 요르단 디나르</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="ILS" data-nm="이스라엘 세켈" onchange="syncCurrencies()"><span class="cur-flag">🇮🇱</span> ILS · 이스라엘 세켈</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="EGP" data-nm="이집트 파운드" onchange="syncCurrencies()"><span class="cur-flag">🇪🇬</span> EGP · 이집트 파운드</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="INR" data-nm="인도 루피" onchange="syncCurrencies()"><span class="cur-flag">🇮🇳</span> INR · 인도 루피</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="IDR" data-nm="인도네시아 루피아" onchange="syncCurrencies()"><span class="cur-flag">🇮🇩</span> IDR · 인도네시아 루피아</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="CZK" data-nm="체코 코루나" onchange="syncCurrencies()"><span class="cur-flag">🇨🇿</span> CZK · 체코 코루나</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="CLP" data-nm="칠레 페소" onchange="syncCurrencies()"><span class="cur-flag">🇨🇱</span> CLP · 칠레 페소</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="QAR" data-nm="카타르 리얄" onchange="syncCurrencies()"><span class="cur-flag">🇶🇦</span> QAR · 카타르 리얄</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="KES" data-nm="케냐 실링" onchange="syncCurrencies()"><span class="cur-flag">🇰🇪</span> KES · 케냐 실링</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="KZT" data-nm="카자흐스탄 텡게" onchange="syncCurrencies()"><span class="cur-flag">🇰🇿</span> KZT · 카자흐스탄 텡게</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="COP" data-nm="콜롬비아 페소" onchange="syncCurrencies()"><span class="cur-flag">🇨🇴</span> COP · 콜롬비아 페소</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="KWD" data-nm="쿠웨이트 디나르" onchange="syncCurrencies()"><span class="cur-flag">🇰🇼</span> KWD · 쿠웨이트 디나르</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="TZS" data-nm="탄자니아 실링" onchange="syncCurrencies()"><span class="cur-flag">🇹🇿</span> TZS · 탄자니아 실링</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="TRY" data-nm="튀르키예 리라" onchange="syncCurrencies()"><span class="cur-flag">🇹🇷</span> TRY · 튀르키예 리라</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="PKR" data-nm="파키스탄 루피" onchange="syncCurrencies()"><span class="cur-flag">🇵🇰</span> PKR · 파키스탄 루피</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="PLN" data-nm="폴란드 즐로티" onchange="syncCurrencies()"><span class="cur-flag">🇵🇱</span> PLN · 폴란드 즐로티</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="HUF" data-nm="헝가리 포린트" onchange="syncCurrencies()"><span class="cur-flag">🇭🇺</span> HUF · 헝가리 포린트</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="NPR" data-nm="네팔 루피" onchange="syncCurrencies()"><span class="cur-flag">🇳🇵</span> NPR · 네팔 루피</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="MOP" data-nm="마카오 파타카" onchange="syncCurrencies()"><span class="cur-flag">🇲🇴</span> MOP · 마카오 파타카</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="KHR" data-nm="캄보디아 리엘" onchange="syncCurrencies()"><span class="cur-flag">🇰🇭</span> KHR · 캄보디아 리엘</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="FJD" data-nm="피지 달러" onchange="syncCurrencies()"><span class="cur-flag">🇫🇯</span> FJD · 피지 달러</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="LYD" data-nm="리비아 디나르" onchange="syncCurrencies()"><span class="cur-flag">🇱🇾</span> LYD · 리비아 디나르</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="RON" data-nm="루마니아 레우" onchange="syncCurrencies()"><span class="cur-flag">🇷🇴</span> RON · 루마니아 레우</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="MMK" data-nm="미얀마 짯" onchange="syncCurrencies()"><span class="cur-flag">🇲🇲</span> MMK · 미얀마 짯</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="ETB" data-nm="에티오피아 비르" onchange="syncCurrencies()"><span class="cur-flag">🇪🇹</span> ETB · 에티오피아 비르</label>
+        <label class="cur-label"><input type="checkbox" class="cur-chk" data-cd="UZS" data-nm="우즈베키스탄 숨" onchange="syncCurrencies()"><span class="cur-flag">🇺🇿</span> UZS · 우즈베키스탄 숨</label>
+
+      </div>
+
+      <div id="currency-hidden-inputs"></div>
+    </div>
+
     <!-- ── PDF 문서 교체 ── -->
     <div class="card">
       <div class="card-header">
@@ -680,7 +771,66 @@
 <!-- =========================
      script 부분 교체
 ========================= -->
+<style>
+  .cur-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: #475569;
+    background: #f8fafc;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .cur-label:hover { border-color: #f87171; background: #fff5f5; }
+  .cur-label:has(input:checked) {
+    border-color: var(--primary, #e84040);
+    background: #fff0f0;
+    color: #b91c1c;
+    font-weight: 600;
+  }
+  .cur-label input[type="checkbox"] { accent-color: var(--primary, #e84040); width: 15px; height: 15px; cursor: pointer; }
+  .cur-flag { font-size: 16px; line-height: 1; }
+</style>
+
 <script>
+
+  /* ─── 기존 currencies 데이터로 체크박스 초기화 ─── */
+  document.addEventListener('DOMContentLoaded', function () {
+    const el = document.getElementById('existing-currencies');
+    if (!el) return;
+    const codes = (el.dataset.codes || '').split(',').map(s => s.trim()).filter(Boolean);
+    codes.forEach(cd => {
+      const chk = document.querySelector(`.cur-chk[data-cd="${cd}"]`);
+      if (chk) chk.checked = true;
+    });
+    syncCurrencies();
+  });
+
+  function syncCurrencies() {
+    const container = document.getElementById('currency-hidden-inputs');
+    container.innerHTML = '';
+    let idx = 0;
+    document.querySelectorAll('.cur-chk:checked').forEach(chk => {
+      container.innerHTML += `
+        <input type="hidden" name="currencies[${idx}].cur_cd" value="${chk.dataset.cd}">
+        <input type="hidden" name="currencies[${idx}].cur_nm" value="${chk.dataset.nm}">
+        <input type="hidden" name="currencies[${idx}].avail"  value="Y">
+      `;
+      idx++;
+    });
+    document.getElementById('curSelectedCount').textContent = idx + '개 선택됨';
+  }
+
+  function selectAllCurrencies(checked) {
+    document.querySelectorAll('.cur-chk').forEach(c => c.checked = checked);
+    syncCurrencies();
+  }
 
   /* 금액 포맷터 */
   function bindAmountFormatter(inputId, displayId) {

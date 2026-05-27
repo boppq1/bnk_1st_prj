@@ -49,7 +49,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 			// 관리자 권한 검증
 			String role = jwtUtil.getRole(token);
-			if (uri.equals("/admin/adminMyPage") && uri.equals("/admin/adminEventPage") && !"chief".equals(role)) {
+			System.out.print(role + "role");
+			if ((uri.equals("/admin/adminMyPage") || uri.equals("/admin/adminEventPage")) && !"chief".equals(role)) {
 				response.sendRedirect("/admin/access-denied?role");
 				return;
 			} else if (uri.equals("/admin/executiveMyPage") && !"executive".equals(role)) {
