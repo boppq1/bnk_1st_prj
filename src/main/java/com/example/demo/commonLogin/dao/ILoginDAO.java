@@ -3,6 +3,7 @@ package com.example.demo.commonLogin.dao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.example.demo.commonLogin.dto.CompanyLoginDTO;
 import com.example.demo.commonLogin.dto.UserLoginDTO;
 
 @Mapper
@@ -11,7 +12,7 @@ public interface ILoginDAO {
 	// 개인회원테이블에서 검색
 	UserLoginDTO selectUser(@Param("login_id")String id);
 	// 기업회원테이블에서 검색
-	UserLoginDTO selectCompanyUser(@Param("login_id")String id);
+	CompanyLoginDTO selectCompanyUser(@Param("login_id")String id);
 	// 기업 검색
 	String selectCompany(@Param("com_no")int com_no);
 	// 개인회원 로그인시 마지막 로그인 시간 

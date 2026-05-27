@@ -1,6 +1,8 @@
 package com.example.demo.admin.dao;
 
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.example.demo.admin.dto.ProductDto;
@@ -65,4 +67,9 @@ public interface IAdminProductDao {
 	int deletePrefRate(Long pref_rate_id);
 	int deletePrefRateByProduct(Long product_id);
 	int deletePrefRateByRate(Long rate_id);
+
+	// 검색
+	List<ProductDto> searchProducts(Map<String, Object> param);
+
+	int searchProductCount(Map<String, Object> param);
 }

@@ -1,6 +1,7 @@
 package com.example.demo.admin.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -180,5 +181,13 @@ public class AdminProductService {
 
     public List<PrefRateDto> getPrefRatesByRateId(Long rate_id) {
         return productDao.listPreRate(rate_id);
+    }
+
+    public List<ProductDto> searchProducts(Map<String, Object> param) {
+        return productDao.searchProducts(param);
+    }
+
+    public int searchProductCount(Map<String, Object> param) {
+        return productDao.searchProductCount(param);
     }
 }
