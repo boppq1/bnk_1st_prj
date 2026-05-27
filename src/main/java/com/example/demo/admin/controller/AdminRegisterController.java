@@ -5,7 +5,7 @@
     import com.example.demo.admin.dto.AdminActionLogDto;
     import com.example.demo.admin.dto.AdminDto;
     import com.example.demo.admin.service.AdminMergeService;
-    import com.example.demo.interceptor.JwtFilter;
+    import com.example.demo.jwt.JwtAuthFilter;
     import com.example.demo.jwt.JwtUtil;
     import jakarta.servlet.http.Cookie;
     import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +27,7 @@
         private final IAdminDao dao;
         private final IAdminActionDao actionDao;
         private final JwtUtil jwt;
-        private final JwtFilter jwtFilter;
+        private final JwtAuthFilter jwtFilter;
 
         @GetMapping("/adminJoin")
         public String joinPage(Model model) {
@@ -165,6 +165,14 @@
 
             response.addCookie(cookie);
             return "redirect:/adminLogin";
+        }
+
+        @GetMapping("/admin/access-denied")
+        public String denied(HttpServletResponse response, @RequestParam String role) {
+            if(role.equals("chief")){
+                return "/admin/adminMyPage";
+            }
+            return "/admin/access-denied";
         }
 
 
