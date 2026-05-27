@@ -6,7 +6,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -37,22 +36,22 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        if(!jwtUtil.isValid(token) && uri.equals("/admin/adminMyPage")){
-            response.sendRedirect("/adminLogin");
-            return;
-        }
+        if (jwtUtil.isValid(token) && uri.equals("/admin/adminMyPage")) {
+            String role = jwtUtil.getRole(token);
 
-        if(jwtUtil.isValid(token) && uri.equals("/admin/adminMyPage")){
-            if(jwtUtil.getRole(token).equals("chief")){
-                response.sendRedirect("/admin/adminMyPage");
-            }else if(jwtUtil.getRole(token).equals("executive")){
+            if (role.equals("chief")) {
+                // 이미 해당 페이지에 접근 중이므로, 리다이렉트 대신 그냥 통과시킵니다.
+                filterChain.doFilter(request, response);
+                return;
+            } else if (role.equals("executive")) {
                 response.sendRedirect("/admin/executiveMyPage");
-            }else if(jwtUtil.getRole(token).equals("head")){
+                return;
+            } else if (role.equals("head")) {
                 response.sendRedirect("/admin/headMyPage");
+                return;
             }
         }
 
-        filterChain.doFilter(request, response);
     }
 
 
