@@ -3,7 +3,6 @@ package com.example.demo.interceptor;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.springframework.stereotype.Component;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -14,7 +13,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@Component
 public class GuestIdentifierFilter implements Filter {
 
 	private static final String COOKIE_NAME = "guest_id";
@@ -22,8 +20,6 @@ public class GuestIdentifierFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		
-		System.out.println("쿠키 발급 필터");
 		
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
