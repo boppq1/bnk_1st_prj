@@ -24,6 +24,7 @@ public class JwtAuthFilter  {
 			throws ServletException, IOException {
 
 		String uri = request.getRequestURI();
+		System.out.println("uri:"+uri);
 		log.info("요청 URI: {}", uri);
 
 		// 1. [공통] 무한 루프 방지: 예외 경로 통과
@@ -47,8 +48,8 @@ public class JwtAuthFilter  {
 
 			// 관리자 권한 검증
 			String role = jwtUtil.getRole(token);
-			if (uri.equals("/admin/adminMyPage") && !"chief".equals(role)) {
-				response.sendRedirect("/admin/access-denied?role="+role);
+			if (uri.equals("/admin/adminMyPage") && uri.equals("/admin/adminEventPage") && !"chief".equals(role)) {
+				response.sendRedirect("/admin/access-denied?role");
 				return;
 			} else if (uri.equals("/admin/executiveMyPage") && !"executive".equals(role)) {
 				System.out.println("ㅎㅎㅎ");

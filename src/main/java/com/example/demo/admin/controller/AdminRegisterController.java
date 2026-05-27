@@ -168,10 +168,7 @@
         }
 
         @GetMapping("/admin/access-denied")
-        public String denied(HttpServletResponse response, @RequestParam String role) {
-            if(role.equals("chief")){
-                return "/admin/adminMyPage";
-            }
+        public String denied(HttpServletResponse response) {
             return "/admin/access-denied";
         }
 
