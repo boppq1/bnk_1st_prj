@@ -35,18 +35,6 @@ public class FilterConfig {
 		return bean;
 	}
 
-//    @Bean
-//    public FilterRegistrationBean<JwtFilter> jwtFilter(JwtUtil jwtUtil) {
-//
-//        FilterRegistrationBean<JwtFilter> bean =
-//                new FilterRegistrationBean<>();
-//
-//        bean.setFilter(new JwtFilter(jwtUtil)); // 🔥 직접 생성
-//        bean.setOrder(3);
-//
-//        return bean;
-//    }
-
 }
 
 
