@@ -220,4 +220,51 @@
     <delete id="deletePrefRateByProduct" parameterType="long"> DELETE FROM PREFERENTIAL_RATE_CONDITIONS WHERE rate_no IN (SELECT rate_no FROM INTEREST_RATES WHERE prod_no = #{product_id, jdbcType=NUMERIC}) </delete>
     <delete id="deletePrefRateByRate" parameterType="long"> DELETE FROM PREFERENTIAL_RATE_CONDITIONS WHERE rate_no = #{rate_id, jdbcType=NUMERIC} </delete>
 
+
+    <select id="selectRatesByProduct" resultType="com.example.demo.admin.dto.InterestRateDto">
+        SELECT * FROM interest_rates WHERE prod_no = #{product_id}
+    </select>
+
+    <select id="searchProducts" parameterType="map" resultType="com.example.demo.admin.dto.ProductDto">
+        SELECT prod_no AS product_id, prod_nm AS product_name, prod_type AS product_type,
+        apv_stat_cd AS approve_status, reg_dt AS create_date, reg_by AS created_by,
+        tgt_lrg AS target_large, tgt_dtl AS target_detail, rate_cat AS rate_category,
+        min_prd_mon AS min_period_month, max_prd_mon AS max_period_month
+        FROM PRODUCTS
+        WHERE 1=1
+        <if test="keyword != null and keyword != ''">
+            AND prod_nm LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="type != null and type != ''">
+            AND prod_type = #{type}
+        </if>
+        <if test="status != null and status != ''">
+            AND apv_stat_cd = #{status}
+        </if>
+        ORDER BY prod_no DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{pageSize} ROWS ONLY
+    </select>
+
+
+    <select id="searchProductCount"
+            parameterType="map"
+            resultType="int">
+
+        SELECT COUNT(*)
+        FROM products
+        WHERE 1=1
+
+        <if test="keyword != null and keyword != ''">
+            AND prod_nm LIKE '%' || #{keyword} || '%'
+        </if>
+
+        <if test="type != null and type != ''">
+            AND prod_type = #{type}
+        </if>
+
+        <if test="status != null and status != ''">
+            AND apv_stat_cd = #{status}
+        </if>
+
+    </select>
 </mapper>

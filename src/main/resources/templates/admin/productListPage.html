@@ -105,33 +105,66 @@
   </div>
 
   <!-- 필터 바 -->
-  <div class="filter-bar">
-    <div class="filter-search">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" id="searchInput" placeholder="상품명으로 검색...">
+  <form method="get" action="/admin/productListPage">
+    <div class="filter-bar">
+
+      <div class="filter-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+                type="text"
+                name="keyword"
+                placeholder="상품명으로 검색..."
+                th:value="${keyword}">
+      </div>
+
+      <div class="filter-select">
+        <select name="type">
+
+          <option value="">전체 타입</option>
+          <option value="DEPOSIT" th:selected="${type == 'DEPOSIT'}">예금</option>
+          <option value="SAVING" th:selected="${type == 'SAVING'}">적금</option>
+          <option value="FOREIGN_DEP" th:selected="${type == 'FOREIGN_DEP'}">외화 예금</option>
+          <option value="FOREIGN_SAV" th:selected="${type == 'FOREIGN_SAV'}">외화 적금</option>
+          <option value="CORP_SAV" th:selected="${type == 'CORP_SAV'}">기업 적금</option>
+          <option value="CORP_DEP" th:selected="${type == 'CORP_DEP'}">기업 예금</option>
+        </select>
+      </div>
+
+      <div class="filter-select">
+        <select name="status">
+
+          <option value="">전체 상태</option>
+
+          <option value="승인"
+                  th:selected="${status == '승인'}">
+            승인 완료
+          </option>
+
+          <option value="검토중"
+                  th:selected="${status == '검토중'}">
+            검토중
+          </option>
+
+          <option value="반려"
+                  th:selected="${status == '반려'}">
+            반려
+          </option>
+
+          <option value="SAVE"
+                  th:selected="${status == 'SAVE'}">
+            임시 저장
+          </option>
+
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        검색
+      </button>
+
     </div>
-    <div class="filter-select">
-      <select id="typeFilter">
-        <option value="">전체 타입</option>
-        <option value="deposit">예금</option>
-        <option value="saving">적금</option>
-        <option value="exchange">외환</option>
-      </select>
-    </div>
-    <div class="filter-select">
-      <select id="statusFilter">
-        <option value="">전체 상태</option>
-        <option value="SUBMIT">결재 요청</option>
-        <option value="승인">승인 완료</option>
-        <option value="반려">반려</option>
-        <option value="SAVE">임시 저장</option>
-      </select>
-    </div>
-    <div class="filter-divider"></div>
-    <div class="filter-count">
-      총 <strong th:text="${products != null ? #lists.size(products) : 0}">48</strong>개 상품
-    </div>
-  </div>
+  </form>
 
   <!-- 상품 테이블 -->
   <div class="table-card">
@@ -151,6 +184,7 @@
         </thead>
 
         <tbody th:if="${products != null and !#lists.isEmpty(products)}">
+
         <tr th:each="p : ${products}"
             th:attr="
       data-id=${p.product_id},
@@ -158,97 +192,183 @@
       data-type=${p.product_type},
       data-status=${p.approve_status},
       data-target=${p.target_large},
+      data-target-detail=${p.target_detail},
       data-rate-category=${p.rate_category},
       data-min-period=${p.min_period_month},
       data-max-period=${p.max_period_month},
       data-interest=${p.interest_payment_type},
-      data-exchange-rate=${p.applied_exchange_rate_type}
+      data-exchange-rate=${p.applied_exchange_rate_type},
+      data-min-amount=${p.min_amount},
+      data-max-amount=${p.max_amount},
+      data-desc=${p.product_desc != null ? p.product_desc : ''}
 ">
+
+          <!-- ID -->
           <td>
-            <span class="td-id" th:text="'#' + ${p.product_id}">#001</span>
+    <span class="td-id"
+          th:text="'#' + ${p.product_id}">
+      #001
+    </span>
           </td>
+
+          <!-- 상품명 -->
           <td>
-          <td>
-            <div class="td-name" th:text="${p.product_name}">BNK 플러스 예금</div>
+
+            <div class="td-name"
+                 th:text="${p.product_name}">
+              BNK 플러스 예금
+            </div>
+
             <div class="td-sub"
-                 th:text="${p.product_type == 'DEPOSIT'}     ? '예금 상품'    :
-                (${p.product_type == 'SAVING'}      ? '적금 상품'    :
-                (${p.product_type == 'FOREIGN_DEP'} ? '외화 예금 상품' :
-                (${p.product_type == 'FOREIGN_SAV'} ? '외화 적금 상품' :
-                (${p.product_type == 'CORP_DEP'}    ? '기업 예금 상품' :
-                (${p.product_type == 'CORP_SAV'}    ? '기업 적금 상품' : '기타 상품')))))">
+                 th:text="${p.product_type == 'DEPOSIT'}     ? '예금 상품' :
+                  (${p.product_type == 'SAVINGS'}      ? '적금 상품' :
+                  (${p.product_type == 'FOREIGN_DEP'} ? '외화 예금 상품' :
+                  (${p.product_type == 'FOREIGN_SAV'} ? '외화 적금 상품' :
+                  (${p.product_type == 'CORP_DEP'}    ? '기업 예금 상품' :
+                  (${p.product_type == 'CORP_SAV'}    ? '기업 적금 상품' : '기타 상품')))))">
               예금 상품
             </div>
+
           </td>
+
+          <!-- 타입 -->
           <td>
-              <span th:if="${p.product_type == 'DEPOSIT'}"     class="badge badge-blue">
-                <i class="fa-solid fa-piggy-bank"></i> 예금
-              </span>
-            <span th:if="${p.product_type == 'SAVING'}"      class="badge badge-green">
-                <i class="fa-solid fa-sack-dollar"></i> 적금
-              </span>
-            <span th:if="${p.product_type == 'FOREIGN_DEP'}" class="badge badge-purple">
-                <i class="fa-solid fa-earth-asia"></i> 외화 예금
-              </span>
-            <span th:if="${p.product_type == 'FOREIGN_SAV'}" class="badge badge-indigo">
-                <i class="fa-solid fa-coins"></i> 외화 적금
-              </span>
-            <span th:if="${p.product_type == 'CORP_DEP'}"    class="badge badge-amber">
-                <i class="fa-solid fa-building-columns"></i> 기업 예금
-              </span>
-            <span th:if="${p.product_type == 'CORP_SAV'}"    class="badge badge-teal">
-                <i class="fa-solid fa-briefcase"></i> 기업 적금
-              </span>
+
+    <span th:if="${p.product_type == 'DEPOSIT'}"
+          class="badge badge-blue">
+      <i class="fa-solid fa-piggy-bank"></i>
+      예금
+    </span>
+
+            <span th:if="${p.product_type == 'SAVINGS'}"
+                  class="badge badge-green">
+      <i class="fa-solid fa-sack-dollar"></i>
+      적금
+    </span>
+
+            <span th:if="${p.product_type == 'FOREIGN_DEP'}"
+                  class="badge badge-purple">
+      <i class="fa-solid fa-earth-asia"></i>
+      외화 예금
+    </span>
+
+            <span th:if="${p.product_type == 'FOREIGN_SAV'}"
+                  class="badge badge-indigo">
+      <i class="fa-solid fa-coins"></i>
+      외화 적금
+    </span>
+
+            <span th:if="${p.product_type == 'CORP_DEP'}"
+                  class="badge badge-amber">
+      <i class="fa-solid fa-building-columns"></i>
+      기업 예금
+    </span>
+
+            <span th:if="${p.product_type == 'CORP_SAV'}"
+                  class="badge badge-teal">
+      <i class="fa-solid fa-briefcase"></i>
+      기업 적금
+    </span>
+
           </td>
+
+          <!-- 대상 고객 -->
           <td>
-            <span th:if="${p.target_large == 'ALL'}"     class="badge badge-slate">전체</span>
-            <span th:if="${p.target_large == 'PERSONAL'}" class="badge badge-blue">개인</span>
-            <span th:if="${p.target_large == 'COMPANY'}"  class="badge badge-purple">기업</span>
+
+    <span th:if="${p.target_large == 'ALL'}"
+          class="badge badge-slate">
+      전체
+    </span>
+
+            <span th:if="${p.target_large == 'PERSONAL'}"
+                  class="badge badge-blue">
+      개인
+    </span>
+
+            <span th:if="${p.target_large == 'COMPANY'}"
+                  class="badge badge-purple">
+      기업
+    </span>
+
           </td>
+
+          <!-- 금리 -->
           <td>
-            <span th:if="${p.rate_category == 'FIXED'}"        class="badge badge-slate">고정</span>
-            <span th:if="${p.rate_category == 'PREFERENTIAL'}" class="badge badge-green">우대</span>
-            <span th:if="${p.rate_category == 'CORP'}"         class="badge badge-amber">변동</span>
-            <span th:if="${p.rate_category == null or p.rate_category == ''}" class="badge badge-slate">-</span>
+
+    <span th:if="${p.rate_category == 'FIXED'}"
+          class="badge badge-slate">
+      고정
+    </span>
+
+            <span th:if="${p.rate_category == 'PREFERENTIAL'}"
+                  class="badge badge-green">
+      우대
+    </span>
+
+            <span th:if="${p.rate_category == 'CORP'}"
+                  class="badge badge-amber">
+      변동
+    </span>
+
+            <span th:if="${p.rate_category == null or p.rate_category == ''}"
+                  class="badge badge-slate">
+      -
+    </span>
+
           </td>
-          <td>
-            <span th:text="${p.min_period_month} + '~' + ${p.max_period_month} + '개월'">1~12개월</span>
+
+          <!-- 기간 -->
+          <td><span th:text="${p.min_period_month + ' ~ ' + p.max_period_month + '개월'}">1 ~ 12개월</span></td>
+          <!-- 상태 -->
+          <td><span th:if="${p.approve_status == '승인'}" class="badge badge-green"><i class="fa-solid fa-circle-check"></i>승인</span>
+            <span th:if="${p.approve_status == '검토중'}" class="badge badge-amber"><i class="fa-solid fa-clock"></i>검토 중</span>
+
+            <span th:if="${p.approve_status == '반려'}" class="badge badge-red"><i class="fa-solid fa-circle-xmark"></i>반려</span>
+
+            <span th:if="${p.approve_status == 'SAVE'}" class="badge badge-slate"><i class="fa-solid fa-floppy-disk"></i>임시 저장</span>
+
           </td>
+
+          <!-- 액션 -->
           <td>
-            <span th:if="${p.approve_status == '승인'}"  class="badge badge-green">
-              <i class="fa-solid fa-circle-check"></i> 승인
-            </span>
-            <span th:if="${p.approve_status == '검토중'}" class="badge badge-amber">
-              <i class="fa-solid fa-clock"></i> 검토 중
-            </span>
-            <span th:if="${p.approve_status == '반려'}"  class="badge badge-red">
-              <i class="fa-solid fa-circle-xmark"></i> 반려
-            </span>
-            <span th:if="${p.approve_status == 'SAVE'}"  class="badge badge-slate">
-              <i class="fa-solid fa-floppy-disk"></i> 임시 저장
-            </span>
-          </td>
-          <td>
+
             <div class="action-btns">
-              <!-- 상세 보기 버튼: 모달 오픈 -->
-              <button type="button" class="act-btn act-view"
+
+              <!-- 상세 -->
+              <button type="button"
+                      class="act-btn act-view"
                       onclick="openModal(this.closest('tr'))"
                       title="상세 보기">
+
                 <i class="fa-solid fa-eye"></i>
+
               </button>
+
+              <!-- 수정 -->
               <a th:href="@{/admin/updatePro/{id}(id=${p.product_id})}"
                  class="act-btn act-edit"
                  title="수정">
+
                 <i class="fa-solid fa-pen"></i>
+
               </a>
-              <button type="button" class="act-btn act-del"
+
+              <!-- 삭제 -->
+              <button type="button"
+                      class="act-btn act-del"
                       th:attr="onclick='confirmDelete(' + ${p.product_id} + ')'"
                       title="삭제">
+
                 <i class="fa-solid fa-trash"></i>
+
               </button>
+
             </div>
+
           </td>
+
         </tr>
+
         </tbody>
 
         <!-- 데이터 없을 때 -->
@@ -268,20 +388,27 @@
 
     <!-- 페이지네이션 -->
     <div class="pagination" th:if="${totalPage != null and totalPage > 0}">
+
       <a th:if="${currentPage > 1}"
-         th:href="@{/admin/productListPage(page=${currentPage - 1})}"
-         class="page-btn"><i class="fa-solid fa-chevron-left"></i></a>
+         th:href="@{/admin/productListPage(page=${currentPage - 1}, keyword=${keyword}, type=${type}, status=${status})}"
+         class="page-btn">
+        <i class="fa-solid fa-chevron-left"></i>
+      </a>
+
       <th:block th:each="i : ${#numbers.sequence(1, totalPage)}">
-        <a th:href="@{/admin/productListPage(page=${i})}"
+        <a th:href="@{/admin/productListPage(page=${i}, keyword=${keyword}, type=${type}, status=${status})}"
            th:text="${i}"
            th:classappend="${currentPage == i} ? ' active'"
            class="page-btn"></a>
       </th:block>
+
       <a th:if="${currentPage < totalPage}"
-         th:href="@{/admin/productListPage(page=${currentPage + 1})}"
-         class="page-btn"><i class="fa-solid fa-chevron-right"></i></a>
+         th:href="@{/admin/productListPage(page=${currentPage + 1}, keyword=${keyword}, type=${type}, status=${status})}"
+         class="page-btn">
+        <i class="fa-solid fa-chevron-right"></i>
+      </a>
+
     </div>
-  </div>
 
 </div><!-- /main-content -->
 
@@ -395,28 +522,6 @@
 
 
 <script>
-  /* ─── 검색 + 필터 ─── */
-  const searchInput  = document.getElementById('searchInput');
-  const typeFilter   = document.getElementById('typeFilter');
-  const statusFilter = document.getElementById('statusFilter');
-
-  function applyFilter() {
-    const keyword = searchInput.value.toLowerCase().trim();
-    const type    = typeFilter.value;
-    const status  = statusFilter.value;
-    document.querySelectorAll('#productTable tbody tr[data-type]').forEach(row => {
-      const name      = (row.querySelector('.td-name')?.textContent || '').toLowerCase();
-      const rowType   = row.getAttribute('data-type')   || '';
-      const rowStatus = row.getAttribute('data-status') || '';
-      row.style.display =
-              (!keyword || name.includes(keyword)) &&
-              (!type   || rowType   === type)      &&
-              (!status || rowStatus === status) ? '' : 'none';
-    });
-  }
-  searchInput.addEventListener('input',   applyFilter);
-  typeFilter.addEventListener('change',   applyFilter);
-  statusFilter.addEventListener('change', applyFilter);
 
   /* ─── 삭제 ─── */
   function confirmDelete(id) {
@@ -427,12 +532,13 @@
 
   /* ─── 상수 맵 ─── */
   const TYPE_MAP = {
-    'DEPOSIT':     { label: '예금',      icon: 'fa-piggy-bank',             colorClass: 'type-deposit'  },
-    'SAVINGS':     { label: '적금',      icon: 'fa-sack-dollar',            colorClass: 'type-saving'   },
-    'FOREIGN_DEP': { label: '외화 예금', icon: 'fa-earth-asia',             colorClass: 'type-foreign'  },
-    'FOREIGN_SAV': { label: '외화 적금', icon: 'fa-coins',                  colorClass: 'type-foreign'  },
-    'CORP_DEP':    { label: '기업 예금', icon: 'fa-building-columns',       colorClass: 'type-corp'     },
-    'CORP_SAV':    { label: '기업 적금', icon: 'fa-briefcase',              colorClass: 'type-corp'     }
+
+    'DEPOSIT': {label: '예금', icon: 'fa-piggy-bank', colorClass: 'type-deposit'},
+    'SAVING': {label: '적금', icon: 'fa-sack-dollar', colorClass: 'type-saving'},
+    'FOREIGN_DEP': {label: '외화 예금', icon: 'fa-earth-asia', colorClass: 'type-foreign'},
+    'FOREIGN_SAV': {label: '외화 적금', icon: 'fa-coins', colorClass: 'type-foreign'},
+    'CORP_DEP': {label: '기업 예금', icon: 'fa-building-columns', colorClass: 'type-corp'},
+    'CORP_SAV': {label: '기업 적금', icon: 'fa-briefcase', colorClass: 'type-corp'}
   };
 
   const STATUS_MAP = {

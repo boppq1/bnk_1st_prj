@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BNK - HEAD 대시보드</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
+    <link rel="stylesheet" th:href="@{/css/admin/headDashboard.css}">
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="sidebar-logo">
+        <img th:src="@{/images/BNKlogo.png}" alt="BNK 부산은행">
+    </div>
+    <div class="sidebar-profile">
+        <div class="sp-avatar"><i class="fa-solid fa-user-tie"></i></div>
+        <div>
+            <div class="sp-name" th:text="${admin.name} + ' 관리자'">홍길동 관리자</div>
+            <span class="sp-role" th:text="${admin.admin_role}">EXECUTIVE</span>
+        </div>
+    </div>
+    <ul class="sidebar-menu">
+        <li class="menu-section-title">메인</li>
+        <li><a href="/admin/headDashboard" class="menu-item active"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
+        <li><a href="/admin/adminMyPage"   class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
+        <li class="menu-section-title">회원/관리자</li>
+        <li><a href="/admin/memberList"  class="menu-item"><i class="fa-solid fa-users"></i> 회원 관리</a></li>
+        <li><a href="/admin/adminList"   class="menu-item"><i class="fa-solid fa-users-gear"></i> 관리자 관리</a></li>
+        <li class="menu-section-title">상품</li>
+        <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
+        <li><a href="/admin/productListPage"     class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
+        <li class="menu-section-title">검색어</li>
+        <li><a href="/admin/searchManagementPage" class="menu-item"><i class="fa-solid fa-magnifying-glass-chart"></i> 검색어 관리</a></li>
+    </ul>
+    <div class="sidebar-footer">
+        <p>2024 BNK Busan Bank</p>
+        <p>IT Strategy Team</p>
+    </div>
+</div>
+
+<div class="header">
+    <div class="header-title">EXECUTIVE 대시보드</div>
+    <div class="header-right">
+        <div class="header-user">
+            <div class="hu-avatar"><i class="fa-solid fa-user-tie"></i></div>
+            <span th:text="'관리자 ' + ${admin.name} + ' 님'">관리자 홍길동 님</span>
+            <i class="fa-solid fa-chevron-down" style="color:var(--text-muted);font-size:11px;"></i>
+        </div>
+    </div>
+</div>
+
+<div class="main-content">
+
+    <div class="kpi-grid">
+        <a href="/admin/searchManagementPage" class="kpi-card">
+            <div class="kpi-icon red"><i class="fa-solid fa-magnifying-glass"></i></div>
+            <div>
+                <div class="kpi-label">총 검색어 수</div>
+                <div class="kpi-value" th:text="${#numbers.formatInteger(dashboard['totalKeywordCount'], 0, 'COMMA')}">0</div>
+            </div>
+        </a>
+        <a href="/admin/setSuggestPersonalKeyword" class="kpi-card">
+            <div class="kpi-icon blue"><i class="fa-solid fa-star"></i></div>
+            <div>
+                <div class="kpi-label">추천 검색어</div>
+                <div class="kpi-value" th:text="${dashboard['recommendKeywordCount']}">0</div>
+                <div class="kpi-sub" th:text="'개인 ' + ${dashboard['personalRecCount']} + ' / 기업 ' + ${dashboard['corpRecCount']}">개인 0 / 기업 0</div>
+            </div>
+        </a>
+        <a href="/admin/productListPage" class="kpi-card">
+            <div class="kpi-icon green"><i class="fa-solid fa-box-open"></i></div>
+            <div>
+                <div class="kpi-label">등록 상품 수</div>
+                <div class="kpi-value" th:text="${dashboard['totalProductCount']}">0</div>
+            </div>
+        </a>
+        <a href="/admin/memberList" class="kpi-card">
+            <div class="kpi-icon amber"><i class="fa-solid fa-users"></i></div>
+            <div>
+                <div class="kpi-label">전체 회원 수</div>
+                <div class="kpi-value stat-value" th:text="${(dashboard['userList'] != null ? #lists.size(dashboard['userList']) : 0) + (dashboard['companyList'] != null ? #lists.size(dashboard['companyList']) : 0)}">0</div>
+            </div>
+        </a>
+    </div>
+
+    <div class="two-col">
+        <div class="card">
+            <div class="card-title">
+                <i class="fa-solid fa-fire"></i> 인기 검색어 TOP 5
+                <a href="/admin/searchManagementPage" class="more">전체 보기 <i class="fa-solid fa-chevron-right"></i></a>
+            </div>
+            <div class="kw-list">
+                <div class="kw-row" th:each="kw, kwStat : ${dashboard['topKeywords']}">
+                    <span class="kw-num" th:classappend="${kwStat.count <= 3} ? 'top'" th:text="${kwStat.count}">1</span>
+                    <span class="kw-name" th:text="${kw['keyword']}">정기예금</span>
+                    <div class="kw-bar-bg">
+                        <div class="kw-bar" th:style="'width:' + ${kw['barPercent']} + '%'"></div>
+                    </div>
+                    <span class="kw-cnt" th:text="${#numbers.formatInteger(kw['searchVolume'], 0, 'COMMA')}">0</span>
+                </div>
+                <div th:if="${#lists.isEmpty(dashboard['topKeywords'])}" style="font-size:13px; color:var(--text-muted); padding:8px 0;">검색 데이터가 없습니다.</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> 추천 검색어
+                <a href="/admin/searchManagementPage" class="more">관리 <i class="fa-solid fa-chevron-right"></i></a>
+            </div>
+            <div class="rec-label">개인 고객</div>
+            <div class="pill-wrap">
+                <span class="pill blue" th:each="kw : ${dashboard['personalRecommends']}" th:text="${kw}">정기예금</span>            </div>
+            <div class="divider"></div>
+            <div class="rec-label">기업 고객</div>
+            <div class="pill-wrap">
+                <span class="pill green" th:each="kw : ${dashboard['corpRecommends']}" th:text="${kw}">기업자유예금</span>            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">
+            <i class="fa-solid fa-box-open"></i> 상품 현황
+            <a href="/admin/productListPage" class="more">전체 보기 <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+        <table class="prod-table">
+            <thead>
+            <tr>
+                <th>상품명</th>
+                <th>유형</th>
+                <th>상태</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="prod : ${dashboard['products']}">
+                <td th:text="${prod.product_name}">상품명</td>
+                <td>
+                    <span class="type-badge" th:switch="${prod.product_type}">
+                <span th:case="'DEPOSIT'">개인 예금</span>
+                <span th:case="'SAVINGS'">개인 적금</span>
+                <span th:case="'CORP_DEP'">기업 예금</span>
+                <span th:case="'CORP_SAV'">기업 적금</span>
+                <span th:case="'FOREIGN_DEP'">외화 예금</span>
+                <span th:case="'FOREIGN_SAV'">외화 적금</span>
+                <span th:case="*" th:text="${prod.product_type}">타입</span>
+            </span>
+                </td>
+                <td>
+                    <span th:if="${prod.approve_status == '승인'}" class="status-on">● 승인</span>
+                    <span th:if="${prod.approve_status != '승인'}" class="status-off">● 대기/반려</span>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(dashboard['products'])}">
+                <td colspan="3" style="text-align:center; color:var(--text-muted); padding:20px 0;">등록된 상품이 없습니다.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    (function() {
+        // 1. 우클릭 및 단축키 차단
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.keyCode === 123 || // F12
+                (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 67 || e.keyCode === 74)) || // Ctrl+Shift+I,C,J
+                (e.ctrlKey && e.keyCode === 85)) { // Ctrl+U
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // 2. 개발자 도구 실행 시 브라우저 정지 (debugger 트릭)
+        const blockDevTools = () => {
+            const threshold = 160;
+            if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
+                document.body.innerHTML = '<div style="text-align:center; padding-top:200px;">보안 정책상 개발자 도구를 사용할 수 없습니다.</div>';
+                window.location.reload(); // 강제 새로고침
+            }
+        };
+
+        // 주기적으로 검사 및 디버거 호출
+        setInterval(() => {
+            (function() {}.constructor("debugger")());
+            blockDevTools();
+        }, 1000);
+    })();
+
+
+
+        const params = new URLSearchParams(window.location.search);
+
+        if(params.get("expired") === "true") {
+            alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
+        }
+</script>
+</body>
+</html>
