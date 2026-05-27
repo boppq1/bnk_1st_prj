@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.fx_personal.ExchangeMapper">
+
+    <!-- ============ 사용자 / 계좌 조회 ============ -->
+
+    <!-- LOGIN_ID 로 USR_NO 조회 -->
+    <select id="findUsrNoByLoginId" resultType="long">
+        SELECT usr_no
+          FROM users
+         WHERE login_id = #{loginId}
+    </select>
+
+    <!-- USR_NO 로 원화 개인계좌 조회 (통화 KRW 계좌) -->
+    <resultMap id="krwAccountMap" type="com.example.demo.fx_personal.AccountDto">
+        <result property="usrNo"      column="USR_NO"/>
+        <result property="krwAcntId"  column="ACNT_NO"/>
+        <result property="krwBalance" column="BALANCE"/>
+    </resultMap>
+
+    <select id="findKrwAccount" resultMap="krwAccountMap">
+        SELECT acnt_no, usr_no, balance
+          FROM accounts_personal
+         WHERE usr_no = #{usrNo}
+           AND currency = 'KRW'
+           AND ROWNUM = 1
+    </select>
+
+    <!-- USR_NO 로 개인 외화계좌 ACNT_NO 조회 -->
+    <select id="findForeignAcntId" resultType="long">
+        SELECT acnt_no
+          FROM foreign_accounts_personal
+         WHERE usr_no = #{usrNo}
+           AND ROWNUM = 1
+    </select>
+
+    <!-- ============ 환율 조회 ============ -->
+
+    <resultMap id="rateMap" type="com.example.demo.fx_personal.ExchangeRateDto">
+        <result property="rateNo"   column="RATE_NO"/>
+        <result property="curCd"    column="CUR_CD"/>
+        <result property="curCd"    column="CUR_CD"/>
+        <result property="buyRate"  column="BUY_RATE"/>
+        <result property="sellRate" column="SELL_RATE"/>
+        <result property="baseRate" column="BASE_RATE"/>
+        <result property="ntcDt"    column="NTC_DT"/>
+    </resultMap>
+
+    <!--
+      전체 통화의 "가장 최근 고시" 환율 목록.
+      통화별로 NTC_DT 가 가장 최근인 row 1건씩 선택.
+      주말/공휴일이라 오늘자가 없어도 가장 최근 영업일 환율을 가져온다.
+    -->
+    <select id="findLatestRates" resultMap="rateMap">
+        SELECT rate_no,
+               cur_nm      AS cur_cd,
+               tts         AS buy_rate,
+               ttb         AS sell_rate,
+               deal_bas_r  AS base_rate,
+               ntc_dt
+          FROM (
+              SELECT r.*,
+                     ROW_NUMBER() OVER (
+                         PARTITION BY cur_nm
+                         ORDER BY ntc_dt DESC, rate_no DESC
+                     ) rn
+                FROM exchange_rates r
+          )
+         WHERE rn = 1
+         ORDER BY cur_nm
+    </select>
+
+    <!-- 특정 통화의 가장 최근 환율 1건 -->
+    <select id="findLatestRateByCur" resultMap="rateMap">
+        SELECT rate_no,
+               cur_nm      AS cur_cd,
+               tts         AS buy_rate,
+               ttb         AS sell_rate,
+               deal_bas_r  AS base_rate,
+               ntc_dt
+          FROM (
+              SELECT r.*
+                FROM exchange_rates r
+               WHERE cur_nm = #{curCd}
+               ORDER BY ntc_dt DESC, rate_no DESC
+          )
+         WHERE ROWNUM = 1
+    </select>
+
+    <!-- ============ 잔액 조회 (BALANCES) ============ -->
+
+    <!--
+      외화계좌 + 통화 기준, 가장 최근 row 1건의 현재 잔액.
+      INSERT only 구조이므로 UPD_DT(최신) row 가 현재 잔액.
+      거래 이력이 없으면 결과 없음(null).
+    -->
+    <select id="findLatestForeignBalance" resultType="java.math.BigDecimal">
+        SELECT balance
+          FROM (
+              SELECT balance
+                FROM balances
+               WHERE acnt_no = #{acntId}
+                 AND currency = #{curCd}
+               ORDER BY upd_dt DESC, bal_no DESC
+          )
+         WHERE ROWNUM = 1
+    </select>
+
+    <!-- ============ 잔액 갱신 ============ -->
+
+    <!-- 원화 계좌 잔액 갱신 -->
+    <update id="updateKrwBalance">
+        UPDATE accounts_personal
+           SET balance = #{balance}
+         WHERE acnt_no = #{acntId}
+    </update>
+
+    <!-- BALANCES 새 잔액 row INSERT (수정시각 SYSDATE) -->
+    <insert id="insertBalance">
+        INSERT INTO balances (bal_no, acnt_no, currency, balance, upd_dt)
+        VALUES (SEQ_BALANCES.NEXTVAL, #{acntId}, #{curCd}, #{balance}, SYSDATE)
+    </insert>
+
+    <!-- ============ 환전 이력 ============ -->
+
+    <insert id="insertExchangeRequest"
+            parameterType="com.example.demo.fx_personal.ExchangeHistory">
+        INSERT INTO exchange_requests
+            (exch_no, usr_type, from_acnt, to_acnt,
+             from_cur, to_cur, from_amt, to_amt, apld_rate, exch_cplt_dt)
+        VALUES
+            (SEQ_EXCHANGE_REQUESTS.NEXTVAL, #{usrType}, #{fromAcnt}, #{toAcnt},
+             #{fromCur}, #{toCur}, #{fromAmt}, #{toAmt}, #{apldRate}, SYSDATE)
+    </insert>
+
+</mapper>

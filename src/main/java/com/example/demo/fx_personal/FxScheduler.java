@@ -24,7 +24,7 @@ public class FxScheduler {
 	@Autowired
 	private FxDataDao fxDataDao;
 	
-	@Scheduled(cron = "0 0 12 * * *") //12시 정각을 뜻함
+	@Scheduled(cron = "0 0 0 * * *") //0시 정각을 뜻함
 	public void insertRateEveryHour() {
 		
 		String searchdate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));

@@ -6,25 +6,45 @@
 <mapper namespace="com.example.demo.fx_personal.FxDataDao">
 
 	<insert id="insertRate">
-
 		INSERT INTO exchange_rates (rate_no, cur_nm, ttb, tts, deal_bas_r, ntc_dt)
 		VALUES (
-		SEQ_EXCHANGE_RATES.NEXTVAL,
-		#{cur_nm},
-		#{ttb},
-		#{tts},
-		#{deal_bas_r},
-		SYSDATE
+			SEQ_EXCHANGE_RATES.NEXTVAL,
+			#{cur_nm},
+			#{ttb},
+			#{tts},
+			#{deal_bas_r},
+			SYSDATE
 		)
-
 	</insert>
-	
+
 	<select id="viewData">
-		
-		SELECT * FROM exchange_rates WHERE cur_nm = #{cur_nm} ORDER BY ntc_dt DESC
-		
+		SELECT * FROM exchange_rates
+		WHERE cur_nm = #{cur_nm}
+		ORDER BY ntc_dt DESC
 	</select>
-	
-	
+
+	<resultMap id="calculatorMap" type="com.example.demo.fx_personal.CalculatorDto">
+		<result property="curNm"    column="cur_nm"/>
+		<result property="ttb"      column="ttb"/>
+		<result property="tts"      column="tts"/>
+		<result property="dealBasR" column="deal_bas_r"/>
+		<result property="ntcDt"    column="ntc_dt"/>
+	</resultMap>
+
+	<select id="selectRate" resultMap="calculatorMap">
+		SELECT cur_nm
+		     , ttb
+		     , tts
+		     , deal_bas_r
+		     , ntc_dt
+		FROM exchange_rates
+		WHERE cur_nm = #{cur_nm}
+		  AND ntc_dt = (
+		        SELECT MAX(ntc_dt)
+		        FROM exchange_rates
+		        WHERE cur_nm = #{cur_nm}
+		          AND TRUNC(ntc_dt) &lt;= TO_DATE(#{date}, 'YYYY-MM-DD')
+		  )
+	</select>
 
 </mapper>
