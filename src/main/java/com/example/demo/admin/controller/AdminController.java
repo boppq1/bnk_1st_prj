@@ -51,6 +51,7 @@ public class AdminController {
 		m.addAttribute("admin", dto);
 		m.addAttribute("userList", as.getUserList());
 		m.addAttribute("companyList", as.getCompanyUserList());
+		System.out.println("");
 		return "admin/memberList";
 	}
 	
