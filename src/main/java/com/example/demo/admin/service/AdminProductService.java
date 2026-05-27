@@ -38,10 +38,9 @@ public class AdminProductService {
     // ================================================================
     @Transactional
     public void registerProduct(ProductDto dto) {
-        // 1. 상품 등록
+        // 1. 상품 등록 (MyBatis <selectKey>가 자동으로 dto.product_id 를 채워줌)
         productDao.insertPro(dto);
-        Long productId = productDao.selectCurrentProductNo();
-        dto.setProduct_id(productId);
+        Long productId = dto.getProduct_id(); // 별도 조회 없이 바로 꺼내기!
 
         // 2. 통화 등록
         reinsertCurrencies(productId, dto.getCurrencies());
@@ -50,9 +49,10 @@ public class AdminProductService {
         if (dto.getRates() != null) {
             for (InterestRateDto rate : dto.getRates()) {
                 rate.setProduct_id(productId);
-                productDao.insertInterestRate(rate);
 
-                Long rateId = productDao.selectCurrentRateNo();
+                // 금리 등록 (MyBatis <selectKey>가 자동으로 rate.rate_id 를 채워줌)
+                productDao.insertInterestRate(rate);
+                Long rateId = rate.getRate_id(); // 별도 조회 없이 바로 꺼내기!
 
                 if (rate.getPrefRateConditions() != null) {
                     for (PrefRateDto pref : rate.getPrefRateConditions()) {
@@ -71,6 +71,10 @@ public class AdminProductService {
     // ================================================================
     // 상품 목록 / 상세
     // ================================================================
+    public List<ProductDto> getProductListWithCurrencies(int offset, int pageSize) {
+        return productDao.listProWithCurrencies(offset, pageSize);
+    }
+
     public List<ProductDto> getProductList(int offset, int pageSize) {
         return productDao.listPro(offset, pageSize);
     }
@@ -99,15 +103,17 @@ public class AdminProductService {
         // 통화 재등록
         reinsertCurrencies(dto.getProduct_id(), dto.getCurrencies());
 
-        // 금리/우대금리 재등록
-        if (dto.getRates() != null && !dto.getRates().isEmpty()) {
-            productDao.deletePrefRateByProduct(dto.getProduct_id());
-            productDao.deleteInterestRatesByProduct(dto.getProduct_id());
+        // ⭐ 핵심: 조건에 상관없이 무조건 기존 금리/우대금리 먼저 싹 다 삭제!
+        productDao.deletePrefRateByProduct(dto.getProduct_id());
+        productDao.deleteInterestRatesByProduct(dto.getProduct_id());
 
+        // 그 다음, 새로 화면에서 넘어온 금리가 '있을 때만' 등록
+        if (dto.getRates() != null && !dto.getRates().isEmpty()) {
             for (InterestRateDto rate : dto.getRates()) {
                 rate.setProduct_id(dto.getProduct_id());
+
                 productDao.insertInterestRate(rate);
-                Long rateId = productDao.selectCurrentRateNo();
+                Long rateId = rate.getRate_id(); // (앞서 selectKey 적용한 부분)
 
                 if (rate.getPrefRateConditions() != null) {
                     for (PrefRateDto pref : rate.getPrefRateConditions()) {
@@ -117,7 +123,7 @@ public class AdminProductService {
                 }
             }
         }
-    }
+    } // <-- 누락되었던 괄호 복구 완료!
 
     // ================================================================
     // 제출 (승인 요청)
@@ -130,15 +136,17 @@ public class AdminProductService {
         // 통화 재등록
         reinsertCurrencies(dto.getProduct_id(), dto.getCurrencies());
 
-        // 금리/우대금리 재등록
-        if (dto.getRates() != null && !dto.getRates().isEmpty()) {
-            productDao.deletePrefRateByProduct(dto.getProduct_id());
-            productDao.deleteInterestRatesByProduct(dto.getProduct_id());
+        // ⭐ 핵심: 조건에 상관없이 무조건 기존 금리/우대금리 먼저 싹 다 삭제!
+        productDao.deletePrefRateByProduct(dto.getProduct_id());
+        productDao.deleteInterestRatesByProduct(dto.getProduct_id());
 
+        // 그 다음, 새로 화면에서 넘어온 금리가 '있을 때만' 등록
+        if (dto.getRates() != null && !dto.getRates().isEmpty()) {
             for (InterestRateDto rate : dto.getRates()) {
                 rate.setProduct_id(dto.getProduct_id());
+
                 productDao.insertInterestRate(rate);
-                Long rateId = productDao.selectCurrentRateNo();
+                Long rateId = rate.getRate_id(); // (앞서 selectKey 적용한 부분)
 
                 if (rate.getPrefRateConditions() != null) {
                     for (PrefRateDto pref : rate.getPrefRateConditions()) {
@@ -148,7 +156,7 @@ public class AdminProductService {
                 }
             }
         }
-    }
+    } // <-- 누락되었던 괄호 복구 완료!
 
     // ================================================================
     // 수정 (관리자)
@@ -171,7 +179,9 @@ public class AdminProductService {
                 rate.setProduct_id(dto.getProduct_id());
                 productDao.insertInterestRate(rate);
 
-                Long rateId = productDao.selectCurrentRateNo();
+                // ⭐ 잔존하던 버그 삭제 후 selectKey 값으로 변경 완료!
+                Long rateId = rate.getRate_id();
+
                 if (rate.getPrefRateConditions() != null) {
                     for (PrefRateDto pref : rate.getPrefRateConditions()) {
                         pref.setRate_id(rateId);

@@ -48,4 +48,5 @@ public class ProductDto {
 	private List<InterestRateDto> rates;
 
 	private List<ProductCurrencyDto> currencies;
+
 }
