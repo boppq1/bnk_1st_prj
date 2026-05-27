@@ -13,7 +13,7 @@ import com.example.demo.jwt.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
-@Controller
+@Controller("fxPersonalExchangeController")
 public class ExchangeController {
 
     private final ExchangeService service;

@@ -9,7 +9,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Service("fxPersonalExchangeService")
 public class ExchangeService {
 
     private final ExchangeMapper mapper;
