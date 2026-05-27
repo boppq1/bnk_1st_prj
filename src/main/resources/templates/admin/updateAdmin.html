@@ -299,6 +299,41 @@ body {
 .toast-btn:hover {
   background: #D1141B;
 }
+
+/* ───── SUBMIT AREA MODIFIED ───── */
+.submit-area {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center; /* 버튼 높이 정렬 */
+  gap: 12px;           /* 버튼 사이의 간격 */
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+
+/* 새로 추가된 목록으로 버튼 스타일 */
+.submit-area .cancel-btn {
+  background: #FFFFFF;
+  color: var(--text-sub);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Pretendard', sans-serif;
+  text-decoration: none; /* A 태그 밑줄 제거 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;              /* 아이콘과 텍스트 사이 간격 */
+  transition: all 0.15s;
+  height: 45px;          /* 우측 저장 버튼과 높이 균형 맞춤 */
+}
+
+.submit-area .cancel-btn:hover {
+  background: var(--bg);
+  color: var(--text);
+  border-color: var(--text-muted);
+}
   </style>
 </head>
 <body>
@@ -407,6 +442,9 @@ body {
       </div>
 
       <div class="submit-area">
+      <a th:href="@{/admin/adminList}" class="cancel-btn">
+          <i class="fa-solid fa-arrow-left"></i> 목록으로
+        </a>
         <button type="submit">
           <i class="fa-solid fa-floppy-disk"></i> 시스템 설정 저장
         </button>

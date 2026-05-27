@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http:// thereal.org">
 <head>
   <meta charset="UTF-8">
   <title>BNK Busan Bank - 관리자 계정 관리</title>
@@ -119,7 +119,7 @@ body {
 .page-subtitle { font-size: 14px; color: var(--text-sub); }
 
 /* ───── STAT CARDS ───── */
-.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
 .stat-card {
   background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius);
   padding: 20px 24px; display: flex; align-items: center; gap: 16px;
@@ -134,8 +134,114 @@ body {
 .stat-label { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
 .stat-value { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1; }
 
-/* ───── TABLE CARD ───── */
-.table-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+/* ───── 테이블 바로 위에 크게 붙는 대형 검색/필터 바 ───── */
+.table-container-header {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-bottom: none; /* 하단 테이블 본문 카드와 이어지도록 처리 */
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+}
+.filter-left-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+.filter-search-large {
+  position: relative;
+  max-width: 480px;
+  width: 100%;
+}
+.filter-search-large i {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.filter-search-large input {
+  width: 100%;
+  height: 44px;
+  padding: 0 16px 0 44px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Pretendard', sans-serif;
+  color: var(--text);
+  background: #F8FAFC;
+  transition: all 0.15s ease;
+}
+.filter-search-large input:focus {
+  outline: none;
+  border-color: var(--primary-border);
+  box-shadow: 0 0 0 3px rgba(237, 28, 36, 0.06);
+  background: #FFFFFF;
+}
+.filter-select-large {
+  position: relative;
+}
+.filter-select-large select {
+  height: 44px;
+  padding: 0 38px 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: 'Pretendard', sans-serif;
+  color: var(--text-sub);
+  background: #F8FAFC;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  font-weight: 600;
+  transition: all 0.15s;
+}
+.filter-select-large select:focus {
+  outline: none;
+  border-color: var(--primary-border);
+  background: #FFFFFF;
+}
+.filter-select-large::after {
+  content: '\f078';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 11px;
+  pointer-events: none;
+}
+.filter-count-label {
+  font-size: 14px;
+  color: var(--text-sub);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.filter-count-label strong {
+  color: var(--primary);
+  font-weight: 800;
+}
+
+/* ───── TABLE CARD (상단 필터 바 결합을 위한 곡률 조정) ───── */
+.table-card { 
+  background: #FFFFFF; 
+  border: 1px solid var(--border); 
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  overflow: hidden; 
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
+}
 .table-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
 thead tr { background: #F8FAFC; border-bottom: 2px solid var(--border); }
@@ -176,11 +282,23 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
   color: var(--text-sub); transition: all 0.15s; text-decoration: none;
 }
 .act-btn:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary-border); }
+
+/* ───── EMPTY STATE ───── */
+.empty-state { padding: 60px 24px; text-align: center; }
+.empty-icon  { font-size: 40px; color: var(--text-muted); margin-bottom: 16px; opacity: 0.5; }
+.empty-title { font-size: 16px; font-weight: 700; color: var(--text-sub); margin-bottom: 6px; }
+.empty-desc  { font-size: 14px; color: var(--text-muted); }
+
+@media (max-width: 992px) {
+  .table-container-header { flex-direction: column; align-items: stretch; }
+  .filter-left-group { flex-direction: column; align-items: stretch; }
+  .filter-search-large { max-width: 100%; }
+  .filter-count-label { text-align: right; }
+}
   </style>
 </head>
 <body>
 
-<!-- ===== SIDEBAR ===== -->
 <div class="sidebar">
   <div class="sidebar-logo">
     <img th:src="@{/images/BNKlogo.png}" alt="BNK 부산은행">
@@ -211,7 +329,6 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
   </div>
 </div>
 
-<!-- ===== HEADER ===== -->
 <div class="header">
   <div class="header-title">고객 통합 관리</div>
   <div class="header-breadcrumb">
@@ -228,10 +345,8 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
   </div>
 </div>
 
-<!-- ===== MAIN CONTENT ===== -->
 <div class="main-content">
 
-  <!-- 페이지 헤더 -->
   <div class="page-header">
     <div>
       <h1 class="page-title">시스템 관리자 현황</h1>
@@ -239,21 +354,23 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
     </div>
   </div>
 
-  <!-- 통계 카드 -->
-  <div class="stat-grid">
-    <div class="stat-card">
-      <div class="stat-icon red"><i class="fa-solid fa-users-gear"></i></div>
-      <div>
-        <div class="stat-label">전체 관리자</div>
-        <div class="stat-value" th:text="${adminList != null ? #lists.size(adminList) : 0}">0</div>
+  
+
+  <div class="table-container-header">
+    <div class="filter-left-group">
+      <div class="filter-search-large">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="adminSearchInput" placeholder="검색할 관리자 이름 또는 아이디를 입력하세요...">
       </div>
+    </div>
+    <div class="filter-count-label">
+      조회된 관리자: 총 <strong th:text="${adminList != null ? #lists.size(adminList) : 0}">0</strong>명
     </div>
   </div>
 
-  <!-- 테이블 섹션 -->
   <div class="table-card">
     <div class="table-wrap">
-      <table>
+      <table id="adminTable">
         <thead>
           <tr>
             <th>번호</th>
@@ -267,8 +384,8 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
         <tbody th:if="${adminList != null and !#lists.isEmpty(adminList)}">
           <tr th:each="adminItem : ${adminList}">
             <td><span class="td-id" th:text="'#' + ${adminItem.admin_id}">#001</span></td>
-            <td th:text="${adminItem.login_id}"></td>
-            <td th:text="${adminItem.department}"></td>
+            <td class="td-login-id" th:text="${adminItem.login_id}"></td>
+            <td class="td-dept" th:text="${adminItem.department}"></td>
             <td><span class="td-name" th:text="${adminItem.name}">관리자명</span></td>
             <td>
               <span class="badge badge-purple" th:text="${adminItem.admin_role}">chief</span>
@@ -297,7 +414,40 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
     </div>
   </div>
 
-</div><!-- /main-content -->
+</div><script>
+  const adminSearch = document.getElementById('adminSearchInput');
+  const departmentFilter = document.getElementById('departmentFilter');
 
+  function filterAdmins() {
+    const kw = adminSearch.value.toLowerCase().trim();
+    const dept = departmentFilter.value;
+    
+    let visibleCount = 0;
+    const rows = document.querySelectorAll('#adminTable tbody tr');
+    
+    rows.forEach(row => {
+      // empty-state 로우 제외하고 데이터가 있는 로우만 체크
+      const nameEl = row.querySelector('.td-name');
+      if (!nameEl) return;
+      
+      const name = nameEl.textContent.toLowerCase();
+      const loginId = row.querySelector('.td-login-id').textContent.toLowerCase();
+      const department = row.querySelector('.td-dept').textContent;
+      
+      const matchesSearch = !kw || name.includes(kw) || loginId.includes(kw);
+      const matchesDept = !dept || department.includes(dept);
+      
+      if (matchesSearch && matchesDept) {
+        row.style.display = '';
+        visibleCount++;
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }
+
+  adminSearch.addEventListener('input', filterAdmins);
+  departmentFilter.addEventListener('change', filterAdmins);
+</script>
 </body>
 </html>

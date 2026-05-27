@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     linkBtn.innerHTML = `
         <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
             <div style="font-size: 11px; font-weight: 700; color: rgba(255, 255, 255, 0.9);">BNK</div>
-            <img src="https://www.busanbank.co.kr/common/img/bi_main_busan_wh.png" alt="부산은행" style="height: 14px; margin-bottom: 3px;">
+            
             <i class="fa-solid fa-comments-dollar" style="font-size: 26px; color: white; margin-bottom: 2px;"></i>
             <span style="font-size: 13px; font-weight: 700; color: white;">챗봇상담</span>
         </div>

@@ -14,6 +14,7 @@
 		<result column="email" property="email" />
 		<result column="acnt_stat_cd" property="status" />
 		<result column="gender" property="gender" />
+		<result column="status" property="status" />
 		<result column="eng_nm" property="e_name" />
 		<result column="zip_cd" property="postal_code" />
 		<result column="addr" property="address" />
@@ -87,7 +88,7 @@
 	</select>
 	
 	<update id="updateUser">
-		update users set secu_pw = #{password}, usr_nm = #{name}, tel_no = #{phone}, birth_dt = #{birth}, email = #{email}, gender = #{gender}, eng_nm = #{e_name}, zip_cd = #{postal_code}, addr = #{address}, addr_dtl = #{address_detail} where usr_no = #{user_id}
+		update users set secu_pw = #{password}, usr_nm = #{name}, tel_no = #{phone}, birth_dt = #{birth}, email = #{email}, gender = #{gender}, acnt_stat_cd = #{status}, eng_nm = #{e_name}, zip_cd = #{postal_code}, addr = #{address}, addr_dtl = #{address_detail} where usr_no = #{user_id}
 	</update>
 	
 	<update id="updateCompanyUser">
