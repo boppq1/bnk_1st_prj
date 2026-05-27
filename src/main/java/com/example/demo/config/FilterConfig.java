@@ -7,6 +7,7 @@ import com.example.demo.interceptor.GuestIdentifierFilter;
 //import com.example.demo.interceptor.JwtFilter;
 import com.example.demo.interceptor.RateLimitFilter;
 //import com.example.demo.jwt.JwtUtil;
+import com.example.demo.jwt.JwtAuthFilter;
 
 import jakarta.servlet.Filter;
 
@@ -32,6 +33,14 @@ public class FilterConfig {
 		return bean;
 	}
 
+	@Bean
+	public FilterRegistrationBean<Filter> jwtAuthFilterRegistration(JwtAuthFilter filter) {
+		FilterRegistrationBean<Filter> bean = new FilterRegistrationBean<>();
+		bean.setFilter(filter);
+		bean.setOrder(3);
+		bean.addUrlPatterns("/*");
+		return bean;
+	}
 }
 
 
