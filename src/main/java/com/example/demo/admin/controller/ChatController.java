@@ -15,6 +15,8 @@ import com.example.demo.admin.service.AiService;
 public class ChatController {
 	private final AiService service;
 	
+	
+	
 	public ChatController(AiService service) {
 		this.service = service;
 	}

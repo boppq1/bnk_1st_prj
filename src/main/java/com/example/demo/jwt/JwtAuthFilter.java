@@ -23,9 +23,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-
+		System.out.println("김건엽김건엽김건엽김건엽김건엽김건엽김건엽김건엽김건엽김건엽김건엽김건엽김건엽김건엽김건엽");
 		String uri = request.getRequestURI();
-		System.out.println("uri:"+uri);
 		log.info("요청 URI: {}", uri);
 
 		// 1. [공통] 무한 루프 방지: 예외 경로 통과
@@ -46,19 +45,27 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 				response.sendRedirect("/admin/logout");
 				return;
 			}
-
+			
 			// 관리자 권한 검증
 			String role = jwtUtil.getRole(token);
-			System.out.print(role + "role");
-			if ((uri.equals("/admin/adminMyPage") || uri.equals("/admin/adminEventPage")) && !"chief".equals(role)) {
+			System.out.println("관리자 role : "+ role);
+			if ((uri.equals("/admin/adminMyPage") || uri.equals("/admin/newsPage") || uri.equals("/admin/makeNewsPage") ||
+				 uri.equals("/admin/adminEventListPage") || uri.equals("/admin/adminEventPage") || uri.equals("/admin/exchangeListPage") ||
+				 uri.equals("/admin/adminAccountPage")
+				 ) && !"chief".equals(role)) {
 				response.sendRedirect("/admin/access-denied?role");
 				return;
-			} else if (uri.equals("/admin/executiveMyPage") && !"executive".equals(role)) {
+			} else if ((uri.equals("/admin/executiveMyPage") || uri.equals("/admin/executiveDashboard") || uri.equals("/admin/executiveDashboard") || 
+						uri.equals("/admin/approval") || uri.equals("/admin/logs") || uri.equals("/admin/blacklist")
+					)&& !"executive".equals(role)) {
 				System.out.println("ㅎㅎㅎ");
 				response.sendRedirect("/admin/access-denied");
 				System.out.println("ㅎㅎ");
 				return;
-			} else if (uri.equals("/admin/headMyPage") && !"head".equals(role)) {
+			} else if ((uri.equals("/admin/headMyPage") || uri.equals("/admin/headDashboard") || uri.equals("/admin/memberList") ||
+						uri.equals("/admin/adminList") || uri.equals("/admin/productRegisterPage") || uri.equals("/admin/productListPage") ||
+						uri.equals("/admin/searchManagementPage")
+					)&& !"head".equals(role)) {
 				response.sendRedirect("/admin/access-denied");
 				return;
 			}

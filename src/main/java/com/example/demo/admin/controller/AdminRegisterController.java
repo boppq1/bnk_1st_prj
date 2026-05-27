@@ -68,12 +68,17 @@
             claims.put("department", admin.getDepartment());
 
             String token = jwt.generateToken(admin.getName(), claims);
-
+            
             Cookie cookie = new Cookie("accessToken", token);
             cookie.setHttpOnly(true);
             cookie.setPath("/");
             response.addCookie(cookie);
-
+            String role = admin.getAdminRole();
+            if(role.equals("head")) {
+            	return "redirect:/admin/headMyPage";            	
+            }else if( role.equals("executive")) {
+            	return "redirect:/admin/executiveMyPage";            	            	
+            }
             return "redirect:/admin/adminMyPage";
         }
 
@@ -169,6 +174,7 @@
 
         @GetMapping("/admin/access-denied")
         public String denied(HttpServletResponse response) {
+            
             return "/admin/access-denied";
         }
 
