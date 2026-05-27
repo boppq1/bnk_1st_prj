@@ -1,14 +1,17 @@
 package com.example.demo.admin.controller;
 
-import com.example.demo.admin.dto.AdminDto;
-import com.example.demo.admin.dto.InterestRateDto;
-import com.example.demo.admin.dto.ProductDto;
+import com.example.demo.admin.dao.IAdminProductDao;
+import com.example.demo.admin.dao.IListDao;
+import com.example.demo.admin.dto.*;
 import com.example.demo.admin.service.AdminMergeService;
 import com.example.demo.admin.service.AdminProductService;
 import com.example.demo.config.FileProperties;
 
 import com.example.demo.interceptor.JwtFilter;
 import com.example.demo.jwt.JwtUtil;
+import com.example.demo.product.dao.ProductDao;
+import com.example.demo.search.SearchDao;
+import com.example.demo.search.SearchService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +20,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,6 +37,9 @@ public class ProductCRUDController {
     private final JwtUtil jwt;
     private final JwtFilter jwtFilter;
     private final AdminMergeService mergeServ;
+    private final IListDao iListDao;
+    private final SearchDao searchDao;
+    private final IAdminProductDao productDao;
 
     // 상품 등록 페이지
     @GetMapping("/admin/productRegisterPage")
@@ -85,23 +95,53 @@ public class ProductCRUDController {
 
     // 상품 목록 조회
     @GetMapping("/admin/productListPage")
-    public String listPro(HttpServletRequest request, Model model, @CookieValue(value = "accessToken") String token,
-                          @RequestParam(value = "page", defaultValue = "1") int page) {
+    public String listPro(
+            HttpServletRequest request,
+            Model model,
+            @CookieValue(value = "accessToken") String token,
+
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "type", required = false) String type,
+            @RequestParam(value = "status", required = false) String status
+    ) {
+
         String id = jwt.getLoginId(token);
+
         AdminDto dto = mergeServ.selectMyPage(id);
-        if (dto == null) return "redirect:/adminLogin?error=true";
+
+        if (dto == null) {
+            return "redirect:/adminLogin?error=true";
+        }
+
         model.addAttribute("admin", dto);
 
         int pageSize = 7;
         int offset = (page - 1) * pageSize;
-        List<ProductDto> products = serv.getProductList(offset, pageSize);
-        int totalCount = serv.getTotalCount();
-        int totalPage = (int) Math.ceil((double) totalCount / pageSize);
+
+        Map<String, Object> param = new HashMap<>();
+
+        param.put("offset", offset);
+        param.put("pageSize", pageSize);
+        param.put("keyword", keyword);
+        param.put("type", type);
+        param.put("status", status);
+
+        List<ProductDto> products = serv.searchProducts(param);
+
+        int totalCount = serv.searchProductCount(param);
+
+        int totalPage = (int)Math.ceil((double) totalCount / pageSize);
 
         model.addAttribute("products", products);
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("currentPage", page);
+
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("type", type);
+        model.addAttribute("status", status);
+
         model.addAttribute("depositCount", serv.getCountByType("DEPOSIT"));
         model.addAttribute("savingCount",  serv.getCountByType("SAVING"));
         model.addAttribute("pendingCount", serv.getCountByStatus("검토중"));
@@ -203,13 +243,62 @@ public class ProductCRUDController {
         return "redirect:/admin/productListPage";
     }
 
-    // 대쉬보드
+    // 대시보드
     @GetMapping("/admin/headDashboard")
-    public String headDashboard(HttpServletRequest request, Model model, @CookieValue(value = "accessToken") String token) {
+    public String headDashboard(HttpServletRequest request, Model model,
+                                @CookieValue(value = "accessToken", required = false) String token) {
+
+        if (token == null) return "redirect:/adminLogin";
         String id = jwt.getLoginId(token);
-        AdminDto dto = mergeServ.selectMyPage(id);
-        if (dto == null) return "redirect:/adminLogin?error=true";
-        model.addAttribute("admin", dto);
+        AdminDto admin = mergeServ.selectMyPage(id);
+        if (admin == null) return "redirect:/adminLogin?error=true";
+
+        Map<String, Object> dashboard = new HashMap<>();
+
+        // 1. [검색어 데이터] SuggestedSearchDto 사용 (여기에 search_volume이 있음)
+        List<SuggestedSearchDto> personal = iListDao.getSuggestPersonalSearch();
+        List<SuggestedSearchDto> corp = iListDao.getSuggestCompanySearch();
+
+        List<SuggestedSearchDto> allSuggest = new ArrayList<>();
+        allSuggest.addAll(personal);
+        allSuggest.addAll(corp);
+        // 볼륨 높은 순으로 정렬
+        allSuggest.sort((a, b) -> Long.compare(b.getSearch_volume(), a.getSearch_volume()));
+
+        long maxVolume = allSuggest.isEmpty() ? 1 : allSuggest.get(0).getSearch_volume();
+
+        List<Map<String, Object>> topKeywords = allSuggest.stream()
+                .limit(5)
+                .map(s -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("keyword", s.getKeyword());
+                    map.put("searchVolume", s.getSearch_volume()); // DTO 필드명 그대로 사용
+                    map.put("barPercent", (s.getSearch_volume() * 100) / maxVolume);
+                    return map;
+                })
+                .collect(Collectors.toList());
+
+        dashboard.put("totalKeywordCount", iListDao.getSearchPersonalLog().size() + iListDao.getSearchCompanyLog().size());
+        dashboard.put("topKeywords", topKeywords);
+
+        // 2. [추천 검색어]
+        dashboard.put("personalRecommends", personal.stream().map(SuggestedSearchDto::getKeyword).collect(Collectors.toList()));
+        dashboard.put("corpRecommends", corp.stream().map(SuggestedSearchDto::getKeyword).collect(Collectors.toList()));
+        dashboard.put("recommendKeywordCount", allSuggest.size());
+        dashboard.put("personalRecCount", personal.size());
+        dashboard.put("corpRecCount", corp.size());
+
+        // 3. [상품 데이터] (IAdminProductDao 사용)
+        List<ProductDto> productList = productDao.listPro(0, 10);
+        dashboard.put("products", productList);
+        dashboard.put("totalProductCount", productDao.getTotalCount());
+
+        // 4. [회원 데이터]
+        dashboard.put("userList", iListDao.getUsers());
+        dashboard.put("companyList", iListDao.getCompanies());
+
+        model.addAttribute("admin", admin);
+        model.addAttribute("dashboard", dashboard);
 
         return "admin/headDashboard";
     }
