@@ -62,7 +62,7 @@
 
             Map<String,Object> claims = new HashMap<>();
             claims.put("adminId",   admin.getAdmin_id());
-            claims.put("loginId",   admin.getLogin_id());
+            claims.put("login_id",   admin.getLogin_id());
             claims.put("name",       admin.getName());
             claims.put("role",       admin.getAdminRole());
             claims.put("department", admin.getDepartment());
