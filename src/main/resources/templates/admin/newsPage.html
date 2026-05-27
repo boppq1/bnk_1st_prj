@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>BNK Busan Bank - 공지사항 관리</title>
-  <!-- Font Awesome & Pretendard -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
   
@@ -248,8 +247,6 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
 </head>
 <body>
 
-<!-- ===== STREAMING_CHUNK:사이드바 및 글로벌 네비게이션 헤더 구현... ===== -->
-<!-- ===== SIDEBAR ===== -->
 <div class="sidebar">
   <div class="sidebar-logo">
     <img src="/images/BNKlogo.png" alt="BNK 부산은행">
@@ -269,7 +266,7 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
     <li><a href="/admin/productRegisterPage" class="menu-item"><i class="fa-solid fa-plus-circle"></i> 상품 등록</a></li>
     <li><a href="/admin/productListPage"     class="menu-item"><i class="fa-solid fa-list"></i> 상품 조회</a></li>
     <li class="menu-section-title">업무</li>
-    <li><a href="/admin/approval" class="menu-item"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
+    <li><a href="/admin/approval" class="menu-item active"><i class="fa-solid fa-file-circle-check"></i> 결재 관리</a></li>
     <li><a href="/admin/exchange" class="menu-item"><i class="fa-solid fa-coins"></i> 환전 내역 조회</a></li>
     <li><a href="/admin/account"  class="menu-item"><i class="fa-solid fa-wallet"></i> 계좌 관리</a></li>
     <li class="menu-section-title">관리</li>
@@ -284,7 +281,6 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
   </div>
 </div>
 
-<!-- ===== HEADER ===== -->
 <div class="header">
   <div class="header-title">업무지원 시스템 > 마케팅 및 대고객 공시 센터</div>
   <div class="header-breadcrumb">
@@ -300,11 +296,8 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
   </div>
 </div>
 
-<!-- ===== STREAMING_CHUNK:통계 그리드 및 필터 툴바 구성... ===== -->
-<!-- ===== MAIN CONTENT ===== -->
 <div class="main-content">
 
-  <!-- 페이지 헤더 -->
   <div class="page-header">
     <div>
       <h1 class="page-title">실시간 공지사항 관리 센터</h1>
@@ -312,7 +305,6 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
     </div>
   </div>
 
-  <!-- 통계 요약 카드 -->
   <div class="stat-grid">
     <div class="stat-card">
       <div class="stat-icon red"><i class="fa-solid fa-bullhorn"></i></div>
@@ -321,13 +313,15 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
         <div class="stat-value" th:text="${news != null ? #lists.size(news) : 0}">0</div>
       </div>
     </div>
+    
     <div class="stat-card">
       <div class="stat-icon blue"><i class="fa-solid fa-square-rss"></i></div>
       <div>
-        <div class="stat-label">당월 신규 등록 건</div>
-        <div class="stat-value">-</div>
+        <div class="stat-label">오늘 신규 등록 건</div>
+        <div class="stat-value" id="todayCount">0</div>
       </div>
     </div>
+    
     <div class="stat-card">
       <div class="stat-icon purple"><i class="fa-solid fa-chart-line"></i></div>
       <div>
@@ -344,7 +338,6 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
     </div>
   </div>
 
-  <!-- 필터 및 등록 컨트롤 바 -->
   <div class="filter-bar">
     <div class="filter-search">
       <i class="fa-solid fa-magnifying-glass"></i>
@@ -354,14 +347,11 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
     <div class="filter-count" style="margin-right: 16px;">
       공시 건수 : <strong th:text="${news != null ? #lists.size(news) : 0}">0</strong>건
     </div>
-    <!-- 오리지널 공지사항 등록 URL 완벽 동기화 -->
     <a th:href="@{/admin/makeNewsPage}" class="btn btn-primary">
       <i class="fa-solid fa-circle-plus"></i> 신규 공지사항 등록
     </a>
   </div>
 
-  <!-- ===== STREAMING_CHUNK:공지사항 목록 데이터 테이블 렌더링... ===== -->
-  <!-- 공지사항 목록 카드 테이블 -->
   <div class="table-card">
     <div class="table-wrap">
       <table id="newsTable">
@@ -376,8 +366,7 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
           </tr>
         </thead>
         <tbody>
-          <!-- th:each를 이용해 원형 데이터 루프 완벽 바인딩 -->
-          <tr th:each="neww : ${news}" th:attr="data-title=${neww.news_ttl}, data-author=${neww.name}">
+          <tr th:each="neww : ${news}" th:attr="data-title=${neww.news_ttl}, data-author=${neww.name}, data-date=${neww.news_dt}">
             <td style="padding-left: 24px;"><span class="td-id" th:text="${neww.news_no}"></span></td>
             <td><strong style="color: var(--text);" th:text="${neww.news_ttl}"></strong></td>
             <td><span class="td-name" th:text="${neww.name}"></span></td>
@@ -388,22 +377,19 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
             </td>
             <td style="padding-right: 24px;">
               <div class="action-btns">
-                <!-- 상세보기 링크 -->
                 <a class="act-btn act-view" th:href="@{/admin/getOneNews(news_no=${neww.news_no})}" title="자세히 보기">
                   <i class="fa-solid fa-magnifying-glass"></i>
                 </a>
-                <!-- 수정 링크 -->
-                <a class="act-btn act-edit" th:href="@{/admin/updateNewsPage(news_no=${neww.news_no})}" title="수정">
+                
+                <a th:if="${neww.name == admin.name}" class="act-btn act-edit" th:href="@{/admin/updateNewsPage(news_no=${neww.news_no})}" title="수정">
                   <i class="fa-solid fa-pen-to-square"></i>
                 </a>
-                <!-- 삭제용 가드 연결 처리 -->
-                <button type="button" class="act-btn act-del" th:onclick="confirmDeleteNews([[${neww.news_no}]], [[${neww.news_ttl}]])" title="삭제">
+                <button th:if="${neww.name == admin.name}" type="button" class="act-btn act-del" th:onclick="confirmDeleteNews([[${neww.news_no}]], [[${neww.news_ttl}]])" title="삭제">
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
               </div>
             </td>
           </tr>
-          <!-- 데이터가 존재하지 않을 시 예외 레이아웃 바인딩 -->
           <tr th:if="${news == null or news.empty}">
             <td colspan="6">
               <div class="empty-state">
@@ -418,11 +404,7 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
     </div>
   </div>
 
-</div><!-- /main-content -->
-
-<!-- ===== STREAMING_CHUNK:삭제 확인용 모달창 및 실시간 검색 제어 스크립트 작성... ===== -->
-<!-- ===== [삭제 확인용 커스텀 모달 가드] ===== -->
-<div id="deleteModal" class="modal-overlay">
+</div><div id="deleteModal" class="modal-overlay">
   <div class="modal-card">
     <div class="modal-icon">
       <i class="fa-solid fa-triangle-exclamation"></i>
@@ -440,6 +422,31 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
 </div>
 
 <script th:inline="javascript">
+  /* ───── DOM 로드 시 오늘 날짜의 공지사항 카운트 계산 로직 ───── */
+  window.addEventListener('DOMContentLoaded', function() {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const todayStr = `${yyyy}-${mm}-${dd}`; // 형식: YYYY-MM-DD
+
+    let todayCount = 0;
+
+    // 각 tr의 data-date 속성을 추적하여 오늘 날짜로 시작하는 데이터 선별 카운팅
+    document.querySelectorAll('#newsTable tbody tr[data-date]').forEach(row => {
+      const dateAttr = row.getAttribute('data-date') || '';
+      if (dateAttr.trim().startsWith(todayStr)) {
+        todayCount++;
+      }
+    });
+
+    // 상단 통계 카드에 결과 반영
+    const countDisplay = document.getElementById('todayCount');
+    if (countDisplay) {
+      countDisplay.innerText = todayCount;
+    }
+  });
+
   /* ───── 실시간 검색 탐색 필터 모듈 ───── */
   const newsSearch = document.getElementById('newsSearchInput');
   newsSearch.addEventListener('input', function() {
@@ -455,7 +462,6 @@ tbody td:last-child  { padding-right: 24px; text-align: center; }
   function confirmDeleteNews(newsNo, newsTitle) {
     document.getElementById('targetNewsTitle').innerText = newsTitle;
     
-    // 타임리프의 링크 매핑 스펙을 완벽하게 계승하는 동적 URL 연결 조합
     const targetUrl = "/admin/deleteNews?news_no=" + encodeURIComponent(newsNo);
     document.getElementById('modalConfirmBtn').setAttribute('href', targetUrl);
     

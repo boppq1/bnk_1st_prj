@@ -18,6 +18,12 @@ repositories {
 }
 
 dependencies {
+	
+	// Spring AOP 라이브러리 추가
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.aspectj:aspectjrt:1.9.22'
+    implementation 'org.aspectj:aspectjweaver:1.9.22'
+    
 	// Bucket4j, Redis 의존성
 	implementation 'com.bucket4j:bucket4j-core:8.10.1'
 	implementation 'com.bucket4j:bucket4j-redis:8.10.1'
