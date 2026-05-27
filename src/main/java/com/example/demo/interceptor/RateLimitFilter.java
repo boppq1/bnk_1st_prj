@@ -53,16 +53,16 @@ public class RateLimitFilter extends OncePerRequestFilter{
 			return;
 		}
 		
-		System.out.println("요청 URL : " + request.getRequestURL() + 
-                (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
+//		System.out.println("요청 URL : " + request.getRequestURL() + 
+//                (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
 		
 		
 		String clientKey = (String) request.getAttribute("clientKey");
+		System.out.println(clientKey);
 		
 		// 이미 영구/임시 벤 목록에 등록된 IP인지 Redis에서 확인
 		if(Boolean.TRUE.equals(rt.hasKey("blacklist:" + clientKey))) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN, "Blacklisted");
-		    
 			return;
 		}
 		
