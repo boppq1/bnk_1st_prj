@@ -47,7 +47,7 @@ public class JwtAuthFilter  {
 
 			// 관리자 권한 검증
 			String role = jwtUtil.getRole(token);
-			if (uri.equals("/admin/adminMyPage") && "chief".equals(role)) {
+			if (uri.equals("/admin/adminMyPage") && !"chief".equals(role)) {
 				response.sendRedirect("/admin/access-denied?role="+role);
 				return;
 			} else if (uri.equals("/admin/executiveMyPage") && !"executive".equals(role)) {
