@@ -349,7 +349,7 @@
                     2026-01-01
                 </span>
 
-                ~
+
 
                 <span th:text="${product.appEndDate}">
                     2026-12-31
@@ -370,46 +370,35 @@
         <div class="document-list">
 
             <a class="document-item"
-               th:href="${pdf.basicTermsPath}"
+               th:if="${!#strings.isEmpty(pdf.basicTermsPath)}"
+               th:href="@{'/files/' + ${pdf.basicTermsPath}}"
                target="_blank">
-
                 <span>예금거래기본약관</span>
-
                 <span class="arrow">›</span>
-
             </a>
 
             <a class="document-item"
-               th:if="${pdf.categoryTermsPath != null}"
-               th:href="${pdf.categoryTermsPath}"
+               th:if="${!#strings.isEmpty(pdf.categoryTermsPath)}"
+               th:href="@{'/files/' + ${pdf.categoryTermsPath}}"
                target="_blank">
-
                 <span>상품군 약관</span>
-
                 <span class="arrow">›</span>
-
             </a>
 
             <a class="document-item"
-               th:if="${pdf.specialTermsPath != null}"
-               th:href="${pdf.specialTermsPath}"
+               th:if="${!#strings.isEmpty(pdf.specialTermsPath)}"
+               th:href="@{'/files/' + ${pdf.specialTermsPath}}"
                target="_blank">
-
                 <span>상품 특약</span>
-
                 <span class="arrow">›</span>
-
             </a>
 
             <a class="document-item"
-               th:if="${pdf.productGuidePath != null}"
-               th:href="${pdf.productGuidePath}"
+               th:if="${!#strings.isEmpty(pdf.productGuidePath)}"
+               th:href="@{'/files/' + ${pdf.productGuidePath}}"
                target="_blank">
-
                 <span>상품설명서</span>
-
                 <span class="arrow">›</span>
-
             </a>
 
         </div>
