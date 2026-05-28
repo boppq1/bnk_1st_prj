@@ -38,7 +38,7 @@
   <ul class="sidebar-menu">
     <li class="menu-section-title">메인</li>
     <li><a href="/admin/headDashboard" class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
-    <li><a href="/admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
+    <li><a href="/admin/headMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
     <li class="menu-section-title">회원/관리자</li>
     <li><a href="/admin/memberList" class="menu-item"><i class="fa-solid fa-users"></i> 회원 관리</a></li>
     <li><a href="/admin/adminList" class="menu-item"><i class="fa-solid fa-users-gear"></i> 관리자 관리</a></li>
@@ -137,7 +137,7 @@
 
           <option value="">전체 타입</option>
           <option value="DEPOSIT" th:selected="${type == 'DEPOSIT'}">예금</option>
-          <option value="SAVING" th:selected="${type == 'SAVING'}">적금</option>
+          <option value="SAVINGS" th:selected="${type == 'SAVINGS'}">적금</option>
           <option value="FOREIGN_DEP" th:selected="${type == 'FOREIGN_DEP'}">외화 예금</option>
           <option value="FOREIGN_SAV" th:selected="${type == 'FOREIGN_SAV'}">외화 적금</option>
           <option value="CORP_SAV" th:selected="${type == 'CORP_SAV'}">기업 적금</option>

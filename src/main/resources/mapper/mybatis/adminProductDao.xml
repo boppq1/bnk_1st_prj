@@ -139,7 +139,15 @@
             PR.cond_desc            AS condition_desc,
             PR.pref_rate            AS preferential_rate
         FROM PRODUCTS P
-                 LEFT JOIN PRODUCT_PDFS PDF ON P.prod_no = PDF.prod_no
+                 LEFT JOIN (
+            SELECT prod_no, basic_terms_path, cat_terms_path, spec_terms_path, prod_guide_path
+            FROM (
+                     SELECT prod_no, basic_terms_path, cat_terms_path, spec_terms_path, prod_guide_path,
+                            ROW_NUMBER() OVER (PARTITION BY prod_no ORDER BY pdf_no DESC) AS rn
+                     FROM PRODUCT_PDFS
+                 )
+            WHERE rn = 1
+        ) PDF ON P.prod_no = PDF.prod_no
                  LEFT JOIN INTEREST_RATES R ON P.prod_no = R.prod_no
                  LEFT JOIN PREFERENTIAL_RATE_CONDITIONS PR ON R.rate_no = PR.rate_no
         WHERE P.prod_no = #{product_id, jdbcType=NUMERIC}
@@ -188,6 +196,21 @@
             WHEN MATCHED THEN UPDATE SET basic_terms_path = COALESCE(#{basic_terms_path, jdbcType=VARCHAR}, T.basic_terms_path), cat_terms_path = COALESCE(#{category_terms_path, jdbcType=VARCHAR}, T.cat_terms_path), spec_terms_path = COALESCE(#{special_terms_path, jdbcType=VARCHAR}, T.spec_terms_path), prod_guide_path = COALESCE(#{product_guide_path, jdbcType=VARCHAR}, T.prod_guide_path), upd_dt = SYSDATE
             WHEN NOT MATCHED THEN INSERT (pdf_no, prod_no, basic_terms_path, cat_terms_path, spec_terms_path, prod_guide_path, reg_dt) VALUES (SEQ_PRODUCT_PDFS.NEXTVAL, #{product_id, jdbcType=NUMERIC}, #{basic_terms_path, jdbcType=VARCHAR}, #{category_terms_path, jdbcType=VARCHAR}, #{special_terms_path, jdbcType=VARCHAR}, #{product_guide_path, jdbcType=VARCHAR}, SYSDATE)
     </update>
+
+    <!-- 약관 등록 이력 조회 -->
+    <select id="listProductPdfHistory" parameterType="long" resultType="java.util.HashMap">
+        SELECT
+            pdf_no            AS "pdf_no",
+            prod_no           AS "prod_no",
+            basic_terms_path  AS "basic_terms_path",
+            cat_terms_path    AS "cat_terms_path",
+            spec_terms_path   AS "spec_terms_path",
+            prod_guide_path   AS "prod_guide_path",
+            TO_CHAR(reg_dt, 'YYYY-MM-DD HH24:MI') AS "reg_dt"
+        FROM PRODUCT_PDFS
+        WHERE prod_no = #{product_id, jdbcType=NUMERIC}
+        ORDER BY pdf_no DESC
+    </select>
 
     <delete id="deleteProductPdf" parameterType="long"> DELETE FROM PRODUCT_PDFS WHERE prod_no = #{product_id, jdbcType=NUMERIC} </delete>
     <delete id="deleteProductRequest" parameterType="long"> DELETE FROM PRODUCT_REQUESTS WHERE prod_no = #{product_id, jdbcType=NUMERIC} </delete>
@@ -306,7 +329,6 @@
         </collection>
     </resultMap>
 
-    <!-- listPro 는 기존 단순 쿼리 유지, 목록+통화가 필요한 경우 이 쿼리 사용 -->
     <select id="listProWithCurrencies" resultMap="productListResultMap">
         SELECT
             P.prod_no        AS product_id,
@@ -396,4 +418,6 @@
         </if>
 
     </select>
+
+
 </mapper>

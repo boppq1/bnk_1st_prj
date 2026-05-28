@@ -18,10 +18,8 @@ public interface IAdminProductDao {
     int insertProPdf(ProductDto dto);
     int insertProRequest(ProductDto dto);
 
-    /** 기존 단순 목록 (currencies 미포함) */
     List<ProductDto> listPro(@Param("offset") int offset, @Param("pageSize") int pageSize);
 
-    /** 목록 + 취급 통화 포함 (productListPage 용) */
     List<ProductDto> listProWithCurrencies(@Param("offset") int offset, @Param("pageSize") int pageSize);
 
     int getTotalCount();
@@ -63,4 +61,6 @@ public interface IAdminProductDao {
     // ==================== 검색 ====================
     List<ProductDto> searchProducts(Map<String, Object> param);
     int searchProductCount(Map<String, Object> param);
+
+    List<Map<String, Object>> listProductPdfHistory(Long product_id);
 }
