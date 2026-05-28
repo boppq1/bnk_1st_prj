@@ -22,21 +22,16 @@ public class AdminMergeService {
     private final JwtUtil jwt;
 
 
-    // =========================
     // 비밀번호 암호화
-    // =========================
     public String passwordEncryption(String password) {
         return org.mindrot.jbcrypt.BCrypt.hashpw(password, org.mindrot.jbcrypt.BCrypt.gensalt());
     }
 
-    // =========================
     // 비밀번호 비교
-    // =========================
     public boolean passwordDecryption(String loginPassword, String dbPassword) {
         return org.mindrot.jbcrypt.BCrypt.checkpw(loginPassword, dbPassword);
     }
 
-    // =========================
     // 회원가입
     public int join(AdminDto dto) {
 
@@ -50,9 +45,7 @@ public class AdminMergeService {
         return dao.join(dto);
     }
 
-    // =========================
     // 로그인
-    // =========================
     public AdminDto login(String login_id, String password) {
 
         // 아이디 조회
@@ -73,34 +66,26 @@ public class AdminMergeService {
         return null;
     }
 
-    // =========================
+
     // 내 정보 조회
-    // =========================
     public AdminDto selectMyPage(String login_id) {
         return dao.selectMyPage(login_id);
     }
 
-    // =========================
+
     // 내 정보 수정
-    // =========================
     public void updateMyPage(AdminDto dto) {
         dao.updateMyPage(dto);
     }
 
-    // =========================
     // 내 비밀번호 수정
-    // =========================
-
     public int updatePassword(Long admin_id, String password) {
 
         String encodedPw = BCrypt.hashpw(password, BCrypt.gensalt());
         return dao.updatePassword(admin_id, encodedPw);
     }
 
-    // =========================
     // 관리자 비밀번호 수정
-    // =========================
-
     public int updateAdminPw(Long admin_id, String admin_pw) {
         // 관리자 비밀번호 암호화
         String encodedAdminPw = BCrypt.hashpw(admin_pw, BCrypt.gensalt());

@@ -23,21 +23,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		System.out.println("김건엽김건엽김건엽김건엽김건엽김건엽김건엽김건엽김건엽김건엽김건엽김건엽김건엽김건엽김건엽");
 		String uri = request.getRequestURI();
 		log.info("요청 URI: {}", uri);
 
-		// 1. [공통] 무한 루프 방지: 예외 경로 통과
+		// 무한 루프 방지
 		if (isPublicPath(uri)) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 
-		// 2. 토큰 추출
 		String token = resolveToken(request);
 		boolean isTokenValid = (token != null && jwtUtil.isValid(token));
 
-		// 3. 관리자 페이지 로직 (JwtFilter 로직 통합)
 		if (uri.startsWith("/admin/")) {
 			if (!isTokenValid) {
 				log.info("관리자 인증 실패. 로그아웃 페이지로 이동.");
@@ -70,7 +67,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 				return;
 			}
 		}
-		// 4. 일반 사용자/기업 마이페이지 로직 (JwtAuthFilter 로직 통합)
+		// 일반 사용자/기업 마이페이지 로직
 		else if (uri.equals("/myPage")) {
 			if (!isTokenValid) {
 				log.info("일반/기업 비로그인 사용자. 로그인 페이지로 이동.");
@@ -88,7 +85,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			}
 		}
 
-		// 5. 모든 조건 통과 시 요청 수행
 		filterChain.doFilter(request, response);
 	}
 

@@ -42,9 +42,7 @@ public class ProductCRUDController {
     private final SearchDao searchDao;
     private final IAdminProductDao productDao;
 
-    // ----------------------------------------------------------------
     // 상품 등록 페이지
-    // ----------------------------------------------------------------
     @GetMapping("/admin/productRegisterPage")
     public String registerPage(HttpServletRequest request, Model model,
                                @CookieValue(value = "accessToken") String token) {
@@ -56,15 +54,6 @@ public class ProductCRUDController {
         return "admin/productRegisterPage";
     }
 
-    // ----------------------------------------------------------------
-    // 상품 등록
-    //
-    // 통화 처리 방식:
-    //   HTML 폼에서 <input name="currencies[0].cur_cd" ...>
-    //              <input name="currencies[0].cur_nm" ...> 형태로 전송하면
-    //   Spring이 ProductDto.currencies 리스트에 자동 바인딩합니다.
-    //   또는 JS로 체크박스 체크 여부를 hidden input에 담아도 됩니다.
-    // ----------------------------------------------------------------
     @AdminLog(action = "관리자 상품 등록")
     @PostMapping("/admin/productRegister")
     public String registerProduct(
@@ -94,9 +83,7 @@ public class ProductCRUDController {
         return "redirect:/admin/productListPage";
     }
 
-    // ----------------------------------------------------------------
     // 공통 파일 저장
-    // ----------------------------------------------------------------
     private String saveFile(MultipartFile file) {
         if (file == null || file.isEmpty()) return null;
         try {
@@ -111,9 +98,7 @@ public class ProductCRUDController {
         }
     }
 
-    // ----------------------------------------------------------------
     // 상품 목록 조회
-    // ----------------------------------------------------------------
     @GetMapping("/admin/productListPage")
     public String listPro(
             HttpServletRequest request,
@@ -151,15 +136,13 @@ public class ProductCRUDController {
         model.addAttribute("type",         type);
         model.addAttribute("status",       status);
         model.addAttribute("depositCount", serv.getCountByType("DEPOSIT"));
-        model.addAttribute("savingCount",  serv.getCountByType("SAVING"));
+        model.addAttribute("savingCount",  serv.getCountByType("SAVINGS"));
         model.addAttribute("pendingCount", serv.getCountByStatus("검토중"));
 
         return "admin/productListPage";
     }
 
-    // ----------------------------------------------------------------
     // 상태별 조회
-    // ----------------------------------------------------------------
     @GetMapping("/admin/proStatus")
     public String selectByStatus(@RequestParam("approve_status") String approve_status,
                                  HttpServletRequest request, Model model,
@@ -176,9 +159,7 @@ public class ProductCRUDController {
         return "admin/productListPage";
     }
 
-    // ----------------------------------------------------------------
     // 상품 상태 변경 (AJAX)
-    // ----------------------------------------------------------------
     @PostMapping("/admin/status/update")
     @ResponseBody
     public ResponseEntity<String> updateStatus(
@@ -195,9 +176,7 @@ public class ProductCRUDController {
         return ResponseEntity.ok("ok");
     }
 
-    // ----------------------------------------------------------------
     // 상품 상세 조회 (AJAX) — 통화 목록 포함됩니다 (resultMap 또는 서비스에서 채워줌)
-    // ----------------------------------------------------------------
     @ResponseBody
     @GetMapping("/admin/product/detail/{product_id}")
     public ProductDto productDetail(@PathVariable("product_id") Long product_id,
@@ -206,9 +185,7 @@ public class ProductCRUDController {
         return serv.getProductDetail(product_id);
     }
 
-    // ----------------------------------------------------------------
     // 상품 수정 페이지
-    // ----------------------------------------------------------------
     @GetMapping("/admin/updatePro/{product_id}")
     public String updatePage(@PathVariable("product_id") Long product_id,
                              HttpServletRequest request, Model model,
@@ -223,12 +200,6 @@ public class ProductCRUDController {
         return "admin/productUpdatePage";
     }
 
-    // ----------------------------------------------------------------
-    // 상품 수정 (저장 or 제출)
-    //
-    // 통화: 수정 페이지에서도 currencies[0].cur_cd / currencies[0].cur_nm 으로
-    //       체크된 통화만 폼에 실어 보내면 service 계층이 기존 데이터를
-    //       전부 지우고 새로 insert 합니다.
     // ----------------------------------------------------------------
     @AdminLog(action = "관리자 상품 수정")
     @PostMapping("/admin/updateProWrite")
@@ -273,9 +244,7 @@ public class ProductCRUDController {
         return "redirect:/admin/productListPage";
     }
 
-    // ----------------------------------------------------------------
     // 상품 삭제 (통화도 함께 삭제 — service에서 처리)
-    // ----------------------------------------------------------------
     @AdminLog(action = "관리자 상품 삭제")
     @GetMapping("/deletePro/{product_id}")
     public String deletePro(@PathVariable("product_id") Long product_id) {
@@ -283,9 +252,7 @@ public class ProductCRUDController {
         return "redirect:/admin/productListPage";
     }
 
-    // ----------------------------------------------------------------
     // 대시보드
-    // ----------------------------------------------------------------
     @GetMapping("/admin/headDashboard")
     public String headDashboard(HttpServletRequest request, Model model,
                                 @CookieValue(value = "accessToken", required = false) String token) {
@@ -341,4 +308,73 @@ public class ProductCRUDController {
 
         return "admin/headDashboard";
     }
+
+    @AdminLog(action = "관리자 약관 추가 등록")
+    @ResponseBody
+    @PostMapping("/admin/product/terms/add")
+    public Map<String, Object> addProductTerms(
+            @RequestParam("product_id") Long product_id,
+            @RequestParam(value = "basicTermsFile",    required = false) MultipartFile basicTermsFile,
+            @RequestParam(value = "categoryTermsFile", required = false) MultipartFile categoryTermsFile,
+            @RequestParam(value = "specialTermsFile",  required = false) MultipartFile specialTermsFile,
+            @RequestParam(value = "productGuideFile",  required = false) MultipartFile productGuideFile,
+            @CookieValue(value = "accessToken") String token) {
+
+        Map<String, Object> result = new HashMap<>();
+
+        String id = jwt.getLoginId(token);
+        AdminDto adminDto = mergeServ.selectMyPage(id);
+        if (adminDto == null) {
+            result.put("success", false);
+            result.put("message", "인증 실패");
+            return result;
+        }
+
+        ProductDto current = serv.getProductDetail(product_id);
+        if (current == null) {
+            result.put("success", false);
+            result.put("message", "상품을 찾을 수 없습니다.");
+            return result;
+        }
+
+        // 새 파일 올라온 것만 path 교체, 나머지는 현재값 유지
+        ProductDto pdfDto = new ProductDto();
+        pdfDto.setProduct_id(product_id);
+
+        String basicPath = saveFile(basicTermsFile);
+        pdfDto.setBasic_terms_path(basicPath != null ? basicPath : current.getBasic_terms_path());
+
+        String categoryPath = saveFile(categoryTermsFile);
+        pdfDto.setCategory_terms_path(categoryPath != null ? categoryPath : current.getCategory_terms_path());
+
+        String specialPath = saveFile(specialTermsFile);
+        pdfDto.setSpecial_terms_path(specialPath != null ? specialPath : current.getSpecial_terms_path());
+
+        String guidePath = saveFile(productGuideFile);
+        pdfDto.setProduct_guide_path(guidePath != null ? guidePath : current.getProduct_guide_path());
+
+        // Service: product_pdfs insert + PRODUCTS update
+        serv.addProductPdf(pdfDto);
+
+        // 응답
+        result.put("success", true);
+        result.put("basic_terms_path",    pdfDto.getBasic_terms_path());
+        result.put("category_terms_path", pdfDto.getCategory_terms_path());
+        result.put("special_terms_path",  pdfDto.getSpecial_terms_path());
+        result.put("product_guide_path",  pdfDto.getProduct_guide_path());
+        result.put("changed_basic",    basicPath != null);
+        result.put("changed_category", categoryPath != null);
+        result.put("changed_special",  specialPath != null);
+        result.put("changed_guide",    guidePath != null);
+
+        return result;
+    }
+
+    // 약관 이력 조회 (AJAX) - Map 리스트 반환
+    @ResponseBody
+    @GetMapping("/admin/product/terms/history/{product_id}")
+    public List<Map<String, Object>> getTermsHistory(@PathVariable("product_id") Long product_id) {
+        return serv.listProductPdfHistory(product_id);
+    }
+
 }

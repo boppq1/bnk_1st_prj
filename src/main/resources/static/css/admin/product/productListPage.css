@@ -1,9 +1,5 @@
 @charset "UTF-8";
 
-/* ══════════════════════════════════════════
-   BNK 상품 목록 CSS  (productListPage.css)
-══════════════════════════════════════════ */
-
 :root {
     --primary:        #ED1C24;
     --primary-dark:   #D61A20;
@@ -24,7 +20,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Pretendard', sans-serif; /* 폰트는 body에 지정 */
+    font-family: 'Pretendard', sans-serif;
     background: var(--bg);
     color: var(--text-main);
     display: flex;
@@ -215,9 +211,7 @@ tbody tr:hover td { background: #FAFBFC; }
 .page-btn.active { background: var(--primary); color: #FFF; border-color: var(--primary); }
 
 
-/* ════════════════════════════════════════
-   MODAL
-════════════════════════════════════════ */
+/* MODAL */
 .modal-backdrop {
     position: fixed; inset: 0;
     background: rgba(15,23,42,.45);

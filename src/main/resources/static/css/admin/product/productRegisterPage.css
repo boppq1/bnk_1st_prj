@@ -1,10 +1,5 @@
 @charset "UTF-8";
 
-/* ══════════════════════════════════════════
-   BNK 상품 등록 / 수정 공통 CSS
-   (productRegisterPage.css 와 productUpdatePage.css 통합)
-══════════════════════════════════════════ */
-
 :root {
     --primary:        #ED1C24;
     --primary-dark:   #D61A20;

@@ -240,7 +240,7 @@
   <ul class="sidebar-menu">
     <li class="menu-section-title">메인</li>
     <li><a href="/admin/headDashboard" class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
-    <li><a href="/admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
+    <li><a href="/admin/headMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
     <li class="menu-section-title">회원/관리자</li>
     <li><a href="/admin/memberList" class="menu-item"><i class="fa-solid fa-users"></i> 회원 관리</a></li>
     <li><a href="/admin/adminList" class="menu-item"><i class="fa-solid fa-users-gear"></i> 관리자 관리</a></li>
@@ -479,6 +479,10 @@
     <!-- PDF 업로드 -->
     <div class="card">
       <div class="card-header"><i class="fa-solid fa-file-pdf"></i> PDF 업로드</div>
+      <div class="file-upload-notice" style="background:#EFF6FF; border:1px solid #BFDBFE; color:#1D4ED8; padding:12px 16px; border-radius:8px; font-size:13px; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>여기서 등록한 약관은 첫 번째 버전으로 기록됩니다. 이후 수정 페이지에서 약관을 새로 올리면 이력으로 누적 보존됩니다.</span>
+      </div>
       <div class="file-upload-grid">
         <div><div class="file-upload-area">
           <input type="file" name="basicTermsFile" accept=".pdf" onchange="showFileName(this,'basic')">
