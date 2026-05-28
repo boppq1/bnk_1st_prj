@@ -34,7 +34,7 @@ public class AdminEventController {
         AdminDto adminDto = mergeServ.selectMyPage(id);
         if (adminDto == null) return "redirect:/adminLogin?error=true";
         model.addAttribute("admin", adminDto);
-        return "admin/adminEventPage"; // 실제 뷰 경로
+        return "admin/adminEventPage";
     }
 
     @AdminLog(action="관리자 이벤트 등록")
@@ -45,10 +45,10 @@ public class AdminEventController {
         AdminDto admDto = mergeServ.selectMyPage(id);
         if (dto == null) return "redirect:/adminLogin?error=true";
         // 세션에 있는 관리자 고유번호를 DTO에 세팅
-        dto.setEvent_wtr_no(admDto.getAdmin_id()); // DTO 필드명 확인 필요
+        dto.setEvent_wtr_no(admDto.getAdmin_id());
         serv.insertEvent(dto);
 
-        return "redirect:/admin/adminEventListPage"; // 등록 후 목록으로 이동
+        return "redirect:/admin/adminEventListPage";
     }
 
     @GetMapping("/admin/adminEventListPage")

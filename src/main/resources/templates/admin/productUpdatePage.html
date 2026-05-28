@@ -205,7 +205,7 @@
   <ul class="sidebar-menu">
     <li class="menu-section-title">메인</li>
     <li><a href="/admin/headDashboard" class="menu-item"><i class="fa-solid fa-chart-pie"></i> 대시보드</a></li>
-    <li><a href="/admin/adminMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
+    <li><a href="/admin/headMyPage" class="menu-item"><i class="fa-solid fa-circle-user"></i> 마이페이지</a></li>
     <li class="menu-section-title">회원/관리자</li>
     <li><a href="/admin/memberList" class="menu-item"><i class="fa-solid fa-users"></i> 회원 관리</a></li>
     <li><a href="/admin/adminList" class="menu-item"><i class="fa-solid fa-users-gear"></i> 관리자 관리</a></li>
@@ -456,9 +456,10 @@
       </div>
       <div class="file-upload-grid">
         <div class="file-upload-item">
-          <div class="current-file" th:if="${product.basic_terms_path != null}">
+          <div class="current-file" id="current-basic"
+               th:style="${product.basic_terms_path == null} ? 'display:none;' : ''">
             <i class="fa-solid fa-file-pdf"></i><span>기존: 기본 약관 PDF</span>
-            <a th:href="${product.basic_terms_path}" target="_blank">보기</a>
+            <a id="current-basic-link" th:href="${product.basic_terms_path}" target="_blank">보기</a>
           </div>
           <div class="file-upload-area" id="area-basic">
             <input type="file" name="basicTermsFile" accept=".pdf" onchange="setFile(this,'basic')">
@@ -470,9 +471,10 @@
           </div>
         </div>
         <div class="file-upload-item">
-          <div class="current-file" th:if="${product.category_terms_path != null}">
+          <div class="current-file" id="current-category"
+               th:style="${product.category_terms_path == null} ? 'display:none;' : ''">
             <i class="fa-solid fa-file-pdf"></i><span>기존: 카테고리 약관 PDF</span>
-            <a th:href="${product.category_terms_path}" target="_blank">보기</a>
+            <a id="current-category-link" th:href="${product.category_terms_path}" target="_blank">보기</a>
           </div>
           <div class="file-upload-area" id="area-category">
             <input type="file" name="categoryTermsFile" accept=".pdf" onchange="setFile(this,'category')">
@@ -484,9 +486,10 @@
           </div>
         </div>
         <div class="file-upload-item">
-          <div class="current-file" th:if="${product.special_terms_path != null}">
+          <div class="current-file" id="current-special"
+               th:style="${product.special_terms_path == null} ? 'display:none;' : ''">
             <i class="fa-solid fa-file-pdf"></i><span>기존: 특별 약관 PDF</span>
-            <a th:href="${product.special_terms_path}" target="_blank">보기</a>
+            <a id="current-special-link" th:href="${product.special_terms_path}" target="_blank">보기</a>
           </div>
           <div class="file-upload-area" id="area-special">
             <input type="file" name="specialTermsFile" accept=".pdf" onchange="setFile(this,'special')">
@@ -498,9 +501,10 @@
           </div>
         </div>
         <div class="file-upload-item">
-          <div class="current-file" th:if="${product.product_guide_path != null}">
+          <div class="current-file" id="current-guide"
+               th:style="${product.product_guide_path == null} ? 'display:none;' : ''">
             <i class="fa-solid fa-file-pdf"></i><span>기존: 상품 설명서 PDF</span>
-            <a th:href="${product.product_guide_path}" target="_blank">보기</a>
+            <a id="current-guide-link" th:href="${product.product_guide_path}" target="_blank">보기</a>
           </div>
           <div class="file-upload-area" id="area-guide">
             <input type="file" name="productGuideFile" accept=".pdf" onchange="setFile(this,'guide')">
@@ -540,9 +544,143 @@
       </th:block>
     </div>
   </form>
+
+  <!-- ════════════════════════════════════════════════════════════
+       약관 추가 등록 (이력 누적 - 결재 상태와 무관)
+       메인 form 바깥에 별도 form 으로 분리합니다.
+       검토중/승인/반려 상태에서도 항상 활성화됩니다.
+       ════════════════════════════════════════════════════════════ -->
+  <div class="card" style="margin-top:20px; border-left:4px solid #C2410C;">
+    <div class="card-header" style="display:flex; align-items:center; gap:8px;">
+      <i class="fa-solid fa-clock-rotate-left" style="color:#C2410C;"></i>
+      <span>약관 추가 등록 (이력 누적)</span>
+    </div>
+
+    <div class="file-upload-notice" style="background:#FFF7ED; border-color:#FED7AA; color:#9A3412;">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>
+        <strong>검토중·승인·반려 상태에서도 약관은 계속 추가 등록할 수 있습니다.</strong><br>
+        새로 올린 약관 파일만 교체되고, 변경하지 않은 약관은 기존 파일이 그대로 유지됩니다.
+        이 영역에서의 등록은 <u>결재 재제출이 아닙니다</u>.
+      </span>
+    </div>
+
+    <form id="addTermsForm"
+          th:action="@{/admin/product/terms/add}"
+          method="post" enctype="multipart/form-data">
+
+      <input type="hidden" name="product_id" th:value="${product.product_id}">
+
+      <div class="file-upload-grid">
+        <div class="file-upload-item">
+          <div class="file-upload-area" id="addArea-basic">
+            <input type="file" name="basicTermsFile" accept=".pdf"
+                   onchange="setAddFile(this,'addBasic')">
+            <div class="file-upload-content">
+              <i class="fa-solid fa-file-arrow-up file-upload-icon"></i>
+              <div>
+                <div class="file-upload-label">기본 약관 PDF</div>
+                <div class="file-upload-hint">클릭하여 PDF 선택</div>
+                <div class="file-name-display" id="fname-addBasic">새 파일 미선택</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="file-upload-item">
+          <div class="file-upload-area" id="addArea-category">
+            <input type="file" name="categoryTermsFile" accept=".pdf"
+                   onchange="setAddFile(this,'addCategory')">
+            <div class="file-upload-content">
+              <i class="fa-solid fa-file-arrow-up file-upload-icon"></i>
+              <div>
+                <div class="file-upload-label">카테고리 약관 PDF</div>
+                <div class="file-upload-hint">클릭하여 PDF 선택</div>
+                <div class="file-name-display" id="fname-addCategory">새 파일 미선택</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="file-upload-item">
+          <div class="file-upload-area" id="addArea-special">
+            <input type="file" name="specialTermsFile" accept=".pdf"
+                   onchange="setAddFile(this,'addSpecial')">
+            <div class="file-upload-content">
+              <i class="fa-solid fa-file-arrow-up file-upload-icon"></i>
+              <div>
+                <div class="file-upload-label">특별 약관 PDF</div>
+                <div class="file-upload-hint">클릭하여 PDF 선택</div>
+                <div class="file-name-display" id="fname-addSpecial">새 파일 미선택</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="file-upload-item">
+          <div class="file-upload-area" id="addArea-guide">
+            <input type="file" name="productGuideFile" accept=".pdf"
+                   onchange="setAddFile(this,'addGuide')">
+            <div class="file-upload-content">
+              <i class="fa-solid fa-file-arrow-up file-upload-icon"></i>
+              <div>
+                <div class="file-upload-label">상품 설명서 PDF</div>
+                <div class="file-upload-hint">클릭하여 PDF 선택</div>
+                <div class="file-name-display" id="fname-addGuide">새 파일 미선택</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; margin-top:16px;">
+        <button type="button" class="btn btn-primary btn-lg" onclick="submitAddTerms()">
+          <i class="fa-solid fa-plus"></i> 약관 추가 등록
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       약관 등록 이력 (product_pdfs 의 모든 row, pdf_no DESC)
+       ════════════════════════════════════════════════════════════ -->
+  <div class="card" style="margin-top:20px;">
+    <div class="card-header" style="display:flex; align-items:center; gap:8px;">
+      <i class="fa-solid fa-clock-rotate-left"></i>
+      <span>약관 등록 이력</span>
+      <button type="button" class="btn btn-ghost" style="margin-left:auto;"
+              onclick="toggleHistory()">
+        <i class="fa-solid fa-eye" id="historyToggleIcon"></i>
+        <span id="historyToggleText">이력 펼치기</span>
+      </button>
+    </div>
+
+    <div id="historyBody" style="display:none;">
+      <div id="historyLoading" style="text-align:center; color:#64748B; padding:20px;">
+        불러오는 중...
+      </div>
+      <table id="historyTable" style="display:none; width:100%; border-collapse:collapse; font-size:13px;">
+        <thead>
+        <tr style="background:#F8FAFC; border-bottom:2px solid #E2E8F0;">
+          <th style="padding:10px; text-align:center; border:1px solid #E2E8F0; width:80px;">버전</th>
+          <th style="padding:10px; text-align:center; border:1px solid #E2E8F0; width:80px;">상태</th>
+          <th style="padding:10px; text-align:left; border:1px solid #E2E8F0;">기본 약관</th>
+          <th style="padding:10px; text-align:left; border:1px solid #E2E8F0;">카테고리 약관</th>
+          <th style="padding:10px; text-align:left; border:1px solid #E2E8F0;">특별 약관</th>
+          <th style="padding:10px; text-align:left; border:1px solid #E2E8F0;">상품 설명서</th>
+          <th style="padding:10px; text-align:center; border:1px solid #E2E8F0; width:150px;">등록일시</th>
+        </tr>
+        </thead>
+        <tbody id="historyTbody"></tbody>
+      </table>
+      <p id="historyEmpty" style="display:none; text-align:center; color:#64748B; padding:20px;">
+        등록된 약관 이력이 없습니다.
+      </p>
+    </div>
+  </div>
 </div>
 
-<script>
+<script th:inline="javascript">
   /* ═══════════════════════════════════════════
      1. 전체 통화 목록 (등록 페이지와 동일)
   ═══════════════════════════════════════════ */
@@ -986,13 +1124,235 @@
     });
   });
 
-  document.querySelector('form').addEventListener('submit', function(e) {
+  document.querySelector('form[action*="updateProWrite"]').addEventListener('submit', function(e) {
     if (!this.checkValidity()) {
       e.preventDefault();
       alert('필수 항목을 모두 입력해 주세요.');
       this.reportValidity();
     }
   });
+
+  /* ═══════════════════════════════════════════
+     약관 추가 등록 (이력 누적) - AJAX
+  ═══════════════════════════════════════════ */
+  const PRODUCT_ID = /*[[${product.product_id}]]*/ 0;
+
+  function setAddFile(input, key) {
+    const display = document.getElementById('fname-' + key);
+    const area    = input.closest('.file-upload-area');
+    if (input.files && input.files[0]) {
+      display.textContent = input.files[0].name;
+      area.classList.add('has-file');
+    } else {
+      display.textContent = '새 파일 미선택';
+      area.classList.remove('has-file');
+    }
+  }
+
+  function submitAddTerms() {
+    const form = document.getElementById('addTermsForm');
+    const inputs = form.querySelectorAll('input[type="file"]');
+    let hasFile = false;
+    inputs.forEach(i => { if (i.files && i.files.length > 0) hasFile = true; });
+
+    if (!hasFile) {
+      alert('추가 등록할 PDF 파일을 1개 이상 선택해 주세요.');
+      return;
+    }
+    if (!confirm('선택한 약관을 추가 등록하시겠습니까?\n결재 재제출이 아니며, 이전 약관은 이력으로 보존됩니다.')) {
+      return;
+    }
+
+    const submitBtn = form.querySelector('button[type="button"]');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 업로드 중...';
+    }
+
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+      method: 'POST',
+      body: formData
+    })
+            .then(res => {
+              if (!res.ok) throw new Error('HTTP ' + res.status);
+              return res.json();
+            })
+            .then(data => {
+              if (!data.success) {
+                alert(data.message || '약관 추가 등록 실패');
+                return;
+              }
+              // 1) 상단 "현재 약관" 갱신
+              applyCurrentPaths(data);
+              // 2) 파일 입력 초기화
+              form.reset();
+              ['addBasic','addCategory','addSpecial','addGuide'].forEach(k => {
+                const d = document.getElementById('fname-' + k);
+                if (d) d.textContent = '새 파일 미선택';
+              });
+              form.querySelectorAll('.file-upload-area.has-file')
+                      .forEach(el => el.classList.remove('has-file'));
+              // 3) 이력 목록이 펼쳐져 있으면 다시 로드
+              const body = document.getElementById('historyBody');
+              if (body && body.style.display !== 'none') {
+                loadHistory();
+              }
+              // 4) 토스트
+              showTermsToast('약관이 추가 등록되었습니다. 이전 약관은 이력으로 보존됩니다.');
+            })
+            .catch(err => {
+              console.error(err);
+              alert('약관 추가 등록 중 오류가 발생했습니다.');
+            })
+            .finally(() => {
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-plus"></i> 약관 추가 등록';
+              }
+            });
+  }
+
+  /* 상단 "현재 약관" 4종 영역을 응답값으로 갱신 */
+  function applyCurrentPaths(data) {
+    const map = [
+      { box: 'current-basic',    link: 'current-basic-link',    path: data.basic_terms_path,    changed: data.changed_basic    },
+      { box: 'current-category', link: 'current-category-link', path: data.category_terms_path, changed: data.changed_category },
+      { box: 'current-special',  link: 'current-special-link',  path: data.special_terms_path,  changed: data.changed_special  },
+      { box: 'current-guide',    link: 'current-guide-link',    path: data.product_guide_path,  changed: data.changed_guide    }
+    ];
+    map.forEach(m => {
+      const box  = document.getElementById(m.box);
+      const link = document.getElementById(m.link);
+      if (!box || !link) return;
+      if (m.path) {
+        link.href = m.path;
+        box.style.display = '';
+        if (m.changed) {
+          box.style.background = '#FEF3C7';
+          box.style.borderColor = '#F59E0B';
+          setTimeout(() => {
+            box.style.background = '';
+            box.style.borderColor = '';
+          }, 2500);
+        }
+      } else {
+        box.style.display = 'none';
+      }
+    });
+  }
+
+  /* ═══════════════════════════════════════════
+     약관 등록 이력 (AJAX 로드)
+  ═══════════════════════════════════════════ */
+  let historyLoaded = false;
+
+  function toggleHistory() {
+    const body = document.getElementById('historyBody');
+    const icon = document.getElementById('historyToggleIcon');
+    const txt  = document.getElementById('historyToggleText');
+    if (body.style.display === 'none') {
+      body.style.display = '';
+      icon.className = 'fa-solid fa-eye-slash';
+      txt.textContent = '이력 접기';
+      if (!historyLoaded) loadHistory();
+    } else {
+      body.style.display = 'none';
+      icon.className = 'fa-solid fa-eye';
+      txt.textContent = '이력 펼치기';
+    }
+  }
+
+  function loadHistory() {
+    const loading = document.getElementById('historyLoading');
+    const table   = document.getElementById('historyTable');
+    const empty   = document.getElementById('historyEmpty');
+    const tbody   = document.getElementById('historyTbody');
+
+    loading.style.display = '';
+    table.style.display = 'none';
+    empty.style.display = 'none';
+    tbody.innerHTML = '';
+
+    fetch('/admin/product/terms/history/' + PRODUCT_ID)
+            .then(res => res.json())
+            .then(list => {
+              loading.style.display = 'none';
+              if (!list || list.length === 0) {
+                empty.style.display = '';
+                historyLoaded = true;
+                return;
+              }
+              list.forEach((row, idx) => {
+                // 가장 최신 (idx === 0) 이 현재 사용중
+                const version = list.length - idx;
+                const isCurrent = (idx === 0);
+                const badge = isCurrent
+                        ? '<span style="background:#DCFCE7; color:#166534; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600;">현재</span>'
+                        : '<span style="background:#F1F5F9; color:#64748B; padding:2px 8px; border-radius:4px; font-size:11px;">이력</span>';
+                const regDt = row.reg_dt ? formatDate(row.reg_dt) : '-';
+                const tr = `
+            <tr style="${isCurrent ? 'background:#FFFBEB;' : ''}">
+              <td style="padding:8px; text-align:center; border:1px solid #E2E8F0; font-weight:600;">v${version}</td>
+              <td style="padding:8px; text-align:center; border:1px solid #E2E8F0;">${badge}</td>
+              <td style="padding:8px; border:1px solid #E2E8F0;">${linkCell(row.basic_terms_path)}</td>
+              <td style="padding:8px; border:1px solid #E2E8F0;">${linkCell(row.cat_terms_path)}</td>
+              <td style="padding:8px; border:1px solid #E2E8F0;">${linkCell(row.spec_terms_path)}</td>
+              <td style="padding:8px; border:1px solid #E2E8F0;">${linkCell(row.prod_guide_path)}</td>
+              <td style="padding:8px; text-align:center; border:1px solid #E2E8F0; color:#64748B;">${regDt}</td>
+            </tr>
+          `;
+                tbody.insertAdjacentHTML('beforeend', tr);
+              });
+              table.style.display = '';
+              historyLoaded = true;
+            })
+            .catch(err => {
+              console.error(err);
+              loading.style.display = 'none';
+              empty.textContent = '이력 조회 중 오류가 발생했습니다.';
+              empty.style.display = '';
+            });
+  }
+
+  function linkCell(path) {
+    if (!path) return '<span style="color:#94A3B8;">-</span>';
+    const fileName = path.split('/').pop();
+    const safeName = fileName.length > 30 ? fileName.substring(0, 30) + '...' : fileName;
+    return `<a href="${path}" target="_blank" style="color:#0F766E; text-decoration:none;" title="${fileName}">
+              <i class="fa-solid fa-file-pdf"></i> ${safeName}
+            </a>`;
+  }
+
+  function formatDate(d) {
+    if (!d) return '-';
+    // 이미 "YYYY-MM-DD HH24:MI" 형식이면 그대로 사용
+    if (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d)) return d;
+    // 아니면 Date 파싱 시도
+    const dt = new Date(d);
+    if (isNaN(dt.getTime())) return d;
+    const pad = n => String(n).padStart(2, '0');
+    return `${dt.getFullYear()}-${pad(dt.getMonth()+1)}-${pad(dt.getDate())} ${pad(dt.getHours())}:${pad(dt.getMinutes())}`;
+  }
+
+  /* 간단 토스트 */
+  function showTermsToast(msg) {
+    let t = document.getElementById('termsToast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'termsToast';
+      t.style.cssText = 'position:fixed; bottom:30px; left:50%; transform:translateX(-50%);' +
+              'background:#16A34A; color:#fff; padding:12px 24px; border-radius:8px;' +
+              'font-size:14px; font-weight:600; box-shadow:0 4px 12px rgba(0,0,0,0.15);' +
+              'z-index:9999; opacity:0; transition:opacity .25s;';
+      document.body.appendChild(t);
+    }
+    t.innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + msg;
+    requestAnimationFrame(() => { t.style.opacity = '1'; });
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => { t.style.opacity = '0'; }, 3000);
+  }
 </script>
 </body>
 </html>
