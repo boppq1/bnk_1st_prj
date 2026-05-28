@@ -1,9 +1,5 @@
 /* =========================================================
    환전 계산기 JS
-   ---------------------------------------------------------
-   - UI 동작(입력 동기화 / 통화 선택 / 빠른금액 / 정정)은 구현됨
-   - 실제 환전 "계산 로직"은 calculateExchange() 안에 직접 작성
-   - 계산 결과를 화면에 표시하는 부분은 renderResult() 에 매핑됨
    ========================================================= */
 
 (function() {
@@ -11,7 +7,6 @@
 
     /* ---------- 요소 캐싱 ---------- */
     const el = {
-        // 입력
         convStd: () => document.querySelector('input[name="convStd"]:checked'),
         rateStd: () => document.querySelector('input[name="rateStd"]:checked'),
         cashType: () => document.querySelector('input[name="cashType"]:checked'),
@@ -26,7 +21,6 @@
         currencyList: document.getElementById("currencyList"),
         searchBtn: document.getElementById("searchBtn"),
         resetBtn: document.getElementById("resetBtn"),
-        // 결과
         resultBox: document.getElementById("resultBox"),
     };
 
@@ -84,11 +78,10 @@
         });
     });
 
-    // 조회 버튼
-    el.searchBtn.addEventListener("click", () => {
+    // 조회 버튼 - async
+    el.searchBtn.addEventListener("click", async () => {
         const input = collectInput();
-        const result = calculateExchange(input);   // ← 직접 작성할 로직
-        renderResult(input, result);
+        await fetchAndRender(input);
     });
 
     /* =========================================================
@@ -96,49 +89,83 @@
        ========================================================= */
     function collectInput() {
         return {
-            convStd: el.convStd().value,            // "foreign" | "krw"
-            rateStd: el.rateStd().value,            // "notice" | "manual"
-            cashType: el.cashType().value,           // "cash"
-            buySell: el.buySell().value,            // "buy" | "sell"
-            currency: selectedCurrency,              // { code, name }
-            baseDate: el.baseDate.value,
-            preferRate: Number(el.preferRate.value),  // 0 ~ 90 (%)
+            convStd: el.convStd().value,             // "foreign" | "krw"
+            rateStd: el.rateStd().value,             // "notice"  | "manual"
+            cashType: el.cashType().value,            // "cash"
+            buySell: el.buySell().value,             // "buy"     | "sell"
+            currency: selectedCurrency,               // { code, name }
+            baseDate: el.baseDate.value,              // "2026.05.06"
+            preferRate: Number(el.preferRate.value),    // 0 ~ 90 (%)
             manualRate: onlyNumber(el.manualRate.value),
             amount: onlyNumber(el.amountInput.value),
         };
     }
 
     /* =========================================================
-       3) ★ 환전 계산 로직 (여기를 직접 작성하세요) ★
-       ---------------------------------------------------------
-       input 으로 위 collectInput() 값이 들어옵니다.
-       아래 객체의 각 필드를 채워서 return 하면
-       renderResult() 가 화면에 자동으로 표시합니다.
-       (지금은 화면 확인용 더미/0 값으로 채워둠)
+       3) API 호출 + 계산 + 렌더링
        ========================================================= */
-    function calculateExchange(input) {
-        // TODO: 실제 환율/우대율/수수료 계산 구현
-        // 예) const marketRate = fetchRate(input.currency.code);
-        //     const applied   = input.buySell === "buy" ? ... : ...;
+    async function fetchAndRender(input) {
 
-        return {
-            marketRate: 0,   // 매매기준율
-            noticeRate: 0,   // 고시환율
-            appliedRate: 0,   // 적용환율(우대 전)
-            preferredRate: 0,   // 우대 적용환율
-            total: 0,   // 환전 예상 금액(최종)
-            saved: 0,   // 우대 절감액
-            payCurrency: "",  // 지급 통화
-            recvCurrency: "",  // 수취 통화
-            payAmount: 0,   // 지급 금액
-            recvAmount: 0,   // 수취 금액
-        };
+        // 날짜 포맷 변환: "2026.05.06" → "2026-05-06"
+        const date = input.baseDate.replace(/\./g, "-");
+
+        // HTML 통화코드 → DB curNm 매핑
+        const curNmMap = { JPY: "JPY(100)", IDR: "IDR(100)" };
+        const curNm = curNmMap[input.currency.code] || input.currency.code;
+
+        const url = `/api/exchange/rate`
+            + `?curNm=${curNm}`
+            + `&date=${date}`
+            + `&buySell=${input.buySell}`
+            + `&prefer=${input.preferRate}`;
+
+        try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(res.status);
+            const data = await res.json();
+
+            // data = {
+            //   curNm, baseDate,
+            //   dealBasR,       매매기준율
+            //   noticeRate,     고시환율 (살때 tts / 팔때 ttb)
+            //   spread,         스프레드
+            //   preferDiscount, 우대 절감액
+            //   appliedRate     최종 적용환율
+            // }
+
+            const amount = input.amount;
+            const isBuy = input.buySell === "buy";
+            const appRate = data.appliedRate;
+
+            // 살때: KRW 지급 → 외화 수취
+            // 팔때: 외화 지급 → KRW 수취
+            const payAmount = isBuy ? Math.round(amount * appRate) : amount;
+            const recvAmount = isBuy ? amount : Math.round(amount * appRate);
+            const saved = Math.round(data.preferDiscount * amount);
+
+            const result = {
+                marketRate: data.dealBasR,
+                noticeRate: data.noticeRate,
+                appliedRate: data.noticeRate,   // 우대 전 고시환율
+                preferredRate: data.appliedRate,  // 우대 후 적용환율
+                total: isBuy ? payAmount : recvAmount,
+                saved: saved,
+                payCurrency: isBuy ? "KRW" : input.currency.code,
+                recvCurrency: isBuy ? input.currency.code : "KRW",
+                payAmount: payAmount,
+                recvAmount: recvAmount,
+            };
+
+            renderResult(input, result);
+
+        } catch (err) {
+            console.error("환율 조회 실패", err);
+            alert("환율 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.");
+        }
     }
 
     /* =========================================================
        4) 결과 렌더링 (계산 결과 → 화면)
-       ---------------------------------------------------------
-       필요 시 표시 형식만 조정하면 됩니다.
        ========================================================= */
     function renderResult(input, r) {
         const cc = input.currency.code;
@@ -183,4 +210,120 @@
         const node = document.getElementById(id);
         if (node) node.textContent = value;
     }
+
+    /* =========================================================
+       달력 (기준일시 선택)
+       ========================================================= */
+    (function initCalendar() {
+
+        let viewYear, viewMonth, selectedDate = null;
+        const today = new Date();
+        viewYear = today.getFullYear();
+        viewMonth = today.getMonth();
+
+        const btn = document.getElementById("calBtn");
+        const popup = document.getElementById("calPopup");
+        const display = document.getElementById("baseDate");  // 기준일시 input에 바로 반영
+        const prevBtn = document.getElementById("calPrev");
+        const nextBtn = document.getElementById("calNext");
+        const mlabel = document.getElementById("calMonthYear");
+        const daysEl = document.getElementById("calDays");
+
+        // 팝업 토글
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            popup.classList.toggle("open");
+            if (popup.classList.contains("open")) renderCal();
+        });
+        document.addEventListener("click", (e) => {
+            if (!popup.contains(e.target) && e.target !== btn)
+                popup.classList.remove("open");
+        });
+
+        // 이전/다음 달
+        prevBtn.addEventListener("click", () => {
+            viewMonth--;
+            if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+            renderCal();
+        });
+        nextBtn.addEventListener("click", () => {
+            viewMonth++;
+            if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+            renderCal();
+        });
+
+        function renderCal() {
+            const months = ["1월", "2월", "3월", "4월", "5월", "6월",
+                "7월", "8월", "9월", "10월", "11월", "12월"];
+            mlabel.textContent = `${viewYear}년 ${months[viewMonth]}`;
+            daysEl.innerHTML = "";
+
+            const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+            const lastDate = new Date(viewYear, viewMonth + 1, 0).getDate();
+            const prevLast = new Date(viewYear, viewMonth, 0).getDate();
+
+            for (let i = firstDay - 1;i >= 0;i--)
+                daysEl.appendChild(makeDay(prevLast - i, true, false, null));
+
+            for (let d = 1;d <= lastDate;d++) {
+                const date = new Date(viewYear, viewMonth, d);
+                const isTd = isSameDay(date, today);
+                const isSel = selectedDate && isSameDay(date, selectedDate);
+                // 오늘 이후 날짜는 선택 불가
+                const isFuture = date > today;
+                daysEl.appendChild(makeDay(d, false, isTd, date, isSel, isFuture));
+            }
+
+            const total = firstDay + lastDate;
+            const remain = total % 7 === 0 ? 0 : 7 - (total % 7);
+            for (let i = 1;i <= remain;i++)
+                daysEl.appendChild(makeDay(i, true, false, null));
+        }
+
+        function makeDay(num, otherMonth, isToday, dateObj, isSelected, isFuture) {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.textContent = num;
+            btn.className = "cal-day";
+
+            if (otherMonth) btn.classList.add("other-month");
+            if (isToday) btn.classList.add("today");
+            if (isSelected) btn.classList.add("selected");
+            if (isFuture) btn.disabled = true;
+
+            if (!otherMonth && dateObj && !isFuture) {
+                const col = dateObj.getDay();
+                if (col === 0) btn.classList.add("sun");
+                if (col === 6) btn.classList.add("sat");
+                btn.addEventListener("click", () => selectDate(dateObj));
+            } else {
+                btn.disabled = true;
+            }
+            return btn;
+        }
+
+        function selectDate(date) {
+            selectedDate = date;
+            // "2026.05.27" 형식으로 baseDate input에 반영
+            display.value = formatDate(date);
+            popup.classList.remove("open");
+            renderCal();
+        }
+
+        function formatDate(date) {
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, "0");
+            const d = String(date.getDate()).padStart(2, "0");
+            return `${y}.${m}.${d}`;
+        }
+
+        function isSameDay(a, b) {
+            return a.getFullYear() === b.getFullYear()
+                && a.getMonth() === b.getMonth()
+                && a.getDate() === b.getDate();
+        }
+
+        renderCal();
+    })();
+
 })();

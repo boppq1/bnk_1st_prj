@@ -1,0 +1,269 @@
+@charset "UTF-8";
+/* ============================================================
+   BNK 부산은행 외화 환전 시스템 스타일  (/css/fx/exchange.css)
+   Red Theme
+============================================================ */
+
+.fx-page {
+  --red-900:#6B0010; --red-800:#8B0018; --red-700:#A8001F;
+  --red-600:#C8002A; --red-500:#E0103A; --red-400:#F03558;
+  --red-300:#F87090; --red-200:#FBBDCC; --red-100:#FDDDE6; --red-50:#FFF0F3;
+  --bg-card:#FFFFFF; --bg-input:#FFF8F9; --bg-muted:#FFF0F3;
+  --text-primary:#2A0008; --text-secondary:#7A3040; --text-muted:#B07080;
+  --border-default:rgba(180,40,60,.18);
+  --border-focus:rgba(200,0,42,.45);
+  --border-card:rgba(180,40,60,.13);
+  --shadow-card:0 2px 16px rgba(180,0,40,.08),0 1px 4px rgba(180,0,40,.05);
+  --shadow-btn:0 4px 14px rgba(200,0,42,.35);
+  --r-sm:6px; --r-md:10px; --r-lg:16px; --r-xl:22px;
+
+  font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  color:var(--text-primary);
+  flex:1;
+  min-width:0;
+  padding:2rem 1.5rem;
+  max-width:1080px;
+  margin:0 auto;
+  width:100%;
+}
+.fx-page *{box-sizing:border-box;}
+
+/* ── 페이지 헤더 ── */
+.fx-head{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;}
+.fx-head-icon{
+  width:44px;height:44px;background:var(--red-600);border-radius:var(--r-md);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;
+}
+.fx-head-txt h1{font-size:21px;font-weight:700;letter-spacing:-.02em;}
+.fx-head-txt p{font-size:12.5px;color:var(--text-secondary);margin-top:2px;}
+.fx-head-date{
+  margin-left:auto;font-size:11.5px;color:var(--text-muted);
+  background:var(--red-50);border:1px solid var(--red-100);
+  padding:5px 12px;border-radius:20px;white-space:nowrap;
+}
+
+/* ── 그리드 ── */
+.fx-grid{display:grid;grid-template-columns:1fr 340px;gap:1.25rem;align-items:start;}
+@media(max-width:860px){.fx-grid{grid-template-columns:1fr;}}
+
+/* ── 카드 공통 ── */
+.fx-card{
+  background:var(--bg-card);border:1px solid var(--border-card);
+  border-radius:var(--r-xl);box-shadow:var(--shadow-card);
+  padding:1.5rem;position:relative;overflow:hidden;
+}
+.fx-main-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--red-700),var(--red-400));
+}
+
+/* ── 거래 구분 탭 ── */
+.fx-deal-tabs{
+  display:flex;gap:6px;background:var(--bg-muted);
+  padding:5px;border-radius:var(--r-md);margin-bottom:14px;
+}
+.fx-deal-tab{
+  flex:1;padding:11px;border:none;background:transparent;cursor:pointer;
+  font-family:inherit;font-size:14px;font-weight:600;color:var(--text-secondary);
+  border-radius:var(--r-sm);transition:all .18s;
+}
+.fx-deal-tab.active{background:var(--red-600);color:#fff;box-shadow:var(--shadow-btn);}
+.fx-deal-tab i{margin-right:5px;font-size:12px;}
+
+.fx-deal-desc{
+  font-size:12px;color:var(--text-muted);margin-bottom:18px;
+  padding-left:2px;line-height:1.5;
+}
+
+/* ── 필드 공통 ── */
+.fx-field{margin-bottom:16px;}
+.fx-label{
+  display:block;font-size:11px;font-weight:600;letter-spacing:.05em;
+  color:var(--red-600);text-transform:uppercase;margin-bottom:7px;
+}
+
+/* ── 통화 셀렉트 ── */
+.fx-select-box{
+  background:var(--bg-input);border:1px solid var(--border-default);
+  border-radius:var(--r-md);padding:10px 14px;display:flex;align-items:center;gap:10px;
+  transition:border-color .2s;
+}
+.fx-select-box:focus-within{border-color:var(--border-focus);}
+.fx-flag{font-size:26px;line-height:1;flex-shrink:0;}
+.fx-select-wrap{flex:1;min-width:0;}
+.fx-select-wrap select{
+  width:100%;background:transparent;border:none;outline:none;
+  font-size:15px;font-weight:600;color:var(--text-primary);cursor:pointer;
+  appearance:none;-webkit-appearance:none;font-family:inherit;
+}
+.fx-cur-name{font-size:11px;color:var(--text-muted);margin-top:2px;}
+.fx-arrow{color:var(--red-400);font-size:14px;flex-shrink:0;}
+
+/* ── 금액 입력 ── */
+.fx-amount-box{
+  background:var(--bg-input);border:1px solid var(--border-default);
+  border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:8px;
+  transition:border-color .2s,box-shadow .2s;
+}
+.fx-amount-box:focus-within{
+  border-color:var(--border-focus);box-shadow:0 0 0 3px rgba(200,0,42,.08);
+}
+.fx-amount-box input{
+  flex:1;background:transparent;border:none;outline:none;
+  font-size:23px;font-weight:700;color:var(--text-primary);
+  font-family:inherit;min-width:0;width:100%;
+}
+.fx-amount-box input::placeholder{color:var(--red-200);}
+.fx-unit{
+  background:var(--red-100);color:var(--red-700);font-size:12px;font-weight:700;
+  padding:4px 11px;border-radius:20px;white-space:nowrap;letter-spacing:.03em;
+}
+
+/* ── 빠른 금액 ── */
+.fx-quick{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.fx-quick button{
+  padding:6px 14px;border-radius:20px;border:1px solid var(--border-default);
+  background:var(--bg-muted);font-size:12px;font-weight:500;color:var(--text-secondary);
+  cursor:pointer;transition:all .15s;font-family:inherit;
+}
+.fx-quick button:hover{background:var(--red-600);border-color:var(--red-600);color:#fff;transform:translateY(-1px);}
+.fx-quick button:active{transform:scale(.96);}
+
+/* ── 환율 / 예상 금액 ── */
+.fx-rate-info{
+  margin-top:4px;background:var(--red-50);border:1px solid var(--red-200);
+  border-radius:var(--r-md);padding:14px 16px;
+}
+.fx-rate-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.fx-rate-badge{
+  background:var(--red-600);color:#fff;font-size:10px;font-weight:700;
+  padding:3px 9px;border-radius:20px;letter-spacing:.04em;white-space:nowrap;
+}
+.fx-rate-val{font-size:13px;font-weight:600;color:var(--red-800);}
+.fx-estimate{
+  display:flex;align-items:baseline;justify-content:space-between;
+  padding-top:10px;border-top:1px dashed var(--red-200);
+}
+.fx-est-label{font-size:12px;color:var(--text-secondary);font-weight:500;}
+.fx-est-val{font-size:19px;font-weight:800;color:var(--red-700);}
+
+/* ── 보유 잔액 ── */
+.fx-balance{
+  margin-top:12px;display:flex;align-items:center;gap:8px;
+  font-size:12.5px;color:var(--text-secondary);
+  background:var(--bg-muted);border:1px solid var(--red-100);
+  padding:10px 14px;border-radius:var(--r-md);
+}
+.fx-balance i{color:var(--red-500);}
+.fx-balance b{color:var(--red-700);}
+
+/* ── 환전 버튼 ── */
+.fx-submit{
+  margin-top:18px;width:100%;padding:15px;background:var(--red-600);color:#fff;
+  border:none;border-radius:var(--r-md);font-size:16px;font-weight:700;cursor:pointer;
+  transition:background .2s,transform .1s,box-shadow .2s;letter-spacing:.04em;
+  box-shadow:var(--shadow-btn);font-family:inherit;
+}
+.fx-submit i{margin-right:6px;}
+.fx-submit:hover:not(:disabled){background:var(--red-700);box-shadow:0 6px 20px rgba(200,0,42,.45);}
+.fx-submit:active:not(:disabled){transform:scale(.985);}
+.fx-submit:disabled{background:var(--red-200);color:var(--red-100);cursor:not-allowed;box-shadow:none;}
+
+/* ── 우측 사이드 ── */
+.fx-side{display:flex;flex-direction:column;gap:1.25rem;}
+.fx-side-title{font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:12px;}
+
+/* 통화 리스트 */
+.fx-cur-list-card{padding:1.25rem;}
+.fx-cur-list{list-style:none;max-height:420px;overflow-y:auto;margin:-4px;padding:4px;}
+.fx-cur-list::-webkit-scrollbar{width:6px;}
+.fx-cur-list::-webkit-scrollbar-thumb{background:var(--red-200);border-radius:3px;}
+.fx-cur-item{
+  display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:var(--r-md);
+  cursor:pointer;transition:background .15s;margin-bottom:2px;
+}
+.fx-cur-item:hover{background:var(--bg-muted);}
+.fx-cur-item.active{background:var(--red-50);box-shadow:inset 0 0 0 1.5px var(--red-300);}
+.fx-cur-item .ci-flag{font-size:22px;flex-shrink:0;}
+.fx-cur-item .ci-info{flex:1;min-width:0;}
+.fx-cur-item .ci-name{font-size:13px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fx-cur-item .ci-rate{font-size:11px;color:var(--text-muted);margin-top:1px;}
+.fx-cur-item .ci-code{font-size:12px;font-weight:700;color:var(--red-600);flex-shrink:0;}
+
+/* ── 결과 카드 ── */
+.fx-result-card{padding:0;overflow:hidden;animation:fxSlideIn .4s cubic-bezier(.4,0,.2,1);}
+@keyframes fxSlideIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.fx-result-head{
+  background:linear-gradient(135deg,var(--red-800),var(--red-600));
+  padding:15px 1.25rem;display:flex;align-items:center;gap:10px;
+}
+.fx-result-check{
+  width:32px;height:32px;background:rgba(255,255,255,.2);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;flex-shrink:0;
+}
+.fx-result-head h3{color:#fff;font-size:15px;font-weight:600;}
+.fx-result-head p{color:rgba(255,255,255,.78);font-size:11.5px;}
+.fx-result-time{
+  margin-left:auto;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);
+  font-size:10.5px;padding:4px 9px;border-radius:20px;white-space:nowrap;
+}
+.fx-result-body{padding:1.25rem;}
+.fx-result-hl{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  background:var(--red-50);border:1px solid var(--red-200);border-radius:var(--r-lg);
+  padding:14px;margin-bottom:12px;
+}
+.fx-hl-block.right{text-align:right;}
+.fx-hl-label{display:block;font-size:10.5px;color:var(--text-muted);margin-bottom:4px;}
+.fx-hl-val{font-size:15px;font-weight:700;white-space:nowrap;}
+.fx-hl-val.deduct{color:var(--red-700);}
+.fx-hl-val.gain{color:var(--red-800);}
+.fx-hl-arrow{
+  width:30px;height:30px;background:var(--red-600);border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;
+}
+.fx-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.fx-ri{background:var(--bg-muted);border:1px solid var(--red-100);border-radius:var(--r-md);padding:10px 12px;}
+.fx-ri span{display:block;font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;}
+.fx-ri b{font-size:12.5px;font-weight:600;color:var(--text-primary);}
+
+/* ── 확인 모달 ── */
+.fx-modal-overlay{
+  position:fixed;inset:0;background:rgba(42,0,8,.45);backdrop-filter:blur(3px);
+  display:flex;align-items:center;justify-content:center;z-index:9999;padding:1rem;
+  animation:fxFade .2s ease;
+}
+@keyframes fxFade{from{opacity:0;}to{opacity:1;}}
+.fx-modal{
+  background:#fff;border-radius:var(--r-xl);padding:1.75rem;max-width:380px;width:100%;
+  text-align:center;box-shadow:0 20px 60px rgba(100,0,20,.3);
+  animation:fxPop .28s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes fxPop{from{opacity:0;transform:scale(.9);}to{opacity:1;transform:scale(1);}}
+.fx-modal-icon{
+  width:56px;height:56px;margin:0 auto 14px;border-radius:50%;
+  background:var(--red-50);display:flex;align-items:center;justify-content:center;
+  color:var(--red-600);font-size:26px;
+}
+.fx-modal-title{font-size:18px;font-weight:700;margin-bottom:8px;}
+.fx-modal-msg{font-size:13.5px;color:var(--text-secondary);line-height:1.6;margin-bottom:14px;}
+.fx-modal-detail{
+  background:var(--bg-muted);border:1px solid var(--red-100);border-radius:var(--r-md);
+  padding:14px;margin-bottom:18px;font-size:13px;color:var(--text-primary);line-height:1.9;text-align:left;
+}
+.fx-modal-detail .md-row{display:flex;justify-content:space-between;}
+.fx-modal-detail .md-row b{color:var(--red-700);}
+.fx-modal-btns{display:flex;gap:10px;}
+.fx-btn-cancel,.fx-btn-confirm{
+  flex:1;padding:13px;border-radius:var(--r-md);font-size:14px;font-weight:700;
+  cursor:pointer;font-family:inherit;transition:all .18s;border:none;
+}
+.fx-btn-cancel{background:var(--bg-muted);color:var(--text-secondary);border:1px solid var(--border-default);}
+.fx-btn-cancel:hover{background:var(--red-100);}
+.fx-btn-confirm{background:var(--red-600);color:#fff;box-shadow:var(--shadow-btn);}
+.fx-btn-confirm:hover{background:var(--red-700);}
+.fx-btn-confirm:active{transform:scale(.97);}
+.fx-btn-confirm:disabled{background:var(--red-200);cursor:not-allowed;box-shadow:none;}
+
+/* hidden 속성 강제 적용 (다른 CSS의 display 덮어쓰기 방지) */
+.fx-page [hidden] { display: none !important; }

@@ -305,3 +305,91 @@
   .result-summary { grid-template-columns: 1fr; }
   .row-label { flex-basis: 64px; }
 }
+
+/* ── 달력 팝업 ── */
+.cal-popup {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 999;
+  background: #fff;
+  border: 1px solid var(--line-dark);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  padding: 12px;
+  width: 260px;
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.cal-popup.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.cal-nav-btn {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--bnk-red);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cal-nav-btn:hover { background: var(--bnk-red-soft); }
+.cal-month-year { font-size: 14px; font-weight: 700; }
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 4px;
+}
+.cal-weekdays span {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-sub);
+  padding: 3px 0;
+}
+.cal-weekdays span:first-child { color: var(--bnk-red); }
+.cal-weekdays span:last-child  { color: #4477cc; }
+.cal-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.cal-day {
+  aspect-ratio: 1;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.cal-day:hover:not(:disabled) { background: var(--bnk-red-soft); }
+.cal-day.today { border: 1.5px solid var(--bnk-red); color: var(--bnk-red); font-weight: 700; }
+.cal-day.selected { background: var(--bnk-red); color: #fff; }
+.cal-day.other-month { opacity: 0.3; }
+.cal-day:disabled { opacity: 0.25; cursor: not-allowed; }
+.cal-day.sun { color: var(--bnk-red); }
+.cal-day.sat { color: #4477cc; }
+.cal-day.selected.sun,
+.cal-day.selected.sat { color: #fff; }
+
+/* 달력 팝업이 absolute가 되려면 부모에 relative 필요 */
+.date-time { position: relative; }

@@ -32,15 +32,17 @@
 }
 
 /* ── 검색 패널 ────────────────────────────── */
+/* 패널 가운데 정렬 */
 .bnk-search-panel {
-	margin-left : 300px;
-	margin-right : 300px;
     position: fixed;
-    left: 0; right: 0;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    width: 700px;
+    max-width: 92vw;
     background: #fff;
     z-index: 1300;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.10);
-    transform: translateY(-10px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
     opacity: 0;
     pointer-events: none;
     transition: transform var(--bnk-transition), opacity var(--bnk-transition);
@@ -48,9 +50,12 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    border-radius: 0 0 12px 12px;
+    /* margin-left, margin-right 완전 삭제 */
 }
+
 .bnk-search-panel.is-open {
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0); /* translateX 반드시 유지 */
     opacity: 1;
     pointer-events: auto;
 }
@@ -58,13 +63,16 @@
 /* ── 입력 영역 ────────────────────────────── */
 .bnk-search-input-row {
     display: flex;
-    align-items: center;
+    align-items: flex-end;  /* center → flex-end */
     padding: 20px 40px 0;
     gap: 14px;
     flex-shrink: 0;
+    flex-wrap: nowrap;      /* 추가: 줄바꿈 방지 */
 }
+
 .bnk-search-input-box {
     flex: 1;
+    min-width: 0;           /* 추가: flex 축소 허용 */
     display: flex;
     align-items: center;
     gap: 12px;
@@ -127,15 +135,16 @@
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 700;
     padding: 10px 22px;
+    height: 40px;
     border-radius: 4px;
     cursor: pointer;
     white-space: nowrap;
     flex-shrink: 0;
-    letter-spacing: -0.2px;
-    margin-bottom: 12px;
+    /* margin-bottom 삭제 */
     transition: background 0.18s;
 }
 .bnk-search-submit:hover { background: var(--bnk-red-hover); }
+
 
 /* 닫기 버튼 */
 .bnk-search-close {

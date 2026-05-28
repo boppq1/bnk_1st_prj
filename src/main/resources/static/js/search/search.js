@@ -60,27 +60,27 @@ const BNKSearch = (() => {
         panel.setAttribute('aria-label', '통합 검색');
 
         /* 입력 행 */
-        const inputRow = document.createElement('div');
-        inputRow.className = 'bnk-search-input-row';
-        inputRow.innerHTML = `
-			<form action="/search_page" method="get">
-			    <div class="bnk-search-input-box">
-			        <i class="fa fa-search" aria-hidden="true"></i>
-			        <input type="text" name="search_text" id="bnkSearchInput"
-			               placeholder="검색어를 입력하세요"
-			               autocomplete="off"
-			               aria-autocomplete="list"
-			               aria-label="검색어 입력" />
-			        <button type="button" class="bnk-search-clear" aria-label="입력 지우기">
-			            <i class="fa fa-times"></i>
-			        </button>
-			    </div>
-			    <input type="submit" class="bnk-search-submit" aria-label="검색" value="검색"></input>
-			</form>
-			<button type="button" class="bnk-search-close" aria-label="검색창 닫기">
-			    <i class="fa fa-times"></i>
-			</button>
-        `;
+		const inputRow = document.createElement('div');
+		inputRow.className = 'bnk-search-input-row';
+		inputRow.innerHTML = `
+		    <form action="/search_page" method="get" class="bnk-search-form">
+		        <div class="bnk-search-input-box">
+		            <i class="fa fa-search" aria-hidden="true"></i>
+		            <input type="text" name="search_text" id="bnkSearchInput"
+		                   placeholder="검색어를 입력하세요"
+		                   autocomplete="off"
+		                   aria-autocomplete="list"
+		                   aria-label="검색어 입력" />
+		            <button type="button" class="bnk-search-clear" aria-label="입력 지우기">
+		                <i class="fa fa-times"></i>
+		            </button>
+		        </div>
+		        <button type="submit" class="bnk-search-submit" aria-label="검색">검색</button>
+		    </form>
+		    <button type="button" class="bnk-search-close" aria-label="검색창 닫기">
+		        <i class="fa fa-times"></i>
+		    </button>
+		`;
 
         /* 탭 */
         tabBar = document.createElement('div');
