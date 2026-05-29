@@ -15,7 +15,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        prod_no AS productId,
 	        basic_terms_path AS basicTermsPath,
 	        cat_terms_path AS categoryTermsPath,
-	        spec_terms_path AS specialTermsPath
+	        spec_terms_path AS specialTermsPath,
+	        prod_guide_path AS productGuidePath
 	    FROM product_pdfs
 	    WHERE prod_no = #{productId}
 	

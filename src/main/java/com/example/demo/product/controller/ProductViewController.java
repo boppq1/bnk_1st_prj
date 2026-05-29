@@ -14,6 +14,15 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.*;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.springframework.beans.factory.annotation.Value;
+
 @Controller
 @RequiredArgsConstructor
 public class ProductViewController {
@@ -118,4 +127,25 @@ public class ProductViewController {
 
         return "product/productForeign";
     }
+
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
+    @GetMapping("/files/{filename}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String filename) throws IOException {
+        Path path = Paths.get(uploadDir).resolve(filename);
+        Resource resource = new UrlResource(path.toUri());
+
+        if (!resource.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "inline; filename=\"" + URLEncoder.encode(filename, "UTF-8") + "\"")
+                .body(resource);
+    }
+
+
 }
